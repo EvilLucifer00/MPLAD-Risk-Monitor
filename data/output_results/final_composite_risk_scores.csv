@@ -1,0 +1,701 @@
+MP Name,Top_Vendor,Vendor_Dominance_Pct,Is_Monopoly_Flag,Vendor_Is_Shell,Vendor_Is_Blacklisted,In_Cartel_Cluster,Collusion_Risk_Score,Trend_Anomaly_Score,Fund_Dump_Anomaly,Constituency,Isolation_Forest_Anomaly,Is_Ghost_Work,True_Fraud_Label,Final_Risk_Probability,Composite_Risk_Score,Primary_Risk_Driver
+AASHTIKAR PATIL NAGESH BAPURAO,SAIBABA STONE CRUSHER AND CONSTRUCTION,30.6,False,False,False,False,0.0,0,False,HINGOLI,0.0,0.0,0,0.0048430096,0.48,None
+ABDUL RASHID SHEIKH,MADIHA TRADERS,12.89,False,False,False,False,0.0,0,False,BARAMULLAH,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+ABHAY KUMAR SINHA,LITTLE GENIUS AGENCIES,27.14,False,False,False,False,0.0,0,False,AURANGABAD,0.0,10.0,1,0.9970304,99.7,Is_Ghost_Work
+ABHIJIT GANGOPADHYAY,MANDAL ENTERPRISE,6.39,False,False,False,False,0.0,0,False,TAMLUK,0.0,0.0,0,0.0048430096,0.48,None
+ADHIKARI SOUMENDU,GLOSIA ENERGY INDIA PRIVATE LIMITED,79.7,True,False,False,False,1.0,0,False,KANTHI,0.0,3.0,1,0.9967546,99.68,Is_Ghost_Work
+ADITYA YADAV,Jagdish Narayan,31.36,False,False,False,False,0.0,0,False,BADAUN,0.0,0.0,0,0.0048430096,0.48,None
+ADV GOWAAL KAGADA PADAVI,SWAMI POWERTECH,57.67,False,False,False,False,0.0,0,False,NANDURBAR,0.0,20.0,1,0.9970304,99.7,Is_Ghost_Work
+ADV K FRANCIS GEORGE,TATA MOTORS,11.77,False,False,False,False,0.0,0,False,KOTTAYAM,0.0,0.0,0,0.0048430096,0.48,None
+AFZAL ANSARI,SHYAM SOLAR TRADING,41.77,False,False,False,False,0.0,0,False,GHAZIPUR,0.0,0.0,0,0.0048430096,0.48,None
+AGA SYED RUHULLAH MEHDI,Alyas ahmad mir,12.86,False,False,False,False,0.0,0,False,SRINAGAR,0.0,0.0,0,0.0048430096,0.48,None
+AJENDRA SINGH LODHI,KUNAL TRADERS,25.26,False,False,False,False,0.0,0,False,HAMIRPUR,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+AKHILESH YADAV,MS BHARTIYA CONSTRUCTION,14.46,False,False,False,False,0.0,0,False,KANNAUJ,0.0,0.0,0,0.0048430096,0.48,None
+AKSHAYA YADAV,MS RAJ KAMAL CONSTRUCTIONS,72.76,True,False,False,False,1.0,0,False,FIROZABAD,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+ALFRED KANNGAM S ARTHUR,Raman Chihansung,49.44,False,False,False,False,0.0,0,False,OUTER MANIPUR,0.0,0.0,0,0.0048430096,0.48,None
+ALOK SHARMA,MP STATE COOPERATIVE MARKETING FEDERATION LTD,7.88,False,False,False,False,0.0,0,False,BHOPAL,0.0,4.0,1,0.9970304,99.7,Is_Ghost_Work
+AMAR SHARADRAO KALE,President Pragati Majoor Sahakari Sanstha Ltd,17.61,False,False,False,False,0.0,0,False,WARDHA,0.0,0.0,0,0.0048430096,0.48,None
+AMARSING TISSO,James Phangcho,24.97,False,False,False,False,0.0,0,False,Diphu,0.0,0.0,0,0.0048430096,0.48,None
+AMBICA G LAKSHMINARAYANA VALMIKI,Pasuparthi Hareesh,37.05,False,False,False,False,0.0,0,False,ANANTAPUR,0.0,0.0,0,0.0048430096,0.48,None
+AMRARAM,Dhaka Stone Comapny,8.26,False,False,False,False,0.0,0,False,SIKAR,0.0,0.0,0,0.0048430096,0.48,None
+AMRINDER SINGH RAJA WARRING,Garden Gym,13.46,False,False,False,False,0.0,0,False,LUDHIANA,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+ANAND BHADAURIYA,MANNAT CONSTRUCTION,61.57,False,False,False,False,0.0,0,False,DHAURAHRA,0.0,15.0,1,0.9970304,99.7,Is_Ghost_Work
+ANAND KUMAR,0,0.0,0,0,0,0,0.0,0,False,BAHRAICH,0.0,0.0,0,0.0048430096,0.48,None
+ANANTA NAYAK,JAYANTA KUMAR JENA,13.72,False,False,False,False,0.0,0,False,KEONJHAR,0.0,0.0,0,0.0048430096,0.48,None
+ANDREW J. SYNGKON,Rani Motors,3.36,False,False,False,False,0.0,0,False,SHILLONG,0.0,0.0,0,0.0048430096,0.48,None
+ANGOMCHA BIMOL AKOIJAM,Murphy Thumrah,86.91,True,False,False,False,1.0,0,False,INNER MANIPUR,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+ANIL BALUNI,DALBEER SINGH,36.42,False,False,False,False,0.0,0,False,GARHWAL,0.0,0.0,0,0.0048430096,0.48,None
+ANIL YESHWANT DESAI,MS RAVI ASHOK KUNCHIKORVE,43.6,False,False,False,False,0.0,0,False,MUMBAI SOUTH CENTRAL,0.0,0.0,0,0.0048430096,0.48,None
+ANITA NAGARSINGH CHOUHAN,PRACHI CONSTRUCTION,11.43,False,False,False,False,0.0,0,False,RATLAM,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+ANITA SUBHADARSHINI,SHYAMALENDU PANDA,20.13,False,False,False,False,0.0,0,False,ASKA,0.0,0.0,0,0.0048430096,0.48,None
+ANOOP PRADHAN BALMIKI,JITENDRA KUMAR SINGH,34.23,False,False,False,False,0.0,0,False,HATHRAS,0.0,0.0,0,0.0048430096,0.48,None
+ANUP SANJAY DHOTRE,Nishant Gulab Rathod,9.2,False,False,False,False,0.0,0,False,AKOLA,0.0,0.0,0,0.0048430096,0.48,None
+ARUN BHARTI,Gyan Ganga,29.18,False,False,False,False,0.0,0,False,JAMUI,0.0,20.0,1,0.9970304,99.7,Is_Ghost_Work
+ARUN GOVIL,ANUJ INTERLOCKING,16.97,False,False,False,False,0.0,0,False,MEERUT,0.0,0.0,0,0.0048430096,0.48,None
+ARUN NEHRU,KSR CONSTRUCTIONS,6.76,False,False,False,False,0.0,0,False,PERAMBALUR,0.0,0.0,0,0.0048430096,0.48,None
+ARUNA. D. K,VIOLET ENTERPRISES,58.57,False,False,False,False,0.0,0,False,MAHABUBNAGAR,0.0,0.0,0,0.0048430096,0.48,None
+ARUP CHAKRABORTY,GOPAL CHANDRA CHOWDHURY,69.42,False,False,False,False,0.0,0,False,BANKURA,0.0,0.0,0,0.0048430096,0.48,None
+ASHISH DUBEY,MP AGRO JABALPUR,37.23,False,False,False,False,0.0,0,False,JABALPUR,0.0,0.0,0,0.0048430096,0.48,None
+ATUL GARG,Mittal Generator,29.18,False,False,False,False,0.0,0,False,GHAZIABAD,0.0,0.0,0,0.0048430096,0.48,None
+AVIMANYU SETHI,Amiya Ku Das,8.58,False,False,False,False,0.0,0,False,BHADRAK,0.0,0.0,0,0.0048430096,0.48,None
+AWADHESH PRASAD,Manoj kumar Srivastava,15.68,False,False,False,False,0.0,0,False,FAIZABAD,0.0,0.0,0,0.0048430096,0.48,None
+AZAD KIRTI JHA,ASIB ENTERPRISE,17.37,False,False,False,False,0.0,0,False,BARDHAMAN-DURGAPUR,0.0,0.0,0,0.0048430096,0.48,None
+Abu Taher Khan,SUPTI ENTERPRISE,52.19,False,False,False,False,0.0,0,False,MURSHIDABAD,0.0,0.0,0,0.0048430096,0.48,None
+Adv Adoor Prakash ,ALLUMINA ELECTRONICS,96.73,True,False,False,False,1.0,0,False,ATTINGAL,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+Adv Dean Kuriakose,KALLOOR ELECTRONICS AND  LIGHTING PVT LTD,23.23,False,False,False,False,0.0,0,False,IDUKKI,0.0,0.0,0,0.0048430096,0.48,None
+Ajay Bhatt,MOHD ASSIF,4.65,False,False,False,False,0.0,0,False,NAINITAL UDHAM SINGH NAG.,0.0,6.0,1,0.9970304,99.7,Is_Ghost_Work
+Ajay Kumar Mandal,SHIV DURGA INDUSTRIES,56.35,False,False,False,False,0.0,0,False,BHAGALPUR,0.0,0.0,0,0.0048430096,0.48,None
+Ajay Tamta,LAL SINGH JALAL,23.05,False,False,False,False,0.0,0,False,ALMORA,0.0,0.0,0,0.0048430096,0.48,None
+Alok Kumar Suman,BIDP INDIA PRIVATE LIMITED,38.37,False,False,False,False,0.0,0,False,GOPALGANJ,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+Amol Ramsing Kolhe,NAGSHWAR MAJOOR SAHKARI SANSTHA LTD,13.92,False,False,False,False,0.0,0,False,SHIRUR,0.0,0.0,0,0.0048430096,0.48,None
+Andimuthu Raja,C Chithambaram,7.69,False,False,False,False,0.0,0,False,NILGIRIS,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+Annpurna Devi ,EXECUTIVE ENGINER NREP GIRIDIH,54.21,False,False,False,False,0.0,0,False,KODARMA,0.0,0.0,0,0.0048430096,0.48,None
+Anto Antony,M S Communication,42.47,False,False,False,False,0.0,0,False,PATHANAMTHITTA,0.0,0.0,0,0.0048430096,0.48,None
+Anurag Sharma ,AADITYA VAIDHYA,20.64,False,False,False,False,0.0,0,False,JHANSI,0.0,0.0,0,0.0048430096,0.48,None
+Anurag Singh Thakur,BDO pragpur,8.25,False,False,False,False,0.0,0,False,HAMIRPUR,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+Appalanaidu Kalisetti,SVSST INFRASTRUCTURE,12.28,False,False,False,False,0.0,0,False,VIZIANAGARAM,0.0,0.0,0,0.0048430096,0.48,None
+Arvind Dharmapuri,GUTHI SRINIVAS,6.98,False,False,False,False,0.0,0,False,NIZAMABAD,0.0,11.0,1,0.9970304,99.7,Is_Ghost_Work
+Arvind Ganpat Sawant,Priti Infratech,27.13,False,False,False,False,0.0,0,False,MUMBAI SOUTH,0.0,0.0,0,0.0048430096,0.48,None
+Asaduddin Owaisi,A F Construction op by Ismail,91.87,True,False,False,False,1.0,0,False,HYDERABAD,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+Ashok Kumar Rawat,SHRI GURU KRIPA NARSINGH ASSOSIATES,30.71,False,False,False,False,0.0,0,False,MISRIKH,0.0,0.0,0,0.0048430096,0.48,None
+Ashok Kumar Yadav ,BIOLUNAR ENERGY SOLUTION,44.98,False,False,False,False,0.0,1,True,MADHUBANI,0.0,0.0,1,0.95083,95.08,Trend_Anomaly_Score
+Asit Kumar Mal ,BIDYUT BHANDARI,22.14,False,False,False,False,0.0,0,False,BOLPUR,0.0,0.0,0,0.0048430096,0.48,None
+B K PARTHASARATHI,N Balakrishna,22.24,False,False,False,False,0.0,0,False,HINDUPUR,0.0,0.0,0,0.0048430096,0.48,None
+BABU SINGH KUSHWAHA,SURAJ CONSTRUCTION,18.42,False,False,False,False,0.0,0,False,JAUNPUR,0.0,21.0,1,0.9970304,99.7,Is_Ghost_Work
+BACHHAV SHOBHA DINESH,Multiplex Technologies,19.83,False,False,False,False,0.0,0,False,DHULE,0.0,0.0,0,0.0048430096,0.48,None
+BAG MITALI,SN ENTERPRISE,21.27,False,False,False,False,0.0,0,False,ARAMBAG,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+BAIJAYANT PANDA,ABANI KUMAR MOHANTY,12.95,False,False,False,False,0.0,1,True,KENDRAPARA,0.0,0.0,1,0.95083,95.08,Trend_Anomaly_Score
+BAJRANG MANOHAR SONWANE,Hosabai Mahila Majoor Sahakari Sanstha Limited Sarni Aa,18.12,False,False,False,False,0.0,0,False,BEED,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+BALABHADRA MAJHI,PRDEEPTA KUMAR PANDA,16.16,False,False,False,False,0.0,0,False,NABARANGPUR,0.0,0.0,0,0.0048430096,0.48,None
+BALRAM NAIK PORIKA,CARD Box Company,13.83,False,False,False,False,0.0,0,False,MAHABUBABAD,0.0,0.0,0,0.0048430096,0.48,None
+BALWANT BASWANT WANKHADE,Navnit Sudhirrao Toley,6.46,False,False,False,False,0.0,0,False,AMRAVATI,0.0,0.0,0,0.0048430096,0.48,None
+BALYA MAMA SURESH GOPINATH MHATRE,Hindustan Enterprises,18.56,False,False,False,False,0.0,0,False,BHIWANDI,0.0,0.0,0,0.0048430096,0.48,None
+BAPI HALDAR,S K CHATTERJEE ELECTRICALS PVT LTD,6.37,False,False,False,False,0.0,0,False,MATHURAPUR,0.0,0.0,0,0.0048430096,0.48,None
+BASAVARAJ BOMMAI,Bommai Zilla Nirmithi Kendra,53.97,False,False,False,False,0.0,0,False,HAVERI,0.0,0.0,0,0.0048430096,0.48,None
+BASTIPATI NAGARAJU PANCHALINGALA,UMA MAHESWARA TUBE WELLS KURNOOL,26.79,False,False,False,False,0.0,0,False,KURNOOL,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+BHAJAN LAL JATAV,hariom interprizez,25.63,False,False,False,False,0.0,0,False,KARAULI-DHOLPUR,0.0,0.0,0,0.0048430096,0.48,None
+BHARAT SINGH KUSHWAH,BAHUBALI ASSOCIATES,10.12,False,False,False,False,0.0,0,False,GWALIOR,0.0,0.0,0,0.0048430096,0.48,None
+BHARATBHAI MANUBHAI SUTARIYA,DHARI NAGARPALIKA,2.11,False,False,False,False,0.0,0,False,AMRELI,0.0,0.0,0,0.0048430096,0.48,None
+BHARTI PARDHI,DEVESH KUMAR PATLE,43.28,False,False,False,False,0.0,0,False,BALAGHAT,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+BHASKAR MURLIDHAR BHAGARE,NIKITA RATAN TAMBE,16.94,False,False,False,False,0.0,0,False,DINDORI,0.0,0.0,0,0.0048430096,0.48,None
+BHAUSAHEB RAJARAM WAKCHAURE,Kailas Majur STY Ghoyagaon,12.67,False,False,False,False,0.0,0,False,SHIRDI,0.0,0.0,0,0.0048430096,0.48,None
+BHOJRAJ NAG,JAISWAL WOODEN INDUSTRIES,18.06,False,False,False,False,0.0,0,False,KANKER,0.0,0.0,0,0.0048430096,0.48,None
+BHUMARE SANDIPANRAO ASARAM,shri jagdamba construction,16.15,False,False,False,False,0.0,0,False,AURANGABAD,0.0,10.0,1,0.9970304,99.7,Is_Ghost_Work
+BHUPENDER YADAV,ADIIVE TECHNOLOGES PRIVATE LTD,6.75,False,False,False,False,0.0,0,False,ALWAR,0.0,0.0,0,0.0048430096,0.48,None
+BIBHU PRASAD TARAI,SATENDRA KUMAR SINGH,31.55,False,False,False,False,0.0,0,False,JAGATSINGHPUR,0.0,0.0,0,0.0048430096,0.48,None
+BIJULI KALITA MEDHI,Construction of road from narayan kalita house to sabin boro house,3.85,False,False,False,False,0.0,0,False,GUWAHATI,0.0,0.0,0,0.0048430096,0.48,None
+BIPLAB KUMAR DEB,Soumen Adhikary,21.41,False,False,False,False,0.0,0,False,TRIPURA WEST,0.0,0.0,0,0.0048430096,0.48,None
+BISHNU PADA RAY,CSE Construction Pvt Ltd,23.58,False,False,False,False,0.0,0,False,ANDAMAN AND NICOBAR ISLANDS,0.0,0.0,0,0.0048430096,0.48,None
+BRIJENDRA SINGH OLA,Sangeet Contractor,9.07,False,False,False,False,0.0,0,False,JHUNJHUNU,0.0,0.0,0,0.0048430096,0.48,None
+BRIJMOHAN AGRAWAL,ZONE COMMISSIONER ZONE 02,5.09,False,False,False,False,0.0,0,False,RAIPUR,0.0,0.0,0,0.0048430096,0.48,None
+BUNTY VIVEK SAHU,TELI SAMAJ SANGHTAN PANDURNA,3.6,False,False,False,False,0.0,0,False,CHHINDWARA,0.0,0.0,0,0.0048430096,0.48,None
+Balashowry Vallabbhaneni,Sai Brothers and Co,17.27,False,False,False,False,0.0,0,False,MACHILIPATNAM,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+Bansuri Swaraj,Swing Craft,22.07,False,False,False,False,0.0,0,False,NEW DELHI,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+Bhagirath Chaudhary,Jai Mata Rani Construction,10.67,False,False,False,False,0.0,0,False,AJMER,0.0,0.0,0,0.0048430096,0.48,None
+Bharatsinhji Shankarji Dabhi,YUG ENTERPRISE,19.28,False,False,False,False,0.0,0,False,PATAN,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+Bhola Singh,M S Y  R ENTERPRISES,39.39,False,False,False,False,0.0,0,False,BULANDSHAHR,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+Bidyut Baran Mahato,KANHAIYA KUMAR SINGH,48.51,False,False,False,False,0.0,0,False,JAMSHEDPUR,0.0,0.0,0,0.0048430096,0.48,None
+C R Patil,SAMBHAV ENTERPRISE,9.95,False,False,False,False,0.0,0,False,NAVSARI,0.0,3.0,1,0.9970304,99.7,Is_Ghost_Work
+C.M.RAMESH,GRAMONNATI,28.61,False,False,False,False,0.0,0,False,ANAKAPALLE,0.0,0.0,0,0.0048430096,0.48,None
+CAPTAIN BRIJESH CHOWTA,D K NIRMITHI KENDRA,9.76,False,False,False,False,0.0,0,False,DAKSHINA KANNADA,0.0,0.0,0,0.0048430096,0.48,None
+CAPTAIN VIRIATO FERNANDES,SML ISUZU LTD,36.26,False,False,False,False,0.0,0,False,SOUTH GOA,0.0,0.0,0,0.0048430096,0.48,None
+CHAMALA KIRAN KUMAR REDDY,DORNALA ANJAIAH,30.84,False,False,False,False,0.0,0,False,BHONGIR,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+CHANDAN CHAUHAN,SATYAVER SIGH CONTRACTOR AND SUPPLIER,26.29,False,False,False,False,0.0,0,False,BIJNOR,0.0,0.0,0,0.0048430096,0.48,None
+CHANDRA SHEKHAR,MAKSUD AHMAD CONTRACTOR,28.57,False,False,False,False,0.0,0,False,NAGINA,0.0,11.0,1,0.9970304,99.7,Is_Ghost_Work
+CHANDUBHAI CHHAGANBHAI SHIHORA,MSS MEDITECHNO,5.03,False,False,False,False,0.0,0,False,SURENDRANAGAR,0.0,0.0,0,0.0048430096,0.48,None
+CHARANJIT SINGH CHANNI,The New Punjab Cooperative L C Society LTD,11.69,False,False,False,False,0.0,0,False,JALANDHAR,0.0,0.0,0,0.0048430096,0.48,None
+CHHATRA PAL SINGH GANGWAR,ANUJ SINGHAL CONTRACTOR,55.36,False,False,False,False,0.0,0,False,BAREILLY,0.0,3.0,1,0.9970304,99.7,Is_Ghost_Work
+CHHATRAPATI SHAHU SHAHAJI,Kshatriya Constructions,8.86,False,False,False,False,0.0,0,False,KOLHAPUR,0.0,0.0,0,0.0048430096,0.48,None
+CHHOTELAL,0,0.0,0,0,0,0,0.0,0,False,ROBERTSGANJ,0.0,0.0,0,0.0048430096,0.48,None
+CHINTAMANI MAHARAJ,SANWARIYA BOREWELLS,24.4,False,False,False,False,0.0,0,False,SARGUJA,0.0,0.0,0,0.0048430096,0.48,None
+CHIRAG PASWAN,DHARMVIR KUMAR,18.38,False,False,False,False,0.0,0,False,HAJIPUR,0.0,0.0,0,0.0048430096,0.48,None
+CN Annadurai,T S SOLAR POWER SYSTEM,40.63,False,False,False,False,0.0,0,False,TIRUVANNAMALAI,0.0,4.0,1,0.9970304,99.7,Is_Ghost_Work
+Chandra Prakash Joshi,KRISHNA BRICKS,19.76,False,False,False,False,0.0,0,False,CHITTORGARH,0.0,0.0,0,0.0048430096,0.48,None
+D M Kathir Anand,VINAYAGAM ENTERPRISES,11.82,False,False,False,False,0.0,0,False,VELLORE,0.0,0.0,0,0.0048430096,0.48,None
+D Ravikumar ,Sankaran,8.18,False,False,False,False,0.0,0,False,VILUPPURAM,0.0,3.0,1,0.9970304,99.7,Is_Ghost_Work
+DAGGUMALLA PRASADA RAO,Mr NARESH GANDHAMANENI,9.08,False,False,False,False,0.0,0,False,CHITTOOR,0.0,3.0,1,0.9970304,99.7,Is_Ghost_Work
+DAMODAR AGARWAL,C S TECHNOLOGIES,11.17,False,False,True,False,1.0,0,False,BHILWARA,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+DAROGA PRASAD SAROJ,VARDHAN ASSOCIATES,31.44,False,False,False,False,0.0,0,False,LALGANJ,0.0,0.0,0,0.0048430096,0.48,None
+DARSHAN SINGH CHOUDHARY,Punyashila Automobiles,16.42,False,False,False,False,0.0,0,False,HOSHANGABAD,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+DEEPENDER SINGH HOODA,JOGINDER GOVT CONTRACTOR,13.46,False,False,False,False,0.0,0,False,ROHTAK,0.0,3.0,1,0.9970304,99.7,Is_Ghost_Work
+DEVESH CHANDRA THAKUR,AV ENTERTAINMENT,57.29,False,False,False,False,0.0,0,False,SITAMARHI,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+DEVESH SHAKYA,SOMYA CONSTRUCTION,60.33,False,False,False,False,0.0,0,False,ETAH,0.0,0.0,0,0.0048430096,0.48,None
+DHANORKAR PRATIBHA SURESH ALIAS BALUBHAU,NUTAN KAMGAR SAHAKARI SANSTHA,19.18,False,False,False,False,0.0,0,False,CHANDRAPUR,0.0,0.0,0,0.0048430096,0.48,None
+DHARMENDRA PRADHAN,RTO SAMBALPUR,59.28,False,False,False,False,0.0,0,False,SAMBALPUR,0.0,0.0,0,0.0048430096,0.48,None
+DHARMENDRA YADAV,JAI SHREE BALAJI CONSTRUCTION,12.46,False,False,False,False,0.0,0,False,AZAMGARH,0.0,0.0,0,0.0048430096,0.48,None
+DHAVAL LAXMANBHAI PATEL,Swara Enterprises,46.15,False,False,False,False,0.0,0,False,VALSAD,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+DINESHBHAI MAKWANA,LABMEDICA SYSTEMS PVT LTD,63.69,False,False,False,False,0.0,0,False,AHMEDABAD WEST,0.0,0.0,0,0.0048430096,0.48,None
+DR BYREDDY SHABARI,JAGADEESWARA REDDY DEKIREDDY,16.63,False,False,False,False,0.0,0,False,NANDYAL,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+DR C N MANJUNATH,PROJECT MANAGER NIRMITHI KENDRA RAMANAGARA,48.44,False,False,False,False,0.0,0,False,BANGALORE RURAL,0.0,0.0,0,0.0048430096,0.48,None
+DR DHARAMVIRA GANDHI,MK INFRA,7.02,False,False,False,False,0.0,0,False,PATIALA,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+DR KALGE SHIVAJI BANDAPPA,VISHWASAMRAT MAGASUARGIYA MAJOOR SAHAKARI SANSTHA MARYADIT,6.9,False,False,False,False,0.0,0,False,LATUR,0.0,0.0,0,0.0048430096,0.48,None
+DR RAJKUMAR SANGWAN,TECHKRITI INFRATECH PVT LTD,68.23,False,False,False,False,0.0,0,False,BAGHPAT,0.0,0.0,0,0.0048430096,0.48,None
+DR RANI SRI KUMAR,R R BUILDERS,19.91,False,False,False,False,0.0,0,False,TENKASI,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+DR. HEMANG JOSHI,NEELAM CONSTRUCTION,8.14,False,False,False,False,0.0,0,False,VADODARA,0.0,0.0,0,0.0048430096,0.48,None
+DR. HEMANT VISHNU SAVARA,TEERTHRAJ VISHWANATH PATIL,15.27,False,False,False,False,0.0,1,True,PALGHAR,0.0,0.0,1,0.95083,95.08,Trend_Anomaly_Score
+DR. KIRSAN NAMDEO,SAMIR RAMKRUSHNA TAJNE,25.74,False,False,False,False,0.0,0,False,GADCHIROLI-CHIMUR,0.0,0.0,0,0.0048430096,0.48,None
+DR. LATA WANKHEDE,MANISH FEBRICATION,16.43,False,False,False,False,0.0,0,False,SAGAR,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+DR. M.P ABDUSSAMAD SAMADANI,Mahindra and Mahindra Ltd,10.51,False,False,False,False,0.0,0,False,PONNANI,0.0,0.0,0,0.0048430096,0.48,None
+DR. MANSUKH MANDAVIYA,MSS MEDITECHNO,16.87,False,False,False,False,0.0,0,False,PORBANDAR,0.0,0.0,0,0.0048430096,0.48,None
+DR. PRABHA MALLIKARJUN,NIRMITHI KENDRA DAVANGERE,97.83,True,False,False,False,1.0,0,False,DAVANAGERE,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+DR. PRASHANT YADAORAO PADOLE,GRAM PANCHAYAT CHANDORI,7.64,False,False,False,False,0.0,0,False,BHANDARA-GONDIYA,0.0,0.0,0,0.0048430096,0.48,None
+DR. RAJ KUMAR CHABBEWAL,Varinder Kumar Sood,6.04,False,False,False,False,0.0,0,False,HOSHIARPUR,0.0,3.0,1,0.9970304,99.7,Is_Ghost_Work
+DR. RAJESH MISHRA,SADGURU SAI INFRA WORLD PVT LTD REWA,32.54,False,False,False,False,0.0,0,False,SIDHI,0.0,10.0,1,0.9970304,99.7,Is_Ghost_Work
+DR. S P SINGH,JAI PRAKASH,42.26,False,False,False,False,0.0,0,False,PRATAPGARH,0.0,0.0,0,0.0048430096,0.48,None
+DR. SHARMILA SARKAR,TECHNO BEST,15.29,False,False,False,False,0.0,0,False,BARDHAMAN PURBA,0.0,0.0,0,0.0048430096,0.48,None
+DR.K.SUDHAKAR,NIRMITHI KENDRA BANGALORE RURAL DISTRICT,36.18,False,False,False,False,0.0,0,False,CHIKBALLAPUR,0.0,0.0,0,0.0048430096,0.48,None
+DR.MALLU RAVI,Mohammed Hassan Ahemed,18.21,False,False,False,False,0.0,0,False,NAGARKURNOOL,0.0,4.0,1,0.9970304,99.7,Is_Ghost_Work
+DULU MAHATO,BIRENDRA KUMAR MAHATO,75.97,True,False,False,False,1.0,0,False,DHANBAD,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+DURAI VAIKO,C S R CONSTRUCTION,10.53,False,False,False,False,0.0,0,False,TIRUCHIRAPPALLI,0.0,0.0,0,0.0048430096,0.48,None
+Daggubati Purandeshwari,KANDAVALLI BUTCHAMMA,48.89,False,False,False,False,0.0,0,False,RAJAHMUNDRY,0.0,0.0,0,0.0048430096,0.48,None
+Devendra Alias Bhole Singh,Ms GANPATI CONSTRUCTIONS,52.44,False,False,False,False,0.0,0,False,AKBARPUR,0.0,0.0,0,0.0048430096,0.48,None
+Devusinh Jesingbhai Chauhan,BHUVALDI GRAM PANCHAYAT,2.75,False,False,False,False,0.0,0,False,KHEDA,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+Dhairyasheel Sambhajirao Mane,Cosine Green Power,41.05,False,False,False,False,0.0,0,False,HATKANANGLE,0.0,0.0,0,0.0048430096,0.48,None
+Dileshwar Kamait ,VEENA CONSTRUCTIONS,29.9,False,False,False,False,0.0,0,False,SUPAUL,0.0,3.0,1,0.9970304,99.7,Is_Ghost_Work
+Dilip Saikia,Firose Khakhlari,15.14,False,False,False,False,0.0,0,False,Darrang-Udalguri,0.0,0.0,0,0.0048430096,0.48,None
+Dinesh Chandra Yadav,GRAND TRADING COMPANY,61.04,False,False,False,False,0.0,0,False,MADHEPURA,0.0,0.0,0,0.0048430096,0.48,None
+Dr Chandra Sekhar Pemmasani,M Butchaiah and Company,12.46,False,False,False,False,0.0,4,True,GUNTUR,0.0,0.0,1,0.95083,95.08,Trend_Anomaly_Score
+Dr Jayanta Kumar Roy,CONSTRUCON POWER ENGINEERING,51.47,False,False,False,False,0.0,0,False,JALPAIGURI,0.0,0.0,0,0.0048430096,0.48,None
+Dr Mohammad Jawed,RANJIT SALES CORPORATION,68.51,False,False,False,False,0.0,0,False,KISHANGANJ,0.0,0.0,0,0.0048430096,0.48,None
+Dr Shashi Tharoor,TATA MOTORS,16.52,False,False,False,False,0.0,4,True,THIRUVANANTHAPURAM,0.0,0.0,1,0.95083,95.08,Trend_Anomaly_Score
+Dr Sukanta Majumdar ,BOND CONSTRUCTION,36.21,False,False,False,False,0.0,1,True,BALURGHAT,0.0,0.0,1,0.95083,95.08,Trend_Anomaly_Score
+Dr. Ajeet Madhavrao Gopchade (2024-30),MAULI CONSTRUCTION,6.51,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Dr. Anil Sukhdeorao Bonde (2022-28),DURGA MOTORS,6.16,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Dr. Ashok Kumar Mittal (2022-28),Living Thoughts Private Limited,21.43,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Dr. Bhim Singh (2024-30),VEDIKA SINGH,52.95,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Dr. Dharmasthala Veerendra Heggade (2022-28),BLUESKART ECOMMERCE PRIVATE LIMITED,19.79,False,False,False,False,0.0,0,False,Nominated Rajya Sabha,0.0,13.0,1,0.9970304,99.7,Is_Ghost_Work
+Dr. Dharmshila Gupta (2024-30),VEDIKA SINGH,13.1,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Dr. Dinesh Sharma (2023-26),Ramesh Kumar Thekedar,16.42,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Dr. Faiyaz Ahmad (2022-28),Assistant Engineer Bisfi Vidhan Sabha,34.03,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Dr. John Brittas (2021-27),SREE GOKULAM HEALTHCARE PVT LTD,12.44,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Dr. K. Laxman (2022-28),Unnati construction,30.19,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Dr. Kalpana Saini (2022-28),L D CONSTRUCTION,24.86,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Dr. Kavita Patidar (2022-28),NATIONAL ENGINEERING WORKS,15.44,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Dr. L. Murugan (2024-30),E E M P H AND I D B DIV DAMOH,31.01,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Dr. Laxmikant Bajpayee (2022-28),DHIRENDRA SINGH,33.27,False,False,False,False,0.0,1,True,Sitting Rajya Sabha,0.0,1818.0,1,0.9972486,99.72,Is_Ghost_Work
+Dr. M. Dhanapal (2025-31),RAK INDUSTRIES,33.0,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Dr. Medha Vishram Kulkarni (2024-30),Sunjiba majur sahkari sanstha maryadit,16.73,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Dr. Parmar Jashvantsinh Salamsinh (2024-30),WEHEAR INNOVATIONS PRIVATE LIMITED,10.85,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Dr. Radha Mohan Das Agrawal (2022-28),MS Jitendra Kumar Yadav,51.89,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Dr. Sandeep Kumar Pathak (2022-28),Punjab Police Housing Corporation Limited,12.0,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Dr. Sangeeta Balwant (2024-30),SHRI SAI ENGINEERING WORKS,50.27,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Dr. Sarfraz Ahmad (2024-30),Executive engineer,82.18,True,False,False,False,1.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9967546,99.68,Is_Ghost_Work
+Dr. Sasmit Patra (2022-28),TAPASWINI MOHAPATRA,5.46,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Dr. Sikander Kumar (2022-28),Universal Press,9.31,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Dr. Sudhanshu Trivedi (2024-30),EXCEL CONSTRUCTION,30.85,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Dr. Syed Naseer Hussain (2024-30),KRIDL BHUSIRI ACCOUNT WORKS,68.37,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Dr. V. Sivadasan (2021-27),KELTRON,29.8,False,False,False,False,0.0,1,True,Sitting Rajya Sabha,0.0,1818.0,1,0.9972486,99.72,Is_Ghost_Work
+Dr. Vikramjit Singh Sahney (2022-28),Raghu Nath Goyal,7.75,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Durga Das Uikey ,MP STATE AGRO INDUSTRIES DEVELOPMENT CORP LTD,48.82,False,False,False,False,0.0,0,False,BETUL,0.0,23.0,1,0.9970304,99.7,Is_Ghost_Work
+Dushyant Singh,Jai mata di construction kelwara,38.41,False,False,False,False,0.0,0,False,JHALAWAR-BARAN,0.0,0.0,0,0.0048430096,0.48,None
+E. TUKARAM,Bellary Nirmithi Kendra Bellary,51.87,False,False,False,False,0.0,0,False,BELLARY,0.0,0.0,0,0.0048430096,0.48,None
+E.T. MOHAMMED BASHEER,SML ISUZU LTD,36.71,False,False,False,False,0.0,0,False,MALAPPURAM,0.0,0.0,0,0.0048430096,0.48,None
+EATALA RAJENDER,SPR Infra,13.21,False,False,False,False,0.0,0,False,MALKAJGIRI,0.0,0.0,0,0.0048430096,0.48,None
+ESWARASAMY K,KRISHNAKUMAR G,9.31,False,False,False,False,0.0,0,False,POLLACHI,0.0,0.0,0,0.0048430096,0.48,None
+Faggan Singh Kulaste,MP STATE AGRO,4.35,False,False,False,False,0.0,0,False,MANDLA,0.0,0.0,0,0.0048430096,0.48,None
+G. KUMAR NAIK,CASHUTEC Nirmithi Kendra,32.45,False,False,False,False,0.0,0,False,RAICHUR,0.0,0.0,0,0.0048430096,0.48,None
+GAIKWAD VARSHA EKNATH,MAHENDRA ENTERPRISES,12.52,False,False,False,False,0.0,0,False,MUMBAI NORTH-CENTRAL,0.0,0.0,0,0.0048430096,0.48,None
+GANAPATHY RAJKUMAR P,R R THULASI BUILDERS INDIA PRIVATE LIMITED,16.11,False,False,False,False,0.0,0,False,COIMBATORE,0.0,0.0,0,0.0048430096,0.48,None
+GAURAV GOGOI,MRITYUNJOY KHANIKAR,4.56,False,False,True,False,1.0,0,False,JORHAT,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+GENIBEN NAGAJI THAKOR,GUJARAT LOKSEVA CHARITABLE TRUST,9.49,False,False,False,False,0.0,0,False,BANASKANTHA,0.0,0.0,0,0.0048430096,0.48,None
+GM Harish Balayogi,SRI SAI SAMHITA CONSTRUCTIONS,21.11,False,False,False,False,0.0,0,False,AMALAPURAM,0.0,0.0,0,0.0048430096,0.48,None
+GODAM NAGESH,SK SHUTTERS AND FABRICATORS,12.31,False,False,False,False,0.0,0,False,ADILABAD,0.0,0.0,0,0.0048430096,0.48,None
+GOPINATH K,Sri Vaari Total Gaz Distributors,38.91,False,False,False,False,0.0,0,False,KRISHNAGIRI,0.0,0.0,0,0.0048430096,0.48,None
+GOVIND MAKTHAPPA KARJOL,Project Director Nirmithi Kendra Chitradrga,41.84,False,False,False,False,0.0,0,False,CHITRADURGA,0.0,0.0,0,0.0048430096,0.48,None
+GURMEET SINGH MEET HAYER,GHATOURA AGRICULTURE WORKS,16.2,False,False,False,False,0.0,0,False,SANGRUR,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+Gajendra Singh Patel,MP STATE  AGRO  IND DEV CO LTD BARWANI,24.32,False,False,False,False,0.0,0,False,KHARGONE,0.0,3.0,1,0.9970304,99.7,Is_Ghost_Work
+Gajendra Singh Shekhawat,Maa Bhadariya Rai Enterprises,100.0,True,False,False,False,1.0,0,False,JODHPUR,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+Ganesan Selvam,T S SOLAR POWER SYSTEM,24.2,False,False,False,False,0.0,0,False,KANCHEEPURAM,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+Ganesh Singh,RM MP AGRO SATNA,24.77,False,False,False,False,0.0,0,False,SATNA,0.0,13.0,1,0.9970304,99.7,Is_Ghost_Work
+Giridhari Yadav,SHIV DURGA INDUSTRIES,46.31,False,False,False,False,0.0,1,True,BANKA,0.0,2.0,1,0.9972486,99.72,Is_Ghost_Work
+Giriraj Singh,ASST ENGINEER LAEO WD 1 BEGUSARAI VSK BEGUSARAI,29.99,False,False,False,False,0.0,0,False,BEGUSARAI,0.0,0.0,0,0.0048430096,0.48,None
+Gumma Thanuja Rani,SRI SAI LAKSHMI CONSTRUCTIONS,19.25,False,False,False,False,0.0,0,False,ARAKU,0.0,0.0,0,0.0048430096,0.48,None
+Gyaneshwar Patil,KPL EQUIPMENTS PRIVATE LIMITED,40.17,False,False,False,False,0.0,0,False,KHANDWA,0.0,12.0,1,0.9970304,99.7,Is_Ghost_Work
+H.D. KUMARASWAMY,PROJECT MANAGER NIRMITHI KENDRA MANDYA,82.91,True,False,False,False,1.0,0,False,MANDYA,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+HARENDRA SINGH MALIK,KHURSHEED ALAM CONTRACTOR,27.15,False,False,False,False,0.0,0,False,MUZAFFARNAGAR,0.0,0.0,0,0.0048430096,0.48,None
+HARIBHAI PATEL,AMICHANDBHAI PATEL GROUP SERVICES,5.43,False,False,False,False,0.0,0,False,MAHESANA,0.0,0.0,0,0.0048430096,0.48,None
+Harsh Malhotra,Greenz,44.38,False,False,False,False,0.0,0,False,EAST DELHI,0.0,6.0,1,0.9970304,99.7,Is_Ghost_Work
+Hasmukh Bhai Soma Bhai Patel,ALPHA EQUIPMENTS,24.16,False,False,False,False,0.0,0,False,AHMEDABAD EAST,0.0,0.0,0,0.0048430096,0.48,None
+IMRAN MASOOD,AHTESHAM CONTRACTOR,20.68,False,False,False,False,0.0,0,False,SAHARANPUR,0.0,0.0,0,0.0048430096,0.48,None
+IQRA CHOUDHARY,M S TRADERS,38.54,False,False,False,False,0.0,0,False,KAIRANA,0.0,0.0,0,0.0048430096,0.48,None
+ISHA KHAN CHOUDHURY,THE LOTUS ENTERPRISE,20.91,False,False,False,False,0.0,0,False,MALDAHA DAKSHIN,0.0,0.0,0,0.0048430096,0.48,None
+Indra Hang Subba,SHIV SHAKTI FURNITURE,18.21,False,False,False,False,0.0,0,False,SIKKIM,0.0,0.0,0,0.0048430096,0.48,None
+JAGADISH CHANDRA BARMA BASUNIA,PABAN AGARWALA,53.07,False,False,False,False,0.0,0,False,COOCHBEHAR,0.0,0.0,0,0.0048430096,0.48,None
+JAGADISH SHETTAR,PRIYESH GOUNDADKAR,9.78,False,False,False,False,0.0,2,True,BELGAUM,0.0,0.0,1,0.95083,95.08,Trend_Anomaly_Score
+JAI PARKASH,XEN City DHBVN Bhiwani,18.98,False,False,False,False,0.0,0,False,HISAR,0.0,0.0,0,0.0048430096,0.48,None
+JASHUBHAI BHILUBHAI RATHVA,Krupal Construction,26.03,False,False,False,False,0.0,0,False,CHHOTA UDAIPUR,0.0,13.0,1,0.9970304,99.7,Is_Ghost_Work
+JITAN RAM MANJHI,ASSISTANT ENGINEER LAEO BODHGAYA VIDHAN SABHA,21.3,False,False,False,False,0.0,0,False,GAYA,0.0,0.0,0,0.0048430096,0.48,None
+JITENDRA KUMAR DOHARE,BAKE BIHARI TRADERS,60.52,False,False,False,False,0.0,0,False,ETAWAH,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+JITIN PRASADA,INDRA JEET VERMA,17.15,False,False,False,False,0.0,0,False,PILIBHIT,0.0,0.0,0,0.0048430096,0.48,None
+JOBA MAJHI,ARJUN KUMAR BAURI,52.05,False,False,False,False,0.0,0,False,SINGHBHUM,0.0,0.0,0,0.0048430096,0.48,None
+JOYANTA BASUMATARY,Derhasad Basumatary,7.23,False,False,False,False,0.0,0,False,KOKRAJHAR,0.0,0.0,0,0.0048430096,0.48,None
+JUNE MALIAH,SUJIT KUMAR CHAKRABORTY,16.16,False,False,False,False,0.0,0,False,MEDINIPUR,0.0,0.0,0,0.0048430096,0.48,None
+JYOTIRADITYA M. SCINDIA,cmo shivpuri,10.47,False,False,False,False,0.0,0,False,GUNA,0.0,0.0,0,0.0048430096,0.48,None
+Jagannath Sarkar,ROKHI GHOSH,25.45,False,False,False,False,0.0,0,False,RANAGHAT,0.0,0.0,0,0.0048430096,0.48,None
+Jagdambika Pal,Nistha Enterprises,57.34,False,False,False,False,0.0,0,False,DOMARIYAGANJ,0.0,0.0,0,0.0048430096,0.48,None
+Jai Prakash,0,0.0,0,0,0,0,0.0,0,False,HARDOI,0.0,0.0,0,0.0048430096,0.48,None
+Janardan Mishra,MP STATE AGRO INDUSTRIES DEVELOPMENT CORP REWA,26.47,False,False,False,False,0.0,0,False,REWA,0.0,0.0,0,0.0048430096,0.48,None
+Jaswantsinh Sumanbhai Bhabhor,Gram Panchayat Gamdi Purv,7.71,False,False,False,False,0.0,0,False,DAHOD,0.0,0.0,0,0.0048430096,0.48,None
+Jitendra Singh,Vikram Enterprises,16.25,False,False,False,False,0.0,0,False,UDHAMPUR,0.0,0.0,0,0.0048430096,0.48,None
+Jyotsna Charandas Mahant ,CARTEL_CORP_B,34.2,False,True,True,True,5.0,0,False,KORBA,0.0,2.0,1,0.9967546,99.68,Is_Ghost_Work
+K E PRAKASH,QUALITTY ENTERPRISES,45.53,False,False,False,False,0.0,0,False,ERODE,0.0,0.0,0,0.0048430096,0.48,None
+K RADHAKRISHNAN,MUHAMMED MA,16.17,False,False,False,False,0.0,0,False,ALATHUR,0.0,0.0,0,0.0048430096,0.48,None
+K Subbarayan,EAGGLE EYE INFRASTRUCTURES,8.28,False,False,False,False,0.0,0,False,TIRUPPUR,0.0,0.0,0,0.0048430096,0.48,None
+K. C VENUGOPAL,Multiline Ventures,26.41,False,False,False,False,0.0,0,False,ALAPPUZHA,0.0,0.0,0,0.0048430096,0.48,None
+K. RAJASHEKAR BASAVARAJ HITNAL,KRIDL BHUSIRI ACCOUNT WORKS,29.4,False,False,False,False,0.0,0,False,KOPPAL,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+KADIYAM KAVYA,KEDARINATH PROJECTS,7.35,False,False,False,False,0.0,0,False,WARANGEL,0.0,0.0,0,0.0048430096,0.48,None
+KALI CHARAN MUNDA,ASSISTANT ENGINEER ZILA PARISHAD KHUNTI,38.75,False,False,False,False,0.0,0,False,KHUNTI,0.0,0.0,0,0.0048430096,0.48,None
+KALI CHARAN SINGH,District Engineer,51.8,False,False,False,False,0.0,0,False,CHATRA,0.0,0.0,0,0.0048430096,0.48,None
+KALIPADA SAREN,ATANU PATRA,29.98,False,False,False,False,0.0,0,False,JHARGRAM,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+KALYAN VAIJINATHRAO KALE,AMOL BADRINARAYAN KALASKAR,7.64,False,False,False,False,0.0,0,False,JALNA,0.0,0.0,0,0.0048430096,0.48,None
+KAMAKHYA PRASAD TASA,We R,20.35,False,False,False,False,0.0,0,False,Kaziranga,0.0,0.0,0,0.0048430096,0.48,None
+KAMLESH JANGDE,Abhishek Enterprises,15.52,False,False,False,False,0.0,0,False,JANJGIR CHAMPA,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+KANWAR SINGH TANWAR,Siddhu Enterprises,74.6,True,False,False,False,1.0,0,False,AMROHA,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+KARAN BHUSHAN SINGH,SRIJAN CONSTRUCTION,86.56,True,False,False,False,1.0,0,False,KAISERGANJ,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+KARTICK CHANDRA PAUL,B PAUL AND CO,93.18,True,False,False,False,1.0,0,False,RAIGANJ,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+KISHORI LAL,AADI AND RUDRANSH CONSTRUCTION COMPANY,69.48,False,False,False,False,0.0,0,False,AMETHI,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+KONDA VISHWESHWAR REDDY,Munavath Raju,10.13,False,False,False,False,0.0,0,False,CHELVELLA,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+KOTA SRINIVAS POOJARY,KRIDL BHUSIRI ACCOUNT WORKS,8.72,False,False,False,True,3.0,0,False,UDUPI CHIKMAGALUR,0.0,0.0,0,0.10382239,10.38,Collusion_Risk_Score
+KRISHNA DEVI SHIVSHANKER PATEL,DHARMENDRA ENTERPRISES,44.28,False,False,False,False,0.0,0,False,BANDA,0.0,0.0,0,0.0048430096,0.48,None
+KRITI DEVI DEBBARMAN,Senior Deputy Magistrate Khowai,39.47,False,False,False,False,0.0,1,True,TRIPURA EAST,0.0,0.0,1,0.95083,95.08,Trend_Anomaly_Score
+KULDEEP INDORA,RAJ CONSTRUCTION COMPANY,16.79,False,False,False,False,0.0,0,False,GANGANAGAR,0.0,0.0,0,0.0048430096,0.48,None
+KUNDURU RAGHUVEER,ALLIED SURGICALS,49.83,False,False,False,False,0.0,0,False,NALGONDA,0.0,0.0,0,0.0048430096,0.48,None
+Kakoli Ghosh Dastidar ,SG ENTERPRISE,16.48,False,False,False,False,0.0,0,False,BARASAT,0.0,7.0,1,0.9970304,99.7,Is_Ghost_Work
+Kalanidhi Veeraswamy,SHRI VAIKUNTHANAATHAA,11.59,False,False,False,False,0.0,0,False,CHENNAI NORTH,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+Kalyan Banerjee,Sushanta Dutta,6.64,False,False,False,False,0.0,0,False,SREERAMPUR,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+Kamaljeet Sehrawat,ASN Services Pvt Limited,26.45,False,False,False,False,0.0,0,False,WEST DELHI,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+Kamlesh Paswan,OM ENTERPRISES,65.34,False,False,False,False,0.0,0,False,BANSGAON,0.0,0.0,0,0.0048430096,0.48,None
+Kangana Ranaut,Block Development  Office Rampur  Lok Sabha,11.41,False,False,False,False,0.0,0,False,MANDI,0.0,0.0,0,0.0048430096,0.48,None
+Kani K Navas,FPLUS ENTERPRISES,25.6,False,False,False,False,0.0,0,False,RAMANATHAPURAM,0.0,0.0,0,0.0048430096,0.48,None
+Kanimozhi Karunanidhi,Antony Selvan M,9.84,False,False,False,False,0.0,0,False,THOOTHUKKUDI,0.0,0.0,0,0.0048430096,0.48,None
+Kaushalendra Kumar,Sheel Sons,27.68,False,False,False,False,0.0,0,False,NALANDA,0.0,0.0,0,0.0048430096,0.48,None
+Khagen Murmu,VENTURE SPECTACULAR,37.29,False,False,False,False,0.0,0,False,MALDAHA UTTAR,0.0,0.0,0,0.0048430096,0.48,None
+Khalilur Rahaman ,MAJIBUR RAHAMAN,41.04,False,False,False,False,0.0,0,False,JANGIPUR,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+Kinjarapu Ram Mohan Naidu,sudiksa infra projects,22.32,False,False,False,False,0.0,0,False,SRIKAKULAM,0.0,0.0,0,0.0048430096,0.48,None
+Kiren Rijiju,Ms Mohnio Enterprises,6.06,False,False,False,False,0.0,0,False,ARUNACHAL WEST,0.0,0.0,0,0.0048430096,0.48,None
+Kirti Vardhan Singh,AMARNATH PANDEY AMARNATH PANDEY CONTRACTOR,26.88,False,False,False,False,0.0,0,False,GONDA,0.0,0.0,0,0.0048430096,0.48,None
+Kishan Reddy Gangapuram,Medoju Venugopal,91.59,True,False,False,False,1.0,0,False,SECUNDERABAD,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+Kripanath Mallah,BITU RAY,30.32,False,False,False,False,0.0,0,False,KARIMGANJ,0.0,0.0,0,0.0048430096,0.48,None
+Krishan Pal Gurjar,Mentiz Infratech India,38.63,False,False,False,False,0.0,0,False,FARIDABAD,0.0,0.0,0,0.0048430096,0.48,None
+Krishna Prasad Tenneti,Seetha Remi Reddy,15.79,False,False,False,False,0.0,0,False,BAPATLA,0.0,0.0,0,0.0048430096,0.48,None
+LALJI VERMA,MS SAKET TRADERS,18.49,False,False,False,False,0.0,0,False,AMBEDKAR NAGAR,0.0,0.0,0,0.0048430096,0.48,None
+LAXMIKANT PAPPU NISHAD,JAI MATA DI VP CONSTRUCTION,79.09,True,False,False,False,1.0,5,True,SANT KABIR NAGAR,0.0,0.0,1,0.9643075,96.43,Trend_Anomaly_Score
+LOVELY ANAND,R K Construction,21.81,False,False,False,False,0.0,0,False,SHEOHAR,0.0,0.0,0,0.0048430096,0.48,None
+LUMBARAM,ms galaxy agency,11.7,False,False,False,False,0.0,0,False,JALORE,0.0,0.0,0,0.0048430096,0.48,None
+Lavu Sri Krishna Devarayalu,ASHOK CONSTRUCTIONS,66.59,False,False,False,False,0.0,0,False,NARASARAOPET,0.0,0.0,0,0.0048430096,0.48,None
+M. MALLESH BABU,KRIDL BHUSIRI ACCOUNT WORKS,19.99,False,False,False,False,0.0,0,False,KOLAR,0.0,0.0,0,0.0048430096,0.48,None
+M.K. VISHNUPRASAD,SRI SAI ENTERPRISES,8.7,False,False,False,False,0.0,0,False,CUDDALORE,0.0,0.0,0,0.0048430096,0.48,None
+MADHAVANENI RAGHUNANDAN RAO,PONNABOYANA SRINIVAS,9.52,False,False,False,False,0.0,0,False,MEDAK,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+MAHESH KASHYAP,GRAM PANCHAYAT HALLOOR,3.5,False,False,False,False,0.0,0,False,BASTAR,0.0,0.0,0,0.0048430096,0.48,None
+MAHIMA KUMARI MEWAR,ASHOK KUMAR YADAV,8.62,False,False,False,True,3.0,0,False,RAJSAMAND,0.0,0.0,0,0.10382239,10.38,Collusion_Risk_Score
+MALAIYARASAN D,DHANASEKARAN K,40.88,False,False,False,False,0.0,0,False,KALLAKURICHI,0.0,3.0,1,0.9970304,99.7,Is_Ghost_Work
+MALVIKA DEVI,ANOUSHKA NIRMAN PVT LTD,27.39,False,False,False,False,0.0,0,False,KALAHANDI,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+MALVINDER SINGH KANG,RS Industries,15.04,False,False,False,False,0.0,0,False,ANANDPUR SAHIB,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+MANI. A.,SUCCESS ASSOCIATES,20.08,False,False,False,False,0.0,0,False,DHARAMAPURI,0.0,0.0,0,0.0048430096,0.48,None
+MANISH TEWARI,Prabh Kirpa Enterprises,13.7,False,False,False,False,0.0,0,False,CHANDIGARH,0.0,0.0,0,0.0048430096,0.48,None
+MANJU SHARMA,ARUN GOVIL,24.53,False,False,False,False,0.0,0,False,JAIPUR,0.0,0.0,0,0.0048430096,0.48,None
+MANNA LAL RAWAT,SHREE RAM ENTERPRISES,17.5,False,False,False,False,0.0,0,False,UDAIPUR,0.0,0.0,0,0.0048430096,0.48,None
+MANOHAR LAL,The Bandh Coop LC Soc Ltd Bandh,36.91,False,False,False,False,0.0,2,True,KARNAL,0.0,0.0,1,0.95083,95.08,Trend_Anomaly_Score
+MANOJ KUMAR,0,0.0,0,0,0,0,0.0,0,False,SASARAM,0.0,0.0,0,0.0048430096,0.48,None
+MANOJ TIGGA,SUBRATA SAHA,38.75,False,False,False,False,0.0,0,False,ALIPURDUARS,0.0,0.0,0,0.0048430096,0.48,None
+MIAN ALTAF AHMAD,MASRAT SIDIQ GILKAR,28.11,False,False,False,False,0.0,0,False,ANANTNAG,0.0,0.0,0,0.0048430096,0.48,None
+MOHIBBULLAH,AL ARQAM ENTERPRISES,43.01,False,False,False,False,0.0,0,False,RAMPUR,0.0,0.0,0,0.0048430096,0.48,None
+MOHITE PATIL DHAIRYASHEEL RAJSINH,ABHIJEET AGENCIES SOLAPUR,92.68,True,False,False,False,1.0,0,False,MADHA,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+MUHAMMED HAMDULLAH SAYEED,The Mananging Director Kerala Medical Service Coporation Ltd,82.78,True,False,False,False,1.0,0,False,LAKSHADWEEP,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+MUKESHKUMAR CHANDRAKAANT DALAL,Nutra Marketing,14.01,False,False,False,False,0.0,0,False,SURAT,0.0,0.0,0,0.0048430096,0.48,None
+MURARI LAL MEENA,MENKA YADAV,13.37,False,False,False,True,3.0,0,False,DAUSA,0.0,0.0,0,0.10382239,10.38,Collusion_Risk_Score
+MURASOLI S,GM Constructions and Infra P,19.01,False,False,False,False,0.0,0,False,THANJAVUR,0.0,0.0,0,0.0048430096,0.48,None
+MURLIDHAR MOHOL,MUDHAIDEVI MAJUR SAHKARI SANSTHA MARYADIT,15.83,False,False,False,False,0.0,0,False,PUNE,0.0,0.0,0,0.0048430096,0.48,None
+Maddila Gurumoorthy,Thallapaka Nagarjuna Reddy,13.75,False,False,False,False,0.0,0,False,TIRUPATI,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+Magunta Sreenivasulu Reddy,V V SAMBASIVA SRI KRISHNA,21.84,False,False,False,False,0.0,0,False,ONGOLE,0.0,0.0,0,0.0048430096,0.48,None
+Mahendra Singh Solanky,CEO Janpad Panchayat Dewas,17.68,False,False,False,False,0.0,0,False,DEWAS,0.0,0.0,0,0.0048430096,0.48,None
+Mahesh Sharma,DEV CONSTRUCTION,22.66,False,False,False,False,0.0,0,False,GAUTAM BUDDHA NAGAR,0.0,0.0,0,0.0048430096,0.48,None
+Mala Rajya Laxmi Shah ,Masti ram,32.21,False,False,False,False,0.0,0,False,TEHRI GARHWAL,0.0,0.0,0,0.0048430096,0.48,None
+Mala Roy ,GOUTAM CONSTRUCTION,16.24,False,False,False,False,0.0,0,False,KOLKATA DAKSHIN,0.0,0.0,0,0.0048430096,0.48,None
+Manickam Tagore B,Sathess kumar,7.54,False,False,False,False,0.0,0,False,VIRUDHUNAGAR,0.0,0.0,0,0.0048430096,0.48,None
+Manoj Tiwari,Central Electronics Limited,75.67,True,False,False,False,1.0,0,False,NORTH EAST DELHI,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+Mansukhbhai Dhanjibhai Vasava,D R KUKADIA,4.44,False,False,False,False,0.0,0,False,BHARUCH,0.0,0.0,0,0.0048430096,0.48,None
+Midhun Reddy,N KAMALAKAR REDDY,6.26,False,False,False,False,0.0,0,False,RAJAMPET,0.0,0.0,0,0.0048430096,0.48,None
+Mitesh Rameshbhai Bakabhai Patel,aastha construction,16.86,False,False,False,False,0.0,0,False,ANAND,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+Mohamed Haneefa,SML ISUZU LTD,34.51,False,False,False,False,0.0,0,False,LADAKH,0.0,0.0,0,0.0048430096,0.48,None
+Mr Gopal Jee Thakur,BIOLUNAR ENERGY SOLUTION,94.79,True,False,False,False,1.0,1,True,DARBHANGA,0.0,0.0,1,0.9643075,96.43,Trend_Anomaly_Score
+Ms Mahua Moitra,PANKAJ SARKAR,21.55,False,False,False,False,0.0,0,False,KRISHNANAGAR,0.0,0.0,0,0.0048430096,0.48,None
+Ms. Dola Sen (2023-29),KHIVRAJ MOTORS,47.54,False,False,False,False,0.0,1,True,Sitting Rajya Sabha,0.0,1818.0,1,0.9972486,99.72,Is_Ghost_Work
+Mukesh Rajput,Nightingale Networks LLP,81.58,True,False,False,False,1.0,0,False,FARRUKHABAD,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+NABA CHARAN MAJHI,SANSKRUTI ASSOCIATES PVT LTD,17.16,False,False,False,False,0.0,0,False,MAYURBHANJ,0.0,0.0,0,0.0048430096,0.48,None
+NALIN SOREN,SANDIP KUMAR BHAGAT,16.87,False,False,False,False,0.0,0,False,DUMKA,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+NARAYAN DAS AHIRWAR,shyam swaroop manufacturere,65.35,False,False,False,False,0.0,0,False,JALAUN,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+NARAYAN TATU RANE,Manoj Madhukar Waingankar,13.18,False,False,False,False,0.0,0,False,RATNAGIRI-SINDHUDURG,0.0,0.0,0,0.0048430096,0.48,None
+NARESH CHANDRA UTTAM PATEL,MS YASH CONTRACTOR AND SUPPLIERS,25.58,False,False,False,False,0.0,0,False,FATEHPUR,0.0,0.0,0,0.0048430096,0.48,None
+NAVEEN JINDAL,THE KAUSHIK CO OP L AND C SOCITY PABNAWA,4.59,False,False,False,False,0.0,0,False,KURUKSHETRA,0.0,0.0,0,0.0048430096,0.48,None
+NEERAJ MAURYA,SHRI GURU KRIPA NARSINGH ASSOCIATES,60.61,False,False,False,False,0.0,0,False,AONLA,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+NILESH DNYANDEV LANKE,SUNIL DATTATRAY KUDALE,20.06,False,False,False,False,0.0,0,False,AHMEDNAGAR,0.0,0.0,0,0.0048430096,0.48,None
+NIMUBEN JAYANTIBHAI BAMBHANIYA,SARVOTTAM APPLIANCES PRIVATE LIMITED,38.97,False,False,False,False,0.0,0,False,BHAVNAGAR,0.0,0.0,0,0.0048430096,0.48,None
+Nishikant Dubey,PRAKHAND SHIKSHA PRASAR PADADHIKARI,100.0,True,False,False,False,1.0,0,False,GODDA,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+Nitin Jairam Gadkari,Spectrum Services,27.14,False,False,False,False,0.0,0,False,NAGPUR,0.0,0.0,0,0.0048430096,0.48,None
+Nityanand Rai,DARVESHWAR NATH CONSTRUCTION,59.36,False,False,False,False,0.0,0,False,UJJARPUR,0.0,0.0,0,0.0048430096,0.48,None
+Om Birla,MUNDRA AUTOMOBILES PRIVATE LIMITED,12.14,False,False,False,False,0.0,0,False,KOTA,0.0,0.0,0,0.0048430096,0.48,None
+Omprakash Bhupalsinh Alias Pawan Rajenimbalkar,Chairman Shramjivi Majoor Sahakari Sanstha Tuljapur,6.75,False,False,False,False,0.0,0,False,OSMANABAD,0.0,0.0,0,0.0048430096,0.48,None
+P C Mohan,M CUBE INFRATECH PRIVATE LIMITED,48.85,False,False,False,False,0.0,0,False,BANGALORE CENTRAL,0.0,0.0,0,0.0048430096,0.48,None
+PARIMAL SUKLABAIDYA,MS North East Information Technology,17.45,False,False,False,False,0.0,0,False,SILCHAR,0.0,0.0,0,0.0048430096,0.48,None
+PARSHOTTAMBHAI RUPALA,Sanathali Gram Panchayat,4.09,False,False,False,False,0.0,0,False,RAJKOT,0.0,0.0,0,0.0048430096,0.48,None
+PARTHA BHOWMICK,0,0.0,0,0,0,0,0.0,0,False,BARRACKPUR,0.0,0.0,0,0.0048430096,0.48,None
+PATHAN YUSUF,CIMECON ENTERPRISES,39.12,False,False,False,False,0.0,0,False,BAHARAMPUR,0.0,0.0,0,0.0048430096,0.48,None
+PHANI BHUSAN CHOUDHURY,Construction of LT line for providing power supply to street lights,5.61,False,False,False,False,0.0,0,False,BARPETA,0.0,0.0,0,0.0048430096,0.48,None
+PRABHAKAR REDDY VEMIREDDY,SRIHARI RAO AMARANENI,4.07,False,False,False,False,0.0,0,False,NELLORE,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+PRADEEP PUROHIT,BISHOK PATEL,9.22,False,False,False,False,0.0,0,False,BARGARH,0.0,0.0,0,0.0048430096,0.48,None
+PRANITI SUSHILKUMAR SHINDE,MILAN SAHAKARI MAJUR SANSTHA MARYADIT SOLAPUR,23.62,False,False,False,False,0.0,0,False,SOLAPUR,0.0,0.0,0,0.0048430096,0.48,None
+PRAVEEN PATEL,Sunny Enterprises,65.21,False,False,False,False,0.0,0,False,PHULPUR,0.0,0.0,0,0.0048430096,0.48,None
+PRIYA SAROJ,BHAGWATI CHAND,50.55,False,False,False,False,0.0,0,False,MACHHLISHAHR,0.0,5.0,1,0.9970304,99.7,Is_Ghost_Work
+PRIYANKA SATISH JARKIHOLI,FORCE MOTORS LIMITED,28.56,False,False,False,False,0.0,0,False,CHIKKODI,0.0,0.0,0,0.0048430096,0.48,None
+PUSHPENDRA SAROJ,MS GYANCHAND,21.31,False,False,False,False,0.0,0,False,KAUSHAMBI,0.0,3.0,1,0.9970304,99.7,Is_Ghost_Work
+Pankaj Chowdhary,MS RAMESH CHANDRA PATEL,94.41,True,False,False,False,1.0,0,False,MAHARAJGANJ,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+Parvatagouda Chandanagouda Gaddigoudar,Chairman Nirmithi Kendra Bagalkot,9.11,False,False,False,False,0.0,0,False,BAGALKOT,0.0,0.0,0,0.0048430096,0.48,None
+Piyush Vedprakash Goyal,ANIKET ANIL SHINDE,9.63,False,False,False,False,0.0,1,True,MUMBAI NORTH,0.0,0.0,1,0.95083,95.08,Trend_Anomaly_Score
+Prabhubhai Nagarbhai Vasava,HD ENTERPRISE,21.27,False,False,False,False,0.0,0,False,BARDOLI,0.0,0.0,0,0.0048430096,0.48,None
+Pradan Baruah,UJJAL SAIKIA,17.17,False,False,False,False,0.0,0,False,LAKHIMPUR,0.0,0.0,0,0.0048430096,0.48,None
+Pradeep Kumar Singh,SIGMA ENTERPRISES,70.92,True,False,False,False,1.0,0,False,ARARIA,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+Pradyut Bordoloi,PRITOM TRIBEDI,13.01,False,False,False,False,0.0,0,False,NOWGONG,0.0,0.0,0,0.0048430096,0.48,None
+Pralhad Venkatesh Joshi,Manjunath Mallappa Kittur,7.62,False,False,False,False,0.0,0,False,DHARWAD,0.0,0.0,0,0.0048430096,0.48,None
+Prasun Banerjee,PRAYAS,20.56,False,False,False,False,0.0,0,False,HOWRAH,0.0,0.0,0,0.0048430096,0.48,None
+Pratap Chandra Sarangi,Ms Durga Traders,40.59,False,False,False,False,0.0,0,False,BALASORE,0.0,0.0,0,0.0048430096,0.48,None
+Prataprao Jadhav,SHARMA CONSTRUCTION,100.0,True,False,False,False,1.0,0,False,BULDHANA,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+Pratima Mondal ,SHADOW_CORP_MONOPOLY,90.31,True,True,False,True,5.0,0,False,JOYNAGAR,0.0,2.0,1,0.9967546,99.68,Is_Ghost_Work
+Praveen Khandelwal,Greenz,22.9,False,False,False,False,0.0,0,False,CHANDINI CHOWK,0.0,0.0,0,0.0048430096,0.48,None
+Priyanka Gandhi Vadra,SML ISUZU LTD,35.64,False,False,False,False,0.0,0,False,WAYANAD,0.0,0.0,0,0.0048430096,0.48,None
+Prof SP Singh Baghel,SAI ENTERPRISES,64.35,False,False,False,False,0.0,0,False,AGRA,0.0,0.0,0,0.0048430096,0.48,None
+Prof Sougata Ray,APRJ Constructions Private Limited,35.6,False,False,False,False,0.0,0,False,DUM DUM,0.0,0.0,0,0.0048430096,0.48,None
+Prof. Manoj Kumar Jha (2024-30),GRAND TRADING COMPANY,46.36,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Prof. Ram Gopal Yadav (2020-26),Pradeep Kumar,29.33,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Putta Mahesh Kumar,I MAX SCIENCE HOUSE,43.21,False,False,False,False,0.0,0,False,ELURU,0.0,6.0,1,0.9970304,99.7,Is_Ghost_Work
+R.K. CHAUDHARY,SHREE HARIOM INFOTECH,89.57,True,False,False,False,1.0,0,False,MOHANLALGANJ,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+RABINDRA NARAYAN BEHERA,GITASHREE BEHERA,8.75,False,False,False,False,0.0,0,False,JAJPUR,0.0,0.0,0,0.0048430096,0.48,None
+RACHNA BANERJEE,MAA KALI BUILDERS,21.84,False,False,False,False,0.0,0,False,HOOGHLY,0.0,3.0,1,0.9970304,99.7,Is_Ghost_Work
+RADHAKRISHNA,KRIDL BHUSIRI ACCOUNT WORKS,69.13,False,False,False,False,0.0,0,False,GULBARGA,0.0,0.0,0,0.0048430096,0.48,None
+RADHE SHYAM RATHIYA,TRILOCHAN RAM YADAV,4.57,False,False,False,False,0.0,0,False,RAIGARH,0.0,7.0,1,0.9970304,99.7,Is_Ghost_Work
+RAHUL GANDHI,AADI AND RUDRANSH CONSTRUCTION COMPANY,23.69,False,False,False,False,0.0,0,False,RAE BARELI,0.0,0.0,0,0.0048430096,0.48,None
+RAHUL SINGH LODHI,MP STATE AGRO INDUSTRIES DEVELOPMENT CORPORATION LTD DAMOH,29.38,False,False,False,False,0.0,0,False,DAMOH,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+RAJ BHUSHAN CHOUDHARY,SAHAYAK ABHIYANTA KUDHANI VIDHANSABHA KSHETRA,20.37,False,False,False,False,0.0,0,False,MUZAFFARPUR,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+RAJ KUMAR ROAT,Paramount construction PWD,4.35,False,False,False,False,0.0,0,False,BANSWARA,0.0,0.0,0,0.0048430096,0.48,None
+RAJA RAM SINGH,BIDHANSABHA KSHETRA OBRA SAHAYAK ABHIYANTA,20.38,False,False,False,False,0.0,0,False,KARAKAT,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+RAJABHAU,PEDKAI ELECTRICALS,8.4,False,False,False,False,0.0,0,False,NASHIK,0.0,0.0,0,0.0048430096,0.48,None
+RAJEEV BHARDWAJ,Project Officer Himurja Kangra at Dharamshala,6.91,False,False,False,False,0.0,0,False,KANGRA,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+RAJEEV RAI,BIHARI JI MAHADEV ASSOCIATES,21.72,False,False,False,False,0.0,0,False,GHOSI,0.0,0.0,0,0.0048430096,0.48,None
+RAJESH RANJAN ALIAS PAPPU YADAV,R K Construction,50.33,False,False,False,False,0.0,1,True,PURNEA,0.0,0.0,1,0.95083,95.08,Trend_Anomaly_Score
+RAJESH VERMA,ASSISTANT ENGINEER KHAGARIA,15.87,False,False,False,False,0.0,0,False,KHAGARIA,0.0,4.0,1,0.9970304,99.7,Is_Ghost_Work
+RAJPALSINH MAHENDRASINH JADAV,RAJ TRADING,3.01,False,False,False,False,0.0,0,False,PANCHMAHAL,0.0,0.0,0,0.0048430096,0.48,None
+RAKESH RATHOR,Ravi Electronics,20.15,False,False,False,False,0.0,0,False,SITAPUR,0.0,0.0,0,0.0048430096,0.48,None
+RAKIBUL HUSSAIN,Bimal Auto Agency,9.21,False,False,False,False,0.0,0,False,DHUBRI,0.0,0.0,0,0.0048430096,0.48,None
+RAM PRASAD CHAUDHARY,JAI CONSTRUCTION,80.82,True,False,False,False,1.0,0,False,BASTI,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+RAMASAHAYAM RAGHURAM REDDY,ANUDEEP REDDY YARRAPU,13.27,False,False,False,False,0.0,0,False,KHAMMAM,0.0,0.0,0,0.0048430096,0.48,None
+RAMASHANKAR RAJBHAR,GAURI ENTER PRISES,17.8,False,False,False,False,0.0,0,False,SALEMPUR,0.0,0.0,0,0.0048430096,0.48,None
+RAMBHUAL NISHAD,Ajay Kumar Singh,22.68,False,False,False,False,0.0,0,False,SULTANPUR,0.0,0.0,0,0.0048430096,0.48,None
+RAMESH AWASTHI,VISHWANATH ENTERPRISES,36.54,False,False,False,False,0.0,1,True,KANPUR,0.0,0.0,1,0.95083,95.08,Trend_Anomaly_Score
+RANJIT DUTTA,R ENTERPRISE,23.76,False,False,False,False,0.0,0,False,Sonitpur,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+RAVINDRA DATTARAM WAIKAR,Krishna Construction Co,14.79,False,False,False,False,0.0,1,True,MUMBAI NORTH WEST,0.0,0.0,1,0.95083,95.08,Trend_Anomaly_Score
+RICHARD VANLALHMANGAIHA,VC PHULDUNGSEI ZAMPUI,2.84,False,False,False,False,0.0,0,False,MIZORAM,0.0,0.0,0,0.0048430096,0.48,None
+ROBERT BRUCE C,SAI IT SYSTEMS,15.81,False,False,False,False,0.0,0,False,TIRUNELVELI,0.0,0.0,0,0.0048430096,0.48,None
+ROOP KUMARI CHOUDHARY,Exicutive Engineer PWD EM Division Nava Raipur,2.78,False,False,False,False,0.0,4,True,MAHASAMUND,0.0,3.0,1,0.9972486,99.72,Is_Ghost_Work
+RUCHI VIRA,NATIONAL INFRATECH,92.43,True,False,False,False,1.0,0,False,MORADABAD,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+RUDRA NARAYAN PANY,Jyotsnarani Pradhan,24.65,False,False,False,False,0.0,0,False,DHENKANAL,0.0,0.0,0,0.0048430096,0.48,None
+Radha Mohan Singh,SHANTI DEVI,18.92,False,False,False,False,0.0,0,False,PURVI CHAMPARAN,0.0,0.0,0,0.0048430096,0.48,None
+Rahul Kaswan,SHAHIR TRADING AND CONSTRUCTION COMPANY,4.99,False,False,False,False,0.0,0,False,CHURU,0.0,0.0,0,0.0048430096,0.48,None
+Rajeshbhai Naranbhai Chudasama,PRUTHVI BUILDERS,2.59,False,False,False,False,0.0,0,False,JUNAGADH,0.0,0.0,0,0.0048430096,0.48,None
+Rajkumar Chahar ,SHOURYA ENTERPRISES,27.39,False,False,False,False,0.0,0,False,FATEHPUR SIKRI,0.0,0.0,0,0.0048430096,0.48,None
+Rajnath Singh,DEVKI ENTERPRISES,22.55,False,False,False,False,0.0,0,False,LUCKNOW,0.0,0.0,0,0.0048430096,0.48,None
+Raju Bista,Soumita Enterprise,12.22,False,False,False,False,0.0,0,False,DARJEELING,0.0,0.0,0,0.0048430096,0.48,None
+Ram Shiromani,NAVEEN ENTERPRISES,79.07,True,False,False,False,1.0,0,False,SHRAWASTI,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+Ramesh Chandappa Jigajinagi,SUNIL SABAVVA SANDRIMANI,9.69,False,False,False,False,0.0,0,False,BIJAPUR,0.0,0.0,0,0.0048430096,0.48,None
+Ramprit Mandal,VIGYAN UPKARAN KENDRA,26.9,False,False,False,False,0.0,0,False,JHANJHARPUR,0.0,0.0,0,0.0048430096,0.48,None
+Ramvir Singh Bidhuri,Greenz,25.14,False,False,False,False,0.0,0,False,SOUTH DELHI,0.0,0.0,0,0.0048430096,0.48,None
+Rao Inderjit Singh,The Shirdi Sai Cooperative multipurpose society,9.27,False,False,False,False,0.0,0,False,GURGAON,0.0,0.0,0,0.0048430096,0.48,None
+Rao Rajendra Singh,MS Smart Tech,16.49,False,False,False,False,0.0,0,False,JAIPUR RURAL,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+Ravi Shankar Prasad,ASSISTANT ENGINEER DIGHA,45.95,False,False,False,False,0.0,0,False,PATNA SAHIB,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+Ravindra Shyamnarayan Alias Ravi Kishan Shukla,KILDEEP MISHRA KRISHI SEWA KENDRA,81.15,True,False,False,False,1.0,0,False,GORAKHPUR,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+Ravindra Vasantrao Chavan,City Light Electrical And Multi Services,12.84,False,False,False,False,0.0,0,False,NANDED,0.0,0.0,0,0.0048430096,0.48,None
+Rodmal Nagar ,MP Agro Biaora,51.2,False,False,False,False,0.0,0,False,RAJGARH,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+S SUPONGMEREN JAMIR,Imlichuba,13.68,False,False,False,False,0.0,0,False,NAGALAND,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+S Venkatesan,N K MARI,10.5,False,False,False,False,0.0,0,False,MADURAI,0.0,0.0,0,0.0048430096,0.48,None
+S. Jagathrakshakan,AVN CONSTRUCTIONS,5.93,False,False,False,False,0.0,0,False,ARAKKONAM,0.0,0.0,0,0.0048430096,0.48,None
+SACHITHANANTHAM R,Sri Ganapathi Constructions,9.84,False,False,False,False,0.0,0,False,DINDIGUL,0.0,0.0,0,0.0048430096,0.48,None
+SAGAR ESHWAR KHANDRE,PRAKASH,12.16,False,False,False,False,0.0,0,False,BIDAR,0.0,0.0,0,0.0048430096,0.48,None
+SALENG A SANGMA,Aiok M Sangma,26.87,False,False,False,False,0.0,0,False,TURA,0.0,3.0,1,0.9970304,99.7,Is_Ghost_Work
+SAMBIT PATRA,ODISHA DISTRIBUTING AUTHORITY,27.42,False,False,False,False,0.0,0,False,PURI,0.0,43.0,1,0.9970304,99.7,Is_Ghost_Work
+SANATAN PANDEY,ARVIND KUMAR PANDEY,71.79,True,False,False,False,1.0,0,False,BALLIA,0.0,1.0,1,0.9967546,99.68,Is_Ghost_Work
+SANJAY DINA PATIL,anurag urban tecinfra pvt ltd,73.81,True,False,False,False,1.0,0,False,MUMBAI NORTH EAST,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+SANJNA JATAV,SHARMA CONTRACTOR,23.31,False,False,False,False,0.0,0,False,BHARATPUR,0.0,0.0,0,0.0048430096,0.48,None
+SARABJEET SINGH KHALSA,GILL TRADING COMPANY,20.62,False,False,False,False,0.0,0,False,FARIDKOT,0.0,23.0,1,0.9970304,99.7,Is_Ghost_Work
+SATPAL BRAHAMCHARI,Mor Traders,7.67,False,False,False,False,0.0,0,False,SONEPAT,0.0,0.0,0,0.0048430096,0.48,None
+SAVITRI THAKUR,SHADOW_CORP_MONOPOLY,91.24,True,True,False,True,5.0,0,False,DHAR,0.0,7.0,1,0.9967546,99.68,Is_Ghost_Work
+SAYANI GHOSH,JAYANTA ELECTRIC AND CO,14.22,False,False,False,False,0.0,0,False,JADAVPUR,0.0,3.0,1,0.9970304,99.7,Is_Ghost_Work
+SELJA,KIRPAL SINGH AND SONS,23.73,False,False,False,False,0.0,1,True,SIRSA,0.0,0.0,1,0.95083,95.08,Trend_Anomaly_Score
+SELVAGANAPATHI T M,Sre MCM and Co,53.63,False,False,False,False,0.0,0,False,SALEM,0.0,0.0,0,0.0048430096,0.48,None
+SELVARAJ V,DAWOOD ENTERPRISES,17.66,False,False,False,False,0.0,0,False,NAGAPATTINAM,0.0,0.0,0,0.0048430096,0.48,None
+SHAFI PARAMBIL,TATA MOTORS,26.71,False,False,False,False,0.0,0,False,VADAKARA,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+SHAMBHAVI,ASSISTANT ENGINEER HAYAGHAT,15.05,False,False,False,False,0.0,0,False,SAMASTIPUR,0.0,0.0,0,0.0048430096,0.48,None
+SHASHANK MANI,MS AMAR MANI TRIPATHI,36.52,False,False,False,False,0.0,0,False,DEORIA,0.0,0.0,0,0.0048430096,0.48,None
+SHER SINGH GHUBAYA,The Gill Sehkari Kirat te Ussari Sabha Ltd,29.36,False,False,False,False,0.0,0,False,FIROZPUR,0.0,12.0,1,0.9970304,99.7,Is_Ghost_Work
+SHIVMANGAL SINGH TOMAR,THE MP STATE AGRO IND DEV CORP LTD SHEOPUR,20.43,False,False,False,False,0.0,0,False,MORENA,0.0,0.0,0,0.0048430096,0.48,None
+SHIVRAJ SINGH CHOUHAN,CEO JANPAD KHATEGAON,8.03,False,False,False,False,0.0,0,False,VIDISHA,0.0,0.0,0,0.0048430096,0.48,None
+SHOBHA KARANDLAJE,M CUBE INFRATECH PRIVATE LIMITED,13.0,False,False,False,False,0.0,0,False,BANGALORE NORTH,0.0,0.0,0,0.0048430096,0.48,None
+SHOBHANABEN MAHENDRASINH BARAIYA,BANTHIWADA GRAM PANCHAYAT,2.82,False,False,False,False,0.0,0,False,SABARKANTHA,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+SHREYAS. M. PATEL,KRIDL BHUSIRI ACCOUNT WORKS,36.98,False,False,False,True,3.0,0,False,HASSAN,0.0,0.0,0,0.10382239,10.38,Collusion_Risk_Score
+SHRIMANT CHH UDAYANRAJE PRATAPSINHAMAHARAJ BHONSLE,Swapnil Raghunath Thorat,9.23,False,False,False,False,0.0,0,False,SATARA,0.0,0.0,0,0.0048430096,0.48,None
+SK NURUL ISLAM,MA ENTERPRISE,68.91,False,False,False,False,0.0,0,False,BASIRHAT,0.0,0.0,0,0.0048430096,0.48,None
+SMITA UDAY WAGH,GURUDATTA GAWANDI KAMGAR MAJOOR SAHAKARI SOCIETY LIMITED,28.5,False,False,False,False,0.0,0,False,JALGAON,0.0,0.0,0,0.0048430096,0.48,None
+SUDAMA PRASAD,RANJIT SALES CORPORATION,47.65,False,False,False,False,0.0,0,False,ARRAH,0.0,0.0,0,0.0048430096,0.48,None
+SUDHA R,SRI SAI ENTERPRISES,29.59,False,False,False,False,0.0,0,False,MAYILADUTHURAI,0.0,0.0,0,0.0048430096,0.48,None
+SUDHAKAR SINGH,ASSISTANT ENGINEER RAMGARH,33.96,False,False,False,False,0.0,0,False,BUXAR,0.0,0.0,0,0.0048430096,0.48,None
+SUKANTA KUMAR PANIGRAHI,MAHAKUMBHA PROPERTIES PVT LIMITED,34.95,False,False,False,False,0.0,0,False,KANDHAMAL,0.0,0.0,0,0.0048430096,0.48,None
+SUKHDEO BHAGAT,RAJEEV RANJAN JUNIOR ENGINEER,40.31,False,False,False,False,0.0,0,False,LOHARDAGA,0.0,3.0,1,0.9970304,99.7,Is_Ghost_Work
+SUKHJINDER SINGH RANDHAWA,MS SRV INTERNATIONAL,7.29,False,False,False,False,0.0,0,False,GURDASPUR,0.0,4.0,1,0.9970304,99.7,Is_Ghost_Work
+SUNIL BOSE,KRIDL BHUSIRI ACCOUNT WORKS,34.85,False,False,False,False,0.0,1,True,CHAMARAJANAGAR,0.0,0.0,1,0.95083,95.08,Trend_Anomaly_Score
+SURENDRA PRASAD YADAV,SIMRAN INDUSTRIES GROUP,21.77,False,False,False,False,0.0,0,False,JAHANABAD,0.0,10.0,1,0.9970304,99.7,Is_Ghost_Work
+SURESH GOPI,VIBINDAS,20.62,False,False,False,False,0.0,0,False,THRISSUR,0.0,0.0,0,0.0048430096,0.48,None
+SURESH KUMAR SHETKAR,MACHNOOR YELLAREDDY,26.81,False,False,False,False,0.0,0,False,ZAHIRABAD,0.0,0.0,0,0.0048430096,0.48,None
+Sanjay Haribhau Jadhav,PRUTHIVRAJ PRAMOD BHAMBLE PRO PRUTHIVIRAJ BHAMBLE,14.63,False,False,False,False,0.0,0,False,PARBHANI,0.0,0.0,0,0.0048430096,0.48,None
+Sanjay Kumar Bandi,Ahmed Raza,28.19,False,False,False,False,0.0,0,False,KARIMNAGAR,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+Sanjay Seth ,AMIT KUMAR JUNIOR ENGINEER,81.1,True,False,False,False,1.0,0,False,RANCHI,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+Sanjay Uttamrao Deshmukh,Shriyog Electricals,16.06,False,False,False,False,0.0,0,False,YAVATMAL-WASHIM,0.0,0.0,0,0.0048430096,0.48,None
+Santosh Pandey,gagan book supplier,6.04,False,False,False,False,0.0,0,False,RAJNANDGAON,0.0,0.0,0,0.0048430096,0.48,None
+Saptagiri Sankar Ulaka,RAMESWAR NAIK,15.89,False,False,False,False,0.0,0,False,KORAPUT,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+Sasikanth Senthil,L G Arasu,20.8,False,False,False,False,0.0,0,False,TIRUVALLUR,0.0,0.0,0,0.0048430096,0.48,None
+Saumitra khan ,MAA BHABANI CONSTRUCTION,24.5,False,False,False,False,0.0,0,False,BISHNUPUR,0.0,4.0,1,0.9970304,99.7,Is_Ghost_Work
+Shankar Lalwani,SHRI GANESH ASSOCIATES PROPRIETOR NARAYAN SHARMA,56.63,False,False,False,False,0.0,0,False,INDORE,0.0,0.0,0,0.0048430096,0.48,None
+Shatrughan Sinha,TECHNO BEST,35.81,False,False,False,False,0.0,0,False,ASANSOL,0.0,0.0,0,0.0048430096,0.48,None
+Shri  Dharambir Singh,Bimla Automobiles,34.36,False,False,False,False,0.0,0,False,BHIWANI MAHENDRAGARH,0.0,4.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri A. A. Rahim (2022-28),TATA MOTORS,16.97,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Abdul Wahab (2021-27),SML ISUZU LTD,6.1,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Abhishek Banerjee,S S CONSTRUCTION,7.35,False,False,False,False,0.0,0,False,DIAMOND HARBOUR,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Aditya Prasad (2022-28),PARMANAND PASWAN,46.51,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Ajay Makan (2024-30),Kodagu Nirmithi Kendra,84.34,True,False,False,False,1.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9967546,99.68,Is_Ghost_Work
+Shri Akhilesh Prasad Singh (2024-30),VAIBHAV VATSHALYA,20.86,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Amar Pal Maurya (2024-30),NARAYAN MARBLES,22.14,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Amar Singh,Bristo Security System,4.56,False,False,False,False,0.0,0,False,FATEHGARH SAHIB,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Amit Shah,AEON MEDICAL PVT LTD,43.21,False,False,False,False,0.0,0,False,GANDHINAGAR,0.0,0.0,0,0.0048430096,0.48,None
+Shri Anil Firojiya,NATIONAL ENGINEERING WORKS,13.38,False,False,False,False,0.0,0,False,UJJAIN,0.0,6.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Anil Kumar Yadav Mandadi (2024-30),SANTRIX CONSTRUCTIONS,62.03,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Arjun Ram Meghwal,AKHIL BHARTIYA BISHNOI MAHASABHA,7.32,False,False,False,False,0.0,0,False,BIKANER,0.0,0.0,0,0.0048430096,0.48,None
+Shri Arun Kumar Sagar ,RMK ENTERPRISES,27.33,False,False,False,False,0.0,0,False,SHAHJAHANPUR,0.0,0.0,0,0.0048430096,0.48,None
+Shri Arun Singh (2020-26),Randheer Enterprises,8.32,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Ashok Singh (2024-30),GRAM PANCHAYAT AMODA,10.21,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Ashokrao Shankarrao Chavan (2024-30),Kailash Pandit Chavan,33.35,False,False,True,False,1.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9967546,99.68,Is_Ghost_Work
+Shri Ashwini Vaishnaw (2024-30),VALUABLE WHEELS INDIA PRIVATE LIMITED,27.21,False,False,False,False,0.0,1,True,Sitting Rajya Sabha,0.0,1818.0,1,0.9972486,99.72,Is_Ghost_Work
+Shri B Y Raghavendra ,Nirmithi Kendra Shivamogga,44.8,False,False,False,False,0.0,0,False,SHIMOGA,0.0,0.0,0,0.0048430096,0.48,None
+Shri B. Parthasaradhi Reddy (2022-28),CARTEL_CORP_A,78.14,True,True,True,True,6.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9967546,99.68,Is_Ghost_Work
+Shri B.L. Verma (2020-26),ND CONTRACTOR,58.19,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Babubhai Jesangbhai Desai (2023-29),MAHARANI MEDI CARE PVT LTD,5.8,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Baburam Nishad (2022-28),shyam swaroop manufacturere,45.89,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Balyogi Umeshnath (2024-30),GP ANANDIPURA A,4.76,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Banshilal Gurjar (2024-30),Chief MANAGER OFFICE MEGA PLANning LOcal Area MAndsaur,29.98,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Benny Behanan,TATA MOTORS,17.43,False,False,False,False,0.0,0,False,CHALAKUDY,0.0,0.0,0,0.0048430096,0.48,None
+Shri Bhartruhari Mahtab,Rabindra Nath Singh,7.69,False,False,False,False,0.0,0,False,CUTTACK,0.0,0.0,0,0.0048430096,0.48,None
+Shri Birendra Prasad Baishya (2025-31),CONSTRUCTION OF ZUBEEN GARG KHETRA,12.95,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Brij Lal (2020-26),SHREYA CONSTRUCTION,18.59,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Chandra Prakash Choudhary,Raj Kishor Mahato,28.42,False,False,False,False,0.0,0,False,GIRIDIH,0.0,0.0,0,0.0048430096,0.48,None
+Shri Chandrakant Damodar Handore (2024-30),Kolte Patil Developer,37.82,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Chunnilal Garasiya (2024-30),JAY HANUMAN TRADERS,9.8,False,False,False,True,3.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9967546,99.68,Is_Ghost_Work
+Shri Damodar Rao Divakonda (2022-28),M Harish,12.58,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Deepak (Dev) Adhikari ,DUTTA ENTERPRISE,27.91,False,False,False,False,0.0,0,False,GHATAL,0.0,14.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Derek O' Brien (2023-29),KHIVRAJ MOTORS,46.62,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Devendra Pratap Singh (2024-30),Punit Kumar Agrawal,19.33,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Dhananjay Bhimrao Mahadik (2022-28),RAI INDUSTRIES,10.31,False,False,False,False,0.0,5,True,Sitting Rajya Sabha,0.0,1818.0,1,0.9972486,99.72,Is_Ghost_Work
+Shri Dorjee Tshering Lepcha (2024-30),ASSISTANT ENGINEER ZILLA PANCHAYAT OFFICE,19.96,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri G.C. Chandrashekhar (2024-30),N G GANESH BABU,37.06,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Ghanshyam Tiwari (2022-28),SHREE JAANKINATA CONSTRUCTION CO,5.48,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Golla Baburao (2024-30),C RAJA REDDY,23.13,False,False,True,False,1.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9967546,99.68,Is_Ghost_Work
+Shri Govindbhai Laljibhai Dholakia (2024-30),SHREE GANESH INFOTECH,9.17,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Gulam Ali (2022-28),RMK ENTERPRISES,39.49,False,False,False,False,0.0,0,False,Nominated Rajya Sabha,0.0,13.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Gurjeet Singh Aujla,THE CHAWINDA COOPRATIVE LABOUR AND CONSTRUCTION SOCIETY,25.93,False,False,False,False,0.0,0,False,AMRITSAR,0.0,5.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Hanuman Beniwal,AEN O N M AVVNL,6.12,False,False,False,False,0.0,0,False,NAGAUR,0.0,0.0,0,0.0048430096,0.48,None
+Shri Harbhajan Singh (2022-28),BIROKE BUILDERS PVT LTD,8.13,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Hardeep Singh Puri (2020-26),Vimal Enterprises,11.1,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Haris Beeran (2024-30),PM ABDUL KAREEM,20.41,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Harsh Mahajan (2024-30),BDO MASHOBRA RAJYA SABHA,6.73,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Hibi Eden,VE Commercial Vehicles Ltd,55.07,False,False,False,False,0.0,0,False,ERNAKULAM,0.0,0.0,0,0.0048430096,0.48,None
+Shri I.S. Inbadurai (2025-31),K G CONSTRUCTIONS,29.6,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Ilaiyaraaja (2022-28),K VANARAJ,30.65,False,False,False,False,0.0,0,False,Nominated Rajya Sabha,0.0,13.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Imran Pratapgarhi (2022-28),UNITY ENTERPRISES,27.25,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Jagat Prakash Nadda (2024-30),GRAM PANCHAYAT NANASADA MAHATMA GANDHI SWACHHATA MISSION YOJNA,23.81,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Jaggesh (2022-28),Rakesh N,22.91,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Jairam Ramesh (2022-28),KRIDL BHUSIRI ACCOUNT WORKS,84.92,True,False,False,False,1.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9967546,99.68,Is_Ghost_Work
+Shri Janardan Singh Sigriwal ,Lokbharti Prakashan,25.41,False,False,False,False,0.0,0,False,MAHARAJGANJ,0.0,0.0,0,0.0048430096,0.48,None
+Shri Javed Ali Khan (2022-28),HIDAYA QIRAT ENTERPRISES,40.05,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Jayant Chaudhary (2022-28),Vaid Associates,24.17,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Jogen Mohan (2026-32),CONST OF ROAD FROM B B LINKED ROAD TO UPEN DAS HOUSE AT BAMUN BARADI,100.0,True,False,False,False,1.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9967546,99.68,Is_Ghost_Work
+Shri Jose K. Mani (2024-30),VE Commercial Vehicles Ltd,10.83,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Jual Oram,Geetanjali Traders,31.85,False,False,False,False,0.0,0,False,SUNDARGARH,0.0,0.0,0,0.0048430096,0.48,None
+Shri Jugal Kishore Sharma,Rajinder singh Randhawa,7.96,False,False,False,False,0.0,0,False,JAMMU,0.0,0.0,0,0.0048430096,0.48,None
+Shri Jyotirmay Singh Mahato ,ATANU PATRA,100.0,True,False,False,False,1.0,0,False,PURULIA,0.0,1.0,1,0.9967546,99.68,Is_Ghost_Work
+Shri K.R.N. Rajeshkumar (2022-28),MOOKAMBIKA CONSTRUCTION,14.24,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Kanad Purkayastha (2025-31),ABDUL KALAM BARBHUIYA,33.77,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Kapil Sibal (2022-28),J R Group,33.99,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Karti P Chidambaram ,M KARTHIKEYAN,10.17,False,False,False,False,0.0,0,False,SIVAGANGA,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Kartikeya Sharma (2022-28),KMT Construction Company,100.0,True,False,False,False,1.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9967546,99.68,Is_Ghost_Work
+Shri Kesridevsinh Jhala (2023-29),JEDA ENTERPRISE,20.63,False,False,True,False,1.0,1,True,Sitting Rajya Sabha,0.0,1818.0,1,0.9969471,99.69,Is_Ghost_Work
+Shri Khiru Mahto (2022-28),ASSISTANT ENGINEER FATUHA,26.51,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Kumbakudi Sudhakaran,Keltron Component complex Ltd Kannur,22.62,False,False,False,False,0.0,0,False,KANNUR,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri LS Tejasvi Surya ,Raju Bhargav R,26.64,False,False,False,False,0.0,0,False,BANGALORE SOUTH,0.0,0.0,0,0.0048430096,0.48,None
+Shri Lahar Singh Siroya (2022-28),YASHODA R,49.93,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri M K Raghavan,Nisar T P,18.03,False,False,False,False,0.0,0,False,KOZHIKODE,0.0,0.0,0,0.0048430096,0.48,None
+Shri Madan Rathore (2024-30),AKHIL BHARTIYA BISHNOI MAHASABHA,6.13,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Mahendra Bhatt (2024-30),ARUN KUMAR,12.86,False,False,False,False,0.0,1,True,Sitting Rajya Sabha,0.0,1818.0,1,0.9972486,99.72,Is_Ghost_Work
+Shri Manan Kumar Mishra (2024-28),NITU DEVI,19.84,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Manas Ranjan Mangaraj (2022-28),BUDHIRAM TIYU,7.52,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Masthan Rao Yadav Beedha (2024-28),Chejarla Suresh Reddy,14.0,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Mayankkumar Nayak (2024-30),ASIAN CONSTRUCTION,8.39,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Meda Raghunadha Reddy (2024-30),SRI NELCO ENTERPRISES,8.16,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Milind Murli Deora (2024-30),Saurabh Vilas Kamane,50.0,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Mithlesh Kumar (2022-28),HIDAYA QIRAT ENTERPRISES,32.73,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Mohammed Nadimul Haque (2024-30),KHIVRAJ MOTORS,51.67,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Mukul Wasnik (2022-28),Famous Fountains,3.69,False,False,False,True,3.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9967546,99.68,Is_Ghost_Work
+Shri NK Premachandran,SML ISUZU LTD,10.39,False,False,False,False,0.0,0,False,KOLLAM,0.0,0.0,0,0.0048430096,0.48,None
+Shri Nagendra Ray (2023-29),SAJAL KUMAR KAR,36.41,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Narain Dass Gupta (2024-30),BANSAL ELECTRIC STORE,38.95,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Narayanasa K. Bhandage (2024-30),RAJASHEKAR PATIL,32.63,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Narendra Modi,NEETU CONSTRUCTION,7.86,False,False,False,False,0.0,1,True,VARANASI,0.0,0.0,1,0.95083,95.08,Trend_Anomaly_Score
+Shri Naresh Bansal (2020-26),CARTEL_CORP_B,39.49,False,True,True,True,5.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9967546,99.68,Is_Ghost_Work
+Shri Naveen Jain (2024-30),SAI ENTERPRISES,82.3,True,False,False,False,1.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9967546,99.68,Is_Ghost_Work
+Shri Neeraj Shekhar (2020-26),SHAIL CONSTRUCTION,63.69,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Nitin Laxmanrao Jadhav Patil (2024-28),SHIVESHAMBHO MAJUR SAHAKARI SANSTHA LTD SHINDEWADE,44.46,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri P. Chidambaram (2022-28),D GANESAN ALANGADU,13.04,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri P. P. Suneer (2024-30),VE Commercial Vehicles Ltd,25.08,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri P. Wilson (2025-31),THAMOTHARAN L,50.01,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri PP Chaudhary,Om Construction Rohat,8.48,False,False,False,False,0.0,0,False,PALI,0.0,0.0,0,0.0048430096,0.48,None
+Shri Pabitra Margherita (2022-28),MS Allied Construction Co,7.84,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Paka Venkata Satyanarayana (2025-28),EXECUTIVE ENGINEER APCPDCL CHIRALA,100.0,True,False,False,False,1.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9967546,99.68,Is_Ghost_Work
+Shri Pradip Kumar Varma (2024-30),Junior Engineer Zila Parishad Prashant Kumar,54.25,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Praful Patel (2024-30),NEELAM YOGESH JAISWAL,13.45,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Pramod Tiwari (2022-28),HUKAM SINGH CONSTRUCTION COMPANY,6.88,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri R. Dharmar (2022-28),LUCKY ASSOCIATES,36.43,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri R. Girirajan (2022-28),JF JAVID HUSSAIN,57.2,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Raghav Chadha (2022-28),Brightway Contractor and Developers,59.27,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Rajeev Shukla (2022-28),Samriddhi Enterprises,73.89,True,False,False,False,1.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9967546,99.68,Is_Ghost_Work
+Shri Rajib Bhattacharjee (2024-28),Jain Udyog,13.29,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Rajmohan Unnithan ,Keltron Component complex Ltd Kannur,30.39,False,False,False,False,0.0,0,False,KASARAGOD,0.0,0.0,0,0.0048430096,0.48,None
+Shri Ramji (2020-26),SHRI SAI ELECTRICAL SUPPLIERS CONTRACTOR,39.78,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Ramji Lal Suman (2024-30),ASHOK KUMAR,42.25,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Randeep Singh Surjewala (2022-28),SHARMA CONTRACTOR,4.88,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Ratanjit Pratap Narain Singh (2024-30),BINDU DEVI,36.1,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Ravi Chandra Vaddiraju (2024-30),BHOJYA GUGULOTH,7.98,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Rwngwra Narzary (2022-28),MS Dwithun Basumatary Enterprise,13.85,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Ryaga Krishnaiah (2024-28),SRI NELCO ENTERPRISES,29.6,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri S Niranjan Reddy (2022-28),IMMALRAJU VENKATASATYA NARAYANARAJU,20.02,False,False,True,False,1.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9967546,99.68,Is_Ghost_Work
+Shri S. Jaishankar (2023-29),CONNECTWAVE INTEGRATIONS PVT LTD,72.02,True,False,False,False,1.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9967546,99.68,Is_Ghost_Work
+Shri S. Kalyanasundaram (2022-28),LUCKY ASSOCIATES,22.43,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri S. Selvaganabathy (2021-27),VELUSAMY C,7.28,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri S.R. Sivalingam (2025-31),APU Constructions,42.01,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Sadanand Mhalu Shet Tanavade (2023-29),TATA MOTORS,48.91,False,False,False,False,0.0,1,True,Sitting Rajya Sabha,0.0,1818.0,1,0.9972486,99.72,Is_Ghost_Work
+Shri Samik Bhattacharya (2024-30),Ananda Mohan Sui,10.43,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Samirul Islam (2023-29),KHIVRAJ MOTORS,51.77,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Sandosh Kumar P (2022-28),VE Commercial Vehicles Ltd,16.44,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Sanjay Kumar Jha (2024-30),ASSISTANT ENGINEER JHANJHARPUR,53.42,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Sanjay Raut (2022-28),Kamal Enterprises,23.8,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Sanjay Seth (2024-30),BALAJI CONSTRUCTIONS,68.55,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Sanjay Singh (2024-30),KHANNA SALES CORPORATION,12.8,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Sant Balbir Singh (2022-28),Satnam Process Engineering,20.7,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Sarbananda Sonowal (18LS),BIRAJ DIHINGIA,11.92,False,False,False,False,0.0,1,True,DIBRUGARH,0.0,0.0,1,0.95083,95.08,Trend_Anomaly_Score
+Shri Satish Chandra Dubey (2022-28),ASSISTANT ENGINEER NARKATIYAGINJ,18.02,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Satish Kumar Gautam ,S K CONSTRUCTION,43.93,False,False,False,False,0.0,0,False,ALIGARH,0.0,0.0,0,0.0048430096,0.48,None
+Shri Satnam Singh Sandhu (2024-30),Sohan Lal Mehta,23.02,False,False,False,False,0.0,0,False,Nominated Rajya Sabha,0.0,13.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Shambhu Sharan Patel (2022-28),Anil Electricals,30.0,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Shantanu Thakur ,MAA KALI BUILDERS,71.54,True,False,False,False,1.0,0,False,BANGAON,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+Shri Subhash Barala (2024-30),THE BARTA CO OP  L AND C SOCIETY,12.09,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Subhasish Khuntia (2024-30),TAPABANTA SAHOO,44.67,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Sudheer Gupta ,CEO JANPAD PANCHAYAT MANDSAUR,23.11,False,False,False,False,0.0,0,False,MANDSOUR,0.0,10.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Surendra Singh Nagar (2022-28),BALAJI SUPPLIER,31.58,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Suresh Kodikunnil,TATA MOTORS,14.89,False,False,False,False,0.0,0,False,MAVELIKKARA,0.0,0.0,0,0.0048430096,0.48,None
+Shri Tapir Gao,BKM Enterprises,10.85,False,False,False,False,0.0,0,False,ARUNACHAL EAST,0.0,0.0,0,0.0048430096,0.48,None
+Shri Tejveer Singh (2024-30),MAA LAXMI CONTRACTOR AND SUPPLIERS,18.08,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri V. Vijayendra Prasad (2022-28),GOLLA SURESH KUMAR,21.84,False,False,False,False,0.0,0,False,Nominated Rajya Sabha,0.0,13.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Vivek K. Tankha (2022-28),MP AGRO JABALPUR,3.79,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri Yerram Venkata Subba Reddy (2024-30),GOTTIPATI MADHUSUDHANA RAO,11.33,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Shri vijayakumar Vasanth,R CHANDRASEKARAN,29.13,False,False,False,False,0.0,0,False,KANNIYAKUMARI,0.0,0.0,0,0.0048430096,0.48,None
+Shrikant Eknath Shinde,Pro Ortho Perfect India Pvt Ltd,100.0,True,False,False,False,1.0,0,False,KALYAN,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+Shripad Yesso Naik,A S ENTERPRISES,58.96,False,False,False,False,0.0,0,False,NORTH GOA,0.0,0.0,0,0.0048430096,0.48,None
+Shrirang Appa Barne,ASHUTOSH HANUMANT BALKAVADE,24.76,False,False,False,False,0.0,0,False,MAVAL,0.0,0.0,0,0.0048430096,0.48,None
+Shyamkumar,GRAMPANCHAYAT LOHDONGRI,23.11,False,False,False,False,0.0,0,False,RAMTEK,0.0,0.0,0,0.0048430096,0.48,None
+Sivanath Kesineni,Power Solutions,51.98,False,False,False,False,0.0,0,False,VIJAYAWADA,0.0,0.0,0,0.0048430096,0.48,None
+Smt Anupriya Patel,Atharv Enterprises,66.58,False,False,False,False,0.0,0,False,MIRZAPUR,0.0,0.0,0,0.0048430096,0.48,None
+Smt Aparajita Sarangi,Subhasmita Sahoo,13.18,False,False,False,False,0.0,1,True,BHUBANESWAR,0.0,1.0,1,0.9972486,99.72,Is_Ghost_Work
+Smt Dimple Yadav,MANI CONSTRUCTION,17.37,False,False,False,False,0.0,0,False,MAINPURI,0.0,0.0,0,0.0048430096,0.48,None
+Smt Harsimrat Kaur Badal,Sham Lal Gurpta,3.04,False,False,False,False,0.0,0,False,BHATINDA,0.0,4.0,1,0.9970304,99.7,Is_Ghost_Work
+Smt Hema Malini,JAY MAHAVEER INFRAVENTURE PRIVATE LIMITED,33.41,False,False,False,False,0.0,0,False,MATHURA,0.0,0.0,0,0.0048430096,0.48,None
+Smt Himadri Singh,MS SANJAY KUMAR TIWARI,20.11,False,False,False,False,0.0,0,False,SHAHDOL,0.0,3.0,1,0.9970304,99.7,Is_Ghost_Work
+Smt Poonamben Hematbhai Maadam,UDYATI CONTRUCTION,3.74,False,False,False,False,0.0,0,False,JAMNAGAR,0.0,0.0,0,0.0048430096,0.48,None
+Smt Raksha Nikhil Khadse,GopiKrishana Majoor Sahakari Sanstha Ruikheda,50.66,False,False,False,False,0.0,0,False,RAVER,0.0,0.0,0,0.0048430096,0.48,None
+Smt S Jothimani,P S STALIN,21.87,False,False,False,False,0.0,0,False,KARUR,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+Smt Sajda Ahmed,MONIMOY SINGHA ROY,14.54,False,False,False,False,0.0,0,False,ULUBERIA,0.0,0.0,0,0.0048430096,0.48,None
+Smt Sandhya Ray,MP STATE AGRO INDUSTRIES DEV CORP LTD,66.0,False,False,False,False,0.0,0,False,BHIND,0.0,8.0,1,0.9970304,99.7,Is_Ghost_Work
+Smt Sangeeta Kumari Singh Deo,ALOK KUMAR NAYAK,11.92,False,False,False,False,0.0,0,False,BOLANGIR,0.0,0.0,0,0.0048430096,0.48,None
+Smt Satabdi Roy (Banerjee),GOODWILL COMMERCIAL,19.22,False,False,False,False,0.0,0,False,BIRBHUM,0.0,0.0,0,0.0048430096,0.48,None
+Smt Supriya Sadanand Sule,SAMARTHA ENTERPRISES,7.97,False,False,False,False,0.0,0,False,BARAMATI,0.0,0.0,0,0.0048430096,0.48,None
+Smt Veena Devi ,intent computer solutions,43.89,False,False,False,False,0.0,1,True,VAISHALI,0.0,1.0,1,0.9972486,99.72,Is_Ghost_Work
+Smt. Adhikarimayum Sharda Devi (2026-32),Akin construction and supply,100.0,True,False,False,False,1.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9967546,99.68,Is_Ghost_Work
+Smt. Darshana Singh (2022-28),RAMJI CONSTRUCTION,28.65,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Smt. Geeta alias Chandraprabha (2020-26),RAHISH WARSI,58.79,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Smt. Jaya Amitabh Bachchan (2024-30),Asha Construction,45.99,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Smt. Jebi Mather Hisham (2022-28),SML ISUZU LTD,7.63,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Smt. Laxmi Verma (2026-32),MUKHYA KARYAPALAN ADHIKARI JANPAD PANCHAYAT PONDI UPRODA,60.0,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Smt. Mahua Maji (2022-28),SAMEER TOPPO,35.96,False,False,True,False,1.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9967546,99.68,Is_Ghost_Work
+Smt. Mamata Thakur (2024-30),Maa Laxmi Enterprise,48.78,False,False,False,False,0.0,2,True,Sitting Rajya Sabha,0.0,1818.0,1,0.9972486,99.72,Is_Ghost_Work
+Smt. Maya Naroliya (2024-30),GRAM PANCHAYAT KADAIYASHAH,14.2,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Smt. Nirmala Sitharaman (2022-28),Dharwad Research and Technology Incubator Foundation,34.9,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Smt. P. T. Usha (2022-28),SML ISUZU LTD,7.56,False,False,False,False,0.0,0,False,Nominated Rajya Sabha,0.0,13.0,1,0.9970304,99.7,Is_Ghost_Work
+Smt. Phulo Devi Netam (2026-32),Rameshwar Gupta,40.49,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Smt. Rajathi (2025-31),P RAMAR PANDI,38.11,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Smt. Ranjeet Ranjan (2022-28),STARCARE ENTERPRISES LLP,17.03,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Smt. Rekha Sharma (2024-28),XEN City DHBVN Bhiwani,14.65,False,False,False,False,0.0,1,True,Sitting Rajya Sabha,0.0,1818.0,1,0.9972486,99.72,Is_Ghost_Work
+Smt. Renuka Chowdhury (2024-30),Banoth Ramdas,45.06,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Smt. S. Phangnon Konyak (2022-28),Y C Chingkap Konyak,12.49,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Smt. Sadhna Singh (2024-30),UNITED GROUP OF CONSTRUCTION,48.45,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Smt. Sagarika Ghose (2024-30),KHIVRAJ MOTORS,53.36,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Smt. Sangeeta Yadav (2022-28),HARI TARA ASSOCIATES,21.93,False,False,False,False,0.0,1,True,Sitting Rajya Sabha,0.0,1818.0,1,0.9972486,99.72,Is_Ghost_Work
+Smt. Seema Dwivedi (2020-26),JAYA SRI INDUSTRIES,33.8,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Smt. Sonia Gandhi (2024-30),NEW INDIAN CONSTRUCTION COMPANY,5.34,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Smt. Sudha Murty (2024-30),Nirmithi kendra vijayapur,92.96,True,False,False,False,1.0,0,False,Nominated Rajya Sabha,0.0,13.0,1,0.9967546,99.68,Is_Ghost_Work
+Smt. Sulata Deo (2022-28),PRAGNYA PARAMITA  SAHOO,8.94,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Smt. Sumitra Balmik (2022-28),MS MANMOHAN SINGH KSHATRI,6.07,False,False,False,False,0.0,0,False,Sitting Rajya Sabha,0.0,1818.0,1,0.9970304,99.7,Is_Ghost_Work
+Sribharat MathuKumli,SHAIK SARDAR,24.26,False,False,False,False,0.0,0,False,VISAKHAPATNAM,0.0,0.0,0,0.0048430096,0.48,None
+Sudip Bandyopadhyay,M SHAW,20.51,False,False,False,False,0.0,0,False,KOLKATA UTTAR,0.0,0.0,0,0.0048430096,0.48,None
+Sunil Dattatray Tatkare,RASHIKA RAMBHAU DHUMAL,10.88,False,False,False,False,0.0,0,False,RAIGAD,0.0,0.0,0,0.0048430096,0.48,None
+Sunil Kumar ,R K Construction,24.31,False,False,False,False,0.0,0,False,VALMIKI NAGAR,0.0,0.0,0,0.0048430096,0.48,None
+Suresh Kumar Kashyap,Block Development officer Nahan,5.7,False,False,False,False,0.0,0,False,SHIMLA,0.0,0.0,0,0.0048430096,0.48,None
+Swami Sachchidanandhari Sakshi ji Maharaj ,RAJESH KUMAR PAL,90.91,True,False,False,False,1.0,0,False,UNNAO,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+T Sumathy (A) Thamizhachi Thangapandian ,L N DREAMWAY CONSTRUCTION,36.73,False,False,False,False,0.0,0,False,CHENNAI SOUTH,0.0,0.0,0,0.0048430096,0.48,None
+TANGELLA UDAY SRINIVAS,SRI MURALI KRISHNA CONSTRUCTIONS,32.96,False,False,False,False,0.0,0,False,KAKINADA,0.0,0.0,0,0.0048430096,0.48,None
+TANUJ PUNIA,Praharsh Infrastructure,92.06,True,False,False,False,1.0,0,False,BARABANKI,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+TARIQ ANWAR,R K Construction,66.56,False,False,False,False,0.0,0,False,KATIHAR,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+THANGA TAMILSELVAN,JJ LALA PROJECTS PRIVATE LIMITED,6.28,False,False,False,False,0.0,0,False,THENI,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+THARANIVENTHAN M S,RAK INDUSTRIES,9.19,False,False,False,False,0.0,0,False,ARANI,0.0,0.0,0,0.0048430096,0.48,None
+TOKHAN SAHU,RAJKUMAR TIWARI,5.68,False,False,False,False,0.0,0,False,BILASPUR,0.0,0.0,0,0.0048430096,0.48,None
+TRIVENDRA SINGH RAWAT,VINDHYA SOLAR AND LIGHTING SOLUTIONS,21.3,False,False,False,False,0.0,0,False,HARDWAR,0.0,0.0,0,0.0048430096,0.48,None
+Thalikkottai Rajuthevar Baalu,E SEKAR,17.21,False,False,False,False,0.0,0,False,SRIPERUMBUDUR,0.0,5.0,1,0.9970304,99.7,Is_Ghost_Work
+Thiru Dayanidhi Maran,A AND A BUILDERS AND PROMOTERS,64.57,False,False,False,False,0.0,0,False,CHENNAI CENTRAL,0.0,0.0,0,0.0048430096,0.48,None
+Thirumaa Valavan Thol,Arikrishnan k,7.14,False,False,False,False,0.0,0,False,CHIDAMBARAM,0.0,0.0,0,0.0048430096,0.48,None
+UJJWAL RAMAN SINGH,MS VIDYARTHI CONSTRUCTION,28.47,False,False,False,False,0.0,0,False,ALLAHABAD,0.0,0.0,0,0.0048430096,0.48,None
+UMMEDA RAM BENIWAL,Jasnath Computer sale and service,19.15,False,False,False,False,0.0,0,False,BARMER,0.0,3.0,1,0.9970304,99.7,Is_Ghost_Work
+UTKARSH VERMA MADHUR,Shiv kumar thekedar,46.01,False,False,False,False,0.0,0,False,KHERI,0.0,2.0,1,0.9970304,99.7,Is_Ghost_Work
+V S Matheswaran,Hindusthan Power Technology,37.13,False,False,False,False,0.0,0,False,NAMAKKAL,0.0,0.0,0,0.0048430096,0.48,None
+V. SOMANNA,TUMKUR NIRMITHI KENDRA,52.92,False,False,False,False,0.0,0,False,TUMKUR,0.0,0.0,0,0.0048430096,0.48,None
+VAMSI KRISHNA GADDAM,SVR CONSTRUCTIONS,34.71,False,False,False,False,0.0,0,False,PEDDAPALLE,0.0,0.0,0,0.0048430096,0.48,None
+VARUN CHAUDHRY,T A S C Group Co op L and C Society Toba,6.78,False,False,False,False,0.0,0,False,AMBALA,0.0,0.0,0,0.0048430096,0.48,None
+VIJAYLAKSHMI DEVI,Alam Brothers,84.16,True,False,False,False,1.0,0,False,SIWAN,0.0,6.0,1,0.9967546,99.68,Is_Ghost_Work
+VINOD KUMAR BIND,Gandhi Construction And Supplier,46.15,False,False,False,False,0.0,0,False,BHADOHI,0.0,0.0,0,0.0048430096,0.48,None
+VIRENDRA SINGH,Aaradhya Enterprises,22.85,False,False,False,False,0.0,0,False,CHANDAULI,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+VISHAL,GANESH MAJUR SAHAKARI SANSTHALTD LINGNOOR,9.23,False,False,False,False,0.0,0,False,SANGLI,0.0,0.0,0,0.0048430096,0.48,None
+VISHWESHWAR HEGDE KAGERI,SHADOW_CORP_MONOPOLY,89.13,True,True,False,True,5.0,0,False,UTTARA KANNADA,0.0,0.0,1,0.10382239,10.38,Collusion_Risk_Score
+VIVEK THAKUR,ASSISTANT ENGINEER LAEO SHEIKHURA BARBIGHA,71.28,True,False,False,False,1.0,0,False,NAWADA,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+Vaithilingam Ve,SHINOJ T A,16.96,False,False,False,False,0.0,0,False,Puducherry,0.0,0.0,0,0.0048430096,0.48,None
+Vellalath Kochukrishnan Nair Sreekandan,VISION ELECTRICALS AND ELECTRONICS,31.2,False,False,False,False,0.0,0,False,PALAKKAD,0.0,0.0,0,0.0048430096,0.48,None
+Vijay Baghel,ARHAM CONSTRUCTION,8.31,False,False,False,False,0.0,0,False,DURG,0.0,8.0,1,0.9970304,99.7,Is_Ghost_Work
+Vijay Kumar Dubey,MAHI ENTERPRISES,66.84,False,False,False,False,0.0,0,False,KUSHI NAGAR,0.0,0.0,0,0.0048430096,0.48,None
+Vijay Kumar Hansdak,AJIT KUMAR,49.5,False,False,False,False,0.0,0,False,RAJMAHAL,0.0,0.0,0,0.0048430096,0.48,None
+Vinod Chavda,N K ENGINEERING,7.01,False,False,False,False,0.0,0,False,KACHCHH,0.0,0.0,0,0.0048430096,0.48,None
+Virendra Kumar,DEEPAK KUMAR SHARMA,7.09,False,False,False,False,0.0,0,False,TIKAMGARH,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+Vishnu Dayal Ram,SITA RAM PATEL,72.44,True,False,False,False,1.0,0,False,PALAMU,0.0,0.0,0,0.018327957,1.83,Collusion_Risk_Score
+Vishnu Dutt Sharma,GRAM PANCHAYAT SINGHORA,19.52,False,False,False,False,0.0,0,False,KHAJURAHO,0.0,0.0,0,0.0048430096,0.48,None
+Y S Avinash Reddy,KCR CONSTRUCTIONS KADAPA,7.99,False,False,False,False,0.0,0,False,KADAPA,0.0,1.0,1,0.9970304,99.7,Is_Ghost_Work
+YADUVEER KRISHNADATTA CHAMARAJA WADIYAR,Mysore Nirmithi Kendra,63.82,False,False,False,False,0.0,0,False,MYSORE,0.0,0.0,0,0.0048430096,0.48,None
+Yogendra Chandoliya,MASTER ELECTRIC STORE,29.84,False,False,False,False,0.0,0,False,NORTH WEST DELHI,0.0,0.0,0,0.0048430096,0.48,None
+ZIA UR REHMAN,MK INFRATECH,68.11,False,False,False,False,0.0,0,False,SAMBHAL,0.0,0.0,0,0.0048430096,0.48,None
