@@ -1,0 +1,15 @@
+param,value
+n_estimators,750.0
+max_depth,3.0
+learning_rate,0.010419304856645517
+subsample,0.8881131018493914
+colsample_bytree,0.9173596683549814
+colsample_bylevel,0.9491866793815857
+min_child_weight,0.8654020945974379
+gamma,0.5448434975270409
+reg_alpha,0.5177732740952381
+reg_lambda,0.4229523616277133
+max_delta_step,3.0
+scale_pos_weight,2.993939393939394
+best_cv_pr_auc,0.9167221850742984
+n_trials_completed,120.0

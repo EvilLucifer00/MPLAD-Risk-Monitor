@@ -1,0 +1,44 @@
+{
+  "features_csv": "/kaggle/working/mp_composite_features.csv",
+  "output_dir": "/kaggle/working/risk_outputs",
+  "id_col": "MP Name",
+  "label_source_col": "injected_anomaly_frac",
+  "label_quantile": 0.75,
+  "min_positives": 8,
+  "drop_cols": [
+    "MP Name",
+    "injected_anomaly_frac",
+    "constituency_proxy",
+    "constituency_proxy_state",
+    "constituency_proxy_district",
+    "top_vendor",
+    "top_vendor_total_amount",
+    "top_vendor_collusion_score",
+    "top_vendor_is_flagged_collusion"
+  ],
+  "leaky_features": [
+    "anomaly_flag_rate",
+    "anomaly_score_mean",
+    "anomaly_score_max"
+  ],
+  "drop_leaky_features": false,
+  "leakage_audit": true,
+  "cv_folds": 5,
+  "cv_repeats": 3,
+  "random_state": 42,
+  "n_trials": 120,
+  "optuna_metric": "pr_auc",
+  "optuna_timeout_sec": null,
+  "threshold_objective": "mcc",
+  "cost_fn": 10.0,
+  "cost_fp": 1.0,
+  "min_recall": 0.8,
+  "audit_capacity_frac": 0.15,
+  "band_cuts": [
+    0.25,
+    0.5,
+    0.75
+  ],
+  "top_shap_drivers": 3,
+  "save_shap_plot": true
+}
