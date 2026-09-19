@@ -7,7 +7,7 @@ import { TbWallet, TbShieldExclamation, TbChartBar, TbScale, TbMapPin, TbMap, Tb
 import { IoIosConstruct } from "react-icons/io";
 import { FaXTwitter, FaLinkedinIn, FaYoutube } from "react-icons/fa6";
 import { IoMdMail } from "react-icons/io";
-
+import AiAssistantWidget from "../components/shared/AiAssistantWidget.jsx";
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -744,6 +744,8 @@ const Home = () => {
           </div>
         </footer>
       </div>
+
+      <AiAssistantWidget />
     </div>
   );
 };
