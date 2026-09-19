@@ -1,0 +1,1978 @@
+MP Name,feature,shap_value,abs_shap,direction,driver_rank
+AASHTIKAR PATIL NAGESH BAPURAO,cost_deviation_pct_max,0.91351825,0.91351825,increases_risk,1
+AASHTIKAR PATIL NAGESH BAPURAO,num_works,-0.5208971,0.5208971,decreases_risk,2
+AASHTIKAR PATIL NAGESH BAPURAO,cost_deviation_pct_mean,-0.45600966,0.45600966,decreases_risk,3
+ABDUL RASHID SHEIKH,cost_deviation_pct_mean,-2.8403807,2.8403807,decreases_risk,1
+ABDUL RASHID SHEIKH,cost_deviation_pct_max,-0.30420372,0.30420372,decreases_risk,2
+ABDUL RASHID SHEIKH,sor_match_confidence_mean,-0.2575822,0.2575822,decreases_risk,3
+ABHAY KUMAR SINHA,cost_deviation_pct_mean,0.87728816,0.87728816,increases_risk,1
+ABHAY KUMAR SINHA,anomaly_flag_rate,-0.51436204,0.51436204,decreases_risk,2
+ABHAY KUMAR SINHA,cost_deviation_pct_max,-0.3647129,0.3647129,decreases_risk,3
+ABHIJIT GANGOPADHYAY,cost_deviation_pct_mean,2.9754672,2.9754672,increases_risk,1
+ABHIJIT GANGOPADHYAY,sor_match_confidence_mean,0.42672676,0.42672676,increases_risk,2
+ABHIJIT GANGOPADHYAY,collusion_score_max,-0.18089974,0.18089974,decreases_risk,3
+ADHIKARI SOUMENDU,cost_deviation_pct_mean,-2.3485558,2.3485558,decreases_risk,1
+ADHIKARI SOUMENDU,cost_deviation_pct_max,1.0446895,1.0446895,increases_risk,2
+ADHIKARI SOUMENDU,sor_match_confidence_mean,0.94078255,0.94078255,increases_risk,3
+ADITYA YADAV,cost_deviation_pct_mean,4.4852033,4.4852033,increases_risk,1
+ADITYA YADAV,cost_deviation_pct_max,-0.1339081,0.1339081,decreases_risk,2
+ADITYA YADAV,anomaly_score_max,-0.123306155,0.123306155,decreases_risk,3
+ADV GOWAAL KAGADA PADAVI,cost_deviation_pct_mean,-3.0054338,3.0054338,decreases_risk,1
+ADV GOWAAL KAGADA PADAVI,num_works,-0.4838521,0.4838521,decreases_risk,2
+ADV GOWAAL KAGADA PADAVI,sor_match_confidence_mean,-0.2834907,0.2834907,decreases_risk,3
+ADV K FRANCIS GEORGE,cost_deviation_pct_mean,-2.5575914,2.5575914,decreases_risk,1
+ADV K FRANCIS GEORGE,sor_match_confidence_mean,0.723304,0.723304,increases_risk,2
+ADV K FRANCIS GEORGE,cost_deviation_pct_max,0.5658363,0.5658363,increases_risk,3
+AFZAL ANSARI,cost_deviation_pct_mean,-3.355165,3.355165,decreases_risk,1
+AFZAL ANSARI,cost_deviation_pct_max,0.79116714,0.79116714,increases_risk,2
+AFZAL ANSARI,num_works,-0.7284661,0.7284661,decreases_risk,3
+AGA SYED RUHULLAH MEHDI,cost_deviation_pct_mean,-2.0011137,2.0011137,decreases_risk,1
+AGA SYED RUHULLAH MEHDI,anomaly_flag_rate,-0.33924714,0.33924714,decreases_risk,2
+AGA SYED RUHULLAH MEHDI,deviation_flag_rate,-0.23794791,0.23794791,decreases_risk,3
+AJENDRA SINGH LODHI,cost_deviation_pct_mean,-3.310333,3.310333,decreases_risk,1
+AJENDRA SINGH LODHI,cost_deviation_pct_max,-1.2748034,1.2748034,decreases_risk,2
+AJENDRA SINGH LODHI,num_works,-0.41312283,0.41312283,decreases_risk,3
+AKHILESH YADAV,cost_deviation_pct_mean,-2.7588806,2.7588806,decreases_risk,1
+AKHILESH YADAV,cost_deviation_pct_max,0.72937,0.72937,increases_risk,2
+AKHILESH YADAV,num_works,-0.26599574,0.26599574,decreases_risk,3
+AKSHAYA YADAV,cost_deviation_pct_mean,2.1168954,2.1168954,increases_risk,1
+AKSHAYA YADAV,num_works,-0.36021936,0.36021936,decreases_risk,2
+AKSHAYA YADAV,cost_deviation_pct_max,0.20549016,0.20549016,increases_risk,3
+ALFRED KANNGAM S ARTHUR,cost_deviation_pct_mean,-2.1575048,2.1575048,decreases_risk,1
+ALFRED KANNGAM S ARTHUR,num_works,1.9698585,1.9698585,increases_risk,2
+ALFRED KANNGAM S ARTHUR,cost_deviation_pct_max,1.2101259,1.2101259,increases_risk,3
+ALOK SHARMA,cost_deviation_pct_mean,0.9958786,0.9958786,increases_risk,1
+ALOK SHARMA,cost_deviation_pct_max,0.73330563,0.73330563,increases_risk,2
+ALOK SHARMA,anomaly_score_max,0.61402166,0.61402166,increases_risk,3
+AMAR SHARADRAO KALE,cost_deviation_pct_mean,4.48229,4.48229,increases_risk,1
+AMAR SHARADRAO KALE,num_works,-0.47721222,0.47721222,decreases_risk,2
+AMAR SHARADRAO KALE,residual_pct_max,-0.1643363,0.1643363,decreases_risk,3
+AMARSING TISSO,cost_deviation_pct_mean,-0.368728,0.368728,decreases_risk,1
+AMARSING TISSO,collusion_score_mean,-0.17840564,0.17840564,decreases_risk,2
+AMARSING TISSO,collusion_score_max,0.1773638,0.1773638,increases_risk,3
+AMBICA G LAKSHMINARAYANA VALMIKI,anomaly_score_max,0.64075685,0.64075685,increases_risk,1
+AMBICA G LAKSHMINARAYANA VALMIKI,cost_deviation_pct_mean,0.27762967,0.27762967,increases_risk,2
+AMBICA G LAKSHMINARAYANA VALMIKI,cost_deviation_pct_max,-0.23602584,0.23602584,decreases_risk,3
+AMRARAM,anomaly_flag_rate,-0.41831577,0.41831577,decreases_risk,1
+AMRARAM,residual_pct_max,-0.41689855,0.41689855,decreases_risk,2
+AMRARAM,cost_deviation_pct_max,-0.34794533,0.34794533,decreases_risk,3
+AMRINDER SINGH RAJA WARRING,sor_match_confidence_mean,0.39247668,0.39247668,increases_risk,1
+AMRINDER SINGH RAJA WARRING,collusion_score_max,0.22542946,0.22542946,increases_risk,2
+AMRINDER SINGH RAJA WARRING,collusion_score_mean,-0.20905392,0.20905392,decreases_risk,3
+ANAND BHADAURIYA,cost_deviation_pct_mean,3.0261803,3.0261803,increases_risk,1
+ANAND BHADAURIYA,residual_pct_max,-0.34230554,0.34230554,decreases_risk,2
+ANAND BHADAURIYA,duplicate_score_max,-0.24611305,0.24611305,decreases_risk,3
+ANAND KUMAR,cost_deviation_pct_mean,2.3801413,2.3801413,increases_risk,1
+ANAND KUMAR,num_works,-0.62831634,0.62831634,decreases_risk,2
+ANAND KUMAR,anomaly_flag_rate,-0.37197074,0.37197074,decreases_risk,3
+ANANTA NAYAK,cost_deviation_pct_mean,-3.2967505,3.2967505,decreases_risk,1
+ANANTA NAYAK,cost_deviation_pct_max,-1.2784091,1.2784091,decreases_risk,2
+ANANTA NAYAK,num_works,-0.46713534,0.46713534,decreases_risk,3
+ANDREW J. SYNGKON,sor_match_confidence_mean,0.39439186,0.39439186,increases_risk,1
+ANDREW J. SYNGKON,cost_deviation_pct_mean,0.30818343,0.30818343,increases_risk,2
+ANDREW J. SYNGKON,anomaly_flag_rate,-0.17764641,0.17764641,decreases_risk,3
+ANGOMCHA BIMOL AKOIJAM,cost_deviation_pct_mean,-2.9024675,2.9024675,decreases_risk,1
+ANGOMCHA BIMOL AKOIJAM,cost_deviation_pct_max,-1.6776882,1.6776882,decreases_risk,2
+ANGOMCHA BIMOL AKOIJAM,sor_match_confidence_mean,0.5968001,0.5968001,increases_risk,3
+ANIL BALUNI,cost_deviation_pct_max,-2.8541098,2.8541098,decreases_risk,1
+ANIL BALUNI,cost_deviation_pct_mean,-2.8229904,2.8229904,decreases_risk,2
+ANIL BALUNI,num_works,0.84962404,0.84962404,increases_risk,3
+ANITA NAGARSINGH CHOUHAN,cost_deviation_pct_mean,-3.212497,3.212497,decreases_risk,1
+ANITA NAGARSINGH CHOUHAN,num_works,-0.42749184,0.42749184,decreases_risk,2
+ANITA NAGARSINGH CHOUHAN,cost_deviation_pct_max,-0.32774055,0.32774055,decreases_risk,3
+ANITA SUBHADARSHINI,cost_deviation_pct_mean,-2.7335637,2.7335637,decreases_risk,1
+ANITA SUBHADARSHINI,cost_deviation_pct_max,1.0069062,1.0069062,increases_risk,2
+ANITA SUBHADARSHINI,sor_match_confidence_mean,0.79725677,0.79725677,increases_risk,3
+ANOOP PRADHAN BALMIKI,cost_deviation_pct_mean,0.42371476,0.42371476,increases_risk,1
+ANOOP PRADHAN BALMIKI,anomaly_flag_rate,-0.40790582,0.40790582,decreases_risk,2
+ANOOP PRADHAN BALMIKI,cost_deviation_pct_max,-0.2904538,0.2904538,decreases_risk,3
+ANUP SANJAY DHOTRE,cost_deviation_pct_mean,1.2228577,1.2228577,increases_risk,1
+ANUP SANJAY DHOTRE,cost_deviation_pct_max,0.6135132,0.6135132,increases_risk,2
+ANUP SANJAY DHOTRE,anomaly_flag_rate,-0.45070124,0.45070124,decreases_risk,3
+ARUN BHARTI,cost_deviation_pct_mean,0.8129907,0.8129907,increases_risk,1
+ARUN BHARTI,residual_pct_max,-0.39957318,0.39957318,decreases_risk,2
+ARUN BHARTI,duplicate_score_max,-0.32349652,0.32349652,decreases_risk,3
+ARUN GOVIL,num_works,-0.63428736,0.63428736,decreases_risk,1
+ARUN GOVIL,cost_deviation_pct_mean,0.42245004,0.42245004,increases_risk,2
+ARUN GOVIL,duplicate_score_max,-0.30750546,0.30750546,decreases_risk,3
+ARUN NEHRU,cost_deviation_pct_mean,-3.6914723,3.6914723,decreases_risk,1
+ARUN NEHRU,cost_deviation_pct_max,0.608361,0.608361,increases_risk,2
+ARUN NEHRU,num_works,-0.3828416,0.3828416,decreases_risk,3
+ARUNA. D. K,cost_deviation_pct_mean,-2.088359,2.088359,decreases_risk,1
+ARUNA. D. K,duplicate_score_max,-0.38562837,0.38562837,decreases_risk,2
+ARUNA. D. K,num_works,-0.25403243,0.25403243,decreases_risk,3
+ARUP CHAKRABORTY,cost_deviation_pct_mean,4.4448843,4.4448843,increases_risk,1
+ARUP CHAKRABORTY,anomaly_score_max,-0.16296093,0.16296093,decreases_risk,2
+ARUP CHAKRABORTY,num_primary_vendors,0.1493236,0.1493236,increases_risk,3
+ASHISH DUBEY,cost_deviation_pct_mean,-3.1619852,3.1619852,decreases_risk,1
+ASHISH DUBEY,cost_deviation_pct_max,-2.443841,2.443841,decreases_risk,2
+ASHISH DUBEY,num_works,0.8897464,0.8897464,increases_risk,3
+ATUL GARG,cost_deviation_pct_mean,-3.0603898,3.0603898,decreases_risk,1
+ATUL GARG,cost_deviation_pct_max,0.9780486,0.9780486,increases_risk,2
+ATUL GARG,sor_match_confidence_mean,0.7533986,0.7533986,increases_risk,3
+AVIMANYU SETHI,cost_deviation_pct_mean,4.2771096,4.2771096,increases_risk,1
+AVIMANYU SETHI,num_works,-0.4874506,0.4874506,decreases_risk,2
+AVIMANYU SETHI,sor_match_confidence_mean,0.35282153,0.35282153,increases_risk,3
+AWADHESH PRASAD,cost_deviation_pct_mean,-3.6822147,3.6822147,decreases_risk,1
+AWADHESH PRASAD,cost_deviation_pct_max,0.45788783,0.45788783,increases_risk,2
+AWADHESH PRASAD,num_works,-0.42768848,0.42768848,decreases_risk,3
+AZAD KIRTI JHA,cost_deviation_pct_mean,-3.148121,3.148121,decreases_risk,1
+AZAD KIRTI JHA,cost_deviation_pct_max,-2.5593653,2.5593653,decreases_risk,2
+AZAD KIRTI JHA,num_works,0.94370145,0.94370145,increases_risk,3
+Abu Taher Khan,cost_deviation_pct_mean,0.46663308,0.46663308,increases_risk,1
+Abu Taher Khan,collusion_score_max,0.32048994,0.32048994,increases_risk,2
+Abu Taher Khan,cost_deviation_pct_max,-0.23823048,0.23823048,decreases_risk,3
+Adv Adoor Prakash ,cost_deviation_pct_mean,-3.4012756,3.4012756,decreases_risk,1
+Adv Adoor Prakash ,anomaly_score_max,0.4628357,0.4628357,increases_risk,2
+Adv Adoor Prakash ,num_works,-0.4174835,0.4174835,decreases_risk,3
+Adv Dean Kuriakose,cost_deviation_pct_mean,-3.327809,3.327809,decreases_risk,1
+Adv Dean Kuriakose,num_works,-0.4036229,0.4036229,decreases_risk,2
+Adv Dean Kuriakose,sor_match_confidence_mean,-0.23526828,0.23526828,decreases_risk,3
+Ajay Bhatt,cost_deviation_pct_mean,-1.9968827,1.9968827,decreases_risk,1
+Ajay Bhatt,collusion_score_mean,-0.353056,0.353056,decreases_risk,2
+Ajay Bhatt,sor_match_confidence_mean,-0.21952099,0.21952099,decreases_risk,3
+Ajay Kumar Mandal,cost_deviation_pct_mean,-3.5110602,3.5110602,decreases_risk,1
+Ajay Kumar Mandal,cost_deviation_pct_max,0.5097888,0.5097888,increases_risk,2
+Ajay Kumar Mandal,num_works,-0.38616833,0.38616833,decreases_risk,3
+Ajay Tamta,cost_deviation_pct_mean,-2.9195726,2.9195726,decreases_risk,1
+Ajay Tamta,cost_deviation_pct_max,-2.695883,2.695883,decreases_risk,2
+Ajay Tamta,num_works,0.86377543,0.86377543,increases_risk,3
+Alok Kumar Suman,cost_deviation_pct_mean,-2.1040277,2.1040277,decreases_risk,1
+Alok Kumar Suman,duplicate_score_max,-0.3576457,0.3576457,decreases_risk,2
+Alok Kumar Suman,sor_match_confidence_mean,-0.26494494,0.26494494,decreases_risk,3
+Amol Ramsing Kolhe,cost_deviation_pct_mean,2.321293,2.321293,increases_risk,1
+Amol Ramsing Kolhe,num_works,1.1105238,1.1105238,increases_risk,2
+Amol Ramsing Kolhe,cost_deviation_pct_max,0.5311077,0.5311077,increases_risk,3
+Andimuthu Raja,cost_deviation_pct_mean,1.965496,1.965496,increases_risk,1
+Andimuthu Raja,cost_deviation_pct_max,-0.7248469,0.7248469,decreases_risk,2
+Andimuthu Raja,residual_pct_max,-0.3483421,0.3483421,decreases_risk,3
+Annpurna Devi ,cost_deviation_pct_mean,-1.4081649,1.4081649,decreases_risk,1
+Annpurna Devi ,sor_match_confidence_mean,0.8907532,0.8907532,increases_risk,2
+Annpurna Devi ,anomaly_score_max,0.58257383,0.58257383,increases_risk,3
+Anto Antony,cost_deviation_pct_mean,4.392722,4.392722,increases_risk,1
+Anto Antony,collusion_score_max,0.20445019,0.20445019,increases_risk,2
+Anto Antony,sor_match_confidence_mean,-0.16537139,0.16537139,decreases_risk,3
+Anurag Sharma ,cost_deviation_pct_mean,3.1584096,3.1584096,increases_risk,1
+Anurag Sharma ,anomaly_score_max,0.49724686,0.49724686,increases_risk,2
+Anurag Sharma ,collusion_score_mean,0.14409752,0.14409752,increases_risk,3
+Anurag Singh Thakur,cost_deviation_pct_max,0.9424279,0.9424279,increases_risk,1
+Anurag Singh Thakur,cost_deviation_pct_mean,0.2605643,0.2605643,increases_risk,2
+Anurag Singh Thakur,anomaly_flag_rate,0.159142,0.159142,increases_risk,3
+Appalanaidu Kalisetti,cost_deviation_pct_mean,-3.2036762,3.2036762,decreases_risk,1
+Appalanaidu Kalisetti,cost_deviation_pct_max,-1.565485,1.565485,decreases_risk,2
+Appalanaidu Kalisetti,sor_match_confidence_mean,0.4444743,0.4444743,increases_risk,3
+Arvind Dharmapuri,cost_deviation_pct_mean,-2.9664989,2.9664989,decreases_risk,1
+Arvind Dharmapuri,num_works,-0.51649797,0.51649797,decreases_risk,2
+Arvind Dharmapuri,cost_deviation_pct_max,-0.29652613,0.29652613,decreases_risk,3
+Arvind Ganpat Sawant,cost_deviation_pct_mean,-3.0192907,3.0192907,decreases_risk,1
+Arvind Ganpat Sawant,cost_deviation_pct_max,-2.5849884,2.5849884,decreases_risk,2
+Arvind Ganpat Sawant,num_works,0.9673273,0.9673273,increases_risk,3
+Asaduddin Owaisi,cost_deviation_pct_mean,-2.933361,2.933361,decreases_risk,1
+Asaduddin Owaisi,cost_deviation_pct_max,-2.5341167,2.5341167,decreases_risk,2
+Asaduddin Owaisi,num_works,0.9004993,0.9004993,increases_risk,3
+Ashok Kumar Rawat,cost_deviation_pct_mean,-3.0628266,3.0628266,decreases_risk,1
+Ashok Kumar Rawat,cost_deviation_pct_max,-2.612354,2.612354,decreases_risk,2
+Ashok Kumar Rawat,num_works,0.87566626,0.87566626,increases_risk,3
+Ashok Kumar Yadav ,cost_deviation_pct_mean,1.6293709,1.6293709,increases_risk,1
+Ashok Kumar Yadav ,anomaly_flag_rate,-0.5490612,0.5490612,decreases_risk,2
+Ashok Kumar Yadav ,collusion_score_max,-0.35528135,0.35528135,decreases_risk,3
+Asit Kumar Mal ,cost_deviation_pct_mean,-2.932587,2.932587,decreases_risk,1
+Asit Kumar Mal ,num_works,-0.4301036,0.4301036,decreases_risk,2
+Asit Kumar Mal ,anomaly_flag_rate,-0.3024396,0.3024396,decreases_risk,3
+B K PARTHASARATHI,cost_deviation_pct_mean,-3.5914116,3.5914116,decreases_risk,1
+B K PARTHASARATHI,anomaly_score_max,0.46297255,0.46297255,increases_risk,2
+B K PARTHASARATHI,cost_deviation_pct_max,0.4246815,0.4246815,increases_risk,3
+BABU SINGH KUSHWAHA,cost_deviation_pct_mean,-2.8569672,2.8569672,decreases_risk,1
+BABU SINGH KUSHWAHA,num_works,-0.4855229,0.4855229,decreases_risk,2
+BABU SINGH KUSHWAHA,cost_deviation_pct_max,-0.34525764,0.34525764,decreases_risk,3
+BACHHAV SHOBHA DINESH,cost_deviation_pct_mean,-3.2010674,3.2010674,decreases_risk,1
+BACHHAV SHOBHA DINESH,cost_deviation_pct_max,-2.4720275,2.4720275,decreases_risk,2
+BACHHAV SHOBHA DINESH,num_works,0.9963525,0.9963525,increases_risk,3
+BAG MITALI,cost_deviation_pct_mean,-3.3592365,3.3592365,decreases_risk,1
+BAG MITALI,cost_deviation_pct_max,0.61378956,0.61378956,increases_risk,2
+BAG MITALI,num_works,-0.3880275,0.3880275,decreases_risk,3
+BAIJAYANT PANDA,cost_deviation_pct_mean,-2.9367101,2.9367101,decreases_risk,1
+BAIJAYANT PANDA,cost_deviation_pct_max,-2.7321346,2.7321346,decreases_risk,2
+BAIJAYANT PANDA,num_works,0.8924233,0.8924233,increases_risk,3
+BAJRANG MANOHAR SONWANE,cost_deviation_pct_mean,-2.9824588,2.9824588,decreases_risk,1
+BAJRANG MANOHAR SONWANE,cost_deviation_pct_max,0.8715685,0.8715685,increases_risk,2
+BAJRANG MANOHAR SONWANE,num_works,-0.6853507,0.6853507,decreases_risk,3
+BALABHADRA MAJHI,cost_deviation_pct_mean,-2.903348,2.903348,decreases_risk,1
+BALABHADRA MAJHI,cost_deviation_pct_max,0.8342459,0.8342459,increases_risk,2
+BALABHADRA MAJHI,num_works,-0.7300309,0.7300309,decreases_risk,3
+BALRAM NAIK PORIKA,cost_deviation_pct_mean,-2.8769355,2.8769355,decreases_risk,1
+BALRAM NAIK PORIKA,num_works,-0.43239352,0.43239352,decreases_risk,2
+BALRAM NAIK PORIKA,anomaly_flag_rate,-0.33025864,0.33025864,decreases_risk,3
+BALWANT BASWANT WANKHADE,cost_deviation_pct_mean,-3.5277202,3.5277202,decreases_risk,1
+BALWANT BASWANT WANKHADE,cost_deviation_pct_max,0.81974006,0.81974006,increases_risk,2
+BALWANT BASWANT WANKHADE,num_works,-0.4148437,0.4148437,decreases_risk,3
+BALYA MAMA SURESH GOPINATH MHATRE,cost_deviation_pct_mean,-3.0563538,3.0563538,decreases_risk,1
+BALYA MAMA SURESH GOPINATH MHATRE,cost_deviation_pct_max,-2.6977766,2.6977766,decreases_risk,2
+BALYA MAMA SURESH GOPINATH MHATRE,num_works,0.902687,0.902687,increases_risk,3
+BAPI HALDAR,cost_deviation_pct_mean,-3.7949297,3.7949297,decreases_risk,1
+BAPI HALDAR,cost_deviation_pct_max,0.5358411,0.5358411,increases_risk,2
+BAPI HALDAR,num_works,-0.39604518,0.39604518,decreases_risk,3
+BASAVARAJ BOMMAI,num_works,-1.004886,1.004886,decreases_risk,1
+BASAVARAJ BOMMAI,cost_deviation_pct_mean,0.94273317,0.94273317,increases_risk,2
+BASAVARAJ BOMMAI,cost_deviation_pct_max,0.6266648,0.6266648,increases_risk,3
+BASTIPATI NAGARAJU PANCHALINGALA,cost_deviation_pct_mean,-0.77277154,0.77277154,decreases_risk,1
+BASTIPATI NAGARAJU PANCHALINGALA,anomaly_score_max,0.32898775,0.32898775,increases_risk,2
+BASTIPATI NAGARAJU PANCHALINGALA,collusion_score_mean,0.26423922,0.26423922,increases_risk,3
+BHAJAN LAL JATAV,cost_deviation_pct_mean,3.6264553,3.6264553,increases_risk,1
+BHAJAN LAL JATAV,num_works,1.2121195,1.2121195,increases_risk,2
+BHAJAN LAL JATAV,sor_match_confidence_mean,0.3892112,0.3892112,increases_risk,3
+BHARAT SINGH KUSHWAH,cost_deviation_pct_mean,-2.9006739,2.9006739,decreases_risk,1
+BHARAT SINGH KUSHWAH,cost_deviation_pct_max,-2.7057421,2.7057421,decreases_risk,2
+BHARAT SINGH KUSHWAH,num_works,0.8717258,0.8717258,increases_risk,3
+BHARATBHAI MANUBHAI SUTARIYA,cost_deviation_pct_mean,-2.9631255,2.9631255,decreases_risk,1
+BHARATBHAI MANUBHAI SUTARIYA,num_works,-0.45436192,0.45436192,decreases_risk,2
+BHARATBHAI MANUBHAI SUTARIYA,cost_deviation_pct_max,0.4070526,0.4070526,increases_risk,3
+BHARTI PARDHI,cost_deviation_pct_max,-0.45782816,0.45782816,decreases_risk,1
+BHARTI PARDHI,duplicate_score_max,-0.3768271,0.3768271,decreases_risk,2
+BHARTI PARDHI,deviation_flag_rate,-0.22176981,0.22176981,decreases_risk,3
+BHASKAR MURLIDHAR BHAGARE,cost_deviation_pct_mean,4.3171883,4.3171883,increases_risk,1
+BHASKAR MURLIDHAR BHAGARE,num_works,-0.8452106,0.8452106,decreases_risk,2
+BHASKAR MURLIDHAR BHAGARE,cost_deviation_pct_max,0.42887083,0.42887083,increases_risk,3
+BHAUSAHEB RAJARAM WAKCHAURE,cost_deviation_pct_mean,-2.9193895,2.9193895,decreases_risk,1
+BHAUSAHEB RAJARAM WAKCHAURE,cost_deviation_pct_max,-2.7336168,2.7336168,decreases_risk,2
+BHAUSAHEB RAJARAM WAKCHAURE,num_works,0.93672913,0.93672913,increases_risk,3
+BHOJRAJ NAG,cost_deviation_pct_mean,-2.365678,2.365678,decreases_risk,1
+BHOJRAJ NAG,cost_deviation_pct_max,0.76623255,0.76623255,increases_risk,2
+BHOJRAJ NAG,num_works,-0.36718872,0.36718872,decreases_risk,3
+BHUMARE SANDIPANRAO ASARAM,cost_deviation_pct_mean,-2.7364573,2.7364573,decreases_risk,1
+BHUMARE SANDIPANRAO ASARAM,cost_deviation_pct_max,1.0008012,1.0008012,increases_risk,2
+BHUMARE SANDIPANRAO ASARAM,sor_match_confidence_mean,0.73239297,0.73239297,increases_risk,3
+BHUPENDER YADAV,num_works,-0.67746717,0.67746717,decreases_risk,1
+BHUPENDER YADAV,cost_deviation_pct_mean,-0.474948,0.474948,decreases_risk,2
+BHUPENDER YADAV,residual_pct_max,-0.27934045,0.27934045,decreases_risk,3
+BIBHU PRASAD TARAI,num_works,1.393105,1.393105,increases_risk,1
+BIBHU PRASAD TARAI,cost_deviation_pct_max,0.9261888,0.9261888,increases_risk,2
+BIBHU PRASAD TARAI,cost_deviation_pct_mean,0.342552,0.342552,increases_risk,3
+BIJULI KALITA MEDHI,cost_deviation_pct_mean,3.4638023,3.4638023,increases_risk,1
+BIJULI KALITA MEDHI,num_works,1.1769755,1.1769755,increases_risk,2
+BIJULI KALITA MEDHI,cost_deviation_pct_max,0.6721845,0.6721845,increases_risk,3
+BIPLAB KUMAR DEB,cost_deviation_pct_mean,-3.073655,3.073655,decreases_risk,1
+BIPLAB KUMAR DEB,cost_deviation_pct_max,-2.4840786,2.4840786,decreases_risk,2
+BIPLAB KUMAR DEB,num_works,0.96681356,0.96681356,increases_risk,3
+BRIJENDRA SINGH OLA,cost_deviation_pct_mean,-0.74644154,0.74644154,decreases_risk,1
+BRIJENDRA SINGH OLA,cost_deviation_pct_max,-0.43645,0.43645,decreases_risk,2
+BRIJENDRA SINGH OLA,residual_pct_max,-0.29544663,0.29544663,decreases_risk,3
+BRIJMOHAN AGRAWAL,cost_deviation_pct_mean,-3.614952,3.614952,decreases_risk,1
+BRIJMOHAN AGRAWAL,cost_deviation_pct_max,-1.347638,1.347638,decreases_risk,2
+BRIJMOHAN AGRAWAL,num_works,-0.32242045,0.32242045,decreases_risk,3
+BUNTY VIVEK SAHU,cost_deviation_pct_mean,-3.4332583,3.4332583,decreases_risk,1
+BUNTY VIVEK SAHU,cost_deviation_pct_max,0.7631991,0.7631991,increases_risk,2
+BUNTY VIVEK SAHU,num_works,-0.42269078,0.42269078,decreases_risk,3
+Balashowry Vallabbhaneni,num_works,1.6191463,1.6191463,increases_risk,1
+Balashowry Vallabbhaneni,cost_deviation_pct_max,1.2706671,1.2706671,increases_risk,2
+Balashowry Vallabbhaneni,sor_match_confidence_mean,0.3200286,0.3200286,increases_risk,3
+Bansuri Swaraj,cost_deviation_pct_mean,2.8678868,2.8678868,increases_risk,1
+Bansuri Swaraj,anomaly_flag_rate,-0.4882451,0.4882451,decreases_risk,2
+Bansuri Swaraj,duplicate_score_max,-0.23954318,0.23954318,decreases_risk,3
+Bhagirath Chaudhary,cost_deviation_pct_mean,-3.4988923,3.4988923,decreases_risk,1
+Bhagirath Chaudhary,num_works,-0.37686807,0.37686807,decreases_risk,2
+Bhagirath Chaudhary,collusion_score_max,0.26960272,0.26960272,increases_risk,3
+Bharatsinhji Shankarji Dabhi,cost_deviation_pct_mean,-3.441517,3.441517,decreases_risk,1
+Bharatsinhji Shankarji Dabhi,num_works,-0.47374192,0.47374192,decreases_risk,2
+Bharatsinhji Shankarji Dabhi,sor_match_confidence_mean,-0.27821314,0.27821314,decreases_risk,3
+Bhola Singh,duplicate_score_max,-0.39627054,0.39627054,decreases_risk,1
+Bhola Singh,cost_deviation_pct_max,-0.3305492,0.3305492,decreases_risk,2
+Bhola Singh,num_months,-0.29938924,0.29938924,decreases_risk,3
+Bidyut Baran Mahato,cost_deviation_pct_mean,-3.0386953,3.0386953,decreases_risk,1
+Bidyut Baran Mahato,cost_deviation_pct_max,-2.6300619,2.6300619,decreases_risk,2
+Bidyut Baran Mahato,num_works,0.85244936,0.85244936,increases_risk,3
+C R Patil,cost_deviation_pct_mean,0.94646007,0.94646007,increases_risk,1
+C R Patil,cost_deviation_pct_max,-0.33531478,0.33531478,decreases_risk,2
+C R Patil,num_months,-0.31275842,0.31275842,decreases_risk,3
+C.M.RAMESH,cost_deviation_pct_mean,-2.9006402,2.9006402,decreases_risk,1
+C.M.RAMESH,cost_deviation_pct_max,0.89131564,0.89131564,increases_risk,2
+C.M.RAMESH,num_works,-0.6966399,0.6966399,decreases_risk,3
+CAPTAIN BRIJESH CHOWTA,cost_deviation_pct_mean,-2.1007957,2.1007957,decreases_risk,1
+CAPTAIN BRIJESH CHOWTA,cost_deviation_pct_max,-0.2853036,0.2853036,decreases_risk,2
+CAPTAIN BRIJESH CHOWTA,collusion_score_max,-0.2636065,0.2636065,decreases_risk,3
+CAPTAIN VIRIATO FERNANDES,cost_deviation_pct_mean,-3.4466188,3.4466188,decreases_risk,1
+CAPTAIN VIRIATO FERNANDES,cost_deviation_pct_max,0.8627299,0.8627299,increases_risk,2
+CAPTAIN VIRIATO FERNANDES,num_works,-0.38496673,0.38496673,decreases_risk,3
+CHAMALA KIRAN KUMAR REDDY,cost_deviation_pct_mean,-2.1983094,2.1983094,decreases_risk,1
+CHAMALA KIRAN KUMAR REDDY,anomaly_score_max,0.3569438,0.3569438,increases_risk,2
+CHAMALA KIRAN KUMAR REDDY,num_works,-0.3199125,0.3199125,decreases_risk,3
+CHANDAN CHAUHAN,num_works,2.1117413,2.1117413,increases_risk,1
+CHANDAN CHAUHAN,cost_deviation_pct_mean,-1.9453962,1.9453962,decreases_risk,2
+CHANDAN CHAUHAN,cost_deviation_pct_max,1.1669879,1.1669879,increases_risk,3
+CHANDRA SHEKHAR,cost_deviation_pct_mean,1.309776,1.309776,increases_risk,1
+CHANDRA SHEKHAR,anomaly_score_max,0.47093105,0.47093105,increases_risk,2
+CHANDRA SHEKHAR,cost_deviation_pct_max,-0.24725841,0.24725841,decreases_risk,3
+CHANDUBHAI CHHAGANBHAI SHIHORA,cost_deviation_pct_mean,-3.5932333,3.5932333,decreases_risk,1
+CHANDUBHAI CHHAGANBHAI SHIHORA,cost_deviation_pct_max,0.5881918,0.5881918,increases_risk,2
+CHANDUBHAI CHHAGANBHAI SHIHORA,num_works,-0.41699854,0.41699854,decreases_risk,3
+CHARANJIT SINGH CHANNI,cost_deviation_pct_mean,-2.7664096,2.7664096,decreases_risk,1
+CHARANJIT SINGH CHANNI,num_works,-0.3698801,0.3698801,decreases_risk,2
+CHARANJIT SINGH CHANNI,collusion_score_max,0.28214097,0.28214097,increases_risk,3
+CHHATRA PAL SINGH GANGWAR,cost_deviation_pct_mean,-3.5445478,3.5445478,decreases_risk,1
+CHHATRA PAL SINGH GANGWAR,cost_deviation_pct_max,0.5695719,0.5695719,increases_risk,2
+CHHATRA PAL SINGH GANGWAR,num_works,-0.4031959,0.4031959,decreases_risk,3
+CHHATRAPATI SHAHU SHAHAJI,cost_deviation_pct_mean,4.1651187,4.1651187,increases_risk,1
+CHHATRAPATI SHAHU SHAHAJI,num_works,-0.53813905,0.53813905,decreases_risk,2
+CHHATRAPATI SHAHU SHAHAJI,cost_deviation_pct_max,0.52332026,0.52332026,increases_risk,3
+CHHOTELAL,cost_deviation_pct_mean,-2.8879411,2.8879411,decreases_risk,1
+CHHOTELAL,num_works,-0.45160055,0.45160055,decreases_risk,2
+CHHOTELAL,duplicate_score_max,-0.27501184,0.27501184,decreases_risk,3
+CHINTAMANI MAHARAJ,cost_deviation_pct_mean,-3.6596465,3.6596465,decreases_risk,1
+CHINTAMANI MAHARAJ,cost_deviation_pct_max,-1.3967702,1.3967702,decreases_risk,2
+CHINTAMANI MAHARAJ,num_works,-0.2005116,0.2005116,decreases_risk,3
+CHIRAG PASWAN,cost_deviation_pct_max,0.89365155,0.89365155,increases_risk,1
+CHIRAG PASWAN,deviation_flag_rate,-0.24247043,0.24247043,decreases_risk,2
+CHIRAG PASWAN,num_months,-0.23374653,0.23374653,decreases_risk,3
+CN Annadurai,cost_deviation_pct_mean,-0.4685887,0.4685887,decreases_risk,1
+CN Annadurai,cost_deviation_pct_max,-0.4294,0.4294,decreases_risk,2
+CN Annadurai,duplicate_score_max,-0.30036363,0.30036363,decreases_risk,3
+Chandra Prakash Joshi,cost_deviation_pct_mean,-3.0075762,3.0075762,decreases_risk,1
+Chandra Prakash Joshi,cost_deviation_pct_max,-2.7374709,2.7374709,decreases_risk,2
+Chandra Prakash Joshi,num_works,0.90841234,0.90841234,increases_risk,3
+D M Kathir Anand,num_works,1.2416602,1.2416602,increases_risk,1
+D M Kathir Anand,cost_deviation_pct_max,0.94987243,0.94987243,increases_risk,2
+D M Kathir Anand,sor_match_confidence_mean,0.3856883,0.3856883,increases_risk,3
+D Ravikumar ,cost_deviation_pct_mean,-3.3955853,3.3955853,decreases_risk,1
+D Ravikumar ,num_works,-0.4832547,0.4832547,decreases_risk,2
+D Ravikumar ,cost_deviation_pct_max,-0.35140043,0.35140043,decreases_risk,3
+DAGGUMALLA PRASADA RAO,cost_deviation_pct_mean,4.453481,4.453481,increases_risk,1
+DAGGUMALLA PRASADA RAO,cost_deviation_pct_max,-0.58251935,0.58251935,decreases_risk,2
+DAGGUMALLA PRASADA RAO,anomaly_score_max,0.28910074,0.28910074,increases_risk,3
+DAMODAR AGARWAL,cost_deviation_pct_mean,-3.4198549,3.4198549,decreases_risk,1
+DAMODAR AGARWAL,cost_deviation_pct_max,0.740402,0.740402,increases_risk,2
+DAMODAR AGARWAL,num_works,-0.3967253,0.3967253,decreases_risk,3
+DAROGA PRASAD SAROJ,cost_deviation_pct_mean,-3.5789933,3.5789933,decreases_risk,1
+DAROGA PRASAD SAROJ,cost_deviation_pct_max,0.6061671,0.6061671,increases_risk,2
+DAROGA PRASAD SAROJ,num_works,-0.40323627,0.40323627,decreases_risk,3
+DARSHAN SINGH CHOUDHARY,cost_deviation_pct_max,0.6108268,0.6108268,increases_risk,1
+DARSHAN SINGH CHOUDHARY,cost_deviation_pct_mean,0.5810356,0.5810356,increases_risk,2
+DARSHAN SINGH CHOUDHARY,collusion_score_mean,-0.2205582,0.2205582,decreases_risk,3
+DEEPENDER SINGH HOODA,cost_deviation_pct_mean,-3.6270158,3.6270158,decreases_risk,1
+DEEPENDER SINGH HOODA,cost_deviation_pct_max,0.62217945,0.62217945,increases_risk,2
+DEEPENDER SINGH HOODA,num_works,-0.4025907,0.4025907,decreases_risk,3
+DEVESH CHANDRA THAKUR,cost_deviation_pct_mean,-0.63690335,0.63690335,decreases_risk,1
+DEVESH CHANDRA THAKUR,duplicate_score_max,-0.4172682,0.4172682,decreases_risk,2
+DEVESH CHANDRA THAKUR,num_months,-0.24233039,0.24233039,decreases_risk,3
+DEVESH SHAKYA,cost_deviation_pct_mean,4.2706037,4.2706037,increases_risk,1
+DEVESH SHAKYA,anomaly_score_max,0.3940671,0.3940671,increases_risk,2
+DEVESH SHAKYA,num_works,-0.20422386,0.20422386,decreases_risk,3
+DHANORKAR PRATIBHA SURESH ALIAS BALUBHAU,num_works,1.698238,1.698238,increases_risk,1
+DHANORKAR PRATIBHA SURESH ALIAS BALUBHAU,cost_deviation_pct_max,1.303693,1.303693,increases_risk,2
+DHANORKAR PRATIBHA SURESH ALIAS BALUBHAU,anomaly_flag_rate,0.19472207,0.19472207,increases_risk,3
+DHARMENDRA PRADHAN,cost_deviation_pct_mean,-2.8709126,2.8709126,decreases_risk,1
+DHARMENDRA PRADHAN,cost_deviation_pct_max,-2.4860978,2.4860978,decreases_risk,2
+DHARMENDRA PRADHAN,num_works,0.9347432,0.9347432,increases_risk,3
+DHARMENDRA YADAV,cost_deviation_pct_mean,-3.389024,3.389024,decreases_risk,1
+DHARMENDRA YADAV,cost_deviation_pct_max,-1.3244755,1.3244755,decreases_risk,2
+DHARMENDRA YADAV,num_works,-0.41298917,0.41298917,decreases_risk,3
+DHAVAL LAXMANBHAI PATEL,cost_deviation_pct_mean,-3.5129397,3.5129397,decreases_risk,1
+DHAVAL LAXMANBHAI PATEL,num_works,-0.3899815,0.3899815,decreases_risk,2
+DHAVAL LAXMANBHAI PATEL,cost_deviation_pct_max,0.24165161,0.24165161,increases_risk,3
+DINESHBHAI MAKWANA,cost_deviation_pct_max,-2.3153813,2.3153813,decreases_risk,1
+DINESHBHAI MAKWANA,num_works,0.5893152,0.5893152,increases_risk,2
+DINESHBHAI MAKWANA,cost_deviation_pct_mean,-0.43362832,0.43362832,decreases_risk,3
+DR BYREDDY SHABARI,cost_deviation_pct_mean,-2.8301733,2.8301733,decreases_risk,1
+DR BYREDDY SHABARI,anomaly_score_max,0.46084887,0.46084887,increases_risk,2
+DR BYREDDY SHABARI,num_works,-0.4146478,0.4146478,decreases_risk,3
+DR C N MANJUNATH,cost_deviation_pct_mean,-3.6713445,3.6713445,decreases_risk,1
+DR C N MANJUNATH,cost_deviation_pct_max,0.5550906,0.5550906,increases_risk,2
+DR C N MANJUNATH,num_works,-0.41077912,0.41077912,decreases_risk,3
+DR DHARAMVIRA GANDHI,cost_deviation_pct_mean,-3.6675832,3.6675832,decreases_risk,1
+DR DHARAMVIRA GANDHI,cost_deviation_pct_max,0.5649855,0.5649855,increases_risk,2
+DR DHARAMVIRA GANDHI,num_works,-0.41162455,0.41162455,decreases_risk,3
+DR KALGE SHIVAJI BANDAPPA,cost_deviation_pct_mean,-3.4268548,3.4268548,decreases_risk,1
+DR KALGE SHIVAJI BANDAPPA,cost_deviation_pct_max,-1.4281408,1.4281408,decreases_risk,2
+DR KALGE SHIVAJI BANDAPPA,num_works,-0.3086286,0.3086286,decreases_risk,3
+DR RAJKUMAR SANGWAN,cost_deviation_pct_mean,4.0843067,4.0843067,increases_risk,1
+DR RAJKUMAR SANGWAN,num_works,-0.7604859,0.7604859,decreases_risk,2
+DR RAJKUMAR SANGWAN,cost_deviation_pct_max,0.5342699,0.5342699,increases_risk,3
+DR RANI SRI KUMAR,cost_deviation_pct_mean,-2.8090146,2.8090146,decreases_risk,1
+DR RANI SRI KUMAR,cost_deviation_pct_max,0.7556052,0.7556052,increases_risk,2
+DR RANI SRI KUMAR,num_works,-0.41928646,0.41928646,decreases_risk,3
+DR. HEMANG JOSHI,cost_deviation_pct_mean,-3.5956817,3.5956817,decreases_risk,1
+DR. HEMANG JOSHI,cost_deviation_pct_max,0.41661194,0.41661194,increases_risk,2
+DR. HEMANG JOSHI,num_works,-0.39631158,0.39631158,decreases_risk,3
+DR. HEMANT VISHNU SAVARA,cost_deviation_pct_mean,-2.8832104,2.8832104,decreases_risk,1
+DR. HEMANT VISHNU SAVARA,cost_deviation_pct_max,-2.767453,2.767453,decreases_risk,2
+DR. HEMANT VISHNU SAVARA,num_works,0.87570304,0.87570304,increases_risk,3
+DR. KIRSAN NAMDEO,cost_deviation_pct_mean,1.3167065,1.3167065,increases_risk,1
+DR. KIRSAN NAMDEO,num_works,-0.9350588,0.9350588,decreases_risk,2
+DR. KIRSAN NAMDEO,anomaly_flag_rate,-0.58174103,0.58174103,decreases_risk,3
+DR. LATA WANKHEDE,cost_deviation_pct_mean,4.775944,4.775944,increases_risk,1
+DR. LATA WANKHEDE,anomaly_score_max,0.30349338,0.30349338,increases_risk,2
+DR. LATA WANKHEDE,residual_pct_max,-0.22555843,0.22555843,decreases_risk,3
+DR. M.P ABDUSSAMAD SAMADANI,cost_deviation_pct_mean,1.2204379,1.2204379,increases_risk,1
+DR. M.P ABDUSSAMAD SAMADANI,cost_deviation_pct_max,0.6168474,0.6168474,increases_risk,2
+DR. M.P ABDUSSAMAD SAMADANI,anomaly_flag_rate,0.33097726,0.33097726,increases_risk,3
+DR. MANSUKH MANDAVIYA,cost_deviation_pct_mean,-2.936681,2.936681,decreases_risk,1
+DR. MANSUKH MANDAVIYA,num_works,-0.3909434,0.3909434,decreases_risk,2
+DR. MANSUKH MANDAVIYA,residual_pct_max,-0.23677951,0.23677951,decreases_risk,3
+DR. PRABHA MALLIKARJUN,cost_deviation_pct_mean,-3.1762238,3.1762238,decreases_risk,1
+DR. PRABHA MALLIKARJUN,cost_deviation_pct_max,-2.5509696,2.5509696,decreases_risk,2
+DR. PRABHA MALLIKARJUN,num_works,0.8736118,0.8736118,increases_risk,3
+DR. PRASHANT YADAORAO PADOLE,cost_deviation_pct_mean,-3.0675054,3.0675054,decreases_risk,1
+DR. PRASHANT YADAORAO PADOLE,cost_deviation_pct_max,-2.532375,2.532375,decreases_risk,2
+DR. PRASHANT YADAORAO PADOLE,num_works,0.94883364,0.94883364,increases_risk,3
+DR. RAJ KUMAR CHABBEWAL,cost_deviation_pct_mean,-2.1758769,2.1758769,decreases_risk,1
+DR. RAJ KUMAR CHABBEWAL,cost_deviation_pct_max,-0.44023633,0.44023633,decreases_risk,2
+DR. RAJ KUMAR CHABBEWAL,duplicate_score_max,-0.33489215,0.33489215,decreases_risk,3
+DR. RAJESH MISHRA,cost_deviation_pct_mean,-2.9556873,2.9556873,decreases_risk,1
+DR. RAJESH MISHRA,num_works,-0.41764408,0.41764408,decreases_risk,2
+DR. RAJESH MISHRA,cost_deviation_pct_max,-0.3495537,0.3495537,decreases_risk,3
+DR. S P SINGH,cost_deviation_pct_mean,-3.5014732,3.5014732,decreases_risk,1
+DR. S P SINGH,cost_deviation_pct_max,0.5225787,0.5225787,increases_risk,2
+DR. S P SINGH,num_works,-0.43175548,0.43175548,decreases_risk,3
+DR. SHARMILA SARKAR,cost_deviation_pct_mean,-3.191298,3.191298,decreases_risk,1
+DR. SHARMILA SARKAR,cost_deviation_pct_max,-1.3086631,1.3086631,decreases_risk,2
+DR. SHARMILA SARKAR,num_works,-0.45138243,0.45138243,decreases_risk,3
+DR.K.SUDHAKAR,cost_deviation_pct_mean,-3.3615236,3.3615236,decreases_risk,1
+DR.K.SUDHAKAR,cost_deviation_pct_max,-1.324256,1.324256,decreases_risk,2
+DR.K.SUDHAKAR,num_works,-0.4894393,0.4894393,decreases_risk,3
+DR.MALLU RAVI,cost_deviation_pct_mean,-3.478506,3.478506,decreases_risk,1
+DR.MALLU RAVI,cost_deviation_pct_max,0.5643749,0.5643749,increases_risk,2
+DR.MALLU RAVI,num_works,-0.43276748,0.43276748,decreases_risk,3
+DULU MAHATO,cost_deviation_pct_mean,1.8640077,1.8640077,increases_risk,1
+DULU MAHATO,cost_deviation_pct_max,0.5749491,0.5749491,increases_risk,2
+DULU MAHATO,anomaly_score_max,0.4344505,0.4344505,increases_risk,3
+DURAI VAIKO,cost_deviation_pct_mean,2.1488283,2.1488283,increases_risk,1
+DURAI VAIKO,cost_deviation_pct_max,-0.41025335,0.41025335,decreases_risk,2
+DURAI VAIKO,num_months,-0.22337206,0.22337206,decreases_risk,3
+Daggubati Purandeshwari,cost_deviation_pct_mean,-2.968437,2.968437,decreases_risk,1
+Daggubati Purandeshwari,cost_deviation_pct_max,-2.6097565,2.6097565,decreases_risk,2
+Daggubati Purandeshwari,num_works,0.9041806,0.9041806,increases_risk,3
+Devendra Alias Bhole Singh,cost_deviation_pct_mean,-3.3280246,3.3280246,decreases_risk,1
+Devendra Alias Bhole Singh,num_works,-0.3879532,0.3879532,decreases_risk,2
+Devendra Alias Bhole Singh,sor_match_confidence_mean,-0.37519684,0.37519684,decreases_risk,3
+Devusinh Jesingbhai Chauhan,cost_deviation_pct_mean,0.6873523,0.6873523,increases_risk,1
+Devusinh Jesingbhai Chauhan,cost_deviation_pct_max,-0.6177728,0.6177728,decreases_risk,2
+Devusinh Jesingbhai Chauhan,anomaly_flag_rate,-0.5012583,0.5012583,decreases_risk,3
+Dhairyasheel Sambhajirao Mane,cost_deviation_pct_max,-2.499117,2.499117,decreases_risk,1
+Dhairyasheel Sambhajirao Mane,cost_deviation_pct_mean,-2.3135102,2.3135102,decreases_risk,2
+Dhairyasheel Sambhajirao Mane,num_works,0.874157,0.874157,increases_risk,3
+Dileshwar Kamait ,cost_deviation_pct_mean,-3.5656314,3.5656314,decreases_risk,1
+Dileshwar Kamait ,cost_deviation_pct_max,-1.4301875,1.4301875,decreases_risk,2
+Dileshwar Kamait ,deviation_flag_rate,-0.18014458,0.18014458,decreases_risk,3
+Dilip Saikia,cost_deviation_pct_mean,-2.9005504,2.9005504,decreases_risk,1
+Dilip Saikia,cost_deviation_pct_max,-2.4568512,2.4568512,decreases_risk,2
+Dilip Saikia,num_works,0.9456952,0.9456952,increases_risk,3
+Dinesh Chandra Yadav,cost_deviation_pct_mean,-0.70166314,0.70166314,decreases_risk,1
+Dinesh Chandra Yadav,num_months,-0.28423914,0.28423914,decreases_risk,2
+Dinesh Chandra Yadav,cost_deviation_pct_max,-0.21094237,0.21094237,decreases_risk,3
+Dr Chandra Sekhar Pemmasani,cost_deviation_pct_mean,3.7546923,3.7546923,increases_risk,1
+Dr Chandra Sekhar Pemmasani,num_works,1.1900119,1.1900119,increases_risk,2
+Dr Chandra Sekhar Pemmasani,cost_deviation_pct_max,0.6390145,0.6390145,increases_risk,3
+Dr Jayanta Kumar Roy,cost_deviation_pct_mean,-2.9119318,2.9119318,decreases_risk,1
+Dr Jayanta Kumar Roy,cost_deviation_pct_max,-2.5687888,2.5687888,decreases_risk,2
+Dr Jayanta Kumar Roy,num_works,0.8966027,0.8966027,increases_risk,3
+Dr Mohammad Jawed,cost_deviation_pct_mean,-3.5028684,3.5028684,decreases_risk,1
+Dr Mohammad Jawed,cost_deviation_pct_max,0.6349829,0.6349829,increases_risk,2
+Dr Mohammad Jawed,num_works,-0.4082259,0.4082259,decreases_risk,3
+Dr Shashi Tharoor,cost_deviation_pct_mean,-2.9291189,2.9291189,decreases_risk,1
+Dr Shashi Tharoor,cost_deviation_pct_max,0.46638703,0.46638703,increases_risk,2
+Dr Shashi Tharoor,num_works,-0.25515136,0.25515136,decreases_risk,3
+Dr Sukanta Majumdar ,cost_deviation_pct_mean,-2.5433524,2.5433524,decreases_risk,1
+Dr Sukanta Majumdar ,num_works,-0.72188896,0.72188896,decreases_risk,2
+Dr Sukanta Majumdar ,cost_deviation_pct_max,0.690244,0.690244,increases_risk,3
+Dr. Ajeet Madhavrao Gopchade (2024-30),cost_deviation_pct_max,0.9457298,0.9457298,increases_risk,1
+Dr. Ajeet Madhavrao Gopchade (2024-30),cost_deviation_pct_mean,0.1869289,0.1869289,increases_risk,2
+Dr. Ajeet Madhavrao Gopchade (2024-30),duplicate_score_max,0.1861542,0.1861542,increases_risk,3
+Dr. Anil Sukhdeorao Bonde (2022-28),cost_deviation_pct_mean,1.371783,1.371783,increases_risk,1
+Dr. Anil Sukhdeorao Bonde (2022-28),cost_deviation_pct_max,0.82126856,0.82126856,increases_risk,2
+Dr. Anil Sukhdeorao Bonde (2022-28),anomaly_flag_rate,0.23959374,0.23959374,increases_risk,3
+Dr. Ashok Kumar Mittal (2022-28),cost_deviation_pct_mean,3.8014128,3.8014128,increases_risk,1
+Dr. Ashok Kumar Mittal (2022-28),num_works,1.1685833,1.1685833,increases_risk,2
+Dr. Ashok Kumar Mittal (2022-28),cost_deviation_pct_max,0.66144496,0.66144496,increases_risk,3
+Dr. Bhim Singh (2024-30),cost_deviation_pct_max,-0.64404255,0.64404255,decreases_risk,1
+Dr. Bhim Singh (2024-30),cost_deviation_pct_mean,-0.6153196,0.6153196,decreases_risk,2
+Dr. Bhim Singh (2024-30),num_works,-0.23593576,0.23593576,decreases_risk,3
+Dr. Dharmasthala Veerendra Heggade (2022-28),cost_deviation_pct_mean,-2.8882678,2.8882678,decreases_risk,1
+Dr. Dharmasthala Veerendra Heggade (2022-28),num_works,-0.47649583,0.47649583,decreases_risk,2
+Dr. Dharmasthala Veerendra Heggade (2022-28),cost_deviation_pct_max,-0.3044912,0.3044912,decreases_risk,3
+Dr. Dharmshila Gupta (2024-30),cost_deviation_pct_mean,-2.8755908,2.8755908,decreases_risk,1
+Dr. Dharmshila Gupta (2024-30),num_works,-0.39418647,0.39418647,decreases_risk,2
+Dr. Dharmshila Gupta (2024-30),cost_deviation_pct_max,-0.28604862,0.28604862,decreases_risk,3
+Dr. Dinesh Sharma (2023-26),cost_deviation_pct_mean,-3.0617063,3.0617063,decreases_risk,1
+Dr. Dinesh Sharma (2023-26),cost_deviation_pct_max,-2.753873,2.753873,decreases_risk,2
+Dr. Dinesh Sharma (2023-26),num_works,0.8529144,0.8529144,increases_risk,3
+Dr. Faiyaz Ahmad (2022-28),cost_deviation_pct_max,-0.3670906,0.3670906,decreases_risk,1
+Dr. Faiyaz Ahmad (2022-28),collusion_score_max,0.3119351,0.3119351,increases_risk,2
+Dr. Faiyaz Ahmad (2022-28),cost_deviation_pct_mean,-0.2930371,0.2930371,decreases_risk,3
+Dr. John Brittas (2021-27),cost_deviation_pct_mean,-3.4689143,3.4689143,decreases_risk,1
+Dr. John Brittas (2021-27),num_works,-0.70878744,0.70878744,decreases_risk,2
+Dr. John Brittas (2021-27),cost_deviation_pct_max,0.6222159,0.6222159,increases_risk,3
+Dr. K. Laxman (2022-28),cost_deviation_pct_max,-0.6606505,0.6606505,decreases_risk,1
+Dr. K. Laxman (2022-28),cost_deviation_pct_mean,-0.38169467,0.38169467,decreases_risk,2
+Dr. K. Laxman (2022-28),num_works,-0.27042693,0.27042693,decreases_risk,3
+Dr. Kalpana Saini (2022-28),cost_deviation_pct_mean,-3.6629775,3.6629775,decreases_risk,1
+Dr. Kalpana Saini (2022-28),cost_deviation_pct_max,0.63472366,0.63472366,increases_risk,2
+Dr. Kalpana Saini (2022-28),num_works,-0.39534548,0.39534548,decreases_risk,3
+Dr. Kavita Patidar (2022-28),cost_deviation_pct_max,0.72408664,0.72408664,increases_risk,1
+Dr. Kavita Patidar (2022-28),collusion_score_max,0.24690402,0.24690402,increases_risk,2
+Dr. Kavita Patidar (2022-28),duplicate_score_max,0.18605722,0.18605722,increases_risk,3
+Dr. L. Murugan (2024-30),num_works,1.4453086,1.4453086,increases_risk,1
+Dr. L. Murugan (2024-30),cost_deviation_pct_max,1.0419123,1.0419123,increases_risk,2
+Dr. L. Murugan (2024-30),cost_deviation_pct_mean,0.46137905,0.46137905,increases_risk,3
+Dr. Laxmikant Bajpayee (2022-28),cost_deviation_pct_mean,-3.0339136,3.0339136,decreases_risk,1
+Dr. Laxmikant Bajpayee (2022-28),cost_deviation_pct_max,-2.7507808,2.7507808,decreases_risk,2
+Dr. Laxmikant Bajpayee (2022-28),num_works,0.8683092,0.8683092,increases_risk,3
+Dr. M. Dhanapal (2025-31),cost_deviation_pct_mean,-3.2105687,3.2105687,decreases_risk,1
+Dr. M. Dhanapal (2025-31),cost_deviation_pct_max,-1.6224327,1.6224327,decreases_risk,2
+Dr. M. Dhanapal (2025-31),num_works,-0.26129773,0.26129773,decreases_risk,3
+Dr. Medha Vishram Kulkarni (2024-30),cost_deviation_pct_mean,-2.6276636,2.6276636,decreases_risk,1
+Dr. Medha Vishram Kulkarni (2024-30),cost_deviation_pct_max,0.7748697,0.7748697,increases_risk,2
+Dr. Medha Vishram Kulkarni (2024-30),num_works,-0.6944351,0.6944351,decreases_risk,3
+Dr. Parmar Jashvantsinh Salamsinh (2024-30),cost_deviation_pct_mean,-1.9038831,1.9038831,decreases_risk,1
+Dr. Parmar Jashvantsinh Salamsinh (2024-30),cost_deviation_pct_max,0.8275626,0.8275626,increases_risk,2
+Dr. Parmar Jashvantsinh Salamsinh (2024-30),sor_match_confidence_mean,-0.25193015,0.25193015,decreases_risk,3
+Dr. Radha Mohan Das Agrawal (2022-28),cost_deviation_pct_mean,3.7111287,3.7111287,increases_risk,1
+Dr. Radha Mohan Das Agrawal (2022-28),num_works,1.001055,1.001055,increases_risk,2
+Dr. Radha Mohan Das Agrawal (2022-28),cost_deviation_pct_max,0.44647145,0.44647145,increases_risk,3
+Dr. Sandeep Kumar Pathak (2022-28),cost_deviation_pct_max,-0.50215125,0.50215125,decreases_risk,1
+Dr. Sandeep Kumar Pathak (2022-28),residual_pct_mean,-0.26254308,0.26254308,decreases_risk,2
+Dr. Sandeep Kumar Pathak (2022-28),num_works,-0.2213867,0.2213867,decreases_risk,3
+Dr. Sangeeta Balwant (2024-30),cost_deviation_pct_mean,-3.2106605,3.2106605,decreases_risk,1
+Dr. Sangeeta Balwant (2024-30),cost_deviation_pct_max,-2.5929325,2.5929325,decreases_risk,2
+Dr. Sangeeta Balwant (2024-30),num_works,0.8900631,0.8900631,increases_risk,3
+Dr. Sarfraz Ahmad (2024-30),cost_deviation_pct_mean,-2.9492686,2.9492686,decreases_risk,1
+Dr. Sarfraz Ahmad (2024-30),cost_deviation_pct_max,-1.7495903,1.7495903,decreases_risk,2
+Dr. Sarfraz Ahmad (2024-30),sor_match_confidence_mean,0.63347006,0.63347006,increases_risk,3
+Dr. Sasmit Patra (2022-28),cost_deviation_pct_max,0.74337864,0.74337864,increases_risk,1
+Dr. Sasmit Patra (2022-28),duplicate_score_max,0.17535293,0.17535293,increases_risk,2
+Dr. Sasmit Patra (2022-28),collusion_score_mean,-0.11600037,0.11600037,decreases_risk,3
+Dr. Sikander Kumar (2022-28),cost_deviation_pct_mean,-2.0456355,2.0456355,decreases_risk,1
+Dr. Sikander Kumar (2022-28),cost_deviation_pct_max,-0.36120045,0.36120045,decreases_risk,2
+Dr. Sikander Kumar (2022-28),anomaly_flag_rate,-0.29756108,0.29756108,decreases_risk,3
+Dr. Sudhanshu Trivedi (2024-30),cost_deviation_pct_mean,-3.1107051,3.1107051,decreases_risk,1
+Dr. Sudhanshu Trivedi (2024-30),cost_deviation_pct_max,-2.5717444,2.5717444,decreases_risk,2
+Dr. Sudhanshu Trivedi (2024-30),num_works,0.9608745,0.9608745,increases_risk,3
+Dr. Syed Naseer Hussain (2024-30),cost_deviation_pct_mean,-3.1215007,3.1215007,decreases_risk,1
+Dr. Syed Naseer Hussain (2024-30),cost_deviation_pct_max,-2.5797336,2.5797336,decreases_risk,2
+Dr. Syed Naseer Hussain (2024-30),num_works,0.88167745,0.88167745,increases_risk,3
+Dr. V. Sivadasan (2021-27),cost_deviation_pct_mean,3.8733432,3.8733432,increases_risk,1
+Dr. V. Sivadasan (2021-27),num_works,1.2061319,1.2061319,increases_risk,2
+Dr. V. Sivadasan (2021-27),collusion_score_max,0.23455676,0.23455676,increases_risk,3
+Dr. Vikramjit Singh Sahney (2022-28),cost_deviation_pct_mean,-2.0929825,2.0929825,decreases_risk,1
+Dr. Vikramjit Singh Sahney (2022-28),num_works,-0.6010193,0.6010193,decreases_risk,2
+Dr. Vikramjit Singh Sahney (2022-28),sor_match_confidence_mean,-0.25217608,0.25217608,decreases_risk,3
+Durga Das Uikey ,cost_deviation_pct_mean,-2.7922082,2.7922082,decreases_risk,1
+Durga Das Uikey ,num_works,-0.43830046,0.43830046,decreases_risk,2
+Durga Das Uikey ,cost_deviation_pct_max,-0.376815,0.376815,decreases_risk,3
+E. TUKARAM,cost_deviation_pct_mean,-2.9121609,2.9121609,decreases_risk,1
+E. TUKARAM,cost_deviation_pct_max,-2.8615556,2.8615556,decreases_risk,2
+E. TUKARAM,num_works,0.7979315,0.7979315,increases_risk,3
+E.T. MOHAMMED BASHEER,cost_deviation_pct_max,0.51498383,0.51498383,increases_risk,1
+E.T. MOHAMMED BASHEER,collusion_score_mean,-0.41637215,0.41637215,decreases_risk,2
+E.T. MOHAMMED BASHEER,residual_pct_max,-0.35229823,0.35229823,decreases_risk,3
+EATALA RAJENDER,cost_deviation_pct_mean,-2.9941394,2.9941394,decreases_risk,1
+EATALA RAJENDER,cost_deviation_pct_max,0.8975162,0.8975162,increases_risk,2
+EATALA RAJENDER,num_works,-0.38648424,0.38648424,decreases_risk,3
+ESWARASAMY K,cost_deviation_pct_mean,-0.3958444,0.3958444,decreases_risk,1
+ESWARASAMY K,residual_pct_max,-0.31294906,0.31294906,decreases_risk,2
+ESWARASAMY K,cost_deviation_pct_max,-0.24274445,0.24274445,decreases_risk,3
+Faggan Singh Kulaste,cost_deviation_pct_mean,-3.53795,3.53795,decreases_risk,1
+Faggan Singh Kulaste,cost_deviation_pct_max,-1.3397138,1.3397138,decreases_risk,2
+Faggan Singh Kulaste,num_works,-0.44605747,0.44605747,decreases_risk,3
+G. KUMAR NAIK,cost_deviation_pct_mean,1.6285601,1.6285601,increases_risk,1
+G. KUMAR NAIK,num_works,1.1910521,1.1910521,increases_risk,2
+G. KUMAR NAIK,cost_deviation_pct_max,0.747898,0.747898,increases_risk,3
+GANAPATHY RAJKUMAR P,cost_deviation_pct_mean,-2.9169567,2.9169567,decreases_risk,1
+GANAPATHY RAJKUMAR P,cost_deviation_pct_max,-2.7555099,2.7555099,decreases_risk,2
+GANAPATHY RAJKUMAR P,num_works,0.885162,0.885162,increases_risk,3
+GAURAV GOGOI,num_works,-0.70096254,0.70096254,decreases_risk,1
+GAURAV GOGOI,cost_deviation_pct_mean,-0.50782084,0.50782084,decreases_risk,2
+GAURAV GOGOI,anomaly_flag_rate,-0.40330616,0.40330616,decreases_risk,3
+GENIBEN NAGAJI THAKOR,cost_deviation_pct_mean,0.6307887,0.6307887,increases_risk,1
+GENIBEN NAGAJI THAKOR,anomaly_flag_rate,-0.5262135,0.5262135,decreases_risk,2
+GENIBEN NAGAJI THAKOR,residual_pct_max,-0.3963704,0.3963704,decreases_risk,3
+GM Harish Balayogi,cost_deviation_pct_mean,4.6222587,4.6222587,increases_risk,1
+GM Harish Balayogi,residual_pct_max,-0.2138441,0.2138441,decreases_risk,2
+GM Harish Balayogi,cost_deviation_pct_max,-0.20373926,0.20373926,decreases_risk,3
+GODAM NAGESH,cost_deviation_pct_mean,4.687002,4.687002,increases_risk,1
+GODAM NAGESH,cost_deviation_pct_max,-0.27812612,0.27812612,decreases_risk,2
+GODAM NAGESH,residual_pct_max,-0.19434144,0.19434144,decreases_risk,3
+GOPINATH K,cost_deviation_pct_mean,-2.5371823,2.5371823,decreases_risk,1
+GOPINATH K,cost_deviation_pct_max,0.7245861,0.7245861,increases_risk,2
+GOPINATH K,num_works,-0.69787574,0.69787574,decreases_risk,3
+GOVIND MAKTHAPPA KARJOL,cost_deviation_pct_mean,-3.0740345,3.0740345,decreases_risk,1
+GOVIND MAKTHAPPA KARJOL,num_works,-0.7413817,0.7413817,decreases_risk,2
+GOVIND MAKTHAPPA KARJOL,cost_deviation_pct_max,0.63902336,0.63902336,increases_risk,3
+GURMEET SINGH MEET HAYER,duplicate_score_max,-0.38340753,0.38340753,decreases_risk,1
+GURMEET SINGH MEET HAYER,cost_deviation_pct_max,-0.33589303,0.33589303,decreases_risk,2
+GURMEET SINGH MEET HAYER,num_works,-0.23436622,0.23436622,decreases_risk,3
+Gajendra Singh Patel,cost_deviation_pct_mean,-3.4735103,3.4735103,decreases_risk,1
+Gajendra Singh Patel,cost_deviation_pct_max,0.61781204,0.61781204,increases_risk,2
+Gajendra Singh Patel,num_works,-0.43637866,0.43637866,decreases_risk,3
+Ganesan Selvam,cost_deviation_pct_mean,-3.003856,3.003856,decreases_risk,1
+Ganesan Selvam,num_works,-0.4365657,0.4365657,decreases_risk,2
+Ganesan Selvam,cost_deviation_pct_max,-0.3836268,0.3836268,decreases_risk,3
+Ganesh Singh,cost_deviation_pct_mean,-2.1523838,2.1523838,decreases_risk,1
+Ganesh Singh,cost_deviation_pct_max,0.6929391,0.6929391,increases_risk,2
+Ganesh Singh,duplicate_score_max,-0.36248174,0.36248174,decreases_risk,3
+Giridhari Yadav,cost_deviation_pct_mean,-3.2008212,3.2008212,decreases_risk,1
+Giridhari Yadav,num_works,-0.43576953,0.43576953,decreases_risk,2
+Giridhari Yadav,sor_match_confidence_mean,-0.32549682,0.32549682,decreases_risk,3
+Giriraj Singh,cost_deviation_pct_mean,4.4184675,4.4184675,increases_risk,1
+Giriraj Singh,num_works,-0.7900211,0.7900211,decreases_risk,2
+Giriraj Singh,anomaly_flag_rate,-0.4044037,0.4044037,decreases_risk,3
+Gumma Thanuja Rani,cost_deviation_pct_mean,-0.7118595,0.7118595,decreases_risk,1
+Gumma Thanuja Rani,num_works,-0.56750745,0.56750745,decreases_risk,2
+Gumma Thanuja Rani,cost_deviation_pct_max,-0.4946408,0.4946408,decreases_risk,3
+Gyaneshwar Patil,cost_deviation_pct_mean,2.4885256,2.4885256,increases_risk,1
+Gyaneshwar Patil,anomaly_score_max,0.38727316,0.38727316,increases_risk,2
+Gyaneshwar Patil,duplicate_score_max,-0.1853528,0.1853528,decreases_risk,3
+H.D. KUMARASWAMY,cost_deviation_pct_mean,-3.1324122,3.1324122,decreases_risk,1
+H.D. KUMARASWAMY,cost_deviation_pct_max,-2.5971408,2.5971408,decreases_risk,2
+H.D. KUMARASWAMY,num_works,0.87771183,0.87771183,increases_risk,3
+HARENDRA SINGH MALIK,cost_deviation_pct_mean,-3.4654212,3.4654212,decreases_risk,1
+HARENDRA SINGH MALIK,cost_deviation_pct_max,0.7343543,0.7343543,increases_risk,2
+HARENDRA SINGH MALIK,num_works,-0.72091883,0.72091883,decreases_risk,3
+HARIBHAI PATEL,cost_deviation_pct_mean,3.2033331,3.2033331,increases_risk,1
+HARIBHAI PATEL,anomaly_score_max,0.35496962,0.35496962,increases_risk,2
+HARIBHAI PATEL,collusion_score_mean,-0.33238056,0.33238056,decreases_risk,3
+Harsh Malhotra,cost_deviation_pct_mean,4.193674,4.193674,increases_risk,1
+Harsh Malhotra,anomaly_flag_rate,-0.41933283,0.41933283,decreases_risk,2
+Harsh Malhotra,collusion_score_max,0.28801426,0.28801426,increases_risk,3
+Hasmukh Bhai Soma Bhai Patel,cost_deviation_pct_mean,4.4401836,4.4401836,increases_risk,1
+Hasmukh Bhai Soma Bhai Patel,num_works,-0.8201968,0.8201968,decreases_risk,2
+Hasmukh Bhai Soma Bhai Patel,residual_pct_mean,-0.14205529,0.14205529,decreases_risk,3
+IMRAN MASOOD,cost_deviation_pct_mean,4.268474,4.268474,increases_risk,1
+IMRAN MASOOD,collusion_score_max,0.27903426,0.27903426,increases_risk,2
+IMRAN MASOOD,num_months,-0.21225107,0.21225107,decreases_risk,3
+IQRA CHOUDHARY,cost_deviation_pct_mean,1.3678643,1.3678643,increases_risk,1
+IQRA CHOUDHARY,cost_deviation_pct_max,0.716884,0.716884,increases_risk,2
+IQRA CHOUDHARY,anomaly_score_max,0.43792725,0.43792725,increases_risk,3
+ISHA KHAN CHOUDHURY,cost_deviation_pct_mean,-2.2306397,2.2306397,decreases_risk,1
+ISHA KHAN CHOUDHURY,cost_deviation_pct_max,0.8216726,0.8216726,increases_risk,2
+ISHA KHAN CHOUDHURY,num_works,-0.401768,0.401768,decreases_risk,3
+Indra Hang Subba,cost_deviation_pct_mean,-3.3036127,3.3036127,decreases_risk,1
+Indra Hang Subba,num_works,-0.58266085,0.58266085,decreases_risk,2
+Indra Hang Subba,cost_deviation_pct_max,0.43621647,0.43621647,increases_risk,3
+JAGADISH CHANDRA BARMA BASUNIA,cost_deviation_pct_max,-2.4828665,2.4828665,decreases_risk,1
+JAGADISH CHANDRA BARMA BASUNIA,cost_deviation_pct_mean,-2.252505,2.252505,decreases_risk,2
+JAGADISH CHANDRA BARMA BASUNIA,num_works,0.88070893,0.88070893,increases_risk,3
+JAGADISH SHETTAR,cost_deviation_pct_mean,-2.8375793,2.8375793,decreases_risk,1
+JAGADISH SHETTAR,cost_deviation_pct_max,-2.7826815,2.7826815,decreases_risk,2
+JAGADISH SHETTAR,num_works,0.8669932,0.8669932,increases_risk,3
+JAI PARKASH,cost_deviation_pct_mean,3.0271192,3.0271192,increases_risk,1
+JAI PARKASH,cost_deviation_pct_max,-0.40433544,0.40433544,decreases_risk,2
+JAI PARKASH,num_months,0.1512801,0.1512801,increases_risk,3
+JASHUBHAI BHILUBHAI RATHVA,cost_deviation_pct_mean,4.7334557,4.7334557,increases_risk,1
+JASHUBHAI BHILUBHAI RATHVA,anomaly_flag_rate,-0.34503865,0.34503865,decreases_risk,2
+JASHUBHAI BHILUBHAI RATHVA,duplicate_score_max,-0.22065587,0.22065587,decreases_risk,3
+JITAN RAM MANJHI,cost_deviation_pct_mean,-0.66215044,0.66215044,decreases_risk,1
+JITAN RAM MANJHI,cost_deviation_pct_max,-0.39666322,0.39666322,decreases_risk,2
+JITAN RAM MANJHI,duplicate_score_max,-0.3089161,0.3089161,decreases_risk,3
+JITENDRA KUMAR DOHARE,cost_deviation_pct_mean,-2.0715287,2.0715287,decreases_risk,1
+JITENDRA KUMAR DOHARE,num_works,-0.27550837,0.27550837,decreases_risk,2
+JITENDRA KUMAR DOHARE,sor_match_confidence_mean,-0.24843565,0.24843565,decreases_risk,3
+JITIN PRASADA,cost_deviation_pct_mean,2.6039822,2.6039822,increases_risk,1
+JITIN PRASADA,num_works,-0.5986955,0.5986955,decreases_risk,2
+JITIN PRASADA,cost_deviation_pct_max,0.44485846,0.44485846,increases_risk,3
+JOYANTA BASUMATARY,cost_deviation_pct_mean,4.6775675,4.6775675,increases_risk,1
+JOYANTA BASUMATARY,num_works,-0.76020163,0.76020163,decreases_risk,2
+JOYANTA BASUMATARY,anomaly_score_max,0.47783998,0.47783998,increases_risk,3
+JUNE MALIAH,cost_deviation_pct_mean,-3.0564055,3.0564055,decreases_risk,1
+JUNE MALIAH,cost_deviation_pct_max,-2.5366378,2.5366378,decreases_risk,2
+JUNE MALIAH,num_works,0.9606,0.9606,increases_risk,3
+JYOTIRADITYA M. SCINDIA,cost_deviation_pct_mean,-3.6180317,3.6180317,decreases_risk,1
+JYOTIRADITYA M. SCINDIA,cost_deviation_pct_max,0.61638814,0.61638814,increases_risk,2
+JYOTIRADITYA M. SCINDIA,sor_match_confidence_mean,-0.2837531,0.2837531,decreases_risk,3
+Jagannath Sarkar,cost_deviation_pct_max,0.77015686,0.77015686,increases_risk,1
+Jagannath Sarkar,cost_deviation_pct_mean,0.189827,0.189827,increases_risk,2
+Jagannath Sarkar,anomaly_flag_rate,0.1617885,0.1617885,increases_risk,3
+Jagdambika Pal,cost_deviation_pct_mean,-3.0339503,3.0339503,decreases_risk,1
+Jagdambika Pal,cost_deviation_pct_max,-2.502199,2.502199,decreases_risk,2
+Jagdambika Pal,num_works,0.9400387,0.9400387,increases_risk,3
+Jai Prakash,cost_deviation_pct_mean,-3.1613054,3.1613054,decreases_risk,1
+Jai Prakash,cost_deviation_pct_max,-2.4475212,2.4475212,decreases_risk,2
+Jai Prakash,num_works,0.9349478,0.9349478,increases_risk,3
+Janardan Mishra,cost_deviation_pct_mean,-3.0952232,3.0952232,decreases_risk,1
+Janardan Mishra,cost_deviation_pct_max,-2.498637,2.498637,decreases_risk,2
+Janardan Mishra,num_works,0.9030604,0.9030604,increases_risk,3
+Jaswantsinh Sumanbhai Bhabhor,cost_deviation_pct_mean,-3.5903642,3.5903642,decreases_risk,1
+Jaswantsinh Sumanbhai Bhabhor,cost_deviation_pct_max,0.6998251,0.6998251,increases_risk,2
+Jaswantsinh Sumanbhai Bhabhor,num_works,-0.39698383,0.39698383,decreases_risk,3
+Jitendra Singh,cost_deviation_pct_mean,-2.1970513,2.1970513,decreases_risk,1
+Jitendra Singh,cost_deviation_pct_max,-0.31281066,0.31281066,decreases_risk,2
+Jitendra Singh,collusion_score_max,0.2733873,0.2733873,increases_risk,3
+Jyotsna Charandas Mahant ,cost_deviation_pct_mean,-1.9966829,1.9966829,decreases_risk,1
+Jyotsna Charandas Mahant ,duplicate_score_max,-0.36356685,0.36356685,decreases_risk,2
+Jyotsna Charandas Mahant ,residual_pct_max,-0.25315437,0.25315437,decreases_risk,3
+K E PRAKASH,cost_deviation_pct_mean,-2.906354,2.906354,decreases_risk,1
+K E PRAKASH,num_works,-0.4332091,0.4332091,decreases_risk,2
+K E PRAKASH,anomaly_flag_rate,-0.31370282,0.31370282,decreases_risk,3
+K RADHAKRISHNAN,cost_deviation_pct_mean,2.385427,2.385427,increases_risk,1
+K RADHAKRISHNAN,num_works,1.1451648,1.1451648,increases_risk,2
+K RADHAKRISHNAN,cost_deviation_pct_max,0.6412061,0.6412061,increases_risk,3
+K Subbarayan,cost_deviation_pct_mean,4.192221,4.192221,increases_risk,1
+K Subbarayan,sor_match_confidence_mean,0.3813365,0.3813365,increases_risk,2
+K Subbarayan,cost_deviation_pct_max,0.23483372,0.23483372,increases_risk,3
+K. C VENUGOPAL,cost_deviation_pct_mean,4.531915,4.531915,increases_risk,1
+K. C VENUGOPAL,num_works,-0.4001547,0.4001547,decreases_risk,2
+K. C VENUGOPAL,cost_deviation_pct_max,0.1664499,0.1664499,increases_risk,3
+K. RAJASHEKAR BASAVARAJ HITNAL,cost_deviation_pct_mean,-0.5600314,0.5600314,decreases_risk,1
+K. RAJASHEKAR BASAVARAJ HITNAL,collusion_score_mean,-0.34395266,0.34395266,decreases_risk,2
+K. RAJASHEKAR BASAVARAJ HITNAL,residual_pct_mean,-0.2972043,0.2972043,decreases_risk,3
+KADIYAM KAVYA,cost_deviation_pct_mean,-3.6418839,3.6418839,decreases_risk,1
+KADIYAM KAVYA,cost_deviation_pct_max,-1.2030947,1.2030947,decreases_risk,2
+KADIYAM KAVYA,num_works,-0.28791788,0.28791788,decreases_risk,3
+KALI CHARAN MUNDA,cost_deviation_pct_mean,-3.1273565,3.1273565,decreases_risk,1
+KALI CHARAN MUNDA,cost_deviation_pct_max,-1.7769201,1.7769201,decreases_risk,2
+KALI CHARAN MUNDA,sor_match_confidence_mean,0.59673053,0.59673053,increases_risk,3
+KALI CHARAN SINGH,cost_deviation_pct_mean,4.2419496,4.2419496,increases_risk,1
+KALI CHARAN SINGH,num_months,-0.17928013,0.17928013,decreases_risk,2
+KALI CHARAN SINGH,sor_match_confidence_mean,-0.16303799,0.16303799,decreases_risk,3
+KALIPADA SAREN,cost_deviation_pct_mean,-3.431639,3.431639,decreases_risk,1
+KALIPADA SAREN,cost_deviation_pct_max,-1.619139,1.619139,decreases_risk,2
+KALIPADA SAREN,sor_match_confidence_mean,0.4774116,0.4774116,increases_risk,3
+KALYAN VAIJINATHRAO KALE,cost_deviation_pct_mean,-3.1327155,3.1327155,decreases_risk,1
+KALYAN VAIJINATHRAO KALE,cost_deviation_pct_max,0.88312995,0.88312995,increases_risk,2
+KALYAN VAIJINATHRAO KALE,num_works,-0.7062883,0.7062883,decreases_risk,3
+KAMLESH JANGDE,cost_deviation_pct_max,-0.46653533,0.46653533,decreases_risk,1
+KAMLESH JANGDE,duplicate_score_max,-0.37420428,0.37420428,decreases_risk,2
+KAMLESH JANGDE,num_works,-0.27050054,0.27050054,decreases_risk,3
+KANWAR SINGH TANWAR,cost_deviation_pct_mean,-3.5325549,3.5325549,decreases_risk,1
+KANWAR SINGH TANWAR,num_works,-0.36183503,0.36183503,decreases_risk,2
+KANWAR SINGH TANWAR,sor_match_confidence_mean,-0.32444295,0.32444295,decreases_risk,3
+KARAN BHUSHAN SINGH,cost_deviation_pct_mean,-3.4025955,3.4025955,decreases_risk,1
+KARAN BHUSHAN SINGH,cost_deviation_pct_max,-1.1096736,1.1096736,decreases_risk,2
+KARAN BHUSHAN SINGH,num_works,-0.53017247,0.53017247,decreases_risk,3
+KARTICK CHANDRA PAUL,cost_deviation_pct_max,-0.6147788,0.6147788,decreases_risk,1
+KARTICK CHANDRA PAUL,cost_deviation_pct_mean,0.60761267,0.60761267,increases_risk,2
+KARTICK CHANDRA PAUL,residual_pct_max,-0.3489966,0.3489966,decreases_risk,3
+KISHORI LAL,num_works,-0.9386094,0.9386094,decreases_risk,1
+KISHORI LAL,cost_deviation_pct_max,0.9340551,0.9340551,increases_risk,2
+KISHORI LAL,cost_deviation_pct_mean,-0.43350756,0.43350756,decreases_risk,3
+KONDA VISHWESHWAR REDDY,cost_deviation_pct_mean,-2.9409058,2.9409058,decreases_risk,1
+KONDA VISHWESHWAR REDDY,num_works,-0.48445684,0.48445684,decreases_risk,2
+KONDA VISHWESHWAR REDDY,collusion_score_mean,-0.30826744,0.30826744,decreases_risk,3
+KOTA SRINIVAS POOJARY,cost_deviation_pct_mean,3.9511366,3.9511366,increases_risk,1
+KOTA SRINIVAS POOJARY,cost_deviation_pct_max,0.44080633,0.44080633,increases_risk,2
+KOTA SRINIVAS POOJARY,sor_match_confidence_mean,0.37454894,0.37454894,increases_risk,3
+KRISHNA DEVI SHIVSHANKER PATEL,cost_deviation_pct_mean,-2.911017,2.911017,decreases_risk,1
+KRISHNA DEVI SHIVSHANKER PATEL,num_works,-0.4160871,0.4160871,decreases_risk,2
+KRISHNA DEVI SHIVSHANKER PATEL,sor_match_confidence_mean,-0.2894345,0.2894345,decreases_risk,3
+KRITI DEVI DEBBARMAN,cost_deviation_pct_mean,-3.0450222,3.0450222,decreases_risk,1
+KRITI DEVI DEBBARMAN,cost_deviation_pct_max,-2.622499,2.622499,decreases_risk,2
+KRITI DEVI DEBBARMAN,num_works,0.9123035,0.9123035,increases_risk,3
+KULDEEP INDORA,cost_deviation_pct_max,-2.6032286,2.6032286,decreases_risk,1
+KULDEEP INDORA,cost_deviation_pct_mean,-2.1027834,2.1027834,decreases_risk,2
+KULDEEP INDORA,num_works,0.87346625,0.87346625,increases_risk,3
+KUNDURU RAGHUVEER,cost_deviation_pct_mean,3.5538883,3.5538883,increases_risk,1
+KUNDURU RAGHUVEER,num_works,1.1507514,1.1507514,increases_risk,2
+KUNDURU RAGHUVEER,sor_match_confidence_mean,0.35821593,0.35821593,increases_risk,3
+Kakoli Ghosh Dastidar ,cost_deviation_pct_mean,3.0782926,3.0782926,increases_risk,1
+Kakoli Ghosh Dastidar ,duplicate_score_max,-0.23646891,0.23646891,decreases_risk,2
+Kakoli Ghosh Dastidar ,cost_deviation_pct_max,-0.19850722,0.19850722,decreases_risk,3
+Kalanidhi Veeraswamy,cost_deviation_pct_mean,3.0467403,3.0467403,increases_risk,1
+Kalanidhi Veeraswamy,num_months,-0.23462366,0.23462366,decreases_risk,2
+Kalanidhi Veeraswamy,cost_deviation_pct_max,-0.19383594,0.19383594,decreases_risk,3
+Kalyan Banerjee,cost_deviation_pct_mean,-0.63549215,0.63549215,decreases_risk,1
+Kalyan Banerjee,cost_deviation_pct_max,-0.4460588,0.4460588,decreases_risk,2
+Kalyan Banerjee,residual_pct_mean,-0.2982336,0.2982336,decreases_risk,3
+Kamaljeet Sehrawat,cost_deviation_pct_mean,-0.95933473,0.95933473,decreases_risk,1
+Kamaljeet Sehrawat,num_works,-0.62291515,0.62291515,decreases_risk,2
+Kamaljeet Sehrawat,cost_deviation_pct_max,-0.3808938,0.3808938,decreases_risk,3
+Kangana Ranaut,cost_deviation_pct_mean,-3.6751175,3.6751175,decreases_risk,1
+Kangana Ranaut,num_works,-0.41859266,0.41859266,decreases_risk,2
+Kangana Ranaut,cost_deviation_pct_max,0.40241104,0.40241104,increases_risk,3
+Kani K Navas,cost_deviation_pct_mean,2.0362728,2.0362728,increases_risk,1
+Kani K Navas,anomaly_flag_rate,-0.5239177,0.5239177,decreases_risk,2
+Kani K Navas,cost_deviation_pct_max,-0.36099738,0.36099738,decreases_risk,3
+Kanimozhi Karunanidhi,cost_deviation_pct_mean,-3.2565496,3.2565496,decreases_risk,1
+Kanimozhi Karunanidhi,cost_deviation_pct_max,-2.4875772,2.4875772,decreases_risk,2
+Kanimozhi Karunanidhi,num_works,0.9745495,0.9745495,increases_risk,3
+Kaushalendra Kumar,cost_deviation_pct_mean,-2.7657585,2.7657585,decreases_risk,1
+Kaushalendra Kumar,num_works,-0.4401572,0.4401572,decreases_risk,2
+Kaushalendra Kumar,sor_match_confidence_mean,-0.34172857,0.34172857,decreases_risk,3
+Khagen Murmu,cost_deviation_pct_mean,1.5389622,1.5389622,increases_risk,1
+Khagen Murmu,num_works,1.1227918,1.1227918,increases_risk,2
+Khagen Murmu,cost_deviation_pct_max,0.8104698,0.8104698,increases_risk,3
+Khalilur Rahaman ,cost_deviation_pct_mean,-2.5131342,2.5131342,decreases_risk,1
+Khalilur Rahaman ,cost_deviation_pct_max,0.73429394,0.73429394,increases_risk,2
+Khalilur Rahaman ,num_works,-0.6495135,0.6495135,decreases_risk,3
+Kinjarapu Ram Mohan Naidu,cost_deviation_pct_mean,-3.5844407,3.5844407,decreases_risk,1
+Kinjarapu Ram Mohan Naidu,cost_deviation_pct_max,0.78179646,0.78179646,increases_risk,2
+Kinjarapu Ram Mohan Naidu,num_works,-0.39717007,0.39717007,decreases_risk,3
+Kiren Rijiju,cost_deviation_pct_mean,-2.844809,2.844809,decreases_risk,1
+Kiren Rijiju,num_works,-0.42559984,0.42559984,decreases_risk,2
+Kiren Rijiju,anomaly_score_max,0.2752297,0.2752297,increases_risk,3
+Kirti Vardhan Singh,cost_deviation_pct_mean,4.619128,4.619128,increases_risk,1
+Kirti Vardhan Singh,num_works,-0.5323778,0.5323778,decreases_risk,2
+Kirti Vardhan Singh,residual_pct_max,-0.19792639,0.19792639,decreases_risk,3
+Krishan Pal Gurjar,cost_deviation_pct_mean,-3.0561721,3.0561721,decreases_risk,1
+Krishan Pal Gurjar,cost_deviation_pct_max,-2.530615,2.530615,decreases_risk,2
+Krishan Pal Gurjar,num_works,0.9761203,0.9761203,increases_risk,3
+Krishna Prasad Tenneti,num_works,2.0951502,2.0951502,increases_risk,1
+Krishna Prasad Tenneti,cost_deviation_pct_mean,-1.7360203,1.7360203,decreases_risk,2
+Krishna Prasad Tenneti,cost_deviation_pct_max,1.251426,1.251426,increases_risk,3
+LALJI VERMA,cost_deviation_pct_mean,-3.7312722,3.7312722,decreases_risk,1
+LALJI VERMA,cost_deviation_pct_max,0.57343906,0.57343906,increases_risk,2
+LALJI VERMA,num_works,-0.38061836,0.38061836,decreases_risk,3
+LAXMIKANT PAPPU NISHAD,cost_deviation_pct_mean,-2.834041,2.834041,decreases_risk,1
+LAXMIKANT PAPPU NISHAD,cost_deviation_pct_max,-2.8232508,2.8232508,decreases_risk,2
+LAXMIKANT PAPPU NISHAD,num_works,0.8599243,0.8599243,increases_risk,3
+LOVELY ANAND,cost_deviation_pct_mean,-3.2425342,3.2425342,decreases_risk,1
+LOVELY ANAND,cost_deviation_pct_max,-1.6213818,1.6213818,decreases_risk,2
+LOVELY ANAND,num_works,-0.2687851,0.2687851,decreases_risk,3
+LUMBARAM,cost_deviation_pct_mean,-0.28720438,0.28720438,decreases_risk,1
+LUMBARAM,collusion_score_max,0.23619974,0.23619974,increases_risk,2
+LUMBARAM,residual_pct_max,-0.21782264,0.21782264,decreases_risk,3
+Lavu Sri Krishna Devarayalu,cost_deviation_pct_mean,-3.195164,3.195164,decreases_risk,1
+Lavu Sri Krishna Devarayalu,cost_deviation_pct_max,-2.5446603,2.5446603,decreases_risk,2
+Lavu Sri Krishna Devarayalu,num_works,0.89134955,0.89134955,increases_risk,3
+M. MALLESH BABU,cost_deviation_pct_mean,-3.020467,3.020467,decreases_risk,1
+M. MALLESH BABU,cost_deviation_pct_max,-2.7096186,2.7096186,decreases_risk,2
+M. MALLESH BABU,num_works,0.85426635,0.85426635,increases_risk,3
+M.K. VISHNUPRASAD,cost_deviation_pct_mean,-3.0268,3.0268,decreases_risk,1
+M.K. VISHNUPRASAD,anomaly_score_max,0.4025844,0.4025844,increases_risk,2
+M.K. VISHNUPRASAD,num_works,-0.38378045,0.38378045,decreases_risk,3
+MADHAVANENI RAGHUNANDAN RAO,cost_deviation_pct_mean,1.4736142,1.4736142,increases_risk,1
+MADHAVANENI RAGHUNANDAN RAO,sor_match_confidence_mean,0.42412388,0.42412388,increases_risk,2
+MADHAVANENI RAGHUNANDAN RAO,collusion_score_max,-0.1744123,0.1744123,decreases_risk,3
+MAHESH KASHYAP,cost_deviation_pct_mean,-1.8362122,1.8362122,decreases_risk,1
+MAHESH KASHYAP,sor_match_confidence_mean,0.66667014,0.66667014,increases_risk,2
+MAHESH KASHYAP,cost_deviation_pct_max,0.62933743,0.62933743,increases_risk,3
+MAHIMA KUMARI MEWAR,cost_deviation_pct_mean,-3.2340777,3.2340777,decreases_risk,1
+MAHIMA KUMARI MEWAR,cost_deviation_pct_max,-1.3999012,1.3999012,decreases_risk,2
+MAHIMA KUMARI MEWAR,num_works,-0.30726793,0.30726793,decreases_risk,3
+MALAIYARASAN D,cost_deviation_pct_mean,3.0882385,3.0882385,increases_risk,1
+MALAIYARASAN D,anomaly_flag_rate,-0.4539643,0.4539643,decreases_risk,2
+MALAIYARASAN D,collusion_score_max,0.2795231,0.2795231,increases_risk,3
+MALVIKA DEVI,cost_deviation_pct_mean,-3.534262,3.534262,decreases_risk,1
+MALVIKA DEVI,cost_deviation_pct_max,0.6048279,0.6048279,increases_risk,2
+MALVIKA DEVI,num_works,-0.42744172,0.42744172,decreases_risk,3
+MALVINDER SINGH KANG,cost_deviation_pct_mean,-3.5188355,3.5188355,decreases_risk,1
+MALVINDER SINGH KANG,num_works,-0.40426776,0.40426776,decreases_risk,2
+MALVINDER SINGH KANG,collusion_score_max,0.26433784,0.26433784,increases_risk,3
+MANI. A.,cost_deviation_pct_mean,-2.6960986,2.6960986,decreases_risk,1
+MANI. A.,num_works,-0.3901845,0.3901845,decreases_risk,2
+MANI. A.,anomaly_flag_rate,-0.33429232,0.33429232,decreases_risk,3
+MANISH TEWARI,cost_deviation_pct_mean,2.6404579,2.6404579,increases_risk,1
+MANISH TEWARI,num_works,-0.64198875,0.64198875,decreases_risk,2
+MANISH TEWARI,collusion_score_mean,-0.29685834,0.29685834,decreases_risk,3
+MANJU SHARMA,cost_deviation_pct_mean,-3.2863503,3.2863503,decreases_risk,1
+MANJU SHARMA,cost_deviation_pct_max,-2.5138407,2.5138407,decreases_risk,2
+MANJU SHARMA,num_works,0.97796035,0.97796035,increases_risk,3
+MANNA LAL RAWAT,cost_deviation_pct_max,0.837396,0.837396,increases_risk,1
+MANNA LAL RAWAT,num_works,-0.6497099,0.6497099,decreases_risk,2
+MANNA LAL RAWAT,cost_deviation_pct_mean,-0.3963322,0.3963322,decreases_risk,3
+MANOHAR LAL,cost_deviation_pct_mean,-2.868754,2.868754,decreases_risk,1
+MANOHAR LAL,cost_deviation_pct_max,-2.7753477,2.7753477,decreases_risk,2
+MANOHAR LAL,num_works,0.8788031,0.8788031,increases_risk,3
+MANOJ KUMAR,cost_deviation_pct_mean,-2.0055451,2.0055451,decreases_risk,1
+MANOJ KUMAR,sor_match_confidence_mean,-0.2953329,0.2953329,decreases_risk,2
+MANOJ KUMAR,num_works,-0.19961162,0.19961162,decreases_risk,3
+MANOJ TIGGA,cost_deviation_pct_mean,-2.9139736,2.9139736,decreases_risk,1
+MANOJ TIGGA,cost_deviation_pct_max,-2.5719051,2.5719051,decreases_risk,2
+MANOJ TIGGA,num_works,0.93956983,0.93956983,increases_risk,3
+MIAN ALTAF AHMAD,num_works,2.117576,2.117576,increases_risk,1
+MIAN ALTAF AHMAD,cost_deviation_pct_mean,-1.7141604,1.7141604,decreases_risk,2
+MIAN ALTAF AHMAD,cost_deviation_pct_max,1.2576858,1.2576858,increases_risk,3
+MOHIBBULLAH,cost_deviation_pct_mean,2.3385324,2.3385324,increases_risk,1
+MOHIBBULLAH,collusion_score_max,0.28609934,0.28609934,increases_risk,2
+MOHIBBULLAH,duplicate_score_max,-0.2589773,0.2589773,decreases_risk,3
+MOHITE PATIL DHAIRYASHEEL RAJSINH,cost_deviation_pct_mean,1.1365335,1.1365335,increases_risk,1
+MOHITE PATIL DHAIRYASHEEL RAJSINH,cost_deviation_pct_max,0.5974785,0.5974785,increases_risk,2
+MOHITE PATIL DHAIRYASHEEL RAJSINH,anomaly_flag_rate,0.3174675,0.3174675,increases_risk,3
+MUHAMMED HAMDULLAH SAYEED,cost_deviation_pct_mean,-2.9307714,2.9307714,decreases_risk,1
+MUHAMMED HAMDULLAH SAYEED,cost_deviation_pct_max,-2.7964463,2.7964463,decreases_risk,2
+MUHAMMED HAMDULLAH SAYEED,num_works,0.85628986,0.85628986,increases_risk,3
+MUKESHKUMAR CHANDRAKAANT DALAL,cost_deviation_pct_mean,-3.3226392,3.3226392,decreases_risk,1
+MUKESHKUMAR CHANDRAKAANT DALAL,num_works,-0.4376021,0.4376021,decreases_risk,2
+MUKESHKUMAR CHANDRAKAANT DALAL,sor_match_confidence_mean,-0.2638186,0.2638186,decreases_risk,3
+MURARI LAL MEENA,cost_deviation_pct_mean,2.170205,2.170205,increases_risk,1
+MURARI LAL MEENA,num_works,-0.89896107,0.89896107,decreases_risk,2
+MURARI LAL MEENA,cost_deviation_pct_max,0.40064636,0.40064636,increases_risk,3
+MURASOLI S,cost_deviation_pct_mean,-3.0174072,3.0174072,decreases_risk,1
+MURASOLI S,sor_match_confidence_mean,-0.25388592,0.25388592,decreases_risk,2
+MURASOLI S,num_works,-0.18733653,0.18733653,decreases_risk,3
+MURLIDHAR MOHOL,cost_deviation_pct_mean,3.6216154,3.6216154,increases_risk,1
+MURLIDHAR MOHOL,num_works,1.2352132,1.2352132,increases_risk,2
+MURLIDHAR MOHOL,sor_match_confidence_mean,0.40714544,0.40714544,increases_risk,3
+Maddila Gurumoorthy,cost_deviation_pct_mean,4.315715,4.315715,increases_risk,1
+Maddila Gurumoorthy,cost_deviation_pct_max,-0.36000586,0.36000586,decreases_risk,2
+Maddila Gurumoorthy,anomaly_score_max,0.34397325,0.34397325,increases_risk,3
+Magunta Sreenivasulu Reddy,cost_deviation_pct_mean,-3.030388,3.030388,decreases_risk,1
+Magunta Sreenivasulu Reddy,cost_deviation_pct_max,-2.5649068,2.5649068,decreases_risk,2
+Magunta Sreenivasulu Reddy,num_works,0.9063315,0.9063315,increases_risk,3
+Mahendra Singh Solanky,cost_deviation_pct_mean,1.6969317,1.6969317,increases_risk,1
+Mahendra Singh Solanky,num_works,1.1816344,1.1816344,increases_risk,2
+Mahendra Singh Solanky,cost_deviation_pct_max,0.73665565,0.73665565,increases_risk,3
+Mahesh Sharma,cost_deviation_pct_mean,-3.6657248,3.6657248,decreases_risk,1
+Mahesh Sharma,cost_deviation_pct_max,0.48537552,0.48537552,increases_risk,2
+Mahesh Sharma,num_works,-0.40100273,0.40100273,decreases_risk,3
+Mala Rajya Laxmi Shah ,cost_deviation_pct_mean,2.423602,2.423602,increases_risk,1
+Mala Rajya Laxmi Shah ,cost_deviation_pct_max,-0.19142498,0.19142498,decreases_risk,2
+Mala Rajya Laxmi Shah ,collusion_score_max,-0.13006353,0.13006353,decreases_risk,3
+Mala Roy ,cost_deviation_pct_mean,-3.5751095,3.5751095,decreases_risk,1
+Mala Roy ,cost_deviation_pct_max,-1.3614569,1.3614569,decreases_risk,2
+Mala Roy ,num_works,-0.44106808,0.44106808,decreases_risk,3
+Manickam Tagore B,cost_deviation_pct_mean,-3.4361584,3.4361584,decreases_risk,1
+Manickam Tagore B,cost_deviation_pct_max,0.4627012,0.4627012,increases_risk,2
+Manickam Tagore B,num_works,-0.41700402,0.41700402,decreases_risk,3
+Manoj Tiwari,cost_deviation_pct_max,-2.905054,2.905054,decreases_risk,1
+Manoj Tiwari,cost_deviation_pct_mean,-2.8349288,2.8349288,decreases_risk,2
+Manoj Tiwari,num_works,0.8261042,0.8261042,increases_risk,3
+Mansukhbhai Dhanjibhai Vasava,cost_deviation_pct_mean,-3.381445,3.381445,decreases_risk,1
+Mansukhbhai Dhanjibhai Vasava,num_works,-0.46436384,0.46436384,decreases_risk,2
+Mansukhbhai Dhanjibhai Vasava,cost_deviation_pct_max,0.41883036,0.41883036,increases_risk,3
+Midhun Reddy,cost_deviation_pct_mean,-0.7443701,0.7443701,decreases_risk,1
+Midhun Reddy,cost_deviation_pct_max,-0.49813586,0.49813586,decreases_risk,2
+Midhun Reddy,collusion_score_mean,-0.29916072,0.29916072,decreases_risk,3
+Mitesh Rameshbhai Bakabhai Patel,cost_deviation_pct_mean,-3.018475,3.018475,decreases_risk,1
+Mitesh Rameshbhai Bakabhai Patel,num_works,-0.46712616,0.46712616,decreases_risk,2
+Mitesh Rameshbhai Bakabhai Patel,sor_match_confidence_mean,-0.24609686,0.24609686,decreases_risk,3
+Mr Gopal Jee Thakur,cost_deviation_pct_mean,-3.3374586,3.3374586,decreases_risk,1
+Mr Gopal Jee Thakur,num_works,-0.38212097,0.38212097,decreases_risk,2
+Mr Gopal Jee Thakur,sor_match_confidence_mean,-0.3339744,0.3339744,decreases_risk,3
+Ms Mahua Moitra,cost_deviation_pct_mean,-3.2183478,3.2183478,decreases_risk,1
+Ms Mahua Moitra,cost_deviation_pct_max,-1.635128,1.635128,decreases_risk,2
+Ms Mahua Moitra,sor_match_confidence_mean,0.4451709,0.4451709,increases_risk,3
+Ms. Dola Sen (2023-29),cost_deviation_pct_mean,-3.0787446,3.0787446,decreases_risk,1
+Ms. Dola Sen (2023-29),cost_deviation_pct_max,-2.51952,2.51952,decreases_risk,2
+Ms. Dola Sen (2023-29),num_works,0.90154684,0.90154684,increases_risk,3
+Mukesh Rajput,cost_deviation_pct_mean,0.54168105,0.54168105,increases_risk,1
+Mukesh Rajput,cost_deviation_pct_max,-0.3706761,0.3706761,decreases_risk,2
+Mukesh Rajput,collusion_score_max,0.29231223,0.29231223,increases_risk,3
+NABA CHARAN MAJHI,cost_deviation_pct_mean,1.526297,1.526297,increases_risk,1
+NABA CHARAN MAJHI,anomaly_score_max,0.5495992,0.5495992,increases_risk,2
+NABA CHARAN MAJHI,num_works,-0.5422337,0.5422337,decreases_risk,3
+NALIN SOREN,cost_deviation_pct_mean,-2.0336585,2.0336585,decreases_risk,1
+NALIN SOREN,num_works,-0.19410951,0.19410951,decreases_risk,2
+NALIN SOREN,collusion_score_mean,0.19388446,0.19388446,increases_risk,3
+NARAYAN DAS AHIRWAR,cost_deviation_pct_mean,-3.3071785,3.3071785,decreases_risk,1
+NARAYAN DAS AHIRWAR,cost_deviation_pct_max,0.75153625,0.75153625,increases_risk,2
+NARAYAN DAS AHIRWAR,num_works,-0.6616292,0.6616292,decreases_risk,3
+NARAYAN TATU RANE,cost_deviation_pct_mean,1.238767,1.238767,increases_risk,1
+NARAYAN TATU RANE,num_works,-0.60881066,0.60881066,decreases_risk,2
+NARAYAN TATU RANE,num_months,-0.24151628,0.24151628,decreases_risk,3
+NARESH CHANDRA UTTAM PATEL,cost_deviation_pct_mean,-3.061368,3.061368,decreases_risk,1
+NARESH CHANDRA UTTAM PATEL,cost_deviation_pct_max,-2.528665,2.528665,decreases_risk,2
+NARESH CHANDRA UTTAM PATEL,num_works,1.0066739,1.0066739,increases_risk,3
+NAVEEN JINDAL,cost_deviation_pct_mean,-2.0720365,2.0720365,decreases_risk,1
+NAVEEN JINDAL,cost_deviation_pct_max,0.51510745,0.51510745,increases_risk,2
+NAVEEN JINDAL,duplicate_score_max,-0.38705269,0.38705269,decreases_risk,3
+NEERAJ MAURYA,cost_deviation_pct_mean,-3.1016102,3.1016102,decreases_risk,1
+NEERAJ MAURYA,cost_deviation_pct_max,-1.4513276,1.4513276,decreases_risk,2
+NEERAJ MAURYA,num_works,-0.39229524,0.39229524,decreases_risk,3
+NILESH DNYANDEV LANKE,cost_deviation_pct_mean,-2.9395955,2.9395955,decreases_risk,1
+NILESH DNYANDEV LANKE,cost_deviation_pct_max,-2.7794902,2.7794902,decreases_risk,2
+NILESH DNYANDEV LANKE,num_works,0.88962716,0.88962716,increases_risk,3
+NIMUBEN JAYANTIBHAI BAMBHANIYA,cost_deviation_pct_mean,-2.086035,2.086035,decreases_risk,1
+NIMUBEN JAYANTIBHAI BAMBHANIYA,num_works,-0.5732445,0.5732445,decreases_risk,2
+NIMUBEN JAYANTIBHAI BAMBHANIYA,anomaly_score_max,0.36013556,0.36013556,increases_risk,3
+Nitin Jairam Gadkari,cost_deviation_pct_mean,-3.1023803,3.1023803,decreases_risk,1
+Nitin Jairam Gadkari,cost_deviation_pct_max,0.91717124,0.91717124,increases_risk,2
+Nitin Jairam Gadkari,num_works,-0.7013486,0.7013486,decreases_risk,3
+Nityanand Rai,cost_deviation_pct_mean,-3.381379,3.381379,decreases_risk,1
+Nityanand Rai,cost_deviation_pct_max,-1.5755415,1.5755415,decreases_risk,2
+Nityanand Rai,sor_match_confidence_mean,-0.18058132,0.18058132,decreases_risk,3
+Om Birla,cost_deviation_pct_mean,4.0093865,4.0093865,increases_risk,1
+Om Birla,num_works,1.1765635,1.1765635,increases_risk,2
+Om Birla,cost_deviation_pct_max,0.17338775,0.17338775,increases_risk,3
+Omprakash Bhupalsinh Alias Pawan Rajenimbalkar,cost_deviation_pct_mean,-3.470276,3.470276,decreases_risk,1
+Omprakash Bhupalsinh Alias Pawan Rajenimbalkar,cost_deviation_pct_max,-1.3711485,1.3711485,decreases_risk,2
+Omprakash Bhupalsinh Alias Pawan Rajenimbalkar,num_works,-0.44774213,0.44774213,decreases_risk,3
+P C Mohan,cost_deviation_pct_max,-2.8180242,2.8180242,decreases_risk,1
+P C Mohan,cost_deviation_pct_mean,-2.8007097,2.8007097,decreases_risk,2
+P C Mohan,num_works,0.8321721,0.8321721,increases_risk,3
+PARSHOTTAMBHAI RUPALA,cost_deviation_pct_mean,0.55981255,0.55981255,increases_risk,1
+PARSHOTTAMBHAI RUPALA,anomaly_flag_rate,-0.49753353,0.49753353,decreases_risk,2
+PARSHOTTAMBHAI RUPALA,residual_pct_max,-0.40216714,0.40216714,decreases_risk,3
+PARTHA BHOWMICK,cost_deviation_pct_max,-2.334067,2.334067,decreases_risk,1
+PARTHA BHOWMICK,cost_deviation_pct_mean,-1.8531448,1.8531448,decreases_risk,2
+PARTHA BHOWMICK,num_works,0.7115031,0.7115031,increases_risk,3
+PATHAN YUSUF,cost_deviation_pct_mean,-2.8630657,2.8630657,decreases_risk,1
+PATHAN YUSUF,cost_deviation_pct_max,-2.853256,2.853256,decreases_risk,2
+PATHAN YUSUF,num_works,0.8053532,0.8053532,increases_risk,3
+PHANI BHUSAN CHOUDHURY,cost_deviation_pct_mean,-3.0620358,3.0620358,decreases_risk,1
+PHANI BHUSAN CHOUDHURY,cost_deviation_pct_max,-2.7081206,2.7081206,decreases_risk,2
+PHANI BHUSAN CHOUDHURY,num_works,0.85392207,0.85392207,increases_risk,3
+PRABHAKAR REDDY VEMIREDDY,cost_deviation_pct_mean,-0.58801734,0.58801734,decreases_risk,1
+PRABHAKAR REDDY VEMIREDDY,cost_deviation_pct_max,-0.56420225,0.56420225,decreases_risk,2
+PRABHAKAR REDDY VEMIREDDY,collusion_score_mean,-0.3110274,0.3110274,decreases_risk,3
+PRADEEP PUROHIT,cost_deviation_pct_mean,-0.70029527,0.70029527,decreases_risk,1
+PRADEEP PUROHIT,cost_deviation_pct_max,-0.4528841,0.4528841,decreases_risk,2
+PRADEEP PUROHIT,sor_match_confidence_mean,0.26088881,0.26088881,increases_risk,3
+PRANITI SUSHILKUMAR SHINDE,cost_deviation_pct_mean,-2.9972625,2.9972625,decreases_risk,1
+PRANITI SUSHILKUMAR SHINDE,cost_deviation_pct_max,-2.5467942,2.5467942,decreases_risk,2
+PRANITI SUSHILKUMAR SHINDE,num_works,0.9305698,0.9305698,increases_risk,3
+PRAVEEN PATEL,num_works,2.0755842,2.0755842,increases_risk,1
+PRAVEEN PATEL,cost_deviation_pct_mean,-1.8024131,1.8024131,decreases_risk,2
+PRAVEEN PATEL,cost_deviation_pct_max,1.3732531,1.3732531,increases_risk,3
+PRIYA SAROJ,cost_deviation_pct_mean,-2.0076966,2.0076966,decreases_risk,1
+PRIYA SAROJ,cost_deviation_pct_max,-0.40602493,0.40602493,decreases_risk,2
+PRIYA SAROJ,num_works,-0.26926497,0.26926497,decreases_risk,3
+PRIYANKA SATISH JARKIHOLI,cost_deviation_pct_mean,-3.0046337,3.0046337,decreases_risk,1
+PRIYANKA SATISH JARKIHOLI,cost_deviation_pct_max,0.9094919,0.9094919,increases_risk,2
+PRIYANKA SATISH JARKIHOLI,num_works,-0.6494683,0.6494683,decreases_risk,3
+PUSHPENDRA SAROJ,cost_deviation_pct_mean,-1.9489101,1.9489101,decreases_risk,1
+PUSHPENDRA SAROJ,cost_deviation_pct_max,-0.3630574,0.3630574,decreases_risk,2
+PUSHPENDRA SAROJ,num_works,-0.30630302,0.30630302,decreases_risk,3
+Pankaj Chowdhary,cost_deviation_pct_mean,-2.6590183,2.6590183,decreases_risk,1
+Pankaj Chowdhary,cost_deviation_pct_max,0.6270747,0.6270747,increases_risk,2
+Pankaj Chowdhary,num_works,-0.603972,0.603972,decreases_risk,3
+Parvatagouda Chandanagouda Gaddigoudar,cost_deviation_pct_mean,-3.6724782,3.6724782,decreases_risk,1
+Parvatagouda Chandanagouda Gaddigoudar,cost_deviation_pct_max,0.4989009,0.4989009,increases_risk,2
+Parvatagouda Chandanagouda Gaddigoudar,num_works,-0.37809065,0.37809065,decreases_risk,3
+Prabhubhai Nagarbhai Vasava,cost_deviation_pct_mean,-2.846611,2.846611,decreases_risk,1
+Prabhubhai Nagarbhai Vasava,num_works,-0.3842512,0.3842512,decreases_risk,2
+Prabhubhai Nagarbhai Vasava,anomaly_flag_rate,-0.3092817,0.3092817,decreases_risk,3
+Pradan Baruah,cost_deviation_pct_max,0.92782027,0.92782027,increases_risk,1
+Pradan Baruah,num_works,-0.6916343,0.6916343,decreases_risk,2
+Pradan Baruah,sor_match_confidence_mean,-0.12646328,0.12646328,decreases_risk,3
+Pradeep Kumar Singh,cost_deviation_pct_mean,-3.2293396,3.2293396,decreases_risk,1
+Pradeep Kumar Singh,cost_deviation_pct_max,0.5994129,0.5994129,increases_risk,2
+Pradeep Kumar Singh,num_works,-0.45162526,0.45162526,decreases_risk,3
+Pradyut Bordoloi,cost_deviation_pct_mean,4.273629,4.273629,increases_risk,1
+Pradyut Bordoloi,num_works,1.2276589,1.2276589,increases_risk,2
+Pradyut Bordoloi,residual_pct_max,-0.20825708,0.20825708,decreases_risk,3
+Pralhad Venkatesh Joshi,cost_deviation_pct_mean,-2.5817013,2.5817013,decreases_risk,1
+Pralhad Venkatesh Joshi,cost_deviation_pct_max,0.7031021,0.7031021,increases_risk,2
+Pralhad Venkatesh Joshi,num_works,-0.42404476,0.42404476,decreases_risk,3
+Prasun Banerjee,cost_deviation_pct_mean,-2.9916525,2.9916525,decreases_risk,1
+Prasun Banerjee,num_works,-0.4094317,0.4094317,decreases_risk,2
+Prasun Banerjee,sor_match_confidence_mean,-0.25091746,0.25091746,decreases_risk,3
+Pratap Chandra Sarangi,cost_deviation_pct_max,-2.825495,2.825495,decreases_risk,1
+Pratap Chandra Sarangi,cost_deviation_pct_mean,-2.800819,2.800819,decreases_risk,2
+Pratap Chandra Sarangi,num_works,0.8548119,0.8548119,increases_risk,3
+Pratima Mondal ,cost_deviation_pct_mean,-2.8064823,2.8064823,decreases_risk,1
+Pratima Mondal ,num_works,-0.45941994,0.45941994,decreases_risk,2
+Pratima Mondal ,anomaly_flag_rate,-0.29645735,0.29645735,decreases_risk,3
+Praveen Khandelwal,cost_deviation_pct_mean,-3.2772677,3.2772677,decreases_risk,1
+Praveen Khandelwal,cost_deviation_pct_max,-1.4800903,1.4800903,decreases_risk,2
+Praveen Khandelwal,num_works,-0.46006233,0.46006233,decreases_risk,3
+Priyanka Gandhi Vadra,cost_deviation_pct_mean,-3.1632137,3.1632137,decreases_risk,1
+Priyanka Gandhi Vadra,cost_deviation_pct_max,-2.5171552,2.5171552,decreases_risk,2
+Priyanka Gandhi Vadra,num_works,0.9587256,0.9587256,increases_risk,3
+Prof SP Singh Baghel,cost_deviation_pct_mean,-2.7832704,2.7832704,decreases_risk,1
+Prof SP Singh Baghel,sor_match_confidence_mean,0.9446806,0.9446806,increases_risk,2
+Prof SP Singh Baghel,num_primary_vendors,0.38225362,0.38225362,increases_risk,3
+Prof Sougata Ray,cost_deviation_pct_mean,3.1628277,3.1628277,increases_risk,1
+Prof Sougata Ray,num_works,1.1537683,1.1537683,increases_risk,2
+Prof Sougata Ray,cost_deviation_pct_max,0.67837316,0.67837316,increases_risk,3
+Prof. Manoj Kumar Jha (2024-30),cost_deviation_pct_mean,0.6756045,0.6756045,increases_risk,1
+Prof. Manoj Kumar Jha (2024-30),cost_deviation_pct_max,-0.53642744,0.53642744,decreases_risk,2
+Prof. Manoj Kumar Jha (2024-30),residual_pct_max,-0.39136934,0.39136934,decreases_risk,3
+Prof. Ram Gopal Yadav (2020-26),cost_deviation_pct_mean,-2.501919,2.501919,decreases_risk,1
+Prof. Ram Gopal Yadav (2020-26),cost_deviation_pct_max,0.49877158,0.49877158,increases_risk,2
+Prof. Ram Gopal Yadav (2020-26),num_works,-0.41651118,0.41651118,decreases_risk,3
+Putta Mahesh Kumar,cost_deviation_pct_mean,-3.2477677,3.2477677,decreases_risk,1
+Putta Mahesh Kumar,cost_deviation_pct_max,0.5773305,0.5773305,increases_risk,2
+Putta Mahesh Kumar,anomaly_score_max,0.3983167,0.3983167,increases_risk,3
+R.K. CHAUDHARY,cost_deviation_pct_mean,-3.1261814,3.1261814,decreases_risk,1
+R.K. CHAUDHARY,cost_deviation_pct_max,-2.5757089,2.5757089,decreases_risk,2
+R.K. CHAUDHARY,num_works,0.93378335,0.93378335,increases_risk,3
+RABINDRA NARAYAN BEHERA,cost_deviation_pct_mean,-3.1441455,3.1441455,decreases_risk,1
+RABINDRA NARAYAN BEHERA,cost_deviation_pct_max,-2.5103686,2.5103686,decreases_risk,2
+RABINDRA NARAYAN BEHERA,num_works,0.9193023,0.9193023,increases_risk,3
+RACHNA BANERJEE,cost_deviation_pct_mean,-2.1225414,2.1225414,decreases_risk,1
+RACHNA BANERJEE,num_works,-0.6740173,0.6740173,decreases_risk,2
+RACHNA BANERJEE,cost_deviation_pct_max,0.47068125,0.47068125,increases_risk,3
+RADHE SHYAM RATHIYA,cost_deviation_pct_mean,-0.7342972,0.7342972,decreases_risk,1
+RADHE SHYAM RATHIYA,cost_deviation_pct_max,-0.5133401,0.5133401,decreases_risk,2
+RADHE SHYAM RATHIYA,duplicate_score_max,-0.41053316,0.41053316,decreases_risk,3
+RAHUL GANDHI,cost_deviation_pct_mean,-2.7775369,2.7775369,decreases_risk,1
+RAHUL GANDHI,cost_deviation_pct_max,0.7105171,0.7105171,increases_risk,2
+RAHUL GANDHI,num_works,-0.39245623,0.39245623,decreases_risk,3
+RAHUL SINGH LODHI,cost_deviation_pct_mean,3.2145004,3.2145004,increases_risk,1
+RAHUL SINGH LODHI,anomaly_score_max,0.5062695,0.5062695,increases_risk,2
+RAHUL SINGH LODHI,duplicate_score_max,-0.1860244,0.1860244,decreases_risk,3
+RAJ BHUSHAN CHOUDHARY,cost_deviation_pct_mean,0.59933436,0.59933436,increases_risk,1
+RAJ BHUSHAN CHOUDHARY,cost_deviation_pct_max,0.57546985,0.57546985,increases_risk,2
+RAJ BHUSHAN CHOUDHARY,residual_pct_max,-0.48240593,0.48240593,decreases_risk,3
+RAJ KUMAR ROAT,cost_deviation_pct_mean,-3.3730333,3.3730333,decreases_risk,1
+RAJ KUMAR ROAT,cost_deviation_pct_max,-1.41147,1.41147,decreases_risk,2
+RAJ KUMAR ROAT,num_works,-0.26206183,0.26206183,decreases_risk,3
+RAJA RAM SINGH,cost_deviation_pct_mean,-3.323447,3.323447,decreases_risk,1
+RAJA RAM SINGH,num_works,-0.470062,0.470062,decreases_risk,2
+RAJA RAM SINGH,cost_deviation_pct_max,0.4406614,0.4406614,increases_risk,3
+RAJABHAU,cost_deviation_pct_mean,-3.286415,3.286415,decreases_risk,1
+RAJABHAU,cost_deviation_pct_max,-1.3070282,1.3070282,decreases_risk,2
+RAJABHAU,num_works,-0.44363862,0.44363862,decreases_risk,3
+RAJEEV BHARDWAJ,cost_deviation_pct_mean,-2.1097236,2.1097236,decreases_risk,1
+RAJEEV BHARDWAJ,duplicate_score_max,-0.34807426,0.34807426,decreases_risk,2
+RAJEEV BHARDWAJ,num_works,-0.29953358,0.29953358,decreases_risk,3
+RAJEEV RAI,cost_deviation_pct_mean,-2.8861938,2.8861938,decreases_risk,1
+RAJEEV RAI,cost_deviation_pct_max,-0.48550212,0.48550212,decreases_risk,2
+RAJEEV RAI,num_works,-0.40042737,0.40042737,decreases_risk,3
+RAJESH RANJAN ALIAS PAPPU YADAV,cost_deviation_pct_mean,-1.3734835,1.3734835,decreases_risk,1
+RAJESH RANJAN ALIAS PAPPU YADAV,cost_deviation_pct_max,0.99551934,0.99551934,increases_risk,2
+RAJESH RANJAN ALIAS PAPPU YADAV,sor_match_confidence_mean,0.95778996,0.95778996,increases_risk,3
+RAJESH VERMA,cost_deviation_pct_mean,-3.5591812,3.5591812,decreases_risk,1
+RAJESH VERMA,cost_deviation_pct_max,0.6287435,0.6287435,increases_risk,2
+RAJESH VERMA,num_works,-0.41896784,0.41896784,decreases_risk,3
+RAJPALSINH MAHENDRASINH JADAV,cost_deviation_pct_mean,-2.1090822,2.1090822,decreases_risk,1
+RAJPALSINH MAHENDRASINH JADAV,cost_deviation_pct_max,-0.36588702,0.36588702,decreases_risk,2
+RAJPALSINH MAHENDRASINH JADAV,collusion_score_max,-0.27343285,0.27343285,decreases_risk,3
+RAKESH RATHOR,cost_deviation_pct_mean,1.2563468,1.2563468,increases_risk,1
+RAKESH RATHOR,num_works,-0.92674357,0.92674357,decreases_risk,2
+RAKESH RATHOR,anomaly_flag_rate,-0.4949343,0.4949343,decreases_risk,3
+RAKIBUL HUSSAIN,cost_deviation_pct_mean,-3.1464295,3.1464295,decreases_risk,1
+RAKIBUL HUSSAIN,cost_deviation_pct_max,0.8526787,0.8526787,increases_risk,2
+RAKIBUL HUSSAIN,num_works,-0.396287,0.396287,decreases_risk,3
+RAM PRASAD CHAUDHARY,cost_deviation_pct_mean,2.3183427,2.3183427,increases_risk,1
+RAM PRASAD CHAUDHARY,num_works,-0.40095595,0.40095595,decreases_risk,2
+RAM PRASAD CHAUDHARY,anomaly_score_max,-0.18080266,0.18080266,decreases_risk,3
+RAMASAHAYAM RAGHURAM REDDY,cost_deviation_pct_mean,-3.1894689,3.1894689,decreases_risk,1
+RAMASAHAYAM RAGHURAM REDDY,cost_deviation_pct_max,-1.3976232,1.3976232,decreases_risk,2
+RAMASAHAYAM RAGHURAM REDDY,num_works,-0.4574882,0.4574882,decreases_risk,3
+RAMASHANKAR RAJBHAR,cost_deviation_pct_mean,-3.5054529,3.5054529,decreases_risk,1
+RAMASHANKAR RAJBHAR,num_works,-0.3939074,0.3939074,decreases_risk,2
+RAMASHANKAR RAJBHAR,sor_match_confidence_mean,-0.26049978,0.26049978,decreases_risk,3
+RAMBHUAL NISHAD,cost_deviation_pct_mean,-2.9681756,2.9681756,decreases_risk,1
+RAMBHUAL NISHAD,cost_deviation_pct_max,-2.685949,2.685949,decreases_risk,2
+RAMBHUAL NISHAD,num_works,0.8780748,0.8780748,increases_risk,3
+RAMESH AWASTHI,cost_deviation_pct_mean,-3.4704041,3.4704041,decreases_risk,1
+RAMESH AWASTHI,cost_deviation_pct_max,0.8045723,0.8045723,increases_risk,2
+RAMESH AWASTHI,num_works,-0.34842762,0.34842762,decreases_risk,3
+RANJIT DUTTA,cost_deviation_pct_mean,-3.436278,3.436278,decreases_risk,1
+RANJIT DUTTA,cost_deviation_pct_max,-1.4177456,1.4177456,decreases_risk,2
+RANJIT DUTTA,num_works,-0.2785678,0.2785678,decreases_risk,3
+RICHARD VANLALHMANGAIHA,cost_deviation_pct_mean,4.748689,4.748689,increases_risk,1
+RICHARD VANLALHMANGAIHA,collusion_score_max,0.27620044,0.27620044,increases_risk,2
+RICHARD VANLALHMANGAIHA,duplicate_score_max,-0.23248981,0.23248981,decreases_risk,3
+ROBERT BRUCE C,cost_deviation_pct_mean,2.9936419,2.9936419,increases_risk,1
+ROBERT BRUCE C,residual_pct_max,-0.29575187,0.29575187,decreases_risk,2
+ROBERT BRUCE C,cost_deviation_pct_max,0.21678804,0.21678804,increases_risk,3
+ROOP KUMARI CHOUDHARY,cost_deviation_pct_mean,-0.65146,0.65146,decreases_risk,1
+ROOP KUMARI CHOUDHARY,cost_deviation_pct_max,-0.60264343,0.60264343,decreases_risk,2
+ROOP KUMARI CHOUDHARY,duplicate_score_max,-0.3303698,0.3303698,decreases_risk,3
+RUCHI VIRA,cost_deviation_pct_mean,-0.49979547,0.49979547,decreases_risk,1
+RUCHI VIRA,duplicate_score_max,-0.39934844,0.39934844,decreases_risk,2
+RUCHI VIRA,cost_deviation_pct_max,-0.3834019,0.3834019,decreases_risk,3
+Radha Mohan Singh,cost_deviation_pct_mean,1.9400535,1.9400535,increases_risk,1
+Radha Mohan Singh,collusion_score_max,0.23817372,0.23817372,increases_risk,2
+Radha Mohan Singh,anomaly_flag_rate,-0.13579865,0.13579865,decreases_risk,3
+Rahul Kaswan,cost_deviation_pct_mean,-2.5858686,2.5858686,decreases_risk,1
+Rahul Kaswan,cost_deviation_pct_max,0.6048494,0.6048494,increases_risk,2
+Rahul Kaswan,num_works,-0.54664975,0.54664975,decreases_risk,3
+Rajeshbhai Naranbhai Chudasama,cost_deviation_pct_mean,1.1466147,1.1466147,increases_risk,1
+Rajeshbhai Naranbhai Chudasama,anomaly_score_max,0.42400464,0.42400464,increases_risk,2
+Rajeshbhai Naranbhai Chudasama,collusion_score_max,-0.28771153,0.28771153,decreases_risk,3
+Rajkumar Chahar ,cost_deviation_pct_max,1.0079666,1.0079666,increases_risk,1
+Rajkumar Chahar ,cost_deviation_pct_mean,-0.20576562,0.20576562,decreases_risk,2
+Rajkumar Chahar ,collusion_score_mean,0.15973853,0.15973853,increases_risk,3
+Rajnath Singh,cost_deviation_pct_mean,-3.3305137,3.3305137,decreases_risk,1
+Rajnath Singh,cost_deviation_pct_max,0.809014,0.809014,increases_risk,2
+Rajnath Singh,num_works,-0.69961673,0.69961673,decreases_risk,3
+Raju Bista,cost_deviation_pct_mean,-3.7725875,3.7725875,decreases_risk,1
+Raju Bista,cost_deviation_pct_max,0.52012527,0.52012527,increases_risk,2
+Raju Bista,num_works,-0.38535064,0.38535064,decreases_risk,3
+Ramprit Mandal,cost_deviation_pct_mean,-3.631839,3.631839,decreases_risk,1
+Ramprit Mandal,cost_deviation_pct_max,0.64368325,0.64368325,increases_risk,2
+Ramprit Mandal,num_works,-0.41201332,0.41201332,decreases_risk,3
+Ramvir Singh Bidhuri,cost_deviation_pct_mean,-2.7120738,2.7120738,decreases_risk,1
+Ramvir Singh Bidhuri,cost_deviation_pct_max,0.67509043,0.67509043,increases_risk,2
+Ramvir Singh Bidhuri,sor_match_confidence_mean,-0.30889517,0.30889517,decreases_risk,3
+Rao Inderjit Singh,cost_deviation_pct_mean,3.3581128,3.3581128,increases_risk,1
+Rao Inderjit Singh,num_works,1.189276,1.189276,increases_risk,2
+Rao Inderjit Singh,anomaly_score_max,0.44662517,0.44662517,increases_risk,3
+Rao Rajendra Singh,cost_deviation_pct_mean,3.7663243,3.7663243,increases_risk,1
+Rao Rajendra Singh,num_works,1.2320604,1.2320604,increases_risk,2
+Rao Rajendra Singh,sor_match_confidence_mean,0.31862265,0.31862265,increases_risk,3
+Ravi Shankar Prasad,cost_deviation_pct_mean,4.38685,4.38685,increases_risk,1
+Ravi Shankar Prasad,collusion_score_max,0.27740702,0.27740702,increases_risk,2
+Ravi Shankar Prasad,cost_deviation_pct_max,-0.2316761,0.2316761,decreases_risk,3
+Ravindra Vasantrao Chavan,cost_deviation_pct_mean,-2.1648664,2.1648664,decreases_risk,1
+Ravindra Vasantrao Chavan,sor_match_confidence_mean,0.7197842,0.7197842,increases_risk,2
+Ravindra Vasantrao Chavan,cost_deviation_pct_max,0.6682953,0.6682953,increases_risk,3
+Rodmal Nagar ,cost_deviation_pct_mean,-3.4500256,3.4500256,decreases_risk,1
+Rodmal Nagar ,cost_deviation_pct_max,0.621668,0.621668,increases_risk,2
+Rodmal Nagar ,num_works,-0.40150344,0.40150344,decreases_risk,3
+S SUPONGMEREN JAMIR,cost_deviation_pct_max,0.64259154,0.64259154,increases_risk,1
+S SUPONGMEREN JAMIR,num_works,-0.4866527,0.4866527,decreases_risk,2
+S SUPONGMEREN JAMIR,duplicate_score_max,-0.40095752,0.40095752,decreases_risk,3
+S Venkatesan,cost_deviation_pct_mean,4.6535373,4.6535373,increases_risk,1
+S Venkatesan,cost_deviation_pct_max,-0.64665467,0.64665467,decreases_risk,2
+S Venkatesan,residual_pct_max,-0.21961191,0.21961191,decreases_risk,3
+S. Jagathrakshakan,cost_deviation_pct_mean,-3.37413,3.37413,decreases_risk,1
+S. Jagathrakshakan,num_works,-0.69560057,0.69560057,decreases_risk,2
+S. Jagathrakshakan,cost_deviation_pct_max,0.63243693,0.63243693,increases_risk,3
+SACHITHANANTHAM R,cost_deviation_pct_mean,-0.50398093,0.50398093,decreases_risk,1
+SACHITHANANTHAM R,cost_deviation_pct_max,-0.49994934,0.49994934,decreases_risk,2
+SACHITHANANTHAM R,num_works,-0.15896201,0.15896201,decreases_risk,3
+SAGAR ESHWAR KHANDRE,cost_deviation_pct_mean,-3.0312102,3.0312102,decreases_risk,1
+SAGAR ESHWAR KHANDRE,cost_deviation_pct_max,-2.690289,2.690289,decreases_risk,2
+SAGAR ESHWAR KHANDRE,num_works,0.86064506,0.86064506,increases_risk,3
+SALENG A SANGMA,cost_deviation_pct_mean,-0.43792078,0.43792078,decreases_risk,1
+SALENG A SANGMA,duplicate_score_max,-0.40977305,0.40977305,decreases_risk,2
+SALENG A SANGMA,num_works,-0.15279488,0.15279488,decreases_risk,3
+SAMBIT PATRA,cost_deviation_pct_mean,-0.67800796,0.67800796,decreases_risk,1
+SAMBIT PATRA,duplicate_score_max,-0.42948744,0.42948744,decreases_risk,2
+SAMBIT PATRA,num_works,-0.27907243,0.27907243,decreases_risk,3
+SANATAN PANDEY,cost_deviation_pct_max,-0.5019433,0.5019433,decreases_risk,1
+SANATAN PANDEY,cost_deviation_pct_mean,-0.38282105,0.38282105,decreases_risk,2
+SANATAN PANDEY,collusion_score_mean,-0.18859965,0.18859965,decreases_risk,3
+SANJNA JATAV,cost_deviation_pct_mean,-3.6926997,3.6926997,decreases_risk,1
+SANJNA JATAV,cost_deviation_pct_max,-1.4579735,1.4579735,decreases_risk,2
+SANJNA JATAV,num_works,-0.15006994,0.15006994,decreases_risk,3
+SARABJEET SINGH KHALSA,cost_deviation_pct_mean,-0.7393254,0.7393254,decreases_risk,1
+SARABJEET SINGH KHALSA,cost_deviation_pct_max,-0.41214305,0.41214305,decreases_risk,2
+SARABJEET SINGH KHALSA,duplicate_score_max,-0.40115863,0.40115863,decreases_risk,3
+SATPAL BRAHAMCHARI,cost_deviation_pct_mean,-3.278222,3.278222,decreases_risk,1
+SATPAL BRAHAMCHARI,cost_deviation_pct_max,-1.3154426,1.3154426,decreases_risk,2
+SATPAL BRAHAMCHARI,num_works,-0.46084708,0.46084708,decreases_risk,3
+SAVITRI THAKUR,cost_deviation_pct_mean,-2.9146926,2.9146926,decreases_risk,1
+SAVITRI THAKUR,num_works,-0.46948016,0.46948016,decreases_risk,2
+SAVITRI THAKUR,collusion_score_mean,-0.30958337,0.30958337,decreases_risk,3
+SAYANI GHOSH,cost_deviation_pct_mean,-2.0689611,2.0689611,decreases_risk,1
+SAYANI GHOSH,duplicate_score_max,-0.37616375,0.37616375,decreases_risk,2
+SAYANI GHOSH,anomaly_flag_rate,-0.32413906,0.32413906,decreases_risk,3
+SELJA,cost_deviation_pct_mean,-2.1216292,2.1216292,decreases_risk,1
+SELJA,cost_deviation_pct_max,-0.2650599,0.2650599,decreases_risk,2
+SELJA,sor_match_confidence_mean,-0.23364139,0.23364139,decreases_risk,3
+SELVARAJ V,cost_deviation_pct_mean,-2.0920947,2.0920947,decreases_risk,1
+SELVARAJ V,cost_deviation_pct_max,-0.38334504,0.38334504,decreases_risk,2
+SELVARAJ V,sor_match_confidence_mean,-0.26217237,0.26217237,decreases_risk,3
+SHAFI PARAMBIL,num_works,2.0389204,2.0389204,increases_risk,1
+SHAFI PARAMBIL,cost_deviation_pct_mean,-2.0206869,2.0206869,decreases_risk,2
+SHAFI PARAMBIL,cost_deviation_pct_max,1.1787407,1.1787407,increases_risk,3
+SHAMBHAVI,cost_deviation_pct_mean,-1.8402195,1.8402195,decreases_risk,1
+SHAMBHAVI,num_works,-0.9434093,0.9434093,decreases_risk,2
+SHAMBHAVI,cost_deviation_pct_max,0.7756453,0.7756453,increases_risk,3
+SHASHANK MANI,cost_deviation_pct_mean,1.4514812,1.4514812,increases_risk,1
+SHASHANK MANI,cost_deviation_pct_max,0.57518935,0.57518935,increases_risk,2
+SHASHANK MANI,anomaly_flag_rate,0.2433293,0.2433293,increases_risk,3
+SHER SINGH GHUBAYA,cost_deviation_pct_mean,-2.1677785,2.1677785,decreases_risk,1
+SHER SINGH GHUBAYA,duplicate_score_max,-0.34690204,0.34690204,decreases_risk,2
+SHER SINGH GHUBAYA,num_works,-0.29697132,0.29697132,decreases_risk,3
+SHIVMANGAL SINGH TOMAR,cost_deviation_pct_mean,0.81032944,0.81032944,increases_risk,1
+SHIVMANGAL SINGH TOMAR,num_works,-0.5832546,0.5832546,decreases_risk,2
+SHIVMANGAL SINGH TOMAR,cost_deviation_pct_max,-0.27690893,0.27690893,decreases_risk,3
+SHIVRAJ SINGH CHOUHAN,cost_deviation_pct_mean,-3.1789262,3.1789262,decreases_risk,1
+SHIVRAJ SINGH CHOUHAN,cost_deviation_pct_max,-2.453169,2.453169,decreases_risk,2
+SHIVRAJ SINGH CHOUHAN,num_works,0.9395195,0.9395195,increases_risk,3
+SHOBHA KARANDLAJE,num_works,-0.9147348,0.9147348,decreases_risk,1
+SHOBHA KARANDLAJE,cost_deviation_pct_mean,0.75177634,0.75177634,increases_risk,2
+SHOBHA KARANDLAJE,num_months,-0.21794446,0.21794446,decreases_risk,3
+SHOBHANABEN MAHENDRASINH BARAIYA,cost_deviation_pct_mean,-0.41134405,0.41134405,decreases_risk,1
+SHOBHANABEN MAHENDRASINH BARAIYA,collusion_score_mean,-0.30188045,0.30188045,decreases_risk,2
+SHOBHANABEN MAHENDRASINH BARAIYA,residual_pct_mean,-0.27601025,0.27601025,decreases_risk,3
+SHREYAS. M. PATEL,cost_deviation_pct_max,0.75266325,0.75266325,increases_risk,1
+SHREYAS. M. PATEL,num_works,-0.6783476,0.6783476,decreases_risk,2
+SHREYAS. M. PATEL,cost_deviation_pct_mean,0.31738657,0.31738657,increases_risk,3
+SHRIMANT CHH UDAYANRAJE PRATAPSINHAMAHARAJ BHONSLE,cost_deviation_pct_mean,-2.8914464,2.8914464,decreases_risk,1
+SHRIMANT CHH UDAYANRAJE PRATAPSINHAMAHARAJ BHONSLE,cost_deviation_pct_max,0.7215501,0.7215501,increases_risk,2
+SHRIMANT CHH UDAYANRAJE PRATAPSINHAMAHARAJ BHONSLE,num_works,-0.6683437,0.6683437,decreases_risk,3
+SK NURUL ISLAM,cost_deviation_pct_mean,-3.1584933,3.1584933,decreases_risk,1
+SK NURUL ISLAM,cost_deviation_pct_max,-2.4891114,2.4891114,decreases_risk,2
+SK NURUL ISLAM,num_works,0.93890256,0.93890256,increases_risk,3
+SMITA UDAY WAGH,cost_deviation_pct_mean,3.180195,3.180195,increases_risk,1
+SMITA UDAY WAGH,num_works,1.1895403,1.1895403,increases_risk,2
+SMITA UDAY WAGH,cost_deviation_pct_max,0.5420793,0.5420793,increases_risk,3
+SUDAMA PRASAD,cost_deviation_pct_mean,-2.8067818,2.8067818,decreases_risk,1
+SUDAMA PRASAD,anomaly_score_max,0.4091996,0.4091996,increases_risk,2
+SUDAMA PRASAD,num_works,-0.37347004,0.37347004,decreases_risk,3
+SUDHA R,cost_deviation_pct_mean,-3.2195878,3.2195878,decreases_risk,1
+SUDHA R,cost_deviation_pct_max,-1.7081223,1.7081223,decreases_risk,2
+SUDHA R,sor_match_confidence_mean,0.48927832,0.48927832,increases_risk,3
+SUDHAKAR SINGH,cost_deviation_pct_mean,-2.0181527,2.0181527,decreases_risk,1
+SUDHAKAR SINGH,cost_deviation_pct_max,0.45097822,0.45097822,increases_risk,2
+SUDHAKAR SINGH,anomaly_score_max,0.42174545,0.42174545,increases_risk,3
+SUKANTA KUMAR PANIGRAHI,cost_deviation_pct_mean,-3.1242645,3.1242645,decreases_risk,1
+SUKANTA KUMAR PANIGRAHI,sor_match_confidence_mean,0.709532,0.709532,increases_risk,2
+SUKANTA KUMAR PANIGRAHI,num_works,-0.42019093,0.42019093,decreases_risk,3
+SUKHDEO BHAGAT,cost_deviation_pct_mean,1.8661573,1.8661573,increases_risk,1
+SUKHDEO BHAGAT,anomaly_score_max,0.57108945,0.57108945,increases_risk,2
+SUKHDEO BHAGAT,collusion_score_max,0.2459223,0.2459223,increases_risk,3
+SUKHJINDER SINGH RANDHAWA,cost_deviation_pct_mean,-3.5172696,3.5172696,decreases_risk,1
+SUKHJINDER SINGH RANDHAWA,cost_deviation_pct_max,0.7037238,0.7037238,increases_risk,2
+SUKHJINDER SINGH RANDHAWA,num_works,-0.4236934,0.4236934,decreases_risk,3
+SUNIL BOSE,cost_deviation_pct_mean,-2.926976,2.926976,decreases_risk,1
+SUNIL BOSE,cost_deviation_pct_max,-1.8313156,1.8313156,decreases_risk,2
+SUNIL BOSE,sor_match_confidence_mean,0.5702165,0.5702165,increases_risk,3
+SURENDRA PRASAD YADAV,cost_deviation_pct_mean,2.6476605,2.6476605,increases_risk,1
+SURENDRA PRASAD YADAV,cost_deviation_pct_max,-0.7630033,0.7630033,decreases_risk,2
+SURENDRA PRASAD YADAV,residual_pct_max,-0.32662383,0.32662383,decreases_risk,3
+SURESH GOPI,cost_deviation_pct_mean,3.7114463,3.7114463,increases_risk,1
+SURESH GOPI,num_works,1.2387687,1.2387687,increases_risk,2
+SURESH GOPI,sor_match_confidence_mean,0.29224643,0.29224643,increases_risk,3
+SURESH KUMAR SHETKAR,cost_deviation_pct_mean,4.3523693,4.3523693,increases_risk,1
+SURESH KUMAR SHETKAR,cost_deviation_pct_max,-0.45302606,0.45302606,decreases_risk,2
+SURESH KUMAR SHETKAR,sor_match_confidence_mean,0.35173458,0.35173458,increases_risk,3
+Sanjay Haribhau Jadhav,cost_deviation_pct_mean,2.9807515,2.9807515,increases_risk,1
+Sanjay Haribhau Jadhav,num_works,-0.57496697,0.57496697,decreases_risk,2
+Sanjay Haribhau Jadhav,residual_pct_max,-0.25917757,0.25917757,decreases_risk,3
+Sanjay Kumar Bandi,cost_deviation_pct_mean,-2.873372,2.873372,decreases_risk,1
+Sanjay Kumar Bandi,num_works,-0.43228102,0.43228102,decreases_risk,2
+Sanjay Kumar Bandi,sor_match_confidence_mean,-0.27159905,0.27159905,decreases_risk,3
+Sanjay Seth ,cost_deviation_pct_mean,-2.7733572,2.7733572,decreases_risk,1
+Sanjay Seth ,cost_deviation_pct_max,0.7179924,0.7179924,increases_risk,2
+Sanjay Seth ,sor_match_confidence_mean,-0.38052166,0.38052166,decreases_risk,3
+Sanjay Uttamrao Deshmukh,cost_deviation_pct_mean,4.0121565,4.0121565,increases_risk,1
+Sanjay Uttamrao Deshmukh,num_works,-0.49305025,0.49305025,decreases_risk,2
+Sanjay Uttamrao Deshmukh,sor_match_confidence_mean,0.38640308,0.38640308,increases_risk,3
+Santosh Pandey,cost_deviation_pct_mean,-3.036782,3.036782,decreases_risk,1
+Santosh Pandey,num_works,-0.40081412,0.40081412,decreases_risk,2
+Santosh Pandey,sor_match_confidence_mean,-0.2632106,0.2632106,decreases_risk,3
+Saptagiri Sankar Ulaka,cost_deviation_pct_mean,3.2070527,3.2070527,increases_risk,1
+Saptagiri Sankar Ulaka,cost_deviation_pct_max,-0.18551032,0.18551032,decreases_risk,2
+Saptagiri Sankar Ulaka,anomaly_score_max,-0.14664118,0.14664118,decreases_risk,3
+Sasikanth Senthil,collusion_score_mean,-0.41434455,0.41434455,decreases_risk,1
+Sasikanth Senthil,duplicate_score_max,-0.33271536,0.33271536,decreases_risk,2
+Sasikanth Senthil,cost_deviation_pct_mean,0.19037311,0.19037311,increases_risk,3
+Saumitra khan ,cost_deviation_pct_mean,-3.2674534,3.2674534,decreases_risk,1
+Saumitra khan ,cost_deviation_pct_max,0.84023553,0.84023553,increases_risk,2
+Saumitra khan ,num_works,-0.38515308,0.38515308,decreases_risk,3
+Shankar Lalwani,cost_deviation_pct_mean,-3.3351593,3.3351593,decreases_risk,1
+Shankar Lalwani,num_works,-0.43611747,0.43611747,decreases_risk,2
+Shankar Lalwani,collusion_score_mean,-0.3128916,0.3128916,decreases_risk,3
+Shatrughan Sinha,cost_deviation_pct_mean,-2.964448,2.964448,decreases_risk,1
+Shatrughan Sinha,cost_deviation_pct_max,-2.501105,2.501105,decreases_risk,2
+Shatrughan Sinha,num_works,0.90935606,0.90935606,increases_risk,3
+Shri  Dharambir Singh,cost_deviation_pct_mean,-3.0528016,3.0528016,decreases_risk,1
+Shri  Dharambir Singh,num_works,-0.39006445,0.39006445,decreases_risk,2
+Shri  Dharambir Singh,sor_match_confidence_mean,-0.24153167,0.24153167,decreases_risk,3
+Shri A. A. Rahim (2022-28),cost_deviation_pct_mean,-3.1445906,3.1445906,decreases_risk,1
+Shri A. A. Rahim (2022-28),cost_deviation_pct_max,-1.5824952,1.5824952,decreases_risk,2
+Shri A. A. Rahim (2022-28),sor_match_confidence_mean,0.49408108,0.49408108,increases_risk,3
+Shri Abdul Wahab (2021-27),cost_deviation_pct_mean,3.2352617,3.2352617,increases_risk,1
+Shri Abdul Wahab (2021-27),anomaly_score_max,0.30419788,0.30419788,increases_risk,2
+Shri Abdul Wahab (2021-27),collusion_score_mean,-0.2785242,0.2785242,decreases_risk,3
+Shri Abhishek Banerjee,cost_deviation_pct_mean,3.275896,3.275896,increases_risk,1
+Shri Abhishek Banerjee,anomaly_score_max,0.30735192,0.30735192,increases_risk,2
+Shri Abhishek Banerjee,collusion_score_max,-0.21552962,0.21552962,decreases_risk,3
+Shri Aditya Prasad (2022-28),cost_deviation_pct_mean,3.0085378,3.0085378,increases_risk,1
+Shri Aditya Prasad (2022-28),anomaly_score_max,0.3364811,0.3364811,increases_risk,2
+Shri Aditya Prasad (2022-28),collusion_score_max,0.26567215,0.26567215,increases_risk,3
+Shri Ajay Makan (2024-30),cost_deviation_pct_max,-2.8903246,2.8903246,decreases_risk,1
+Shri Ajay Makan (2024-30),cost_deviation_pct_mean,-2.846408,2.846408,decreases_risk,2
+Shri Ajay Makan (2024-30),num_works,0.807739,0.807739,increases_risk,3
+Shri Akhilesh Prasad Singh (2024-30),cost_deviation_pct_mean,-3.5134532,3.5134532,decreases_risk,1
+Shri Akhilesh Prasad Singh (2024-30),cost_deviation_pct_max,-1.5152665,1.5152665,decreases_risk,2
+Shri Akhilesh Prasad Singh (2024-30),num_works,-0.33348054,0.33348054,decreases_risk,3
+Shri Amar Pal Maurya (2024-30),cost_deviation_pct_mean,3.9333425,3.9333425,increases_risk,1
+Shri Amar Pal Maurya (2024-30),num_works,-0.82862693,0.82862693,decreases_risk,2
+Shri Amar Pal Maurya (2024-30),cost_deviation_pct_max,0.44004866,0.44004866,increases_risk,3
+Shri Amar Singh,cost_deviation_pct_mean,-1.6496714,1.6496714,decreases_risk,1
+Shri Amar Singh,cost_deviation_pct_max,0.8980553,0.8980553,increases_risk,2
+Shri Amar Singh,sor_match_confidence_mean,0.59560966,0.59560966,increases_risk,3
+Shri Amit Shah,cost_deviation_pct_mean,-2.9016778,2.9016778,decreases_risk,1
+Shri Amit Shah,cost_deviation_pct_max,0.7871728,0.7871728,increases_risk,2
+Shri Amit Shah,anomaly_score_max,0.35277912,0.35277912,increases_risk,3
+Shri Anil Firojiya,cost_deviation_pct_mean,-3.4046476,3.4046476,decreases_risk,1
+Shri Anil Firojiya,cost_deviation_pct_max,0.5695395,0.5695395,increases_risk,2
+Shri Anil Firojiya,num_works,-0.40536124,0.40536124,decreases_risk,3
+Shri Anil Kumar Yadav Mandadi (2024-30),cost_deviation_pct_mean,-3.6591494,3.6591494,decreases_risk,1
+Shri Anil Kumar Yadav Mandadi (2024-30),cost_deviation_pct_max,0.57391673,0.57391673,increases_risk,2
+Shri Anil Kumar Yadav Mandadi (2024-30),num_works,-0.3789519,0.3789519,decreases_risk,3
+Shri Arjun Ram Meghwal,cost_deviation_pct_mean,-2.9932983,2.9932983,decreases_risk,1
+Shri Arjun Ram Meghwal,cost_deviation_pct_max,0.850378,0.850378,increases_risk,2
+Shri Arjun Ram Meghwal,num_works,-0.69638026,0.69638026,decreases_risk,3
+Shri Arun Kumar Sagar ,cost_deviation_pct_mean,-3.0836508,3.0836508,decreases_risk,1
+Shri Arun Kumar Sagar ,cost_deviation_pct_max,-2.5005314,2.5005314,decreases_risk,2
+Shri Arun Kumar Sagar ,num_works,0.8652253,0.8652253,increases_risk,3
+Shri Arun Singh (2020-26),cost_deviation_pct_mean,-3.6561966,3.6561966,decreases_risk,1
+Shri Arun Singh (2020-26),cost_deviation_pct_max,0.8521665,0.8521665,increases_risk,2
+Shri Arun Singh (2020-26),sor_match_confidence_mean,-0.25770786,0.25770786,decreases_risk,3
+Shri Ashok Singh (2024-30),cost_deviation_pct_mean,-3.0412745,3.0412745,decreases_risk,1
+Shri Ashok Singh (2024-30),cost_deviation_pct_max,-2.7191389,2.7191389,decreases_risk,2
+Shri Ashok Singh (2024-30),num_works,0.8842564,0.8842564,increases_risk,3
+Shri Ashokrao Shankarrao Chavan (2024-30),cost_deviation_pct_mean,3.0771174,3.0771174,increases_risk,1
+Shri Ashokrao Shankarrao Chavan (2024-30),num_works,1.1315906,1.1315906,increases_risk,2
+Shri Ashokrao Shankarrao Chavan (2024-30),cost_deviation_pct_max,0.6948182,0.6948182,increases_risk,3
+Shri Ashwini Vaishnaw (2024-30),cost_deviation_pct_mean,-3.0484307,3.0484307,decreases_risk,1
+Shri Ashwini Vaishnaw (2024-30),cost_deviation_pct_max,-2.4736443,2.4736443,decreases_risk,2
+Shri Ashwini Vaishnaw (2024-30),num_works,0.94703496,0.94703496,increases_risk,3
+Shri B Y Raghavendra ,cost_deviation_pct_mean,0.3183485,0.3183485,increases_risk,1
+Shri B Y Raghavendra ,collusion_score_mean,-0.25668567,0.25668567,decreases_risk,2
+Shri B Y Raghavendra ,anomaly_flag_rate,0.16513278,0.16513278,increases_risk,3
+Shri B. Parthasaradhi Reddy (2022-28),cost_deviation_pct_max,-2.8705883,2.8705883,decreases_risk,1
+Shri B. Parthasaradhi Reddy (2022-28),cost_deviation_pct_mean,-2.6507673,2.6507673,decreases_risk,2
+Shri B. Parthasaradhi Reddy (2022-28),num_works,0.8520494,0.8520494,increases_risk,3
+Shri B.L. Verma (2020-26),cost_deviation_pct_mean,-1.8784102,1.8784102,decreases_risk,1
+Shri B.L. Verma (2020-26),cost_deviation_pct_max,-0.495106,0.495106,decreases_risk,2
+Shri B.L. Verma (2020-26),collusion_score_max,0.28312755,0.28312755,increases_risk,3
+Shri Babubhai Jesangbhai Desai (2023-29),cost_deviation_pct_mean,3.29685,3.29685,increases_risk,1
+Shri Babubhai Jesangbhai Desai (2023-29),anomaly_score_max,0.26647857,0.26647857,increases_risk,2
+Shri Babubhai Jesangbhai Desai (2023-29),collusion_score_max,-0.17635418,0.17635418,decreases_risk,3
+Shri Baburam Nishad (2022-28),cost_deviation_pct_mean,-2.8459413,2.8459413,decreases_risk,1
+Shri Baburam Nishad (2022-28),num_works,-0.482278,0.482278,decreases_risk,2
+Shri Baburam Nishad (2022-28),cost_deviation_pct_max,-0.4414283,0.4414283,decreases_risk,3
+Shri Balyogi Umeshnath (2024-30),num_works,1.64275,1.64275,increases_risk,1
+Shri Balyogi Umeshnath (2024-30),cost_deviation_pct_max,1.3040006,1.3040006,increases_risk,2
+Shri Balyogi Umeshnath (2024-30),sor_match_confidence_mean,0.40168867,0.40168867,increases_risk,3
+Shri Banshilal Gurjar (2024-30),cost_deviation_pct_mean,-3.2837582,3.2837582,decreases_risk,1
+Shri Banshilal Gurjar (2024-30),cost_deviation_pct_max,-2.512418,2.512418,decreases_risk,2
+Shri Banshilal Gurjar (2024-30),num_works,0.9458692,0.9458692,increases_risk,3
+Shri Benny Behanan,cost_deviation_pct_mean,2.1966882,2.1966882,increases_risk,1
+Shri Benny Behanan,num_works,1.1862072,1.1862072,increases_risk,2
+Shri Benny Behanan,cost_deviation_pct_max,0.65740055,0.65740055,increases_risk,3
+Shri Bhartruhari Mahtab,cost_deviation_pct_max,-0.60094965,0.60094965,decreases_risk,1
+Shri Bhartruhari Mahtab,cost_deviation_pct_mean,-0.5302005,0.5302005,decreases_risk,2
+Shri Bhartruhari Mahtab,residual_pct_mean,-0.25062948,0.25062948,decreases_risk,3
+Shri Birendra Prasad Baishya (2025-31),cost_deviation_pct_mean,-2.986477,2.986477,decreases_risk,1
+Shri Birendra Prasad Baishya (2025-31),cost_deviation_pct_max,-2.802969,2.802969,decreases_risk,2
+Shri Birendra Prasad Baishya (2025-31),num_works,0.85376954,0.85376954,increases_risk,3
+Shri Brij Lal (2020-26),cost_deviation_pct_max,-0.70187587,0.70187587,decreases_risk,1
+Shri Brij Lal (2020-26),cost_deviation_pct_mean,-0.3738842,0.3738842,decreases_risk,2
+Shri Brij Lal (2020-26),num_works,-0.18773961,0.18773961,decreases_risk,3
+Shri Chandra Prakash Choudhary,cost_deviation_pct_mean,-3.7202747,3.7202747,decreases_risk,1
+Shri Chandra Prakash Choudhary,cost_deviation_pct_max,-1.6051779,1.6051779,decreases_risk,2
+Shri Chandra Prakash Choudhary,deviation_flag_rate,-0.20776016,0.20776016,decreases_risk,3
+Shri Chandrakant Damodar Handore (2024-30),cost_deviation_pct_mean,3.7698574,3.7698574,increases_risk,1
+Shri Chandrakant Damodar Handore (2024-30),num_works,1.1606808,1.1606808,increases_risk,2
+Shri Chandrakant Damodar Handore (2024-30),cost_deviation_pct_max,0.25233978,0.25233978,increases_risk,3
+Shri Chunnilal Garasiya (2024-30),cost_deviation_pct_mean,-3.3344207,3.3344207,decreases_risk,1
+Shri Chunnilal Garasiya (2024-30),cost_deviation_pct_max,-1.4512669,1.4512669,decreases_risk,2
+Shri Chunnilal Garasiya (2024-30),num_works,-0.28392705,0.28392705,decreases_risk,3
+Shri Damodar Rao Divakonda (2022-28),cost_deviation_pct_mean,4.4117374,4.4117374,increases_risk,1
+Shri Damodar Rao Divakonda (2022-28),anomaly_score_max,0.33248985,0.33248985,increases_risk,2
+Shri Damodar Rao Divakonda (2022-28),num_works,-0.15664226,0.15664226,decreases_risk,3
+Shri Deepak (Dev) Adhikari ,cost_deviation_pct_mean,-2.631808,2.631808,decreases_risk,1
+Shri Deepak (Dev) Adhikari ,num_works,-0.4632648,0.4632648,decreases_risk,2
+Shri Deepak (Dev) Adhikari ,duplicate_score_max,-0.30306938,0.30306938,decreases_risk,3
+Shri Devendra Pratap Singh (2024-30),cost_deviation_pct_mean,3.829931,3.829931,increases_risk,1
+Shri Devendra Pratap Singh (2024-30),num_works,1.2100393,1.2100393,increases_risk,2
+Shri Devendra Pratap Singh (2024-30),total_actual_amount,-0.20015755,0.20015755,decreases_risk,3
+Shri Dhananjay Bhimrao Mahadik (2022-28),cost_deviation_pct_mean,-2.0494483,2.0494483,decreases_risk,1
+Shri Dhananjay Bhimrao Mahadik (2022-28),num_works,-0.6963272,0.6963272,decreases_risk,2
+Shri Dhananjay Bhimrao Mahadik (2022-28),cost_deviation_pct_max,-0.33644122,0.33644122,decreases_risk,3
+Shri Dorjee Tshering Lepcha (2024-30),cost_deviation_pct_mean,0.9118,0.9118,increases_risk,1
+Shri Dorjee Tshering Lepcha (2024-30),cost_deviation_pct_max,-0.40165585,0.40165585,decreases_risk,2
+Shri Dorjee Tshering Lepcha (2024-30),deviation_flag_rate,-0.21338019,0.21338019,decreases_risk,3
+Shri G.C. Chandrashekhar (2024-30),cost_deviation_pct_mean,-3.4896314,3.4896314,decreases_risk,1
+Shri G.C. Chandrashekhar (2024-30),num_works,-0.38866615,0.38866615,decreases_risk,2
+Shri G.C. Chandrashekhar (2024-30),collusion_score_mean,-0.3161541,0.3161541,decreases_risk,3
+Shri Ghanshyam Tiwari (2022-28),cost_deviation_pct_mean,3.2125564,3.2125564,increases_risk,1
+Shri Ghanshyam Tiwari (2022-28),num_works,-0.59167874,0.59167874,decreases_risk,2
+Shri Ghanshyam Tiwari (2022-28),collusion_score_mean,-0.32538527,0.32538527,decreases_risk,3
+Shri Golla Baburao (2024-30),cost_deviation_pct_mean,-3.1818235,3.1818235,decreases_risk,1
+Shri Golla Baburao (2024-30),cost_deviation_pct_max,-2.5744371,2.5744371,decreases_risk,2
+Shri Golla Baburao (2024-30),num_works,0.93419623,0.93419623,increases_risk,3
+Shri Govindbhai Laljibhai Dholakia (2024-30),cost_deviation_pct_mean,1.1624922,1.1624922,increases_risk,1
+Shri Govindbhai Laljibhai Dholakia (2024-30),anomaly_score_max,0.58912706,0.58912706,increases_risk,2
+Shri Govindbhai Laljibhai Dholakia (2024-30),sor_match_confidence_mean,0.3734077,0.3734077,increases_risk,3
+Shri Gulam Ali (2022-28),cost_deviation_pct_mean,-3.4157329,3.4157329,decreases_risk,1
+Shri Gulam Ali (2022-28),cost_deviation_pct_max,0.4852117,0.4852117,increases_risk,2
+Shri Gulam Ali (2022-28),num_works,-0.43386012,0.43386012,decreases_risk,3
+Shri Gurjeet Singh Aujla,cost_deviation_pct_mean,1.3821117,1.3821117,increases_risk,1
+Shri Gurjeet Singh Aujla,anomaly_score_max,0.30021346,0.30021346,increases_risk,2
+Shri Gurjeet Singh Aujla,collusion_score_max,0.25933573,0.25933573,increases_risk,3
+Shri Hanuman Beniwal,cost_deviation_pct_mean,-3.0063157,3.0063157,decreases_risk,1
+Shri Hanuman Beniwal,num_works,-0.45784995,0.45784995,decreases_risk,2
+Shri Hanuman Beniwal,cost_deviation_pct_max,-0.28267407,0.28267407,decreases_risk,3
+Shri Harbhajan Singh (2022-28),cost_deviation_pct_mean,-2.0002177,2.0002177,decreases_risk,1
+Shri Harbhajan Singh (2022-28),cost_deviation_pct_max,-0.48128745,0.48128745,decreases_risk,2
+Shri Harbhajan Singh (2022-28),sor_match_confidence_mean,-0.2540406,0.2540406,decreases_risk,3
+Shri Hardeep Singh Puri (2020-26),cost_deviation_pct_max,-0.5596506,0.5596506,decreases_risk,1
+Shri Hardeep Singh Puri (2020-26),cost_deviation_pct_mean,-0.48189893,0.48189893,decreases_risk,2
+Shri Hardeep Singh Puri (2020-26),num_works,-0.30122536,0.30122536,decreases_risk,3
+Shri Haris Beeran (2024-30),num_works,1.6593078,1.6593078,increases_risk,1
+Shri Haris Beeran (2024-30),cost_deviation_pct_max,1.091193,1.091193,increases_risk,2
+Shri Haris Beeran (2024-30),residual_pct_max,-0.2761478,0.2761478,decreases_risk,3
+Shri Harsh Mahajan (2024-30),cost_deviation_pct_mean,-3.0385373,3.0385373,decreases_risk,1
+Shri Harsh Mahajan (2024-30),num_works,-0.4710374,0.4710374,decreases_risk,2
+Shri Harsh Mahajan (2024-30),cost_deviation_pct_max,-0.32296327,0.32296327,decreases_risk,3
+Shri Hibi Eden,num_works,-0.9843096,0.9843096,decreases_risk,1
+Shri Hibi Eden,cost_deviation_pct_max,0.68185866,0.68185866,increases_risk,2
+Shri Hibi Eden,anomaly_flag_rate,-0.4103375,0.4103375,decreases_risk,3
+Shri I.S. Inbadurai (2025-31),cost_deviation_pct_mean,-2.9938927,2.9938927,decreases_risk,1
+Shri I.S. Inbadurai (2025-31),cost_deviation_pct_max,-2.538155,2.538155,decreases_risk,2
+Shri I.S. Inbadurai (2025-31),num_works,0.8735792,0.8735792,increases_risk,3
+Shri Ilaiyaraaja (2022-28),cost_deviation_pct_mean,-3.306391,3.306391,decreases_risk,1
+Shri Ilaiyaraaja (2022-28),cost_deviation_pct_max,-1.4068432,1.4068432,decreases_risk,2
+Shri Ilaiyaraaja (2022-28),num_works,-0.4361802,0.4361802,decreases_risk,3
+Shri Imran Pratapgarhi (2022-28),cost_deviation_pct_mean,-3.5551987,3.5551987,decreases_risk,1
+Shri Imran Pratapgarhi (2022-28),cost_deviation_pct_max,-1.488874,1.488874,decreases_risk,2
+Shri Imran Pratapgarhi (2022-28),collusion_score_max,-0.1945602,0.1945602,decreases_risk,3
+Shri Jaggesh (2022-28),cost_deviation_pct_mean,-2.0858982,2.0858982,decreases_risk,1
+Shri Jaggesh (2022-28),anomaly_score_max,0.32714462,0.32714462,increases_risk,2
+Shri Jaggesh (2022-28),cost_deviation_pct_max,-0.24209294,0.24209294,decreases_risk,3
+Shri Jairam Ramesh (2022-28),cost_deviation_pct_mean,-3.344865,3.344865,decreases_risk,1
+Shri Jairam Ramesh (2022-28),cost_deviation_pct_max,-1.3370078,1.3370078,decreases_risk,2
+Shri Jairam Ramesh (2022-28),num_works,-0.42673635,0.42673635,decreases_risk,3
+Shri Janardan Singh Sigriwal ,cost_deviation_pct_mean,4.240956,4.240956,increases_risk,1
+Shri Janardan Singh Sigriwal ,num_works,-0.5375461,0.5375461,decreases_risk,2
+Shri Janardan Singh Sigriwal ,residual_pct_mean,-0.2022925,0.2022925,decreases_risk,3
+Shri Javed Ali Khan (2022-28),cost_deviation_pct_mean,-2.0935276,2.0935276,decreases_risk,1
+Shri Javed Ali Khan (2022-28),anomaly_flag_rate,-0.33033064,0.33033064,decreases_risk,2
+Shri Javed Ali Khan (2022-28),duplicate_score_max,-0.32543358,0.32543358,decreases_risk,3
+Shri Jayant Chaudhary (2022-28),cost_deviation_pct_mean,-3.2316184,3.2316184,decreases_risk,1
+Shri Jayant Chaudhary (2022-28),cost_deviation_pct_max,-2.5447457,2.5447457,decreases_risk,2
+Shri Jayant Chaudhary (2022-28),num_works,0.94710445,0.94710445,increases_risk,3
+Shri Jose K. Mani (2024-30),cost_deviation_pct_mean,-0.6762818,0.6762818,decreases_risk,1
+Shri Jose K. Mani (2024-30),num_works,-0.6413006,0.6413006,decreases_risk,2
+Shri Jose K. Mani (2024-30),cost_deviation_pct_max,-0.5028352,0.5028352,decreases_risk,3
+Shri Jual Oram,cost_deviation_pct_max,0.7568601,0.7568601,increases_risk,1
+Shri Jual Oram,cost_deviation_pct_mean,0.18042937,0.18042937,increases_risk,2
+Shri Jual Oram,collusion_score_mean,-0.13871016,0.13871016,decreases_risk,3
+Shri Jugal Kishore Sharma,cost_deviation_pct_mean,4.2770925,4.2770925,increases_risk,1
+Shri Jugal Kishore Sharma,residual_pct_mean,-0.23577634,0.23577634,decreases_risk,2
+Shri Jugal Kishore Sharma,collusion_score_max,-0.21632887,0.21632887,decreases_risk,3
+Shri Jyotirmay Singh Mahato ,cost_deviation_pct_max,-2.745201,2.745201,decreases_risk,1
+Shri Jyotirmay Singh Mahato ,cost_deviation_pct_mean,-2.6371822,2.6371822,decreases_risk,2
+Shri Jyotirmay Singh Mahato ,num_works,0.8721357,0.8721357,increases_risk,3
+Shri K.R.N. Rajeshkumar (2022-28),residual_pct_max,-0.39399287,0.39399287,decreases_risk,1
+Shri K.R.N. Rajeshkumar (2022-28),residual_pct_mean,-0.25592625,0.25592625,decreases_risk,2
+Shri K.R.N. Rajeshkumar (2022-28),deviation_flag_rate,-0.21277267,0.21277267,decreases_risk,3
+Shri Kapil Sibal (2022-28),cost_deviation_pct_mean,-2.7839677,2.7839677,decreases_risk,1
+Shri Kapil Sibal (2022-28),num_works,-0.38351676,0.38351676,decreases_risk,2
+Shri Kapil Sibal (2022-28),anomaly_flag_rate,-0.31568033,0.31568033,decreases_risk,3
+Shri Karti P Chidambaram ,cost_deviation_pct_mean,-3.0326295,3.0326295,decreases_risk,1
+Shri Karti P Chidambaram ,num_works,-0.37204376,0.37204376,decreases_risk,2
+Shri Karti P Chidambaram ,cost_deviation_pct_max,-0.2854567,0.2854567,decreases_risk,3
+Shri Kesridevsinh Jhala (2023-29),cost_deviation_pct_mean,-3.05609,3.05609,decreases_risk,1
+Shri Kesridevsinh Jhala (2023-29),num_works,-0.69371086,0.69371086,decreases_risk,2
+Shri Kesridevsinh Jhala (2023-29),cost_deviation_pct_max,0.63932735,0.63932735,increases_risk,3
+Shri Khiru Mahto (2022-28),cost_deviation_pct_mean,-2.0912905,2.0912905,decreases_risk,1
+Shri Khiru Mahto (2022-28),anomaly_score_max,0.39271748,0.39271748,increases_risk,2
+Shri Khiru Mahto (2022-28),cost_deviation_pct_max,-0.3128699,0.3128699,decreases_risk,3
+Shri Kumbakudi Sudhakaran,cost_deviation_pct_mean,4.7367315,4.7367315,increases_risk,1
+Shri Kumbakudi Sudhakaran,anomaly_flag_rate,-0.32353893,0.32353893,decreases_risk,2
+Shri Kumbakudi Sudhakaran,duplicate_score_max,-0.24613272,0.24613272,decreases_risk,3
+Shri LS Tejasvi Surya ,cost_deviation_pct_max,0.687429,0.687429,increases_risk,1
+Shri LS Tejasvi Surya ,num_works,-0.66037464,0.66037464,decreases_risk,2
+Shri LS Tejasvi Surya ,residual_pct_max,-0.28364652,0.28364652,decreases_risk,3
+Shri Lahar Singh Siroya (2022-28),cost_deviation_pct_max,-2.8765616,2.8765616,decreases_risk,1
+Shri Lahar Singh Siroya (2022-28),cost_deviation_pct_mean,-2.7660763,2.7660763,decreases_risk,2
+Shri Lahar Singh Siroya (2022-28),num_works,0.8530199,0.8530199,increases_risk,3
+Shri M K Raghavan,cost_deviation_pct_mean,-3.1376004,3.1376004,decreases_risk,1
+Shri M K Raghavan,cost_deviation_pct_max,-2.5569577,2.5569577,decreases_risk,2
+Shri M K Raghavan,num_works,0.8694313,0.8694313,increases_risk,3
+Shri Madan Rathore (2024-30),cost_deviation_pct_mean,3.963055,3.963055,increases_risk,1
+Shri Madan Rathore (2024-30),num_works,-0.8393741,0.8393741,decreases_risk,2
+Shri Madan Rathore (2024-30),cost_deviation_pct_max,0.3684409,0.3684409,increases_risk,3
+Shri Mahendra Bhatt (2024-30),cost_deviation_pct_mean,4.123766,4.123766,increases_risk,1
+Shri Mahendra Bhatt (2024-30),num_works,1.241402,1.241402,increases_risk,2
+Shri Mahendra Bhatt (2024-30),sor_match_confidence_mean,-0.17863882,0.17863882,decreases_risk,3
+Shri Manan Kumar Mishra (2024-28),cost_deviation_pct_mean,-2.651457,2.651457,decreases_risk,1
+Shri Manan Kumar Mishra (2024-28),num_works,-0.6591954,0.6591954,decreases_risk,2
+Shri Manan Kumar Mishra (2024-28),anomaly_score_max,0.5250305,0.5250305,increases_risk,3
+Shri Manas Ranjan Mangaraj (2022-28),cost_deviation_pct_mean,-3.3744702,3.3744702,decreases_risk,1
+Shri Manas Ranjan Mangaraj (2022-28),cost_deviation_pct_max,-1.4577333,1.4577333,decreases_risk,2
+Shri Manas Ranjan Mangaraj (2022-28),num_works,-0.2977983,0.2977983,decreases_risk,3
+Shri Masthan Rao Yadav Beedha (2024-28),cost_deviation_pct_mean,-3.5174866,3.5174866,decreases_risk,1
+Shri Masthan Rao Yadav Beedha (2024-28),cost_deviation_pct_max,0.6068706,0.6068706,increases_risk,2
+Shri Masthan Rao Yadav Beedha (2024-28),anomaly_score_max,0.37034252,0.37034252,increases_risk,3
+Shri Mayankkumar Nayak (2024-30),cost_deviation_pct_mean,1.7261568,1.7261568,increases_risk,1
+Shri Mayankkumar Nayak (2024-30),num_works,-0.94459134,0.94459134,decreases_risk,2
+Shri Mayankkumar Nayak (2024-30),anomaly_flag_rate,-0.53960055,0.53960055,decreases_risk,3
+Shri Meda Raghunadha Reddy (2024-30),residual_pct_max,-0.39665648,0.39665648,decreases_risk,1
+Shri Meda Raghunadha Reddy (2024-30),anomaly_score_max,0.3901921,0.3901921,increases_risk,2
+Shri Meda Raghunadha Reddy (2024-30),cost_deviation_pct_max,-0.32173282,0.32173282,decreases_risk,3
+Shri Mithlesh Kumar (2022-28),cost_deviation_pct_mean,-2.8798118,2.8798118,decreases_risk,1
+Shri Mithlesh Kumar (2022-28),num_works,-0.42570728,0.42570728,decreases_risk,2
+Shri Mithlesh Kumar (2022-28),sor_match_confidence_mean,-0.28635755,0.28635755,decreases_risk,3
+Shri Mohammed Nadimul Haque (2024-30),cost_deviation_pct_max,-2.2726653,2.2726653,decreases_risk,1
+Shri Mohammed Nadimul Haque (2024-30),num_works,0.5382287,0.5382287,increases_risk,2
+Shri Mohammed Nadimul Haque (2024-30),cost_deviation_pct_mean,0.33603504,0.33603504,increases_risk,3
+Shri Mukul Wasnik (2022-28),cost_deviation_pct_mean,4.5688214,4.5688214,increases_risk,1
+Shri Mukul Wasnik (2022-28),collusion_score_max,0.25467294,0.25467294,increases_risk,2
+Shri Mukul Wasnik (2022-28),collusion_score_mean,-0.21701252,0.21701252,decreases_risk,3
+Shri NK Premachandran,cost_deviation_pct_mean,-3.5794375,3.5794375,decreases_risk,1
+Shri NK Premachandran,cost_deviation_pct_max,0.78509265,0.78509265,increases_risk,2
+Shri NK Premachandran,num_works,-0.39502642,0.39502642,decreases_risk,3
+Shri Nagendra Ray (2023-29),cost_deviation_pct_max,-2.6770716,2.6770716,decreases_risk,1
+Shri Nagendra Ray (2023-29),cost_deviation_pct_mean,-2.1767547,2.1767547,decreases_risk,2
+Shri Nagendra Ray (2023-29),num_works,0.8455102,0.8455102,increases_risk,3
+Shri Narain Dass Gupta (2024-30),cost_deviation_pct_mean,-3.063922,3.063922,decreases_risk,1
+Shri Narain Dass Gupta (2024-30),cost_deviation_pct_max,-2.5870059,2.5870059,decreases_risk,2
+Shri Narain Dass Gupta (2024-30),num_works,0.93153894,0.93153894,increases_risk,3
+Shri Narayanasa K. Bhandage (2024-30),cost_deviation_pct_mean,-1.7912842,1.7912842,decreases_risk,1
+Shri Narayanasa K. Bhandage (2024-30),cost_deviation_pct_max,0.7802189,0.7802189,increases_risk,2
+Shri Narayanasa K. Bhandage (2024-30),anomaly_score_max,0.5004779,0.5004779,increases_risk,3
+Shri Narendra Modi,cost_deviation_pct_mean,-2.940851,2.940851,decreases_risk,1
+Shri Narendra Modi,num_works,-0.47289371,0.47289371,decreases_risk,2
+Shri Narendra Modi,collusion_score_mean,-0.27316552,0.27316552,decreases_risk,3
+Shri Naresh Bansal (2020-26),cost_deviation_pct_mean,-0.36721876,0.36721876,decreases_risk,1
+Shri Naresh Bansal (2020-26),anomaly_flag_rate,-0.33541852,0.33541852,decreases_risk,2
+Shri Naresh Bansal (2020-26),collusion_score_mean,-0.2640263,0.2640263,decreases_risk,3
+Shri Naveen Jain (2024-30),cost_deviation_pct_mean,-3.0264525,3.0264525,decreases_risk,1
+Shri Naveen Jain (2024-30),cost_deviation_pct_max,-2.6040988,2.6040988,decreases_risk,2
+Shri Naveen Jain (2024-30),num_works,0.8956465,0.8956465,increases_risk,3
+Shri Neeraj Shekhar (2020-26),cost_deviation_pct_mean,3.0420306,3.0420306,increases_risk,1
+Shri Neeraj Shekhar (2020-26),residual_pct_max,-0.3231269,0.3231269,decreases_risk,2
+Shri Neeraj Shekhar (2020-26),anomaly_score_max,-0.18656638,0.18656638,decreases_risk,3
+Shri Nitin Laxmanrao Jadhav Patil (2024-28),cost_deviation_pct_mean,3.4842207,3.4842207,increases_risk,1
+Shri Nitin Laxmanrao Jadhav Patil (2024-28),num_works,1.1148415,1.1148415,increases_risk,2
+Shri Nitin Laxmanrao Jadhav Patil (2024-28),cost_deviation_pct_max,0.5268817,0.5268817,increases_risk,3
+Shri P. Chidambaram (2022-28),cost_deviation_pct_max,0.9036092,0.9036092,increases_risk,1
+Shri P. Chidambaram (2022-28),collusion_score_max,0.24134067,0.24134067,increases_risk,2
+Shri P. Chidambaram (2022-28),duplicate_score_max,0.18514358,0.18514358,increases_risk,3
+Shri P. P. Suneer (2024-30),cost_deviation_pct_mean,-3.1803057,3.1803057,decreases_risk,1
+Shri P. P. Suneer (2024-30),cost_deviation_pct_max,-1.3401453,1.3401453,decreases_risk,2
+Shri P. P. Suneer (2024-30),num_works,-0.4629379,0.4629379,decreases_risk,3
+Shri P. Wilson (2025-31),cost_deviation_pct_mean,-2.8876567,2.8876567,decreases_risk,1
+Shri P. Wilson (2025-31),cost_deviation_pct_max,-2.6027498,2.6027498,decreases_risk,2
+Shri P. Wilson (2025-31),num_works,0.85330224,0.85330224,increases_risk,3
+Shri PP Chaudhary,cost_deviation_pct_mean,3.1434033,3.1434033,increases_risk,1
+Shri PP Chaudhary,num_works,1.2292484,1.2292484,increases_risk,2
+Shri PP Chaudhary,cost_deviation_pct_max,0.6794215,0.6794215,increases_risk,3
+Shri Pabitra Margherita (2022-28),cost_deviation_pct_mean,-3.1281874,3.1281874,decreases_risk,1
+Shri Pabitra Margherita (2022-28),cost_deviation_pct_max,-2.7256637,2.7256637,decreases_risk,2
+Shri Pabitra Margherita (2022-28),num_works,0.8524788,0.8524788,increases_risk,3
+Shri Paka Venkata Satyanarayana (2025-28),cost_deviation_pct_max,-2.1335027,2.1335027,decreases_risk,1
+Shri Paka Venkata Satyanarayana (2025-28),num_works,0.4830666,0.4830666,increases_risk,2
+Shri Paka Venkata Satyanarayana (2025-28),cost_deviation_pct_mean,0.47986498,0.47986498,increases_risk,3
+Shri Pradip Kumar Varma (2024-30),cost_deviation_pct_mean,-1.7329159,1.7329159,decreases_risk,1
+Shri Pradip Kumar Varma (2024-30),cost_deviation_pct_max,1.2492675,1.2492675,increases_risk,2
+Shri Pradip Kumar Varma (2024-30),sor_match_confidence_mean,0.97280794,0.97280794,increases_risk,3
+Shri Praful Patel (2024-30),cost_deviation_pct_mean,-1.8617605,1.8617605,decreases_risk,1
+Shri Praful Patel (2024-30),cost_deviation_pct_max,0.80692255,0.80692255,increases_risk,2
+Shri Praful Patel (2024-30),num_works,-0.61142105,0.61142105,decreases_risk,3
+Shri Pramod Tiwari (2022-28),cost_deviation_pct_mean,-3.669475,3.669475,decreases_risk,1
+Shri Pramod Tiwari (2022-28),cost_deviation_pct_max,0.7373143,0.7373143,increases_risk,2
+Shri Pramod Tiwari (2022-28),num_works,-0.38273636,0.38273636,decreases_risk,3
+Shri R. Dharmar (2022-28),cost_deviation_pct_mean,-3.3555112,3.3555112,decreases_risk,1
+Shri R. Dharmar (2022-28),num_works,-0.4983386,0.4983386,decreases_risk,2
+Shri R. Dharmar (2022-28),anomaly_score_max,0.4893687,0.4893687,increases_risk,3
+Shri R. Girirajan (2022-28),cost_deviation_pct_mean,-1.9383296,1.9383296,decreases_risk,1
+Shri R. Girirajan (2022-28),anomaly_score_max,0.45150316,0.45150316,increases_risk,2
+Shri R. Girirajan (2022-28),cost_deviation_pct_max,-0.356097,0.356097,decreases_risk,3
+Shri Raghav Chadha (2022-28),cost_deviation_pct_mean,-3.1045036,3.1045036,decreases_risk,1
+Shri Raghav Chadha (2022-28),cost_deviation_pct_max,-2.4993768,2.4993768,decreases_risk,2
+Shri Raghav Chadha (2022-28),num_works,0.9119936,0.9119936,increases_risk,3
+Shri Rajeev Shukla (2022-28),cost_deviation_pct_mean,-3.2043555,3.2043555,decreases_risk,1
+Shri Rajeev Shukla (2022-28),cost_deviation_pct_max,-2.5200837,2.5200837,decreases_risk,2
+Shri Rajeev Shukla (2022-28),num_works,0.88476,0.88476,increases_risk,3
+Shri Rajib Bhattacharjee (2024-28),cost_deviation_pct_mean,4.3786826,4.3786826,increases_risk,1
+Shri Rajib Bhattacharjee (2024-28),num_works,-0.8304204,0.8304204,decreases_risk,2
+Shri Rajib Bhattacharjee (2024-28),sor_match_confidence_mean,-0.15905704,0.15905704,decreases_risk,3
+Shri Rajmohan Unnithan ,cost_deviation_pct_mean,-3.6347916,3.6347916,decreases_risk,1
+Shri Rajmohan Unnithan ,cost_deviation_pct_max,0.52975935,0.52975935,increases_risk,2
+Shri Rajmohan Unnithan ,num_works,-0.38184887,0.38184887,decreases_risk,3
+Shri Ramji (2020-26),cost_deviation_pct_mean,-2.774388,2.774388,decreases_risk,1
+Shri Ramji (2020-26),num_works,-0.41061714,0.41061714,decreases_risk,2
+Shri Ramji (2020-26),sor_match_confidence_mean,-0.36900485,0.36900485,decreases_risk,3
+Shri Ramji Lal Suman (2024-30),cost_deviation_pct_mean,-3.406488,3.406488,decreases_risk,1
+Shri Ramji Lal Suman (2024-30),cost_deviation_pct_max,-1.6495371,1.6495371,decreases_risk,2
+Shri Ramji Lal Suman (2024-30),num_works,-0.29156908,0.29156908,decreases_risk,3
+Shri Randeep Singh Surjewala (2022-28),cost_deviation_pct_max,-0.456033,0.456033,decreases_risk,1
+Shri Randeep Singh Surjewala (2022-28),residual_pct_max,-0.39448372,0.39448372,decreases_risk,2
+Shri Randeep Singh Surjewala (2022-28),cost_deviation_pct_mean,0.364869,0.364869,increases_risk,3
+Shri Ratanjit Pratap Narain Singh (2024-30),cost_deviation_pct_mean,2.7022963,2.7022963,increases_risk,1
+Shri Ratanjit Pratap Narain Singh (2024-30),anomaly_flag_rate,-0.5021325,0.5021325,decreases_risk,2
+Shri Ratanjit Pratap Narain Singh (2024-30),residual_pct_max,-0.35384068,0.35384068,decreases_risk,3
+Shri Ravi Chandra Vaddiraju (2024-30),cost_deviation_pct_mean,-2.125116,2.125116,decreases_risk,1
+Shri Ravi Chandra Vaddiraju (2024-30),cost_deviation_pct_max,-0.43802294,0.43802294,decreases_risk,2
+Shri Ravi Chandra Vaddiraju (2024-30),sor_match_confidence_mean,-0.2372011,0.2372011,decreases_risk,3
+Shri Rwngwra Narzary (2022-28),cost_deviation_pct_mean,4.36748,4.36748,increases_risk,1
+Shri Rwngwra Narzary (2022-28),num_works,-0.8653687,0.8653687,decreases_risk,2
+Shri Rwngwra Narzary (2022-28),anomaly_flag_rate,-0.37213066,0.37213066,decreases_risk,3
+Shri Ryaga Krishnaiah (2024-28),cost_deviation_pct_mean,4.320743,4.320743,increases_risk,1
+Shri Ryaga Krishnaiah (2024-28),num_works,-0.5802016,0.5802016,decreases_risk,2
+Shri Ryaga Krishnaiah (2024-28),cost_deviation_pct_max,-0.25323477,0.25323477,decreases_risk,3
+Shri S Niranjan Reddy (2022-28),cost_deviation_pct_mean,-3.151104,3.151104,decreases_risk,1
+Shri S Niranjan Reddy (2022-28),cost_deviation_pct_max,-2.5926878,2.5926878,decreases_risk,2
+Shri S Niranjan Reddy (2022-28),num_works,0.8873815,0.8873815,increases_risk,3
+Shri S. Jaishankar (2023-29),cost_deviation_pct_mean,0.7781919,0.7781919,increases_risk,1
+Shri S. Jaishankar (2023-29),cost_deviation_pct_max,0.5632261,0.5632261,increases_risk,2
+Shri S. Jaishankar (2023-29),collusion_score_max,0.28511456,0.28511456,increases_risk,3
+Shri S. Kalyanasundaram (2022-28),cost_deviation_pct_mean,-1.9382267,1.9382267,decreases_risk,1
+Shri S. Kalyanasundaram (2022-28),cost_deviation_pct_max,-0.45053336,0.45053336,decreases_risk,2
+Shri S. Kalyanasundaram (2022-28),anomaly_flag_rate,-0.31084827,0.31084827,decreases_risk,3
+Shri S. Selvaganabathy (2021-27),cost_deviation_pct_mean,-1.773804,1.773804,decreases_risk,1
+Shri S. Selvaganabathy (2021-27),sor_match_confidence_mean,0.76884407,0.76884407,increases_risk,2
+Shri S. Selvaganabathy (2021-27),num_works,-0.65613323,0.65613323,decreases_risk,3
+Shri S.R. Sivalingam (2025-31),cost_deviation_pct_mean,4.56094,4.56094,increases_risk,1
+Shri S.R. Sivalingam (2025-31),num_works,-0.4420831,0.4420831,decreases_risk,2
+Shri S.R. Sivalingam (2025-31),anomaly_score_max,-0.16771074,0.16771074,decreases_risk,3
+Shri Sadanand Mhalu Shet Tanavade (2023-29),cost_deviation_pct_mean,-2.7952626,2.7952626,decreases_risk,1
+Shri Sadanand Mhalu Shet Tanavade (2023-29),cost_deviation_pct_max,-2.7779043,2.7779043,decreases_risk,2
+Shri Sadanand Mhalu Shet Tanavade (2023-29),num_works,0.85818917,0.85818917,increases_risk,3
+Shri Samik Bhattacharya (2024-30),cost_deviation_pct_mean,-3.1640048,3.1640048,decreases_risk,1
+Shri Samik Bhattacharya (2024-30),cost_deviation_pct_max,-2.5529637,2.5529637,decreases_risk,2
+Shri Samik Bhattacharya (2024-30),num_works,0.96538025,0.96538025,increases_risk,3
+Shri Sandosh Kumar P (2022-28),cost_deviation_pct_mean,4.208475,4.208475,increases_risk,1
+Shri Sandosh Kumar P (2022-28),num_works,-0.49564677,0.49564677,decreases_risk,2
+Shri Sandosh Kumar P (2022-28),sor_match_confidence_mean,0.41869718,0.41869718,increases_risk,3
+Shri Sanjay Kumar Jha (2024-30),cost_deviation_pct_mean,-3.0410433,3.0410433,decreases_risk,1
+Shri Sanjay Kumar Jha (2024-30),cost_deviation_pct_max,-2.6037514,2.6037514,decreases_risk,2
+Shri Sanjay Kumar Jha (2024-30),num_works,0.87968427,0.87968427,increases_risk,3
+Shri Sanjay Raut (2022-28),cost_deviation_pct_mean,3.6874192,3.6874192,increases_risk,1
+Shri Sanjay Raut (2022-28),num_works,1.2106686,1.2106686,increases_risk,2
+Shri Sanjay Raut (2022-28),cost_deviation_pct_max,0.68308496,0.68308496,increases_risk,3
+Shri Sanjay Seth (2024-30),cost_deviation_pct_mean,2.4261367,2.4261367,increases_risk,1
+Shri Sanjay Seth (2024-30),num_works,-0.93878263,0.93878263,decreases_risk,2
+Shri Sanjay Seth (2024-30),anomaly_flag_rate,-0.5366487,0.5366487,decreases_risk,3
+Shri Sanjay Singh (2024-30),cost_deviation_pct_mean,3.623448,3.623448,increases_risk,1
+Shri Sanjay Singh (2024-30),num_works,-0.90096277,0.90096277,decreases_risk,2
+Shri Sanjay Singh (2024-30),cost_deviation_pct_max,-0.53597814,0.53597814,decreases_risk,3
+Shri Sant Balbir Singh (2022-28),cost_deviation_pct_mean,-2.1133845,2.1133845,decreases_risk,1
+Shri Sant Balbir Singh (2022-28),collusion_score_max,0.28078738,0.28078738,increases_risk,2
+Shri Sant Balbir Singh (2022-28),num_works,-0.26986405,0.26986405,decreases_risk,3
+Shri Sarbananda Sonowal (18LS),cost_deviation_pct_mean,-3.0243995,3.0243995,decreases_risk,1
+Shri Sarbananda Sonowal (18LS),cost_deviation_pct_max,-2.7522385,2.7522385,decreases_risk,2
+Shri Sarbananda Sonowal (18LS),num_works,0.85686314,0.85686314,increases_risk,3
+Shri Satish Chandra Dubey (2022-28),cost_deviation_pct_mean,-3.4667444,3.4667444,decreases_risk,1
+Shri Satish Chandra Dubey (2022-28),num_works,-0.48783857,0.48783857,decreases_risk,2
+Shri Satish Chandra Dubey (2022-28),collusion_score_mean,-0.27671653,0.27671653,decreases_risk,3
+Shri Satish Kumar Gautam ,cost_deviation_pct_mean,-3.2680783,3.2680783,decreases_risk,1
+Shri Satish Kumar Gautam ,cost_deviation_pct_max,-1.4716401,1.4716401,decreases_risk,2
+Shri Satish Kumar Gautam ,num_works,-0.4108638,0.4108638,decreases_risk,3
+Shri Satnam Singh Sandhu (2024-30),cost_deviation_pct_mean,-2.9273517,2.9273517,decreases_risk,1
+Shri Satnam Singh Sandhu (2024-30),cost_deviation_pct_max,-2.7361152,2.7361152,decreases_risk,2
+Shri Satnam Singh Sandhu (2024-30),num_works,0.8915134,0.8915134,increases_risk,3
+Shri Shambhu Sharan Patel (2022-28),cost_deviation_pct_mean,-0.49627,0.49627,decreases_risk,1
+Shri Shambhu Sharan Patel (2022-28),cost_deviation_pct_max,-0.44709724,0.44709724,decreases_risk,2
+Shri Shambhu Sharan Patel (2022-28),collusion_score_max,0.24728678,0.24728678,increases_risk,3
+Shri Shantanu Thakur ,cost_deviation_pct_max,-2.8133235,2.8133235,decreases_risk,1
+Shri Shantanu Thakur ,cost_deviation_pct_mean,-2.7705376,2.7705376,decreases_risk,2
+Shri Shantanu Thakur ,num_works,0.8581454,0.8581454,increases_risk,3
+Shri Subhash Barala (2024-30),cost_deviation_pct_mean,-3.128942,3.128942,decreases_risk,1
+Shri Subhash Barala (2024-30),cost_deviation_pct_max,-2.4865522,2.4865522,decreases_risk,2
+Shri Subhash Barala (2024-30),num_works,0.9410735,0.9410735,increases_risk,3
+Shri Subhasish Khuntia (2024-30),cost_deviation_pct_mean,-3.0417783,3.0417783,decreases_risk,1
+Shri Subhasish Khuntia (2024-30),cost_deviation_pct_max,-2.5589037,2.5589037,decreases_risk,2
+Shri Subhasish Khuntia (2024-30),num_works,0.91847044,0.91847044,increases_risk,3
+Shri Sudheer Gupta ,cost_deviation_pct_mean,2.9161606,2.9161606,increases_risk,1
+Shri Sudheer Gupta ,collusion_score_max,0.28817698,0.28817698,increases_risk,2
+Shri Sudheer Gupta ,anomaly_score_max,-0.16281122,0.16281122,decreases_risk,3
+Shri Surendra Singh Nagar (2022-28),cost_deviation_pct_mean,-3.5466285,3.5466285,decreases_risk,1
+Shri Surendra Singh Nagar (2022-28),cost_deviation_pct_max,0.5526245,0.5526245,increases_risk,2
+Shri Surendra Singh Nagar (2022-28),num_works,-0.41482162,0.41482162,decreases_risk,3
+Shri Suresh Kodikunnil,cost_deviation_pct_mean,-3.568266,3.568266,decreases_risk,1
+Shri Suresh Kodikunnil,cost_deviation_pct_max,0.73331594,0.73331594,increases_risk,2
+Shri Suresh Kodikunnil,num_works,-0.36071384,0.36071384,decreases_risk,3
+Shri Tapir Gao,cost_deviation_pct_mean,1.1238723,1.1238723,increases_risk,1
+Shri Tapir Gao,collusion_score_max,0.31502277,0.31502277,increases_risk,2
+Shri Tapir Gao,cost_deviation_pct_max,-0.22120515,0.22120515,decreases_risk,3
+Shri Tejveer Singh (2024-30),cost_deviation_pct_mean,-3.636479,3.636479,decreases_risk,1
+Shri Tejveer Singh (2024-30),cost_deviation_pct_max,0.67027634,0.67027634,increases_risk,2
+Shri Tejveer Singh (2024-30),num_works,-0.40462393,0.40462393,decreases_risk,3
+Shri V. Vijayendra Prasad (2022-28),cost_deviation_pct_mean,-3.4323106,3.4323106,decreases_risk,1
+Shri V. Vijayendra Prasad (2022-28),cost_deviation_pct_max,0.82771844,0.82771844,increases_risk,2
+Shri V. Vijayendra Prasad (2022-28),num_works,-0.38529179,0.38529179,decreases_risk,3
+Shri Vivek K. Tankha (2022-28),cost_deviation_pct_max,0.52166545,0.52166545,increases_risk,1
+Shri Vivek K. Tankha (2022-28),duplicate_score_max,-0.3477148,0.3477148,decreases_risk,2
+Shri Vivek K. Tankha (2022-28),collusion_score_mean,-0.33200637,0.33200637,decreases_risk,3
+Shri Yerram Venkata Subba Reddy (2024-30),cost_deviation_pct_mean,4.332941,4.332941,increases_risk,1
+Shri Yerram Venkata Subba Reddy (2024-30),num_works,-0.35543898,0.35543898,decreases_risk,2
+Shri Yerram Venkata Subba Reddy (2024-30),anomaly_score_max,0.3152757,0.3152757,increases_risk,3
+Shri vijayakumar Vasanth,cost_deviation_pct_mean,-3.6731195,3.6731195,decreases_risk,1
+Shri vijayakumar Vasanth,cost_deviation_pct_max,-1.2969368,1.2969368,decreases_risk,2
+Shri vijayakumar Vasanth,num_works,-0.26139766,0.26139766,decreases_risk,3
+Shripad Yesso Naik,cost_deviation_pct_max,-2.0998025,2.0998025,decreases_risk,1
+Shripad Yesso Naik,num_works,0.64739716,0.64739716,increases_risk,2
+Shripad Yesso Naik,residual_pct_max,-0.23257671,0.23257671,decreases_risk,3
+Shrirang Appa Barne,cost_deviation_pct_mean,-3.2432363,3.2432363,decreases_risk,1
+Shrirang Appa Barne,cost_deviation_pct_max,0.8320242,0.8320242,increases_risk,2
+Shrirang Appa Barne,num_works,-0.70515364,0.70515364,decreases_risk,3
+Shyamkumar,cost_deviation_pct_max,-2.475489,2.475489,decreases_risk,1
+Shyamkumar,cost_deviation_pct_mean,-2.1802444,2.1802444,decreases_risk,2
+Shyamkumar,num_works,0.9371821,0.9371821,increases_risk,3
+Sivanath Kesineni,cost_deviation_pct_mean,-2.851793,2.851793,decreases_risk,1
+Sivanath Kesineni,cost_deviation_pct_max,-2.6234212,2.6234212,decreases_risk,2
+Sivanath Kesineni,num_works,0.8591922,0.8591922,increases_risk,3
+Smt Aparajita Sarangi,cost_deviation_pct_mean,4.4209895,4.4209895,increases_risk,1
+Smt Aparajita Sarangi,collusion_score_max,0.24385646,0.24385646,increases_risk,2
+Smt Aparajita Sarangi,residual_pct_mean,-0.14660892,0.14660892,decreases_risk,3
+Smt Dimple Yadav,cost_deviation_pct_mean,-3.6291552,3.6291552,decreases_risk,1
+Smt Dimple Yadav,cost_deviation_pct_max,-1.4641179,1.4641179,decreases_risk,2
+Smt Dimple Yadav,sor_match_confidence_mean,-0.23202124,0.23202124,decreases_risk,3
+Smt Harsimrat Kaur Badal,cost_deviation_pct_mean,-2.791178,2.791178,decreases_risk,1
+Smt Harsimrat Kaur Badal,num_works,-0.42809588,0.42809588,decreases_risk,2
+Smt Harsimrat Kaur Badal,cost_deviation_pct_max,-0.37330505,0.37330505,decreases_risk,3
+Smt Hema Malini,cost_deviation_pct_mean,-3.5394235,3.5394235,decreases_risk,1
+Smt Hema Malini,cost_deviation_pct_max,-1.4653372,1.4653372,decreases_risk,2
+Smt Hema Malini,num_works,-0.46509033,0.46509033,decreases_risk,3
+Smt Himadri Singh,cost_deviation_pct_max,0.7924388,0.7924388,increases_risk,1
+Smt Himadri Singh,cost_deviation_pct_mean,0.5305355,0.5305355,increases_risk,2
+Smt Himadri Singh,duplicate_score_max,-0.39012173,0.39012173,decreases_risk,3
+Smt Poonamben Hematbhai Maadam,cost_deviation_pct_mean,0.8736563,0.8736563,increases_risk,1
+Smt Poonamben Hematbhai Maadam,cost_deviation_pct_max,-0.38630295,0.38630295,decreases_risk,2
+Smt Poonamben Hematbhai Maadam,collusion_score_max,-0.35001272,0.35001272,decreases_risk,3
+Smt Raksha Nikhil Khadse,cost_deviation_pct_mean,-2.8393593,2.8393593,decreases_risk,1
+Smt Raksha Nikhil Khadse,cost_deviation_pct_max,-2.5083945,2.5083945,decreases_risk,2
+Smt Raksha Nikhil Khadse,num_works,0.88751197,0.88751197,increases_risk,3
+Smt S Jothimani,cost_deviation_pct_mean,-3.219555,3.219555,decreases_risk,1
+Smt S Jothimani,num_works,-0.42499483,0.42499483,decreases_risk,2
+Smt S Jothimani,sor_match_confidence_mean,-0.28713286,0.28713286,decreases_risk,3
+Smt Sajda Ahmed,cost_deviation_pct_mean,-3.7418387,3.7418387,decreases_risk,1
+Smt Sajda Ahmed,cost_deviation_pct_max,0.5054715,0.5054715,increases_risk,2
+Smt Sajda Ahmed,num_works,-0.42061085,0.42061085,decreases_risk,3
+Smt Sandhya Ray,cost_deviation_pct_max,0.6961584,0.6961584,increases_risk,1
+Smt Sandhya Ray,duplicate_score_max,-0.42101118,0.42101118,decreases_risk,2
+Smt Sandhya Ray,num_months,-0.25093067,0.25093067,decreases_risk,3
+Smt Sangeeta Kumari Singh Deo,cost_deviation_pct_max,-2.111994,2.111994,decreases_risk,1
+Smt Sangeeta Kumari Singh Deo,num_works,0.6562459,0.6562459,increases_risk,2
+Smt Sangeeta Kumari Singh Deo,collusion_score_max,-0.24689154,0.24689154,decreases_risk,3
+Smt Satabdi Roy (Banerjee),duplicate_score_max,-0.40907666,0.40907666,decreases_risk,1
+Smt Satabdi Roy (Banerjee),collusion_score_mean,-0.23084494,0.23084494,decreases_risk,2
+Smt Satabdi Roy (Banerjee),cost_deviation_pct_mean,0.19960508,0.19960508,increases_risk,3
+Smt Supriya Sadanand Sule,cost_deviation_pct_mean,-3.2412496,3.2412496,decreases_risk,1
+Smt Supriya Sadanand Sule,cost_deviation_pct_max,-2.5134182,2.5134182,decreases_risk,2
+Smt Supriya Sadanand Sule,num_works,0.9515139,0.9515139,increases_risk,3
+Smt Veena Devi ,cost_deviation_pct_mean,-3.1606984,3.1606984,decreases_risk,1
+Smt Veena Devi ,num_works,-0.6605374,0.6605374,decreases_risk,2
+Smt Veena Devi ,cost_deviation_pct_max,0.55406874,0.55406874,increases_risk,3
+Smt. Darshana Singh (2022-28),cost_deviation_pct_mean,-3.3445735,3.3445735,decreases_risk,1
+Smt. Darshana Singh (2022-28),num_works,-0.6885778,0.6885778,decreases_risk,2
+Smt. Darshana Singh (2022-28),cost_deviation_pct_max,0.6845637,0.6845637,increases_risk,3
+Smt. Geeta alias Chandraprabha (2020-26),cost_deviation_pct_mean,-3.383819,3.383819,decreases_risk,1
+Smt. Geeta alias Chandraprabha (2020-26),num_works,-0.42876452,0.42876452,decreases_risk,2
+Smt. Geeta alias Chandraprabha (2020-26),collusion_score_max,0.27750856,0.27750856,increases_risk,3
+Smt. Jaya Amitabh Bachchan (2024-30),cost_deviation_pct_mean,3.8236182,3.8236182,increases_risk,1
+Smt. Jaya Amitabh Bachchan (2024-30),num_works,1.1347657,1.1347657,increases_risk,2
+Smt. Jaya Amitabh Bachchan (2024-30),cost_deviation_pct_max,0.49997383,0.49997383,increases_risk,3
+Smt. Jebi Mather Hisham (2022-28),cost_deviation_pct_mean,-1.9906914,1.9906914,decreases_risk,1
+Smt. Jebi Mather Hisham (2022-28),cost_deviation_pct_max,0.5443025,0.5443025,increases_risk,2
+Smt. Jebi Mather Hisham (2022-28),sor_match_confidence_mean,-0.21024917,0.21024917,decreases_risk,3
+Smt. Mahua Maji (2022-28),cost_deviation_pct_mean,-2.8566651,2.8566651,decreases_risk,1
+Smt. Mahua Maji (2022-28),cost_deviation_pct_max,0.45010328,0.45010328,increases_risk,2
+Smt. Mahua Maji (2022-28),num_works,-0.36907333,0.36907333,decreases_risk,3
+Smt. Mamata Thakur (2024-30),cost_deviation_pct_mean,4.3893824,4.3893824,increases_risk,1
+Smt. Mamata Thakur (2024-30),collusion_score_max,0.2809046,0.2809046,increases_risk,2
+Smt. Mamata Thakur (2024-30),sor_match_confidence_mean,-0.18209183,0.18209183,decreases_risk,3
+Smt. Maya Naroliya (2024-30),cost_deviation_pct_mean,4.6832647,4.6832647,increases_risk,1
+Smt. Maya Naroliya (2024-30),num_works,-0.76306176,0.76306176,decreases_risk,2
+Smt. Maya Naroliya (2024-30),collusion_score_max,0.21576495,0.21576495,increases_risk,3
+Smt. Nirmala Sitharaman (2022-28),cost_deviation_pct_max,-2.8825543,2.8825543,decreases_risk,1
+Smt. Nirmala Sitharaman (2022-28),cost_deviation_pct_mean,-2.704084,2.704084,decreases_risk,2
+Smt. Nirmala Sitharaman (2022-28),num_works,0.83240515,0.83240515,increases_risk,3
+Smt. P. T. Usha (2022-28),cost_deviation_pct_mean,-2.5335376,2.5335376,decreases_risk,1
+Smt. P. T. Usha (2022-28),cost_deviation_pct_max,0.86365294,0.86365294,increases_risk,2
+Smt. P. T. Usha (2022-28),sor_match_confidence_mean,0.7003856,0.7003856,increases_risk,3
+Smt. Rajathi (2025-31),cost_deviation_pct_mean,-2.936531,2.936531,decreases_risk,1
+Smt. Rajathi (2025-31),cost_deviation_pct_max,0.83643186,0.83643186,increases_risk,2
+Smt. Rajathi (2025-31),num_works,-0.6734949,0.6734949,decreases_risk,3
+Smt. Ranjeet Ranjan (2022-28),cost_deviation_pct_max,-0.54048115,0.54048115,decreases_risk,1
+Smt. Ranjeet Ranjan (2022-28),cost_deviation_pct_mean,-0.4119502,0.4119502,decreases_risk,2
+Smt. Ranjeet Ranjan (2022-28),num_works,-0.19625036,0.19625036,decreases_risk,3
+Smt. Rekha Sharma (2024-28),cost_deviation_pct_mean,-2.8937423,2.8937423,decreases_risk,1
+Smt. Rekha Sharma (2024-28),cost_deviation_pct_max,-2.6968591,2.6968591,decreases_risk,2
+Smt. Rekha Sharma (2024-28),num_works,0.88747454,0.88747454,increases_risk,3
+Smt. S. Phangnon Konyak (2022-28),cost_deviation_pct_mean,2.8475947,2.8475947,increases_risk,1
+Smt. S. Phangnon Konyak (2022-28),cost_deviation_pct_max,0.4327714,0.4327714,increases_risk,2
+Smt. S. Phangnon Konyak (2022-28),collusion_score_max,0.23611213,0.23611213,increases_risk,3
+Smt. Sadhna Singh (2024-30),cost_deviation_pct_mean,-3.1912608,3.1912608,decreases_risk,1
+Smt. Sadhna Singh (2024-30),cost_deviation_pct_max,-2.4341304,2.4341304,decreases_risk,2
+Smt. Sadhna Singh (2024-30),num_works,0.9064718,0.9064718,increases_risk,3
+Smt. Sangeeta Yadav (2022-28),cost_deviation_pct_mean,1.8239353,1.8239353,increases_risk,1
+Smt. Sangeeta Yadav (2022-28),cost_deviation_pct_max,0.7350698,0.7350698,increases_risk,2
+Smt. Sangeeta Yadav (2022-28),residual_pct_max,0.17129232,0.17129232,increases_risk,3
+Smt. Seema Dwivedi (2020-26),cost_deviation_pct_mean,-2.9487362,2.9487362,decreases_risk,1
+Smt. Seema Dwivedi (2020-26),num_works,-0.4380738,0.4380738,decreases_risk,2
+Smt. Seema Dwivedi (2020-26),sor_match_confidence_mean,-0.30082047,0.30082047,decreases_risk,3
+Smt. Sonia Gandhi (2024-30),cost_deviation_pct_mean,2.984345,2.984345,increases_risk,1
+Smt. Sonia Gandhi (2024-30),sor_match_confidence_mean,0.26511535,0.26511535,increases_risk,2
+Smt. Sonia Gandhi (2024-30),residual_pct_max,-0.21256435,0.21256435,decreases_risk,3
+Smt. Sulata Deo (2022-28),cost_deviation_pct_mean,-3.6255662,3.6255662,decreases_risk,1
+Smt. Sulata Deo (2022-28),num_works,-0.42758596,0.42758596,decreases_risk,2
+Smt. Sulata Deo (2022-28),sor_match_confidence_mean,-0.26327935,0.26327935,decreases_risk,3
+Smt. Sumitra Balmik (2022-28),cost_deviation_pct_mean,-3.6673443,3.6673443,decreases_risk,1
+Smt. Sumitra Balmik (2022-28),cost_deviation_pct_max,0.61388934,0.61388934,increases_risk,2
+Smt. Sumitra Balmik (2022-28),num_works,-0.40949506,0.40949506,decreases_risk,3
+Sudip Bandyopadhyay,cost_deviation_pct_mean,3.8300927,3.8300927,increases_risk,1
+Sudip Bandyopadhyay,num_works,1.2051134,1.2051134,increases_risk,2
+Sudip Bandyopadhyay,cost_deviation_pct_max,0.6796975,0.6796975,increases_risk,3
+Sunil Dattatray Tatkare,cost_deviation_pct_mean,-3.367285,3.367285,decreases_risk,1
+Sunil Dattatray Tatkare,cost_deviation_pct_max,-1.2810065,1.2810065,decreases_risk,2
+Sunil Dattatray Tatkare,num_works,-0.43873128,0.43873128,decreases_risk,3
+Sunil Kumar ,cost_deviation_pct_mean,-2.8816972,2.8816972,decreases_risk,1
+Sunil Kumar ,cost_deviation_pct_max,0.6519151,0.6519151,increases_risk,2
+Sunil Kumar ,num_works,-0.33393174,0.33393174,decreases_risk,3
+Suresh Kumar Kashyap,cost_deviation_pct_mean,-3.0465124,3.0465124,decreases_risk,1
+Suresh Kumar Kashyap,num_works,-0.38494796,0.38494796,decreases_risk,2
+Suresh Kumar Kashyap,cost_deviation_pct_max,-0.2959169,0.2959169,decreases_risk,3
+Swami Sachchidanandhari Sakshi ji Maharaj ,cost_deviation_pct_mean,3.644393,3.644393,increases_risk,1
+Swami Sachchidanandhari Sakshi ji Maharaj ,num_works,1.177564,1.177564,increases_risk,2
+Swami Sachchidanandhari Sakshi ji Maharaj ,cost_deviation_pct_max,0.65412176,0.65412176,increases_risk,3
+T Sumathy (A) Thamizhachi Thangapandian ,cost_deviation_pct_mean,-3.0365617,3.0365617,decreases_risk,1
+T Sumathy (A) Thamizhachi Thangapandian ,cost_deviation_pct_max,-2.5499327,2.5499327,decreases_risk,2
+T Sumathy (A) Thamizhachi Thangapandian ,num_works,0.9112987,0.9112987,increases_risk,3
+TANGELLA UDAY SRINIVAS,cost_deviation_pct_mean,-2.9968362,2.9968362,decreases_risk,1
+TANGELLA UDAY SRINIVAS,cost_deviation_pct_max,-2.5597262,2.5597262,decreases_risk,2
+TANGELLA UDAY SRINIVAS,num_works,0.9683757,0.9683757,increases_risk,3
+TANUJ PUNIA,cost_deviation_pct_mean,3.4807065,3.4807065,increases_risk,1
+TANUJ PUNIA,num_works,1.0934124,1.0934124,increases_risk,2
+TANUJ PUNIA,sor_match_confidence_mean,0.31028697,0.31028697,increases_risk,3
+TARIQ ANWAR,cost_deviation_pct_mean,-0.65837276,0.65837276,decreases_risk,1
+TARIQ ANWAR,cost_deviation_pct_max,-0.60126495,0.60126495,decreases_risk,2
+TARIQ ANWAR,duplicate_score_max,-0.39948726,0.39948726,decreases_risk,3
+THANGA TAMILSELVAN,cost_deviation_pct_mean,-3.1497982,3.1497982,decreases_risk,1
+THANGA TAMILSELVAN,cost_deviation_pct_max,-1.4258246,1.4258246,decreases_risk,2
+THANGA TAMILSELVAN,num_works,-0.24711812,0.24711812,decreases_risk,3
+THARANIVENTHAN M S,cost_deviation_pct_mean,-2.1112752,2.1112752,decreases_risk,1
+THARANIVENTHAN M S,cost_deviation_pct_max,-0.32209176,0.32209176,decreases_risk,2
+THARANIVENTHAN M S,anomaly_flag_rate,-0.31068093,0.31068093,decreases_risk,3
+TOKHAN SAHU,cost_deviation_pct_mean,4.433118,4.433118,increases_risk,1
+TOKHAN SAHU,cost_deviation_pct_max,0.37642312,0.37642312,increases_risk,2
+TOKHAN SAHU,anomaly_score_max,0.13822001,0.13822001,increases_risk,3
+TRIVENDRA SINGH RAWAT,cost_deviation_pct_mean,-2.9873593,2.9873593,decreases_risk,1
+TRIVENDRA SINGH RAWAT,cost_deviation_pct_max,-2.762336,2.762336,decreases_risk,2
+TRIVENDRA SINGH RAWAT,num_works,0.8600061,0.8600061,increases_risk,3
+Thalikkottai Rajuthevar Baalu,cost_deviation_pct_mean,-3.2300394,3.2300394,decreases_risk,1
+Thalikkottai Rajuthevar Baalu,num_works,-0.4202822,0.4202822,decreases_risk,2
+Thalikkottai Rajuthevar Baalu,anomaly_flag_rate,-0.301627,0.301627,decreases_risk,3
+Thiru Dayanidhi Maran,cost_deviation_pct_mean,3.3310313,3.3310313,increases_risk,1
+Thiru Dayanidhi Maran,num_works,1.0860832,1.0860832,increases_risk,2
+Thiru Dayanidhi Maran,cost_deviation_pct_max,0.6804478,0.6804478,increases_risk,3
+Thirumaa Valavan Thol,cost_deviation_pct_mean,-3.5066528,3.5066528,decreases_risk,1
+Thirumaa Valavan Thol,cost_deviation_pct_max,0.82317656,0.82317656,increases_risk,2
+Thirumaa Valavan Thol,sor_match_confidence_mean,-0.23325223,0.23325223,decreases_risk,3
+UJJWAL RAMAN SINGH,cost_deviation_pct_mean,-2.9925518,2.9925518,decreases_risk,1
+UJJWAL RAMAN SINGH,cost_deviation_pct_max,-2.4671166,2.4671166,decreases_risk,2
+UJJWAL RAMAN SINGH,num_works,0.943002,0.943002,increases_risk,3
+UMMEDA RAM BENIWAL,cost_deviation_pct_mean,-2.241319,2.241319,decreases_risk,1
+UMMEDA RAM BENIWAL,duplicate_score_max,-0.3496103,0.3496103,decreases_risk,2
+UMMEDA RAM BENIWAL,cost_deviation_pct_max,-0.33158886,0.33158886,decreases_risk,3
+UTKARSH VERMA MADHUR,cost_deviation_pct_mean,-2.7391565,2.7391565,decreases_risk,1
+UTKARSH VERMA MADHUR,num_works,-0.4267746,0.4267746,decreases_risk,2
+UTKARSH VERMA MADHUR,sor_match_confidence_mean,-0.35570258,0.35570258,decreases_risk,3
+V S Matheswaran,cost_deviation_pct_mean,-2.189427,2.189427,decreases_risk,1
+V S Matheswaran,duplicate_score_max,-0.2627152,0.2627152,decreases_risk,2
+V S Matheswaran,cost_deviation_pct_max,-0.2590749,0.2590749,decreases_risk,3
+V. SOMANNA,cost_deviation_pct_mean,-2.906019,2.906019,decreases_risk,1
+V. SOMANNA,cost_deviation_pct_max,-2.780023,2.780023,decreases_risk,2
+V. SOMANNA,num_works,0.84482807,0.84482807,increases_risk,3
+VAMSI KRISHNA GADDAM,cost_deviation_pct_mean,-3.067884,3.067884,decreases_risk,1
+VAMSI KRISHNA GADDAM,cost_deviation_pct_max,-2.5201821,2.5201821,decreases_risk,2
+VAMSI KRISHNA GADDAM,num_works,0.94856125,0.94856125,increases_risk,3
+VARUN CHAUDHRY,cost_deviation_pct_mean,3.4996035,3.4996035,increases_risk,1
+VARUN CHAUDHRY,num_works,1.2265688,1.2265688,increases_risk,2
+VARUN CHAUDHRY,cost_deviation_pct_max,0.75190943,0.75190943,increases_risk,3
+VIJAYLAKSHMI DEVI,cost_deviation_pct_mean,-2.8176475,2.8176475,decreases_risk,1
+VIJAYLAKSHMI DEVI,num_works,-0.39579532,0.39579532,decreases_risk,2
+VIJAYLAKSHMI DEVI,sor_match_confidence_mean,-0.27693444,0.27693444,decreases_risk,3
+VINOD KUMAR BIND,cost_deviation_pct_mean,-1.8888214,1.8888214,decreases_risk,1
+VINOD KUMAR BIND,cost_deviation_pct_max,-0.42239016,0.42239016,decreases_risk,2
+VINOD KUMAR BIND,duplicate_score_max,-0.3480551,0.3480551,decreases_risk,3
+VIRENDRA SINGH,cost_deviation_pct_mean,-2.1164317,2.1164317,decreases_risk,1
+VIRENDRA SINGH,num_works,2.0347457,2.0347457,increases_risk,2
+VIRENDRA SINGH,cost_deviation_pct_max,1.2881202,1.2881202,increases_risk,3
+VISHAL,cost_deviation_pct_mean,-3.025259,3.025259,decreases_risk,1
+VISHAL,cost_deviation_pct_max,-2.520275,2.520275,decreases_risk,2
+VISHAL,num_works,0.9780879,0.9780879,increases_risk,3
+VISHWESHWAR HEGDE KAGERI,cost_deviation_pct_mean,-3.4603407,3.4603407,decreases_risk,1
+VISHWESHWAR HEGDE KAGERI,cost_deviation_pct_max,-1.4836221,1.4836221,decreases_risk,2
+VISHWESHWAR HEGDE KAGERI,num_works,-0.42710733,0.42710733,decreases_risk,3
+VIVEK THAKUR,cost_deviation_pct_max,-2.8958256,2.8958256,decreases_risk,1
+VIVEK THAKUR,cost_deviation_pct_mean,-2.7180548,2.7180548,decreases_risk,2
+VIVEK THAKUR,num_works,0.82963604,0.82963604,increases_risk,3
+Vaithilingam Ve,cost_deviation_pct_mean,-3.190846,3.190846,decreases_risk,1
+Vaithilingam Ve,cost_deviation_pct_max,-2.514731,2.514731,decreases_risk,2
+Vaithilingam Ve,num_works,0.99807024,0.99807024,increases_risk,3
+Vellalath Kochukrishnan Nair Sreekandan,cost_deviation_pct_mean,-0.6344083,0.6344083,decreases_risk,1
+Vellalath Kochukrishnan Nair Sreekandan,sor_match_confidence_mean,0.27851227,0.27851227,increases_risk,2
+Vellalath Kochukrishnan Nair Sreekandan,residual_pct_max,-0.27707356,0.27707356,decreases_risk,3
+Vijay Baghel,cost_deviation_pct_mean,-2.8095832,2.8095832,decreases_risk,1
+Vijay Baghel,num_works,-0.39442724,0.39442724,decreases_risk,2
+Vijay Baghel,duplicate_score_max,-0.27489778,0.27489778,decreases_risk,3
+Vijay Kumar Dubey,cost_deviation_pct_mean,-2.9276853,2.9276853,decreases_risk,1
+Vijay Kumar Dubey,num_works,-0.38139284,0.38139284,decreases_risk,2
+Vijay Kumar Dubey,collusion_score_max,0.27874574,0.27874574,increases_risk,3
+Vinod Chavda,cost_deviation_pct_mean,-2.7414148,2.7414148,decreases_risk,1
+Vinod Chavda,sor_match_confidence_mean,0.6958482,0.6958482,increases_risk,2
+Vinod Chavda,num_works,-0.38819098,0.38819098,decreases_risk,3
+Virendra Kumar,cost_deviation_pct_mean,-3.27281,3.27281,decreases_risk,1
+Virendra Kumar,cost_deviation_pct_max,-2.4565315,2.4565315,decreases_risk,2
+Virendra Kumar,num_works,0.9525645,0.9525645,increases_risk,3
+Vishnu Dayal Ram,anomaly_score_max,0.61887914,0.61887914,increases_risk,1
+Vishnu Dayal Ram,cost_deviation_pct_max,-0.47940925,0.47940925,decreases_risk,2
+Vishnu Dayal Ram,collusion_score_mean,0.31727058,0.31727058,increases_risk,3
+Vishnu Dutt Sharma,cost_deviation_pct_max,-2.665998,2.665998,decreases_risk,1
+Vishnu Dutt Sharma,cost_deviation_pct_mean,-2.2500286,2.2500286,decreases_risk,2
+Vishnu Dutt Sharma,num_works,0.86032367,0.86032367,increases_risk,3
+Y S Avinash Reddy,cost_deviation_pct_mean,-3.1353154,3.1353154,decreases_risk,1
+Y S Avinash Reddy,sor_match_confidence_mean,0.72126085,0.72126085,increases_risk,2
+Y S Avinash Reddy,cost_deviation_pct_max,0.6074896,0.6074896,increases_risk,3
+YADUVEER KRISHNADATTA CHAMARAJA WADIYAR,cost_deviation_pct_mean,-3.2497485,3.2497485,decreases_risk,1
+YADUVEER KRISHNADATTA CHAMARAJA WADIYAR,cost_deviation_pct_max,-1.527014,1.527014,decreases_risk,2
+YADUVEER KRISHNADATTA CHAMARAJA WADIYAR,num_works,-0.38214955,0.38214955,decreases_risk,3
+Yogendra Chandoliya,cost_deviation_pct_mean,-3.06514,3.06514,decreases_risk,1
+Yogendra Chandoliya,cost_deviation_pct_max,-2.6146085,2.6146085,decreases_risk,2
+Yogendra Chandoliya,num_works,0.9180445,0.9180445,increases_risk,3
