@@ -14,6 +14,17 @@ import MpDocuments from './pages/mp/MpDocuments.jsx';
 import MpNotifications from './pages/mp/MpNotifications.jsx';
 import MpSettings from './pages/mp/MpSettings.jsx';
 
+import DaLayout from './pages/da/DaLayout.jsx';
+import DaDashboard from './pages/da/DaDashboard.jsx';
+import DaProjects from './pages/da/DaProjects.jsx';
+import DaMPDetail from './pages/da/DaMPDetail.jsx';
+import DaProjectReview from './pages/da/DaProjectReview.jsx';
+import DaReviewDetail from './pages/da/DaReviewDetail.jsx';
+import DaDocuments from './pages/da/DaDocuments.jsx';
+import DaNotifications from './pages/da/DaNotifications.jsx';
+import DaIADirectory from './pages/da/DaIADirectory.jsx';
+import DaVendorWatchlist from './pages/da/DaVendorWatchlist.jsx';
+import DaSettings from './pages/da/DaSettings.jsx';
 function App() {
   return (
     <BrowserRouter>
@@ -31,6 +42,20 @@ function App() {
           <Route path="documents" element={<MpDocuments />} />
           <Route path="notifications" element={<MpNotifications />} />
           <Route path="settings" element={<MpSettings />} />
+        </Route>
+
+        {/* DA Dashboard Routes */}
+        <Route path="/da" element={<DaLayout />}>
+          <Route index element={<DaDashboard />} />
+          <Route path="projects" element={<DaProjects />} />
+          <Route path="projects/mp/:mpId" element={<DaMPDetail />} />
+          <Route path="review" element={<DaProjectReview />} />
+          <Route path="review/:id" element={<DaReviewDetail />} />
+          <Route path="documents" element={<DaDocuments />} />
+          <Route path="notifications" element={<DaNotifications />} />
+          <Route path="agencies" element={<DaIADirectory />} />
+          <Route path="vendors" element={<DaVendorWatchlist />} />
+          <Route path="settings" element={<DaSettings />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -14,6 +14,8 @@ import {
   TbFileDescription
 } from 'react-icons/tb';
 import { api } from '../../api/mockMpApi';
+import { useMpStore } from '../../store/useMpStore.js';
+import AiAssistantWidget from '../../components/shared/AiAssistantWidget.jsx';
 
 const MpLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -290,6 +292,9 @@ const MpLayout = () => {
           </div>
         </main>
       </div>
+
+      {/* Global Floating Assistant */}
+      <AiAssistantWidget />
     </div>
   );
 };

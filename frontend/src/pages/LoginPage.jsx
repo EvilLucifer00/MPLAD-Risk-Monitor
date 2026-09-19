@@ -25,7 +25,15 @@ const LoginPage = () => {
     // Simulate auth — replace with real API call
     setTimeout(() => {
       setLoading(false);
-      navigate("/");
+      
+      // Route based on role
+      if (form.role === "mp") {
+        navigate("/mp");
+      } else if (form.role === "district_authority") {
+        navigate("/da");
+      } else {
+        setError(`Dashboard for ${form.role.replace('_', ' ')} is under construction.`);
+      }
     }, 1200);
   };
 
