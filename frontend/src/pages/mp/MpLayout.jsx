@@ -11,7 +11,8 @@ import {
   TbX,
   TbUserCircle,
   TbChartBar,
-  TbFileDescription
+  TbFileDescription,
+  TbLogout
 } from 'react-icons/tb';
 import { api } from '../../api/mockMpApi';
 import { useMpStore } from '../../store/useMpStore.js';
@@ -21,9 +22,15 @@ const MpLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [globalSearch, setGlobalSearch] = useState('');
   const location = useLocation();
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Add any necessary logout logic here (e.g., clearing tokens/state)
+    navigate('/login');
+  };
 
   const handleGlobalSearch = (e) => {
     e.preventDefault();
@@ -67,7 +74,7 @@ const MpLayout = () => {
       </div>
       
       {/* Navigation Links */}
-      <div className="flex-1 px-4 space-y-1.5 mt-6 relative z-10">
+      <div className="flex-1 px-4 space-y-1 mt-4 relative z-10">
         {navLinks.map((link) => {
           const isActive = location.pathname === link.path || 
                           (link.path !== '/mp' && location.pathname.startsWith(link.path));
@@ -78,14 +85,14 @@ const MpLayout = () => {
               key={link.path}
               to={link.path}
               onClick={() => setIsSidebarOpen(false)}
-              className={`flex items-center gap-3.5 px-4 py-3 rounded-xl transition-all duration-200 ${
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 ${
                 isActive 
                   ? 'bg-[#00a8e8] text-white shadow-md' 
                   : 'text-slate-300 hover:bg-white/5 hover:text-white'
               }`}
             >
-              <Icon size={22} className={isActive ? 'text-white' : 'text-slate-400'} />
-              <span className="font-medium text-[15px]">{link.name}</span>
+              <Icon size={20} className={isActive ? 'text-white' : 'text-slate-400'} />
+              <span className="font-medium text-sm">{link.name}</span>
               
               {/* Notification Badge specifically for the Notifications tab */}
               {link.name === 'Notifications' && unreadCount > 0 && (
@@ -101,7 +108,7 @@ const MpLayout = () => {
       {/* Bottom Footer Section */}
       <div className="px-6 pb-6 pt-32 relative z-10 mt-auto overflow-hidden">
         {/* Parliament Background SVG */}
-        <div className="absolute bottom-24 left-0 right-0 h-64 -z-10 opacity-25 pointer-events-none flex items-end justify-center">
+        <div className="absolute bottom-28 left-0 right-0 h-64 -z-10 opacity-25 pointer-events-none flex items-end justify-center">
           <svg viewBox="0 0 400 160" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full object-cover">
             {/* Base platform */}
             <path d="M 10,135 A 190,15 0 0,0 390,135 L 390,140 A 190,15 0 0,1 10,140 Z" fill="white" opacity="0.15" />
@@ -279,8 +286,44 @@ const MpLayout = () => {
               )}
             </div>
             
-            <div className="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-800 font-bold border border-cyan-200">
-              MP
+            {/* Profile Menu */}
+            <div className="relative">
+              <button 
+                onClick={() => setShowProfileMenu(!showProfileMenu)}
+                className="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-800 font-bold border border-cyan-200 hover:bg-cyan-200 transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-1"
+              >
+                MP
+              </button>
+
+              {/* Profile Dropdown */}
+              {showProfileMenu && (
+                <div 
+                  className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden z-50 transform origin-top-right transition-all duration-200 ease-out animate-in fade-in zoom-in-95"
+                >
+                  <div className="p-4 border-b border-slate-100 bg-slate-50/50">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-800 font-bold border border-cyan-200 text-lg">
+                        MP
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-slate-800 leading-tight">Rahul Sharma</h3>
+                        <p className="text-xs text-slate-500 mt-0.5">Member of Parliament</p>
+                        <p className="text-[10px] font-semibold text-cyan-600 mt-1">Varanasi, UP</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="p-2">
+                    <button
+                      onClick={handleLogout}
+                      className="flex items-center gap-3 w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    >
+                      <TbLogout size={18} />
+                      <span className="font-medium">Log Out</span>
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </header>
