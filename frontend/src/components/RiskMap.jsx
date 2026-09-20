@@ -11,6 +11,7 @@ const RiskMap = ({ searchTerm, filterState, filterRisk, setStatesList }) => {
   
   const mapRef = useRef();
   const geoJsonRef = useRef();
+  const styleFeatureRef = useRef();
 
   useEffect(() => {
     // Fetch the GeoJSON data
@@ -70,6 +71,8 @@ const RiskMap = ({ searchTerm, filterState, filterRisk, setStatesList }) => {
     };
   };
 
+  styleFeatureRef.current = styleFeature;
+
   const onEachFeature = (feature, layer) => {
     const pcId = feature.properties.pc_id;
     const pcName = feature.properties.pc_name;
@@ -108,6 +111,13 @@ const RiskMap = ({ searchTerm, filterState, filterRisk, setStatesList }) => {
     layer.on({
       mouseover: (e) => {
         const l = e.target;
+        const intendedStyle = styleFeatureRef.current(feature);
+        
+        // Respect selection/filter state: don't highlight if it's intentionally hidden
+        if (intendedStyle.fillOpacity < 0.5) {
+          return;
+        }
+        
         l.setStyle({
           weight: 2,
           color: '#000',
@@ -116,12 +126,17 @@ const RiskMap = ({ searchTerm, filterState, filterRisk, setStatesList }) => {
         l.bringToFront();
       },
       mouseout: (e) => {
-        // Reset style using the GeoJSON instance
-        if (geoJsonRef.current) {
-          geoJsonRef.current.resetStyle(e.target);
+        // Reset style manually using the latest state, avoiding Leaflet's resetStyle 
+        // which caches the initial stale closure of styleFeature from mount.
+        if (styleFeatureRef.current) {
+          e.target.setStyle(styleFeatureRef.current(e.target.feature));
         }
       },
       click: (e) => {
+        const intendedStyle = styleFeatureRef.current(feature);
+        if (intendedStyle.fillOpacity < 0.5) {
+          return; // Ignore clicks on intentionally hidden features
+        }
         const map = mapRef.current;
         if (map) {
           map.fitBounds(e.target.getBounds(), { padding: [50, 50] });
@@ -139,14 +154,26 @@ const RiskMap = ({ searchTerm, filterState, filterRisk, setStatesList }) => {
   useEffect(() => {
     if (geoJsonRef.current) {
       geoJsonRef.current.setStyle(styleFeature);
+      // Manually update pointer events in the DOM since Leaflet's setStyle 
+      // doesn't dynamically toggle the 'interactive' property on existing layers.
+      geoJsonRef.current.eachLayer((layer) => {
+        if (layer._path && styleFeatureRef.current) {
+          const intendedStyle = styleFeatureRef.current(layer.feature);
+          layer._path.style.pointerEvents = intendedStyle.fillOpacity < 0.5 ? 'none' : 'auto';
+        }
+      });
     }
   }, [filterState, filterRisk, searchTerm]);
+
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const initialZoom = isMobile ? 3.6 : 4.6;
+  const initialCenter = isMobile ? [22, 84] : [23, 82];
 
   return (
     <>
       <MapContainer 
-          center={[23, 82]} // Center of India
-          zoom={4.6}
+          center={initialCenter} // Center of India (shifted for mobile)
+          zoom={initialZoom}
           zoomSnap={0.2}
           zoomDelta={0.2}
           style={{ height: '100%', width: '100%', background: 'transparent' }}

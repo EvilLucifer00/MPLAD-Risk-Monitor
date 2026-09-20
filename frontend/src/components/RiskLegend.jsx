@@ -11,16 +11,16 @@ const RiskLegend = () => {
   ];
 
   return (
-    <div className="absolute bottom-15 right-4 bg-white/95 backdrop-blur-sm p-3 rounded-lg shadow-md z-[1000] border border-slate-200 min-w-32">
-      <h4 className="text-[10px] font-bold mb-2 text-slate-900 uppercase tracking-wider">Risk Level</h4>
-      <div className="flex flex-col gap-1.5">
+    <div className="absolute bottom-10 lg:bottom-16 right-2 lg:right-4 bg-white/95 backdrop-blur-sm p-2 lg:p-3 rounded-lg shadow-md z-[1000] border border-slate-200 min-w-[110px] lg:min-w-32">
+      <h4 className="text-[9px] lg:text-[10px] font-bold mb-1.5 lg:mb-2 text-slate-900 uppercase tracking-wider">Risk Level</h4>
+      <div className="flex flex-col gap-1 lg:gap-1.5">
         {legendItems.map((item, index) => (
-          <div key={index} className="flex items-center gap-2">
+          <div key={index} className="flex items-center gap-1.5 lg:gap-2">
             <span 
-              className="w-3 h-3 rounded shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)] shrink-0" 
+              className="w-2.5 h-2.5 lg:w-3 lg:h-3 rounded shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)] shrink-0" 
               style={{ backgroundColor: item.color }}
             ></span>
-            <span className="text-xs text-slate-700 font-medium leading-none">{item.label}</span>
+            <span className="text-[10px] lg:text-xs text-slate-700 font-medium leading-none">{item.label}</span>
           </div>
         ))}
       </div>

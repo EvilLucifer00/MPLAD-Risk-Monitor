@@ -16,13 +16,13 @@ const Home = () => {
   const [statesList, setStatesList] = useState([]);
 
   return (
-    <div className="min-h-screen">
+    <div className="w-full">
       {/* PAGE 1 CONTENT */}
-      <div className="flex flex-col w-full h-screen bg-slate-50 relative overflow-hidden">
+      <div className="flex flex-col w-full bg-slate-50 relative overflow-x-hidden pb-2">
         {/* BACKGROUND DECORATIONS */}
         {/* Top Right Ashoka Chakra */}
         <svg
-          className="absolute top-[-8%] right-[-2%] w-[45%] max-w-[600px] aspect-square pointer-events-none z-0 opacity-[0.04]"
+          className="hidden lg:block absolute top-[-8%] right-[-2%] w-[45%] max-w-[600px] aspect-square pointer-events-none z-0 opacity-[0.04]"
           viewBox="0 0 100 100"
         >
           <circle
@@ -58,7 +58,7 @@ const Home = () => {
 
         {/* Top Right Tricolor Swoosh */}
         <svg
-          className="absolute top-0 right-0 w-[38%] h-[50%] pointer-events-none z-0"
+          className="hidden lg:block absolute top-0 right-0 w-[38%] h-[50%] pointer-events-none z-0"
           viewBox="0 0 100 100"
           preserveAspectRatio="none"
         >
@@ -81,7 +81,7 @@ const Home = () => {
 
         {/* Bottom Left Tricolor Swoosh */}
         <svg
-          className="absolute bottom-0 left-0 w-[30%] h-[35%] pointer-events-none z-0"
+          className="hidden lg:block absolute bottom-0 left-0 w-[30%] h-[35%] pointer-events-none z-0"
           viewBox="0 0 100 100"
           preserveAspectRatio="none"
         >
@@ -103,9 +103,9 @@ const Home = () => {
         </svg>
 
         {/* Bottom Right Skyline & Text */}
-        <div className="absolute bottom-4 right-12 flex flex-col items-end gap-2 z-0 pointer-events-none">
+        <div className="absolute bottom-4 right-2 sm:right-6 lg:right-12 flex flex-col items-end gap-1.5 lg:gap-2 z-0 pointer-events-none max-w-[95vw]">
           <svg
-            className="w-[450px] h-[55px] opacity-[0.12]"
+            className="w-[280px] sm:w-[350px] lg:w-[450px] h-auto lg:h-[55px] opacity-[0.12]"
             viewBox="0 0 700 90"
             fill="#94a3b8"
             preserveAspectRatio="xMaxYMax meet"
@@ -173,19 +173,19 @@ const Home = () => {
             <path d="M655,90 L655,50 Q672,25 690,50 L690,90 Z" />
             <rect x="671" y="18" width="3" height="32" />
           </svg>
-          <div className="flex items-center gap-3">
-            <div className="flex gap-0.5">
-              <div className="w-4 h-0.5 bg-[#FF9933]"></div>
-              <div className="w-4 h-0.5 bg-[#ffffff]"></div>
-              <div className="w-4 h-0.5 bg-[#138808]"></div>
+          <div className="flex items-center gap-1.5 lg:gap-3 w-full justify-end">
+            <div className="flex gap-0.5 shrink-0">
+              <div className="w-2.5 lg:w-4 h-0.5 bg-[#FF9933]"></div>
+              <div className="w-2.5 lg:w-4 h-0.5 bg-[#ffffff]"></div>
+              <div className="w-2.5 lg:w-4 h-0.5 bg-[#138808]"></div>
             </div>
-            <p className="text-[9px] font-bold tracking-[0.2em] text-slate-500/60 uppercase">
+            <p className="text-[6.5px] sm:text-[7.5px] lg:text-[9px] font-bold tracking-[0.1em] lg:tracking-[0.2em] text-slate-500/60 uppercase whitespace-nowrap">
               Sabka Vikas | Sajha Prayas | Mazboot Bharat
             </p>
-            <div className="flex gap-0.5">
-              <div className="w-4 h-0.5 bg-[#FF9933]"></div>
-              <div className="w-4 h-0.5 bg-[#ffffff]"></div>
-              <div className="w-4 h-0.5 bg-[#138808]"></div>
+            <div className="flex gap-0.5 shrink-0">
+              <div className="w-2.5 lg:w-4 h-0.5 bg-[#FF9933]"></div>
+              <div className="w-2.5 lg:w-4 h-0.5 bg-[#ffffff]"></div>
+              <div className="w-2.5 lg:w-4 h-0.5 bg-[#138808]"></div>
             </div>
           </div>
         </div>
@@ -199,9 +199,9 @@ const Home = () => {
           setFilterRisk={setFilterRisk}
           statesList={statesList}
         />
-        <div className="flex flex-row w-full flex-1 overflow-hidden min-h-0 relative z-10">
-          <div className="w-[52%] px-6 py-3 flex flex-col h-full overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-            <div className="relative w-full mb-4 overflow-hidden shadow-xl rounded-3xl shrink-0">
+        <div className="flex flex-col lg:flex-row w-full flex-1 min-h-0 relative z-10">
+          <div className="w-full lg:w-[52%] px-4 sm:px-6 py-3 flex flex-col">
+            <div className="relative w-full mb-4 lg:overflow-hidden shadow-xl rounded-3xl shrink-0">
               {/* Background Image */}
               <div
                 className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -231,7 +231,7 @@ const Home = () => {
                 </div>
 
                 {/* Page 1 Header */}
-                <h1 className="font-extrabold mt-10 text-2xl lg:text-3xl text-white leading-tight tracking-tight drop-shadow-md max-w-2xl">
+                <h1 className="font-extrabold mt-6 lg:mt-10 text-2xl lg:text-3xl text-white leading-tight tracking-tight drop-shadow-md max-w-2xl">
                   Connecting Public Funds to <br />
                   <span className="text-cyan-400 relative inline-block mt-1">
                     Public Impact
@@ -269,7 +269,7 @@ const Home = () => {
                 />
               </div>
 
-              <div className="mt-auto bg-white border border-slate-200 rounded-2xl px-5 py-3 mb-2 shadow-sm flex items-center gap-4 relative overflow-hidden group shrink-0">
+              <div className="mt-6 bg-white border border-slate-200 rounded-2xl px-5 py-3 mb-2 shadow-sm flex items-center gap-4 relative overflow-hidden group shrink-0">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-100 rounded-full blur-3xl -mr-16 -mt-16 opacity-50 group-hover:opacity-80 transition-opacity duration-500" />
                 <div className="relative z-10 flex gap-4 w-full items-start">
                   <div className="p-2 bg-blue-50 text-[#123b63] rounded-lg shrink-0 mt-0.5">
@@ -293,8 +293,29 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="relative w-[48%] p-4 pt-0 flex items-center justify-center">
-            <div className="w-full h-[95%] overflow-hidden relative">
+          <div className="relative w-full lg:w-[48%] p-4 lg:p-4 mt-4 lg:mt-0 flex items-start">
+            
+            {/* MOBILE ONLY: Background Decorations tightly wrapping the map */}
+            <svg className="lg:hidden absolute top-[-5%] right-[-5%] w-[70%] aspect-square pointer-events-none z-0 opacity-[0.05]" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="45" fill="none" stroke="#123b63" strokeWidth="2" />
+              <circle cx="50" cy="50" r="42" fill="none" stroke="#123b63" strokeWidth="0.5" />
+              {Array.from({ length: 24 }).map((_, i) => (
+                <line key={i} x1="50" y1="50" x2="50" y2="8" stroke="#123b63" strokeWidth="1" transform={`rotate(${i * 15} 50 50)`} />
+              ))}
+              <circle cx="50" cy="50" r="5" fill="#123b63" />
+            </svg>
+            <svg className="lg:hidden absolute top-0 right-0 w-[55%] h-[70%] pointer-events-none z-0" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <path d="M 0 0 C 40 30, 70 70, 100 100 L 100 0 Z" fill="#138808" opacity="0.12" />
+              <path d="M 20 0 C 50 30, 80 60, 100 80 L 100 0 Z" fill="#ffffff" opacity="0.5" />
+              <path d="M 40 0 C 60 25, 85 45, 100 60 L 100 0 Z" fill="#FF9933" opacity="0.15" />
+            </svg>
+            <svg className="lg:hidden absolute bottom-[-5%] left-[-2%] w-[45%] h-[50%] pointer-events-none z-0" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <path d="M 0 0 C 30 50, 60 80, 100 100 L 0 100 Z" fill="#FF9933" opacity="0.12" />
+              <path d="M 0 25 C 25 55, 50 85, 80 100 L 0 100 Z" fill="#ffffff" opacity="0.5" />
+              <path d="M 0 50 C 15 65, 40 90, 60 100 L 0 100 Z" fill="#138808" opacity="0.12" />
+            </svg>
+
+            <div className="relative z-10 w-full h-[300px] lg:h-[680px] overflow-hidden rounded-2xl lg:rounded-xl">
               <RiskMap
                 searchTerm={searchTerm}
                 filterState={filterState}
@@ -309,7 +330,7 @@ const Home = () => {
       {/* PAGE 2 CONTENT */}
       <div className="w-full">
         {/* ── Stats Section ── */}
-        <section className="min-h-0 bg-slate-50 px-12 py-16">
+        <section className="min-h-0 bg-slate-50 px-6 lg:px-12 py-10 lg:py-16">
           <div className="max-w-8xl mx-auto">
             <div className="mb-10">
               <h2 className="text-4xl font-extrabold text-[#123b63] mb-4">
@@ -359,8 +380,8 @@ const Home = () => {
         </section>
 
         {/* ── How It Works ── */}
-        <section className="bg-white px-10 py-12 border-b border-slate-100">
-          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-10 items-start">
+        <section className="bg-white px-6 lg:px-10 py-10 lg:py-12 border-b border-slate-100">
+          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
             {/* Left label */}
             <div className="lg:w-56 shrink-0">
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-600 mb-2">
@@ -420,7 +441,7 @@ const Home = () => {
         </section>
 
         {/* ── Key Features ── */}
-        <section className="bg-slate-50 px-10 py-12 border-b border-slate-100">
+        <section className="bg-slate-50 px-6 lg:px-10 py-10 lg:py-12 border-b border-slate-100">
           <div className="max-w-7xl mx-auto">
             <div className="mb-7">
               <div className="w-8 h-1 bg-cyan-500 rounded-full mb-3" />
@@ -463,7 +484,7 @@ const Home = () => {
         </section>
 
         {/* ── Our Vision ── */}
-        <section className="bg-blue-50 px-10 py-12 border-b border-slate-200 overflow-hidden relative">
+        <section className="bg-blue-50 px-6 lg:px-10 py-10 lg:py-12 border-b border-slate-200 overflow-hidden relative">
           {/* India Gate silhouette — detailed */}
           <svg
             className="absolute right-10 bottom-0 h-[90%] opacity-[0.09] pointer-events-none"
@@ -635,9 +656,9 @@ const Home = () => {
 
         {/* ── Footer ── */}
         <footer className="bg-[#0d2847] text-white">
-          <div className="max-w-7xl mx-auto px-10 py-12 grid grid-cols-1 md:grid-cols-4 gap-10">
+          <div className="max-w-7xl mx-auto px-6 lg:px-10 py-10 lg:py-12 grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-6 lg:gap-10">
             {/* Brand */}
-            <div className="md:col-span-1">
+            <div className="col-span-2 md:col-span-1">
               <div className="flex items-center gap-3 mb-3">
                 <img
                   src="/emblem.png"
@@ -704,7 +725,7 @@ const Home = () => {
             </div>
 
             {/* Follow Us */}
-            <div>
+            <div className="col-span-2 md:col-span-1">
               <p className="text-sm font-bold mb-4 text-white">Follow Us</p>
               <div className="flex gap-3">
                 {[
@@ -727,8 +748,8 @@ const Home = () => {
           </div>
 
           {/* Bottom bar */}
-          <div className="border-t border-white/10 px-10 py-4">
-            <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+          <div className="border-t border-white/10 px-6 lg:px-10 py-4">
+            <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-2 text-center sm:text-left">
               <p className="text-[11px] text-slate-500">
                 © 2026{" "}
                 <span className="font-semibold text-slate-400">
