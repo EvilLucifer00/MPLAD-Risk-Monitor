@@ -11,7 +11,8 @@ import {
   TbX,
   TbFileDescription,
   TbBuildingBank,
-  TbUserScan
+  TbUserScan,
+  TbLogout
 } from 'react-icons/tb';
 import { daApi } from '../../api/mockDaApi';
 import AiAssistantWidget from '../../components/shared/AiAssistantWidget.jsx';
@@ -19,9 +20,15 @@ const DaLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [globalSearch, setGlobalSearch] = useState('');
   const location = useLocation();
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Add any necessary logout logic here (e.g., clearing tokens/state)
+    navigate('/login');
+  };
 
   const handleGlobalSearch = (e) => {
     e.preventDefault();
@@ -291,8 +298,44 @@ const DaLayout = () => {
               )}
             </div>
             
-            <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-800 font-bold border border-amber-200 text-xs">
-              DA
+            {/* Profile Menu */}
+            <div className="relative">
+              <button 
+                onClick={() => setShowProfileMenu(!showProfileMenu)}
+                className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-800 font-bold border border-amber-200 text-xs hover:bg-amber-200 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-1"
+              >
+                DA
+              </button>
+
+              {/* Profile Dropdown */}
+              {showProfileMenu && (
+                <div 
+                  className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden z-50 transform origin-top-right transition-all duration-200 ease-out animate-in fade-in zoom-in-95"
+                >
+                  <div className="p-4 border-b border-slate-100 bg-slate-50/50">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center text-amber-800 font-bold border border-amber-200 text-lg">
+                        DA
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-slate-800 leading-tight">Priya Singh</h3>
+                        <p className="text-xs text-slate-500 mt-0.5">District Magistrate</p>
+                        <p className="text-[10px] font-semibold text-amber-600 mt-1">Varanasi, UP</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="p-2">
+                    <button
+                      onClick={handleLogout}
+                      className="flex items-center gap-3 w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    >
+                      <TbLogout size={18} />
+                      <span className="font-medium">Log Out</span>
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </header>
