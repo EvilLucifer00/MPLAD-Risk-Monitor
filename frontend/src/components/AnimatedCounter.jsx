@@ -55,14 +55,14 @@ const AnimatedCounter = ({ end, duration = 2000, prefix = "", suffix = "", title
   }, [end, duration, hasAnimated, prefix, suffix]);
 
   return (
-    <div ref={counterRef} className="flex items-center gap-4 bg-white border border-slate-200 rounded-2xl px-5 py-5 shadow-sm hover:shadow-md transition-shadow duration-200">
+    <div ref={counterRef} className="flex items-center gap-3 xl:gap-4 bg-white border border-slate-200 rounded-2xl px-4 py-4 xl:px-5 xl:py-5 shadow-sm hover:shadow-md transition-shadow duration-200 min-w-0">
       {Icon && (
         <div className={`p-3 rounded-2xl shrink-0 ${iconBg} ${iconColor}`}>
-          <Icon size={28} strokeWidth={2} />
+          <Icon size={24} className="xl:w-7 xl:h-7" strokeWidth={2} />
         </div>
       )}
-      <div className="flex flex-col">
-        <div ref={displayRef} className="text-3xl font-extrabold text-[#123b63] leading-tight whitespace-nowrap">
+      <div className="flex flex-col min-w-0 flex-1">
+        <div ref={displayRef} className="text-2xl xl:text-3xl font-extrabold text-[#123b63] leading-tight whitespace-nowrap truncate">
           {prefix}{count.toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}{suffix}
         </div>
         <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mt-1">
