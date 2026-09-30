@@ -1,0 +1,4 @@
+MP Name,Constituency,State,House,Work Description,Vendor,IDA,Expenditure Amount (₹),Expenditure Date,Payment Status,Is_Collusion_Injected
+TEST MP ALPHA,Pune,Maharashtra,Lok Sabha,Construction of community hall in village centre,ABC Constructions,PUNE(DISTRICT COLLECTOR PUNE_IDA),480000.0,2024-12-25,Paid,False
+TEST MP ALPHA,Pune,Maharashtra,Lok Sabha,Road repair near main market area,XYZ Builders,PUNE(DISTRICT COLLECTOR PUNE_IDA),295000.0,2025-01-10,Paid,False
+TEST MP BETA,Bengaluru,Karnataka,Lok Sabha,Installation of water purification system,ABC Constructions,BENGALURU(DISTRICT COLLECTOR BENGALURU_IDA),720000.0,2025-02-15,Paid,False
