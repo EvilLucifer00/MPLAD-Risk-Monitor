@@ -1,0 +1,58 @@
+{
+  "works": [
+    {
+      "work_id": "W001",
+      "description": "Construction of community hall in village centre",
+      "category": "Community Infrastructure",
+      "mp_name": "TEST MP ALPHA",
+      "state": "Maharashtra",
+      "district": "Pune",
+      "latitude": 18.5204,
+      "longitude": 73.8567,
+      "sanction_amount": 500000,
+      "quantity": 150,
+      "unit": "sq_meters",
+      "sanction_date": "2024-06-15",
+      "vendor": "ABC Constructions",
+      "expenditure_amount": 480000,
+      "expenditure_date": "2024-12-25",
+      "ida": "PUNE(DISTRICT COLLECTOR PUNE_IDA)"
+    },
+    {
+      "work_id": "W002",
+      "description": "Road repair near main market area",
+      "category": "Road Construction",
+      "mp_name": "TEST MP ALPHA",
+      "state": "Maharashtra",
+      "district": "Pune",
+      "latitude": 18.5210,
+      "longitude": 73.8570,
+      "sanction_amount": 300000,
+      "quantity": 100,
+      "unit": "sq_meters",
+      "sanction_date": "2024-07-20",
+      "vendor": "XYZ Builders",
+      "expenditure_amount": 295000,
+      "expenditure_date": "2025-01-10",
+      "ida": "PUNE(DISTRICT COLLECTOR PUNE_IDA)"
+    },
+    {
+      "work_id": "W003",
+      "description": "Installation of water purification system",
+      "category": "Drinking Water",
+      "mp_name": "TEST MP BETA",
+      "state": "Karnataka",
+      "district": "Bengaluru",
+      "latitude": 12.9716,
+      "longitude": 77.5946,
+      "sanction_amount": 750000,
+      "quantity": 5,
+      "unit": "nos",
+      "sanction_date": "2024-08-10",
+      "vendor": "ABC Constructions",
+      "expenditure_amount": 720000,
+      "expenditure_date": "2025-02-15",
+      "ida": "BENGALURU(DISTRICT COLLECTOR BENGALURU_IDA)"
+    }
+  ]
+}
