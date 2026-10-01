@@ -25,6 +25,7 @@ from datetime import datetime
 
 import numpy as np
 import pandas as pd
+from final_pipeline.schema.new_project_schema import ProjectSchema
 
 
 # ---------------------------------------------------------------------------
@@ -37,7 +38,7 @@ def log(msg):
 # ---------------------------------------------------------------------------
 # Engine 1: Cost Anomaly Detector
 # ---------------------------------------------------------------------------
-def run_cost_anomaly(works_df: pd.DataFrame, output_csv: str) -> pd.DataFrame:
+def run_cost_anomaly(works_df: pd.DataFrame, output_csv: str):
     log(f"Engine 1 / Cost Anomaly Detector  ({len(works_df)} works)")
     from cost_anomaly_detector import run_cost_anomaly_engine
 
@@ -62,7 +63,7 @@ def run_duplicate_ghost(works_df: pd.DataFrame, output_csv: str) -> pd.DataFrame
 
     # Prepare the subset of columns needed by this engine
     dup_cols = ["work_id", "description", "latitude", "longitude", "cost", "sanction_date"]
-    df = works_df[dup_cols].copy()
+    df = pd.DataFrame(works_df[dup_cols].copy())
     df["sanction_date"] = pd.to_datetime(df["sanction_date"])
 
     detector = DuplicateGhostWorkDetector()
@@ -207,6 +208,8 @@ def enrich_json_with_details(final_json: dict, intermediates_dir: str) -> dict:
 # ---------------------------------------------------------------------------
 # Main pipeline orchestrator
 # ---------------------------------------------------------------------------
+
+# Entry Function
 def run_pipeline_from_json(input_json: dict, output_dir: str = "./pipeline_run") -> dict:
     """
     Run the full 5-engine pipeline from a frontend JSON input.
