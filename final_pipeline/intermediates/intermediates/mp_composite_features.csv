@@ -1,3 +1,0 @@
-MP Name,num_works,anomaly_score_mean,anomaly_score_max,anomaly_flag_rate,cost_deviation_pct_mean,cost_deviation_pct_max,sor_match_confidence_mean,duplicate_score_mean,duplicate_score_max,duplicate_flag_rate,duplicate_group_size_max,injected_anomaly_frac,num_months,deviation_flag_rate,residual_pct_mean,residual_pct_max,total_actual_amount,num_primary_vendors,collusion_score_mean,collusion_score_max,flagged_vendor_rate,any_flagged_vendor
-TEST MP ALPHA,2,0.200619836868217,0.2178106113059691,0.0,0.0791,0.1905,0.8825000000000001,0.0,0.0,0.0,1,0.0,2,0.0,0.0,0.0,775000.0,1,0.3,0.3,0.0,False
-TEST MP BETA,1,-0.1205035080576019,-0.1205035080576019,1.0,59.0,59.0,0.31,0.0,0.0,0.0,1,0.0,1,0.0,0.0,0.0,720000.0,1,0.525,0.525,0.0,False
