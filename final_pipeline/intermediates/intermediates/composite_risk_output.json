@@ -1,0 +1,70 @@
+{
+  "run_metadata": {
+    "n_mps": 2,
+    "n_features": 23,
+    "decision_threshold": 0.5,
+    "capacity_threshold": 0.8,
+    "mode": "inference"
+  },
+  "decision_threshold": 0.5,
+  "capacity_threshold": 0.8,
+  "risk_band_cuts": [
+    0.25,
+    0.5,
+    0.75
+  ],
+  "mps": [
+    {
+      "mp_name": "TEST MP BETA",
+      "composite_risk_score": 1.0,
+      "risk_band": "Critical",
+      "risk_percentile": 1.0,
+      "is_flagged_composite": true,
+      "is_flagged_capacity": true,
+      "top_shap_drivers": [
+        {
+          "feature": "cost_deviation_pct_mean",
+          "shap_value": 3.787542,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "num_works",
+          "shap_value": 1.172926,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "cost_deviation_pct_max",
+          "shap_value": -0.573127,
+          "direction": "decreases_risk"
+        }
+      ],
+      "composite_risk_rank": 1
+    },
+    {
+      "mp_name": "TEST MP ALPHA",
+      "composite_risk_score": 0.099232,
+      "risk_band": "Low",
+      "risk_percentile": 0.5,
+      "is_flagged_composite": false,
+      "is_flagged_capacity": false,
+      "top_shap_drivers": [
+        {
+          "feature": "cost_deviation_pct_mean",
+          "shap_value": -2.145755,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "cost_deviation_pct_max",
+          "shap_value": -1.876478,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "num_works",
+          "shap_value": 1.012674,
+          "direction": "increases_risk"
+        }
+      ],
+      "composite_risk_rank": 2
+    }
+  ]
+}
