@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { daApi } from '../../api/mockDaApi';
 import { useDaStore } from '../../store/useDaStore';
-import AnimatedCounter from '../../components/AnimatedCounter';
+import AnimatedCounter from '../../components/shared/AnimatedCounter';
 import { 
   TbUsers, 
   TbCurrencyRupee, 
@@ -31,6 +31,7 @@ const RISK_COLORS = {
 const DaDashboard = () => {
   const [stats, setStats] = useState(null);
   const [recommendations, setRecommendations] = useState([]);
+  const [showAllRecommendations, setShowAllRecommendations] = useState(false);
   const [mps, setMps] = useState([]);
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -350,7 +351,7 @@ const DaDashboard = () => {
             <span className="text-xs font-semibold bg-cyan-100 text-cyan-800 px-2.5 py-1 rounded-full">Powered by ML</span>
           </div>
           <div className="space-y-4 overflow-auto flex-1">
-            {recommendations.map(rec => {
+            {(showAllRecommendations ? recommendations : recommendations.slice(0, 3)).map(rec => {
               let bgClass = "bg-slate-50/50";
               let iconWrapperClass = "bg-slate-100 text-slate-500";
               let titleClass = "text-slate-800";
@@ -385,7 +386,7 @@ const DaDashboard = () => {
                   </div>
                   <div className="min-w-0">
                     <h3 className={`text-[15px] ${titleClass}`}>{rec.type}</h3>
-                    <p className="text-[13px] text-slate-600 mt-1 leading-relaxed pr-2">{rec.message}</p>
+                    <p className="text-[13px] text-slate-600 mt-1 leading-relaxed pr-2 line-clamp-3">{rec.message}</p>
                     {rec.relatedProjectIds?.length > 0 && (
                       <div className="mt-3">
                         <Link 
@@ -400,6 +401,14 @@ const DaDashboard = () => {
                 </div>
               );
             })}
+            {recommendations.length > 3 && (
+              <button 
+                onClick={() => setShowAllRecommendations(!showAllRecommendations)}
+                className="w-full text-center text-[13px] font-bold text-cyan-700 py-3 mt-2 rounded-xl hover:bg-cyan-50 transition-colors"
+              >
+                {showAllRecommendations ? "Show Less" : "Show More"}
+              </button>
+            )}
           </div>
         </div>
       </div>

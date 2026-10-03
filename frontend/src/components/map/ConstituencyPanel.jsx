@@ -1,5 +1,6 @@
 import React from 'react';
-import { getRiskColor } from '../data/riskData';
+import { motion } from 'framer-motion';
+import { getRiskColor } from '../../data/riskData';
 import { TbMapPin, TbChartBar, TbAlertCircle, TbClock } from 'react-icons/tb';
 
 const ConstituencyPanel = ({ data, onClose }) => {
@@ -8,7 +9,13 @@ const ConstituencyPanel = ({ data, onClose }) => {
   const riskColor = getRiskColor(data.risk_score);
   
   return (
-    <div className="absolute top-0 right-0 bottom-0 w-full md:w-95 bg-white/95 backdrop-blur-md shadow-[-5px_0_25px_rgba(0,0,0,0.1)] z-2000 flex flex-col animate-[slideIn_0.3s_cubic-bezier(0.16,1,0.3,1)] md:border-l border-t md:border-t-0 border-slate-200">
+    <motion.div 
+      initial={{ x: '100%' }}
+      animate={{ x: 0 }}
+      exit={{ x: '100%' }}
+      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+      className="absolute top-0 right-0 bottom-0 w-full md:w-95 bg-white/95 backdrop-blur-md shadow-[-5px_0_25px_rgba(0,0,0,0.1)] z-2000 flex flex-col md:border-l border-t md:border-t-0 border-slate-200"
+    >
       <button 
         className="absolute top-4 right-4 bg-transparent border-none text-2xl text-slate-500 cursor-pointer w-8 h-8 flex items-center justify-center rounded-full transition-all duration-200 hover:bg-slate-100 hover:text-slate-900" 
         onClick={onClose}
@@ -70,7 +77,7 @@ const ConstituencyPanel = ({ data, onClose }) => {
           
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

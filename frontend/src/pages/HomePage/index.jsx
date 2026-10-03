@@ -1,22 +1,34 @@
 import React, { useState } from "react";
-import Toolbar from "../components/Toolbar";
-import RiskMap from "../components/RiskMap";
-import Card from "../components/Card";
-import AnimatedCounter from "../components/AnimatedCounter";
+import Toolbar from "../../components/shared/Toolbar";
+import RiskMap from "../../components/map/RiskMap";
+import Card from "../../components/shared/Card";
+import AnimatedCounter from "../../components/shared/AnimatedCounter";
 import { TbWallet, TbShieldExclamation, TbChartBar, TbScale, TbMapPin, TbMap, TbTrendingUp, TbShieldCheck, TbUsers, TbChevronRight, TbCurrencyRupee, TbAlertTriangle } from "react-icons/tb";
 import { IoIosConstruct } from "react-icons/io";
 import { FaXTwitter, FaLinkedinIn, FaYoutube } from "react-icons/fa6";
 import { IoMdMail } from "react-icons/io";
-import AiAssistantWidget from "../components/shared/AiAssistantWidget.jsx";
+import AiAssistantWidget from "../../components/shared/AiAssistantWidget.jsx";
+import { motion, useScroll } from "framer-motion";
+import Reveal from "../../animations/Reveal";
+import OverviewSection from "../../components/home/OverviewSection";
+import HowItWorksSection from "../../components/home/HowItWorksSection";
+import KeyFeaturesSection from "../../components/home/KeyFeaturesSection";
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterState, setFilterState] = useState("");
   const [filterRisk, setFilterRisk] = useState("");
   const [statesList, setStatesList] = useState([]);
+  
+  const { scrollYProgress } = useScroll();
 
   return (
     <div className="w-full">
+      {/* Scroll Progress Bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-[2px] bg-cyan-400 origin-left z-[9999]"
+        style={{ scaleX: scrollYProgress }}
+      />
       {/* PAGE 1 CONTENT */}
       <div className="flex flex-col w-full bg-slate-50 relative overflow-x-hidden pb-2">
         {/* BACKGROUND DECORATIONS */}
@@ -201,9 +213,12 @@ const Home = () => {
         />
         <div className="flex flex-col lg:flex-row w-full flex-1 min-h-0 relative z-10">
           <div className="w-full lg:w-[52%] px-4 sm:px-6 py-3 flex flex-col">
-            <div className="relative w-full mb-4 lg:overflow-hidden shadow-xl rounded-3xl shrink-0">
+            <div className="relative w-full mb-4 lg:overflow-hidden shadow-xl rounded-3xl shrink-0 overflow-hidden">
               {/* Background Image */}
-              <div
+              <motion.div
+                initial={{ scale: 1 }}
+                animate={{ scale: 1.05 }}
+                transition={{ duration: 20, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
                 className="absolute inset-0 bg-cover bg-center bg-no-repeat"
                 style={{
                   backgroundImage: "url('/mplad_headquarters.png')",
@@ -231,54 +246,67 @@ const Home = () => {
                 </div>
 
                 {/* Page 1 Header */}
-                <h1 className="font-extrabold mt-6 lg:mt-10 text-2xl lg:text-3xl text-white leading-tight tracking-tight drop-shadow-md max-w-2xl">
-                  Connecting Public Funds to <br />
-                  <span className="text-cyan-400 relative inline-block mt-1">
-                    Public Impact
-                    <div className="absolute -bottom-1.5 left-0 w-full h-1 bg-cyan-400 rounded-full opacity-80" />
-                  </span>
-                </h1>
-                <h2 className="font-light mt-3 text-sm lg:text-base text-slate-200 max-w-xl leading-normal">
-                  Transparency that drives development,
-                  <br /> powered by AI-driven insights.
-                </h2>
+                <Reveal delay={0.1}>
+                  <h1 className="font-extrabold mt-6 lg:mt-10 text-2xl lg:text-3xl text-white leading-tight tracking-tight drop-shadow-md max-w-2xl">
+                    Connecting Public Funds to <br />
+                    <span className="text-cyan-400 relative inline-block mt-1">
+                      Public Impact
+                      <motion.div 
+                        initial={{ scaleX: 0 }}
+                        whileInView={{ scaleX: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                        className="absolute -bottom-1.5 left-0 w-full h-1 bg-cyan-400 rounded-full opacity-80 origin-left" 
+                      />
+                    </span>
+                  </h1>
+                </Reveal>
+                <Reveal delay={0.2}>
+                  <h2 className="font-light mt-3 text-sm lg:text-base text-slate-200 max-w-xl leading-normal">
+                    Transparency that drives development,
+                    <br /> powered by AI-driven insights.
+                  </h2>
+                </Reveal>
               </div>
             </div>
 
             <div className="px-1 flex-1 flex flex-col">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-3">
-                <Card
-                  title="Track Funds"
-                  icon={TbWallet}
-                  description="Monitor MPLADS fund allocation and utilization across all constituencies in real-time."
-                />
-                <Card
-                  title="Identify Risks"
-                  icon={TbShieldExclamation}
-                  description="Our AI-driven risk scoring highlights anomalies and potential delays in project execution."
-                />
-                <Card
-                  title="Compare Performance"
-                  icon={TbChartBar}
-                  description="Evaluate and compare the performance of different states and representatives effortlessly."
-                />
-                <Card
-                  title="Ensure Accountability"
-                  icon={TbScale}
-                  description="Promote transparency in public spending by giving citizens access to critical financial data."
-                />
-              </div>
+              <Reveal staggerChildren={0.15}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-3">
+                  <Card
+                    title="Track Funds"
+                    icon={TbWallet}
+                    description="Monitor MPLADS fund allocation and utilization across all constituencies in real-time."
+                  />
+                  <Card
+                    title="Identify Risks"
+                    icon={TbShieldExclamation}
+                    description="Our AI-driven risk scoring highlights anomalies and potential delays in project execution."
+                  />
+                  <Card
+                    title="Compare Performance"
+                    icon={TbChartBar}
+                    description="Evaluate and compare the performance of different states and representatives effortlessly."
+                  />
+                  <Card
+                    title="Ensure Accountability"
+                    icon={TbScale}
+                    description="Promote transparency in public spending by giving citizens access to critical financial data."
+                  />
+                </div>
+              </Reveal>
 
-              <div className="mt-6 bg-white border border-slate-200 rounded-2xl px-5 py-3 mb-2 shadow-sm flex items-center gap-4 relative overflow-hidden group shrink-0">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-100 rounded-full blur-3xl -mr-16 -mt-16 opacity-50 group-hover:opacity-80 transition-opacity duration-500" />
-                <div className="relative z-10 flex gap-4 w-full items-start">
-                  <div className="p-2 bg-blue-50 text-[#123b63] rounded-lg shrink-0 mt-0.5">
-                    <TbMapPin
-                      size={24}
-                      className="animate-bounce"
-                      style={{ animationDuration: "2s" }}
-                    />
-                  </div>
+              <Reveal delay={0.4}>
+                <div className="mt-6 bg-white border border-slate-200 rounded-2xl px-5 py-3 mb-2 shadow-sm flex items-center gap-4 relative overflow-hidden group shrink-0">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-100 rounded-full blur-3xl -mr-16 -mt-16 opacity-50 group-hover:opacity-80 transition-opacity duration-500" />
+                  <div className="relative z-10 flex gap-4 w-full items-start">
+                    <div className="p-2 bg-blue-50 text-[#123b63] rounded-lg shrink-0 mt-0.5">
+                      <TbMapPin
+                        size={24}
+                        className="animate-bounce"
+                        style={{ animationDuration: "2s" }}
+                      />
+                    </div>
                   <div>
                     <h1 className="font-extrabold text-lg text-[#123b63] tracking-tight mb-0.5">
                       Explore the Map
@@ -288,8 +316,9 @@ const Home = () => {
                       detailed risk scoring.
                     </h2>
                   </div>
+                  </div>
                 </div>
-              </div>
+              </Reveal>
             </div>
           </div>
 
@@ -330,158 +359,13 @@ const Home = () => {
       {/* PAGE 2 CONTENT */}
       <div className="w-full">
         {/* ── Stats Section ── */}
-        <section className="min-h-0 bg-slate-50 px-6 lg:px-12 py-10 lg:py-16">
-          <div className="max-w-8xl mx-auto">
-            <div className="mb-10">
-              <h2 className="text-4xl font-extrabold text-[#123b63] mb-4">
-                Overview
-              </h2>
-              <div className="w-20 h-1.25 bg-cyan-600 rounded-full"></div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <AnimatedCounter
-                end={543}
-                title="Constituencies"
-                icon={TbMapPin}
-                iconColor="text-[#123b63]"
-                iconBg="bg-[#f0f7ff]"
-                sub="Across all states and union territories"
-              />
-              <AnimatedCounter
-                prefix="₹ "
-                end={12500}
-                suffix=" Cr"
-                title="Invested This Year"
-                icon={TbCurrencyRupee}
-                iconColor="text-teal-600"
-                iconBg="bg-teal-50"
-                sub="In constituency development"
-              />
-              <AnimatedCounter
-                end={18450}
-                suffix="+"
-                title="Total Projects"
-                icon={IoIosConstruct}
-                iconColor="text-[#123b63]"
-                iconBg="bg-[#f0f7ff]"
-                sub="Across sectors and regions"
-              />
-              <AnimatedCounter
-                end={142}
-                title="Critical Cases"
-                icon={TbAlertTriangle}
-                iconColor="text-red-500"
-                iconBg="bg-red-50"
-                sub="Requiring closer monitoring"
-              />
-            </div>
-          </div>
-        </section>
+        <OverviewSection />
 
         {/* ── How It Works ── */}
-        <section className="bg-white px-6 lg:px-10 py-10 lg:py-12 border-b border-slate-100">
-          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
-            {/* Left label */}
-            <div className="lg:w-56 shrink-0">
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-600 mb-2">
-                A More Transparent
-                <br />
-                and Accountable Tomorrow
-              </p>
-              <div className="w-8 h-1 bg-cyan-500 rounded-full mb-3" />
-              <h2 className="text-3xl font-extrabold text-[#123b63] leading-tight">
-                How It Works
-              </h2>
-            </div>
-
-            {/* Steps */}
-            <div className="flex flex-1 flex-col sm:flex-row items-start gap-4">
-              {[
-                {
-                  n: 1,
-                  title: "Explore",
-                  desc: "Browse the interactive map to view constituencies and risk levels.",
-                },
-                {
-                  n: 2,
-                  title: "Understand",
-                  desc: "Access key insights and development indicators.",
-                },
-                {
-                  n: 3,
-                  title: "Enable Change",
-                  desc: "Promote transparency and informed decision-making.",
-                },
-              ].map(({ n, title, desc }, idx, arr) => (
-                <React.Fragment key={n}>
-                  <div className="flex-1 flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-[#123b63] text-white flex items-center justify-center font-bold text-sm shrink-0 mt-0.5">
-                      {n}
-                    </div>
-                    <div>
-                      <p className="font-bold text-slate-800 text-base">
-                        {title}
-                      </p>
-                      <p className="text-sm text-slate-500 mt-1 leading-relaxed">
-                        {desc}
-                      </p>
-                    </div>
-                  </div>
-                  {idx < arr.length - 1 && (
-                    <TbChevronRight
-                      size={20}
-                      className="text-slate-300 shrink-0 mt-2 hidden sm:block"
-                    />
-                  )}
-                </React.Fragment>
-              ))}
-            </div>
-          </div>
-        </section>
+        <HowItWorksSection />
 
         {/* ── Key Features ── */}
-        <section className="bg-slate-50 px-6 lg:px-10 py-10 lg:py-12 border-b border-slate-100">
-          <div className="max-w-7xl mx-auto">
-            <div className="mb-7">
-              <div className="w-8 h-1 bg-cyan-500 rounded-full mb-3" />
-              <h2 className="text-2xl font-extrabold text-[#123b63]">
-                Key Features
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {[
-                {
-                  icon: TbMap,
-                  title: "Interactive India Map",
-                  desc: "Visualize risk levels across all constituencies.",
-                },
-                {
-                  icon: TbChartBar,
-                  title: "Data-Driven Insights",
-                  desc: "AI-powered analysis of fund utilization and project progress.",
-                },
-                {
-                  icon: TbShieldCheck,
-                  title: "Transparency & Accountability",
-                  desc: "Access verified information in one place.",
-                },
-                {
-                  icon: TbUsers,
-                  title: "Public Awareness",
-                  desc: "Empowering citizens with reliable data.",
-                },
-              ].map(({ icon: Icon, title, desc }) => (
-                <Card
-                  key={title}
-                  title={title}
-                  description={desc}
-                  icon={Icon}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
+        <KeyFeaturesSection />
 
         {/* ── Our Vision ── */}
         <section className="bg-blue-50 px-6 lg:px-10 py-10 lg:py-12 border-b border-slate-200 overflow-hidden relative">
