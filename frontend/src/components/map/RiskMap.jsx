@@ -1,13 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { MapContainer, TileLayer, GeoJSON, ZoomControl } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { getConstituencyData, getRiskColor, getRiskLevel } from '../data/riskData';
+import { motion } from 'framer-motion';
+import { getConstituencyData, getRiskColor, getRiskLevel } from '../../data/riskData';
 import RiskLegend from './RiskLegend';
 import ConstituencyPanel from './ConstituencyPanel';
 
 const RiskMap = ({ searchTerm, filterState, filterRisk, setStatesList }) => {
   const [geoData, setGeoData] = useState(null);
   const [selectedConstituency, setSelectedConstituency] = useState(null);
+  const [hoveredRiskLevel, setHoveredRiskLevel] = useState(null);
   
   const mapRef = useRef();
   const geoJsonRef = useRef();
@@ -15,59 +17,67 @@ const RiskMap = ({ searchTerm, filterState, filterRisk, setStatesList }) => {
 
   useEffect(() => {
     // Fetch the GeoJSON data
-    fetch('/data/india_constituencies.geojson')
-      .then(res => res.json())
-      .then(data => {
+    fetch("/data/india_constituencies_simplified.geojson")
+      .then((res) => res.json())
+      .then((data) => {
         setGeoData(data);
         // Extract unique states for the filter
         const states = new Set();
-        data.features.forEach(feature => {
-          if (feature.properties.st_name) states.add(feature.properties.st_name);
+        data.features.forEach((feature) => {
+          if (feature.properties.st_name)
+            states.add(feature.properties.st_name);
         });
         if (setStatesList) {
           setStatesList(Array.from(states).sort());
         }
       })
-      .catch(err => console.error("Error loading GeoJSON:", err));
+      .catch((err) => console.error("Error loading GeoJSON:", err));
   }, [setStatesList]);
 
   const styleFeature = (feature) => {
     const pcId = feature.properties.pc_id; // Unique identifier
     const data = getConstituencyData(pcId);
     const score = data ? data.risk_score : null;
+    const rLevel = data ? getRiskLevel(score) : 'No Data';
     const color = getRiskColor(score);
     
-    // Check if feature should be hidden due to filters
-    let opacity = 1;
-    let fillOpacity = 0.9;
+    // Check if feature should be dimmed due to filters or hover
+    let isDimmed = false;
     
     if (filterState && feature.properties.st_name !== filterState) {
-        opacity = 0;
-        fillOpacity = 0;
+        isDimmed = true;
     }
     
-    if (filterRisk) {
-        const rLevel = getRiskLevel(score);
-        if (filterRisk !== rLevel && filterRisk !== 'ALL') {
-            opacity = 0;
-            fillOpacity = 0;
-        }
+    if (filterRisk && filterRisk !== rLevel && filterRisk !== 'ALL') {
+        isDimmed = true;
+    }
+
+    if (hoveredRiskLevel && rLevel !== hoveredRiskLevel) {
+        isDimmed = true;
     }
 
     if (searchTerm) {
         const pcName = (feature.properties.pc_name || '').toLowerCase();
         if (!pcName.includes(searchTerm.toLowerCase())) {
-            opacity = 0.1;
-            fillOpacity = 0.1;
+            isDimmed = true;
         }
+    }
+
+    // Set custom class for animations (random delay for staggered load, pulse for critical)
+    const animDelay = Math.random() * 0.8;
+    let baseClass = '';
+    if (!isDimmed) {
+      baseClass = rLevel === 'CRITICAL' ? 'map-path-critical' : 'map-path-load';
     }
 
     return {
       fillColor: color,
       weight: 0.5,
-      opacity: opacity,
+      opacity: isDimmed ? 0.2 : 1,
       color: 'white',
-      fillOpacity: fillOpacity
+      fillOpacity: isDimmed ? 0.2 : 0.9,
+      className: `${baseClass} ${pcId}`, // Use pcId in class just in case
+      style: { animationDelay: `${animDelay}s` }
     };
   };
 
@@ -153,24 +163,49 @@ const RiskMap = ({ searchTerm, filterState, filterRisk, setStatesList }) => {
 
   useEffect(() => {
     if (geoJsonRef.current) {
-      geoJsonRef.current.setStyle(styleFeature);
-      // Manually update pointer events in the DOM since Leaflet's setStyle 
-      // doesn't dynamically toggle the 'interactive' property on existing layers.
       geoJsonRef.current.eachLayer((layer) => {
-        if (layer._path && styleFeatureRef.current) {
+        if (layer.feature && layer._path) {
           const intendedStyle = styleFeatureRef.current(layer.feature);
-          layer._path.style.pointerEvents = intendedStyle.fillOpacity < 0.5 ? 'none' : 'auto';
+          const isDimmed = intendedStyle.fillOpacity < 0.5;
+          const pcId = layer.feature.properties.pc_id;
+          const data = getConstituencyData(pcId);
+          const score = data ? data.risk_score : null;
+          const rLevel = data ? getRiskLevel(score) : 'No Data';
+
+          // Remove animation classes that override inline styles
+          layer._path.classList.remove('map-path-critical', 'map-path-load');
+
+          // Apply inline styles directly
+          layer._path.style.opacity = isDimmed ? '0.2' : '1';
+          layer._path.style.fillOpacity = isDimmed ? '0.2' : '0.9';
+          layer._path.style.strokeOpacity = isDimmed ? '0.2' : '1';
+          layer._path.style.fill = intendedStyle.fillColor;
+          layer._path.style.strokeWidth = isDimmed ? '0.5' : '0.5';
+          layer._path.style.stroke = 'white';
+          layer._path.style.pointerEvents = 'auto';
+
+          // Re-add animation classes only for visible features
+          if (!isDimmed) {
+            if (rLevel === 'CRITICAL') {
+              layer._path.classList.add('map-path-critical');
+            }
+          }
         }
       });
     }
-  }, [filterState, filterRisk, searchTerm]);
+  }, [filterState, filterRisk, searchTerm, hoveredRiskLevel]);
 
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-  const initialZoom = isMobile ? 3.6 : 4.6;
-  const initialCenter = isMobile ? [22, 84] : [23, 82];
+  const initialZoom = isMobile ? 3.6 : 4.8;
+  const initialCenter = isMobile ? [22, 84] : [22.5, 82];
 
   return (
-    <>
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.96 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      className="w-full h-full relative"
+    >
       <MapContainer 
           center={initialCenter} // Center of India (shifted for mobile)
           zoom={initialZoom}
@@ -179,6 +214,7 @@ const RiskMap = ({ searchTerm, filterState, filterRisk, setStatesList }) => {
           style={{ height: '100%', width: '100%', background: 'transparent' }}
           zoomControl={false}
           attributionControl={false}
+          preferCanvas={true}
           ref={mapRef}
         >
           <ZoomControl position="bottomleft" />
@@ -193,7 +229,9 @@ const RiskMap = ({ searchTerm, filterState, filterRisk, setStatesList }) => {
           )}
         </MapContainer>
 
-        <RiskLegend />
+        <RiskLegend 
+          onHoverLevel={setHoveredRiskLevel} 
+        />
         
         {selectedConstituency && (
           <ConstituencyPanel 
@@ -201,7 +239,7 @@ const RiskMap = ({ searchTerm, filterState, filterRisk, setStatesList }) => {
             onClose={() => setSelectedConstituency(null)} 
           />
         )}
-    </>
+    </motion.div>
   );
 };
 

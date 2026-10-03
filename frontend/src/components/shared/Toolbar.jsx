@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TbSearch, TbFilter, TbMenu2, TbX } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const Toolbar = ({
   searchTerm,
@@ -15,7 +16,12 @@ const Toolbar = ({
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className="flex-none flex flex-col md:flex-row flex-wrap md:justify-between md:items-center px-4 md:px-8 py-4 min-h-15 bg-white border-b border-slate-200 z-1000 shadow-sm gap-4 md:gap-6">
+    <motion.div 
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+      className="flex-none flex flex-col md:flex-row flex-wrap md:justify-between md:items-center px-4 md:px-8 py-4 min-h-15 bg-white border-b border-slate-200 z-1000 shadow-sm gap-4 md:gap-6"
+    >
       <div className="flex justify-between items-center w-full md:w-auto">
         <div className="flex items-center gap-2">
         <img
@@ -89,7 +95,7 @@ const Toolbar = ({
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

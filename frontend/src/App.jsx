@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
-import Home from './pages/HomePage.jsx';
-import LoginPage from './pages/LoginPage.jsx';
+import Home from './pages/HomePage/index.jsx';
+import LoginPage from './pages/LoginPage/index.jsx';
 
 import MpLayout from './pages/mp/MpLayout.jsx';
 import MpDashboard from './pages/mp/MpDashboard.jsx';

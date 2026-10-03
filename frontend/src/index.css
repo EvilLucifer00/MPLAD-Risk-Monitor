@@ -6,3 +6,30 @@
     @apply font-sans text-slate-900 bg-slate-50;
   }
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Leaflet Path Transitions */
+.leaflet-interactive {
+  transition: fill-opacity 0.3s ease, stroke-opacity 0.3s ease, stroke-width 0.15s ease, filter 0.15s ease;
+}
+
+.map-path-load {
+  animation: fade-in-path 0.8s ease-out both;
+}
+
+.map-path-critical {
+  animation: fade-in-path 0.8s ease-out both, pulse-critical 3s ease-in-out 0.8s infinite alternate;
+}
+
+@keyframes fade-in-path {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse-critical {
+  0% { fill-opacity: 0.9; }
+  100% { fill-opacity: 0.65; }
+}
