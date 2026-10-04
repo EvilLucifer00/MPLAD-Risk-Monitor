@@ -1,0 +1,18 @@
+# Virtual environments
+python_venv_final/
+venv/
+.venv/
+env/
+
+# Python test/build
+.pytest_cache/
+htmlcov/
+.coverage
+.tox/
+build/
+dist/
+*.egg-info/
+
+# Logs and temp files
+*.log
+tmp/

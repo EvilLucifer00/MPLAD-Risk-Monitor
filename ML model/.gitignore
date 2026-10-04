@@ -1,0 +1,17 @@
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Python test/build
+.pytest_cache/
+build/
+dist/
+*.egg-info/
+
+# Logs and temp files
+*.log
+tmp/
