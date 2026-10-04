@@ -41,6 +41,7 @@ def log(msg):
 
 # ---------------------------------------------------------------------------
 # Engine 1: Cost Anomaly Detector  (INFERENCE MODE — uses pre-trained model)
+# Detects statistically anomalous project costs given standard parameters.
 # ---------------------------------------------------------------------------
 def run_cost_anomaly(works_df: pd.DataFrame, output_csv: str, model_pkl: str = os.path.join(MODELS_DIR, "engine1_model.pkl")):
     log(f"Engine 1 / Cost Anomaly Detector  ({len(works_df)} works)  [inference]")
@@ -72,6 +73,7 @@ def run_cost_anomaly(works_df: pd.DataFrame, output_csv: str, model_pkl: str = o
 
 # ---------------------------------------------------------------------------
 # Engine 4: Duplicate/Ghost Work Detector
+# Identifies projects that might be duplicates or fake based on geographic, text, and timing similarities.
 # ---------------------------------------------------------------------------
 def run_duplicate_ghost(works_df: pd.DataFrame, output_csv: str) -> pd.DataFrame:
     log(f"Engine 4 / Duplicate-Ghost Work Detector  ({len(works_df)} works)")
@@ -92,6 +94,7 @@ def run_duplicate_ghost(works_df: pd.DataFrame, output_csv: str) -> pd.DataFrame
 
 # ---------------------------------------------------------------------------
 # Engine 2: Vendor Collusion Network Detector
+# Analyzes vendor transaction networks to spot potential cartel or collusion rings.
 # ---------------------------------------------------------------------------
 def run_vendor_collusion(
     expenditure_df: pd.DataFrame,
@@ -111,6 +114,7 @@ def run_vendor_collusion(
 
 # ---------------------------------------------------------------------------
 # Engine 3: Fund Utilization Forecaster
+# Predicts and flags MPs whose fund utilization pace significantly deviates from expected timelines.
 # ---------------------------------------------------------------------------
 def run_fund_utilization(
     expenditure_df: pd.DataFrame,
@@ -148,6 +152,8 @@ def run_build_features(
 
 # ---------------------------------------------------------------------------
 # Composite Risk Model  (INFERENCE MODE — uses pre-trained XGBoost + SHAP)
+# Aggregates features from all 4 engines into a single master risk score for the MP.
+# Uses SHAP (SHapley Additive exPlanations) to provide explainable risk factors.
 # ---------------------------------------------------------------------------
 def run_composite_model(
     mp_features_csv: str,

@@ -6,6 +6,9 @@ const delay = (ms = 500) => new Promise(resolve => setTimeout(resolve, ms));
 
 export const api = {
   // Projects
+  /**
+   * Retrieves all projects submitted by the currently logged-in MP.
+   */
   getProjects: async () => {
     await delay();
     return [...mockProjects];
@@ -18,6 +21,10 @@ export const api = {
     return { ...project };
   },
 
+  /**
+   * Submits a new project proposal.
+   * Assigns a mock ID and sets default fields (like risk score and status).
+   */
   submitProject: async (projectData) => {
     await delay(1000);
     const newProject = {
@@ -48,6 +55,10 @@ export const api = {
   },
 
   // Recommendations
+  /**
+   * Generates tailored recommendations for the MP.
+   * Calculates unspent funds percentage and modifies warning messages accordingly.
+   */
   getRecommendations: async () => {
     await delay(400);
     const totalUtilized = mockProjects.reduce((acc, p) => acc + (p.amountSpent || 0), 0);
@@ -65,6 +76,10 @@ export const api = {
   },
 
   // Dashboard Stats
+  /**
+   * Aggregates project statistics for the MP's dashboard summary.
+   * Computes active projects, total funds utilized, pending approvals, and risk distributions.
+   */
   getDashboardStats: async () => {
     await delay(600);
     

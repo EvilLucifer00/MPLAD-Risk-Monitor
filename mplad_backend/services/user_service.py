@@ -10,6 +10,11 @@ from fastapi import HTTPException
 
 # ---------- LOGIN HELPER ----------
 async def login_user_details(user: LoginRequest) -> dict:
+    """
+    Helper function to query the database and verify user credentials.
+    Determines whether the user is an MP or DM based on the requested role,
+    queries the appropriate table, and returns their profile details if successful.
+    """
     
     role = user.role.value
     table_name = "mplads_mp" if role == "MP" else "mplads_dm"
@@ -58,6 +63,9 @@ async def login_user_details(user: LoginRequest) -> dict:
 
 # ---------- LOGIN USER ----------
 async def login(user: LoginRequest):
+    """
+    Main login handler that validates credentials and generates a JWT access token.
+    """
     
     payload = await login_user_details(user)
     token = create_access_token(payload)
@@ -68,7 +76,11 @@ async def login(user: LoginRequest):
 
 
 
+# ---------- GET CURRENT USER ----------
 async def me(current_user: dict):
+    """
+    Returns the profile information of the currently authenticated user.
+    """
     
     return current_user
 
@@ -78,6 +90,10 @@ async def me(current_user: dict):
 
 # ---------- GET ALL DM ----------
 async def get_all_dm():
+    """
+    Fetch a list of all District Magistrates from the database.
+    Used for populating dropdowns or lists.
+    """
     
     result = (
         supabase.table("mplads_dm").select("id,dist,state,dm_name").execute()
@@ -93,6 +109,9 @@ async def get_all_dm():
 
 # ---------- GET DM BY DISTRICT ----------
 async def get_dm_by_dist(dist_name:str):
+    """
+    Fetch the District Magistrate details for a specific district name.
+    """
     
     result = (
         supabase.table("mplads_dm").select("id,dist,state,dm_name").eq("dist",dist_name.upper()).execute()
@@ -113,6 +132,11 @@ async def get_dm_by_dist(dist_name:str):
 
 # ---------- REGISTER NEW MP ----------
 async def register_mp(user: RegisterMPRequest):
+    """
+    Register a new Member of Parliament (MP).
+    Validates that the username doesn't exist and that the associated DM exists
+    before inserting into the database.
+    """
    
     existing_user = (
         supabase.table("mplads_mp").select("id").eq("username", user.username).execute()
@@ -159,6 +183,10 @@ async def register_mp(user: RegisterMPRequest):
 
 # ---------- REGISTER NEW DM ----------
 async def register_dm(user: RegisterDMRequest):
+    """
+    Register a new District Magistrate (DM).
+    Validates that the username doesn't already exist before insertion.
+    """
 
     existing_user = (
         supabase.table("mplads_dm").select("id").eq("username", user.username).execute()

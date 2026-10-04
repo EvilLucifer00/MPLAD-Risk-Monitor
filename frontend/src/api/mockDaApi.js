@@ -14,12 +14,20 @@ const delay = (ms = 500) => new Promise(resolve => setTimeout(resolve, ms));
 
 export const daApi = {
   // ── Profile ──
+  /**
+   * Fetches the current District Magistrate (DA) profile.
+   * Simulates network delay and returns mock DA data.
+   */
   getProfile: async () => {
     await delay(200);
     return { ...mockDaProfile };
   },
 
   // ── MPs ──
+  /**
+   * Retrieves all Members of Parliament (MPs) in the DM's district.
+   * Calculates aggregated stats (total projects, sanctioned amount, average risk) for each MP.
+   */
   getDistrictMPs: async () => {
     await delay(600);
     return mockMPs.map(mp => {
@@ -50,6 +58,10 @@ export const daApi = {
   },
 
   // ── Projects ──
+  /**
+   * Retrieves all projects in the district with optional filtering.
+   * Supports filtering by MP, risk level, status, implementing agency, and search text.
+   */
   getProjects: async (filters = {}) => {
     await delay(500);
     let results = [...mockDaProjects];
@@ -82,6 +94,10 @@ export const daApi = {
   },
 
   // ── Review Queue ──
+  /**
+   * Fetches the queue of projects that require the DM's review.
+   * Filters by 'Pending Review' and sorts by risk score descending.
+   */
   getReviewQueue: async (filters = {}) => {
     await delay(500);
     let results = mockDaProjects.filter(p => p.reviewStatus === 'Pending Review');
@@ -97,6 +113,10 @@ export const daApi = {
   },
 
   // ── DA Actions ──
+  /**
+   * Sanctions a project, updating its status and assigning an Implementing Agency.
+   * Adds an entry to the project's action history.
+   */
   sanctionProject: async (id, { implementingAgencyId, notes }) => {
     await delay(1000);
     const project = mockDaProjects.find(p => p.id === id);
@@ -270,6 +290,10 @@ export const daApi = {
   },
 
   // ── Dashboard Stats ──
+  /**
+   * Calculates aggregate dashboard statistics for the DM's overview.
+   * Computes totals across MPs, projects, funds, and risk levels.
+   */
   getDashboardStats: async () => {
     await delay(600);
     const totalMPs = mockMPs.length;

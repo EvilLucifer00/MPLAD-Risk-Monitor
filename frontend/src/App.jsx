@@ -4,6 +4,7 @@ import './index.css';
 import Home from './pages/HomePage/index.jsx';
 import LoginPage from './pages/LoginPage/index.jsx';
 
+// MP (Member of Parliament) Pages
 import MpLayout from './pages/mp/MpLayout.jsx';
 import MpDashboard from './pages/mp/MpDashboard.jsx';
 import MpProjects from './pages/mp/MpProjects.jsx';
@@ -14,6 +15,7 @@ import MpDocuments from './pages/mp/MpDocuments.jsx';
 import MpNotifications from './pages/mp/MpNotifications.jsx';
 import MpSettings from './pages/mp/MpSettings.jsx';
 
+// DA (District Authority / District Magistrate) Pages
 import DaLayout from './pages/da/DaLayout.jsx';
 import DaDashboard from './pages/da/DaDashboard.jsx';
 import DaProjects from './pages/da/DaProjects.jsx';
@@ -25,14 +27,21 @@ import DaNotifications from './pages/da/DaNotifications.jsx';
 import DaIADirectory from './pages/da/DaIADirectory.jsx';
 import DaVendorWatchlist from './pages/da/DaVendorWatchlist.jsx';
 import DaSettings from './pages/da/DaSettings.jsx';
+
+/**
+ * Main App Component
+ * Handles the application routing using React Router.
+ * Separates views into Public, MP (Member of Parliament), and DA (District Authority) sections.
+ */
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
         
-        {/* MP Dashboard Routes */}
+        {/* MP Dashboard Routes - Wrapped in MpLayout for consistent sidebar/navbar */}
         <Route path="/mp" element={<MpLayout />}>
           <Route index element={<MpDashboard />} />
           <Route path="projects" element={<MpProjects />} />
@@ -44,7 +53,7 @@ function App() {
           <Route path="settings" element={<MpSettings />} />
         </Route>
 
-        {/* DA Dashboard Routes */}
+        {/* DA (District Authority) Dashboard Routes - Wrapped in DaLayout */}
         <Route path="/da" element={<DaLayout />}>
           <Route index element={<DaDashboard />} />
           <Route path="projects" element={<DaProjects />} />

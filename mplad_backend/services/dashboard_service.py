@@ -7,6 +7,11 @@ from schemas.project_schema import DashboardStats, ProjectStatus, ProjectRiskLev
 from database.database import supabase
 
 async def mp_dashboard_stats(mp: dict):
+    """
+    Calculate and return dashboard statistics for an MP.
+    This aggregates all projects under the MP's ID to compute metrics like active projects,
+    funds utilized, high risk projects, etc.
+    """
     
     mp_id = mp["id"] 
     
@@ -78,6 +83,11 @@ async def mp_dashboard_stats(mp: dict):
 
 
 async def dm_dashboard_stats(dm: dict):
+    """
+    Calculate and return dashboard statistics for a DM (District Magistrate).
+    This aggregates all projects within the DM's district and state to compute metrics like
+    projects awaiting review, high risk projects, and risk breakdowns.
+    """
 
     result = (
         supabase
@@ -145,6 +155,11 @@ async def dm_review_queue(
     category: Optional[str] = Query(None),
     mp_id: Optional[int] = Query(None)
 ):
+    """
+    Retrieve the queue of projects that the DM needs to review.
+    This function filters projects by the DM's district/state and allows optional filtering
+    by risk level, category, or a specific MP ID. Projects are ordered by risk score (descending).
+    """
     q = (
         supabase
         .table("mplads_new_projects")
