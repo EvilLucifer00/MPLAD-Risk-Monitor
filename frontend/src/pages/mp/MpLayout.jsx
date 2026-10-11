@@ -16,9 +16,11 @@ import {
 } from 'react-icons/tb';
 import { api } from '../../api/mockMpApi';
 import { useMpStore } from '../../store/useMpStore.js';
+import { useAuthStore } from '../../store/useAuthStore';
 import AiAssistantWidget from '../../components/shared/AiAssistantWidget.jsx';
 
 const MpLayout = () => {
+  const { user, logout } = useAuthStore();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -28,7 +30,7 @@ const MpLayout = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Add any necessary logout logic here (e.g., clearing tokens/state)
+    logout();
     navigate('/login');
   };
 
@@ -306,9 +308,11 @@ const MpLayout = () => {
                         MP
                       </div>
                       <div>
-                        <h3 className="font-bold text-slate-800 leading-tight">Rahul Sharma</h3>
+                        <h3 className="font-bold text-slate-800 leading-tight">{user?.mp_name || 'Rahul Sharma'}</h3>
                         <p className="text-xs text-slate-500 mt-0.5">Member of Parliament</p>
-                        <p className="text-[10px] font-semibold text-cyan-600 mt-1">Varanasi, UP</p>
+                        <p className="text-[10px] font-semibold text-cyan-600 mt-1">
+                          {user?.constituency ? `${user.constituency}${user?.state ? `, ${user.state}` : ''}` : 'Varanasi, UP'}
+                        </p>
                       </div>
                     </div>
                   </div>

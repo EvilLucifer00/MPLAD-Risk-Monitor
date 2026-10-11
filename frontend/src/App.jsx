@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 import Home from './pages/HomePage/index.jsx';
 import LoginPage from './pages/LoginPage/index.jsx';
+import ProtectedRoute from './components/shared/ProtectedRoute.jsx';
+import { useAuthStore } from './store/useAuthStore.js';
 
 // MP (Member of Parliament) Pages
 import MpLayout from './pages/mp/MpLayout.jsx';
@@ -34,6 +36,11 @@ import DaSettings from './pages/da/DaSettings.jsx';
  * Separates views into Public, MP (Member of Parliament), and DA (District Authority) sections.
  */
 function App() {
+  useEffect(() => {
+    // Validate existing stored token and refresh profile on app load
+    useAuthStore.getState().validateSession();
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
@@ -41,8 +48,15 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
         
-        {/* MP Dashboard Routes - Wrapped in MpLayout for consistent sidebar/navbar */}
-        <Route path="/mp" element={<MpLayout />}>
+        {/* MP Dashboard Routes - Protected and wrapped in MpLayout */}
+        <Route 
+          path="/mp" 
+          element={
+            <ProtectedRoute allowedRole="MP">
+              <MpLayout />
+            </ProtectedRoute>
+          }
+        >
           <Route index element={<MpDashboard />} />
           <Route path="projects" element={<MpProjects />} />
           <Route path="projects/:id" element={<MpProjectDetail />} />
@@ -53,8 +67,15 @@ function App() {
           <Route path="settings" element={<MpSettings />} />
         </Route>
 
-        {/* DA (District Authority) Dashboard Routes - Wrapped in DaLayout */}
-        <Route path="/da" element={<DaLayout />}>
+        {/* DA (District Authority) Dashboard Routes - Protected and wrapped in DaLayout */}
+        <Route 
+          path="/da" 
+          element={
+            <ProtectedRoute allowedRole="DM">
+              <DaLayout />
+            </ProtectedRoute>
+          }
+        >
           <Route index element={<DaDashboard />} />
           <Route path="projects" element={<DaProjects />} />
           <Route path="projects/mp/:mpId" element={<DaMPDetail />} />
