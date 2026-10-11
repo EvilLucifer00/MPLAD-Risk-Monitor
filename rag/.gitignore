@@ -1,0 +1,59 @@
+# Virtual environments
+venv/
+.venv/
+env/
+python_venv_final/
+
+# Python artifacts and cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+htmlcov/
+.coverage
+.tox/
+build/
+dist/
+*.egg-info/
+
+# Node and frontend build
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Logs and debug files
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Secrets and local configurations
+.env
+.env.local
+*.pem
+
+# Data, vector store, and uploads
+chroma_db/
+*.sqlite3
+*.db
+data/uploads/*
+!data/uploads/.gitkeep
+tmp/
+temp/
+
+# Editor directories and OS files
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
