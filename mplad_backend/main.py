@@ -13,7 +13,7 @@ app = FastAPI(title="MPLADS Risk Monitor API", version="1.0")
 # This allows the frontend (hosted on Vercel or running locally) to communicate with the backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://mplad-risk-monitor.vercel.app", "http://localhost:3000"],
+    allow_origins=["https://mplad-risk-monitor.vercel.app", "http://localhost:5173"],
     allow_credentials=True,
     allow_methods=["*"], # Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
     allow_headers=["*"], # Allow all headers in requests
