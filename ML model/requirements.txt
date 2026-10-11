@@ -1,0 +1,13 @@
+numpy
+pandas
+scikit-learn
+scipy
+xgboost
+optuna
+shap
+sentence-transformers
+networkx
+prophet
+pydantic
+fastapi
+uvicorn

@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from final_pipeline.schema.new_project_schema import ProjectSchema
-from final_pipeline.run_pipeline import run_pipeline_from_json
+from final_pipeline.src.schema.new_project_schema import ProjectSchema
+from final_pipeline.src.run_pipeline import run_pipeline_from_json
 
 # Initialize the router for ML workload processing
 ml_router = APIRouter(
