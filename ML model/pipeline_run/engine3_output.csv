@@ -1,0 +1,2 @@
+MP Name,month,actual_amount,status,prophet_forecast,prophet_lower,prophet_upper,arima_forecast,arima_lower,arima_upper,is_deviation_flagged
+TEST MP ALPHA,2024-12-01,480000.0,insufficient_history,,,,,,,False
