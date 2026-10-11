@@ -1,40 +1,84 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { TbEye, TbEyeOff, TbLogin, TbChevronDown } from "react-icons/tb";
 import { IoShieldCheckmark } from "react-icons/io5";
+import { authApi } from "../../api/auth";
+import { useAuthStore } from "../../store/useAuthStore";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { token, role, setAuth } = useAuthStore();
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({ username: "", password: "", role: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (token && role) {
+      if (role === "MP") {
+        navigate("/mp", { replace: true });
+      } else if (role === "DM") {
+        navigate("/da", { replace: true });
+      }
+    }
+  }, [token, role, navigate]);
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     setError("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.username || !form.role || !form.password) {
       setError("Please fill in all fields including your role.");
       return;
     }
+
+    let backendRole = "";
+    if (form.role === "mp") {
+      backendRole = "MP";
+    } else if (form.role === "district_authority") {
+      backendRole = "DM";
+    } else {
+      setError(`Dashboard for ${form.role.replace('_', ' ')} is under construction.`);
+      return;
+    }
+
     setLoading(true);
-    // Simulate auth — replace with real API call
-    setTimeout(() => {
-      setLoading(false);
-      
-      // Route based on role
-      if (form.role === "mp") {
-        navigate("/mp");
-      } else if (form.role === "district_authority") {
-        navigate("/da");
-      } else {
-        setError(`Dashboard for ${form.role.replace('_', ' ')} is under construction.`);
+    setError("");
+
+    try {
+      const loginRes = await authApi.login({
+        username: form.username.trim(),
+        password: form.password,
+        role: backendRole,
+      });
+
+      const accessToken = loginRes.access_token;
+
+      // Fetch user profile from the respective /me endpoint
+      let profile = null;
+      if (backendRole === "MP") {
+        profile = await authApi.getMpProfile(accessToken);
+      } else if (backendRole === "DM") {
+        profile = await authApi.getDmProfile(accessToken);
       }
-    }, 1200);
+
+      // Persist auth token, role, and profile
+      setAuth(accessToken, backendRole, profile);
+
+      // Route to the corresponding dashboard
+      if (backendRole === "MP") {
+        navigate("/mp");
+      } else {
+        navigate("/da");
+      }
+    } catch (err) {
+      setError(err.message || "Login failed. Please check your credentials.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

@@ -15,8 +15,10 @@ import {
   TbLogout
 } from 'react-icons/tb';
 import { daApi } from '../../api/mockDaApi';
+import { useAuthStore } from '../../store/useAuthStore';
 import AiAssistantWidget from '../../components/shared/AiAssistantWidget.jsx';
 const DaLayout = () => {
+  const { user, logout } = useAuthStore();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -26,7 +28,7 @@ const DaLayout = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Add any necessary logout logic here (e.g., clearing tokens/state)
+    logout();
     navigate('/login');
   };
 
@@ -318,9 +320,11 @@ const DaLayout = () => {
                         DA
                       </div>
                       <div>
-                        <h3 className="font-bold text-slate-800 leading-tight">Priya Singh</h3>
+                        <h3 className="font-bold text-slate-800 leading-tight">{user?.dm_name || 'Priya Singh'}</h3>
                         <p className="text-xs text-slate-500 mt-0.5">District Magistrate</p>
-                        <p className="text-[10px] font-semibold text-amber-600 mt-1">Varanasi, UP</p>
+                        <p className="text-[10px] font-semibold text-amber-600 mt-1">
+                          {user?.dist ? `${user.dist}${user?.state ? `, ${user.state}` : ''}` : 'Varanasi, UP'}
+                        </p>
                       </div>
                     </div>
                   </div>
