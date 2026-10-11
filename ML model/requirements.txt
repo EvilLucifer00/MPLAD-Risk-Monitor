@@ -11,3 +11,4 @@ prophet
 pydantic
 fastapi
 uvicorn
+numba

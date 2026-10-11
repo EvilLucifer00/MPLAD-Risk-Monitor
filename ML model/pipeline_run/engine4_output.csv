@@ -1,0 +1,4 @@
+work_id,duplicate_score,is_duplicate_flagged,duplicate_group_id,duplicate_group_size,best_match_work_id,geo_cluster_id,semantic_similarity,cost_similarity,date_proximity,geo_proximity,geo_distance_km,geo_precision_pair
+W001,0.0,False,-1,1,,0,,,,,,
+W002,0.0,False,-1,1,,0,,,,,,
+W003,0.0,False,-1,1,,-1,,,,,,
