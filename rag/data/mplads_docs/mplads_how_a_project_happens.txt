@@ -1,0 +1,56 @@
+MPLADS - How a Project Happens
+A narrative walkthrough from idea to finished asset
+Note: Compiled from public sources (MoSPI MPLADS Guidelines, PIB releases, mplads.gov.in and secondary
+summaries) as of October 2026. This is an unofficial knowledge-base document. For binding rules always refer to the
+latest official Guidelines/circulars issued by the Ministry of Statistics and Programme Implementation (MoSPI).
+Starting with a local need
+Every MPLADS project begins with a local need. A village may lack a proper approach road, a government
+school may have too few classrooms, a health centre may need an ambulance, or a neighbourhood may
+need a community toilet. Residents, panchayats, local bodies and community groups usually raise these
+needs with their Member of Parliament. The District Authority also keeps a shelf of projects, which is a
+suggestive list of possible works, including projects for areas inhabited by Scheduled Castes and
+Scheduled Tribes. The shelf is only a guide, and the Member is free to recommend works beyond it.
+It is important to understand that the Member of Parliament is the only person who can formally
+recommend a work. A request from a resident, a local leader or even a representative of the Member does
+not by itself start the process, and the District Authority cannot act on recommendations from third parties.
+The recommendation
+The Member recommends the work to the District Authority of the nodal district, specifying the nature of
+the work, its location and approximate cost, and the order of priority among several works. Under the older
+paper-based system this was done through a signed letter on the Member's letterhead. Since 2023,
+recommendations are made through the eSAKSHI portal or its mobile app. The Member must make sure
+that the amounts recommended do not exceed the annual entitlement and that, across the year, at least
+15 percent goes to works in Scheduled Caste areas and at least 7.5 percent to works in Scheduled Tribe
+areas.
+The Member must also set aside the full estimated cost of the work. If the amount indicated is less than the
+estimate and no other source can cover the shortfall, the work cannot be sanctioned, because it would be
+left half-finished. In such a case the District Authority informs the Member of the shortfall within the time
+allowed.
+Scrutiny and sanction
+Once the recommendation reaches the District Authority, which is usually the District Collector or District
+Magistrate, the office examines whether the work is eligible under the guidelines, whether the necessary
+clearances are available, and whether an agency such as a school, hospital or panchayat is willing to
+operate and maintain the asset after it is built. If the work is not feasible or not eligible, the District Authority
+must tell the Member the reasons within 45 days. If it is acceptable, the work must be sanctioned within 75
+days of receiving the recommendation. The sanction order names the implementing agency, states the
+approved cost, and sets a deadline for completion, which should generally not be more than one year.
+State Governments are expected to delegate full powers for technical, financial and administrative
+sanctions to the District Authority so that decisions can be taken quickly at the district level. The time spent
+under the Model Code of Conduct during elections is not counted in these deadlines.
+Execution and payment
+The implementing agency, such as a public works department, a rural development agency, a municipal
+body or, in some cases, a Central organisation like the Railways, carries out the work following the State
+Government's rules on estimates, tendering and standards. At various stages of execution the agency
+uploads photographs and documents to the eSAKSHI portal and raises payment requests in line with the
+sanction order. The District Authority reviews progress with agencies regularly, inspects a portion of the
+works, and invites the Member to take part in inspections and review meetings where possible.
+While the work is under way, the site or the nature of the work cannot be changed once expenditure
+liability has been incurred. A Member may cancel a sanctioned work only if execution has not begun and
+the cancellation does not create any financial liability for the government.
+Completion and handover
+When the work is finished, the implementing agency prepares a completion report and a utilisation
+certificate, returns any unused money, and the asset is handed over to the user agency, which takes it on
+its books for regular operation and upkeep. A permanent plaque is placed at the site carrying the words
+Member of Parliament Local Area Development Scheme Work, along with the cost, the dates of
+commencement, completion and inauguration, and the name of the Member who recommended the work.
+The asset is entered in the district's asset register, and the work is shown as completed on the public
+dashboard.

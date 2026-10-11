@@ -1,0 +1,98 @@
+MPLADS - Funds, eSAKSHI Portal, Audit and Monitoring
+How money flows and how works are tracked
+Note: Compiled from public sources (MoSPI MPLADS Guidelines, PIB releases, mplads.gov.in and secondary
+summaries) as of October 2026. This is an unofficial knowledge-base document. For binding rules always refer to the
+latest official Guidelines/circulars issued by the Ministry of Statistics and Programme Implementation (MoSPI).
+1. Fund flow: before and after 1 April 2023
+Aspect Until 2022-23 From 1 April 2023 (eSAKSHI)
+Release Two instalments of Rs. 2.5 crore each,
+released by the Government of India to the
+Nodal District Authority's bank account
+Single authorisation of Rs. 5 crore at the
+beginning of each financial year (or start of the
+MP's term) under the revised fund-flow
+procedure per Ministry of Finance guidelines
+Process Mostly manual paperwork; authorisations
+issued after documents (utilisation/audit
+certificates) were furnished
+End-to-end online: recommendation, sanction,
+vendor payment requests and progress
+tracking on the portal
+Payments to
+agencies
+District Authority released funds to
+Implementing Agencies per State rules
+Implementing Agencies raise vendor payment
+requests on the portal at stages of execution as
+per the sanction order
+Data Monthly Progress Reports sent by districts Real-time dashboards; works data on the
+public eSAKSHI dashboard (complete data
+only from 2023-24 onward for the 17th Lok
+Sabha)
+2. The eSAKSHI portal
+• Launched on 1 April 2023 by MoSPI as an end-to-end solution for the MPLAD Scheme.
+• Login credentials for all stakeholders: MPs, MoSPI, State Nodal Departments, District Authorities and
+Implementing Agencies.
+• MPs can recommend works online and through a mobile app, 'on the go'.
+• District Authorities examine and sanction works, designate Implementing Agencies and monitor
+progress.
+• Implementing Agencies upload photographs and documents (sanction orders, images of assets) at
+various stages.
+• A public dashboard shows works recommended, sanctioned, in progress and completed, with funds
+status.
+• The portal enforces timelines (e.g. 45 days to accept/reject, 75 days to sanction) through tracking and
+alerts.
+3. Entitlement during an MP's term (older guidelines)
+Period served as MP in a financial year Entitlement for that year
+Less than 3 months Nil
+Up to 9 months 50% of the annual allocation
+More than 9 months 100% of the annual allocation
+On the sudden death or resignation of an MP, works already duly recommended and sanctioned must still be
+completed. The incoming MP's entitlement starts afresh. Check the 2023 Guidelines for any change to this table under
+the single-instalment system.
+4. What happens to unspent balances?
+• Funds are non-lapsable: unspent money stays available and is carried forward.
+• Lok Sabha: uncommitted balance left by the predecessor passes to the successor MP of the same
+constituency.
+• Elected Rajya Sabha: uncommitted balance is distributed equally among successor/sitting Rajya
+Sabha MPs of that State by the State Government.
+• Nominated MPs: balances are distributed among successor nominated MPs with the Government of
+India's approval.
+• Premature vacancy (death/resignation): the new MP is treated as the successor and the balance goes
+to the successor's account.
+• Interest earned: under the 2016 guidelines it could be used for permissible works; under the revised
+rules reported in 2021-23, MPs can no longer use accumulated interest for works. Verify in the current
+Guidelines.
+• Savings on completed works are refunded by the Implementing Agency within 30 days.
+5. Accounts, utilisation certificates and audit
+• MP-wise accounts are maintained for MPLADS funds; deposit in treasury accounts and fixed deposits
+are not allowed (older guidelines).
+• Utilisation Certificate (UC) - furnished annually by the District Authority to the State and MoSPI
+(Annexure-VIII format in the 2016 text).
+• Audit Certificate - audited by Chartered Accountants/local fund auditors/statutory auditors engaged by
+the State on the Accountant General's recommendation; due by 30 September every year with replies
+to audit objections (2016 text).
+• Audit reports are MP-wise and check: bank accounts, fixed deposits, interest utilisation, monthly bank
+reconciliation, diversion of funds, prohibited works and SC/ST fund utilisation.
+• CAG carries out test audits; the Lok Sabha and Rajya Sabha MPLADS Committees review
+implementation.
+• Older fund-release criteria: second instalment depended on UCs and audit certificates for the previous
+year, an unsanctioned balance below Rs. 1 crore, and unspent balance below Rs. 2.5 crore. The 2023
+single-instalment procedure replaces these two-instalment conditions.
+6. Monitoring and inspection
+Level Monitoring mandate
+MoSPI Monitors funds released, works sanctioned and expenditure; tracks completion reports, UCs
+and audit certificates; annual report; reviews in States and at the Centre at least yearly;
+reviews SC/ST utilisation and calamity rehabilitation works.
+State/UT Review committee under the Chief Secretary at least once a year; officers inspect works
+during field visits; State nodal officials inspect at least 1% of works in each district yearly;
+third-party physical and quality audit (all works costing Rs. 25 lakh and above, 50% of works
+costing Rs. 15-25 lakh, plus samples).
+District Inspects at least 10% of ongoing works each year; monthly/quarterly review with agencies;
+inspection registers for trust/society works.
+Implementing Agency Inspects 100% of its works; monthly progress reports.
+7. Penal provisions
+The 2023 Guidelines introduced, for the first time, a penal clause for material breach of the Guidelines.
+Abandoned or suspended works must be completed from State Government funds with responsibility fixed
+on erring officials (2016 text). Trusts/societies that misuse assets can be required to return costs with 18%
+interest.
