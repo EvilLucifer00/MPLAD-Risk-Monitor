@@ -1,36 +1,41 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import Reveal from '../../animations/Reveal';
 import AnimatedCounter from '../shared/AnimatedCounter';
-import { TbMapPin, TbCurrencyRupee, TbAlertTriangle } from 'react-icons/tb';
-import { IoIosConstruct } from 'react-icons/io';
+import { IconMapPin, IconRupee, IconAlertTriangle, IconConstruct } from '../shared/HomeIcons';
 
 const OverviewSection = () => {
   return (
-    <section className="min-h-0 bg-slate-50 px-6 lg:px-12 py-10 lg:py-10">
-      <div className="max-w-8xl mx-auto">
+    <section className="min-h-0 bg-slate-50 px-4 sm:px-6 lg:px-12 py-7 sm:py-9 lg:py-10">
+      <div className="max-w-7xl mx-auto">
         <Reveal>
-          <div className="mb-10">
-            <h2 className="text-4xl font-extrabold text-[#123b63] mb-4">
+          <div className="mb-6 sm:mb-8 lg:mb-10">
+            <div className="flex items-center gap-1.5 mb-1.5 sm:mb-2">
+              <div className="flex gap-0.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF9933]" />
+                <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#138808]" />
+              </div>
+              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#123b63]">
+                National Statistics
+              </span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0a2540] tracking-tight mb-2 sm:mb-3">
               Overview
             </h2>
-            <motion.div 
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="w-20 h-1.25 bg-cyan-600 rounded-full origin-left"
-            />
+            <div className="w-12 sm:w-20 h-1 sm:h-1.25 bg-cyan-600 rounded-full" />
           </div>
         </Reveal>
 
         <Reveal staggerChildren={0.1}>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-6">
             <AnimatedCounter
               end={543}
+              index="01"
+              accent="navy"
+              tag="Lok Sabha"
               title="Constituencies"
-              icon={TbMapPin}
-              iconColor="text-[#123b63]"
+              icon={IconMapPin}
+              iconColor="text-[#0a2540]"
               iconBg="bg-[#f0f7ff]"
               sub="Across all states and union territories"
             />
@@ -38,26 +43,35 @@ const OverviewSection = () => {
               prefix="₹ "
               end={12500}
               suffix=" Cr"
+              index="02"
+              accent="emerald"
+              tag="FY 2025-26"
               title="Invested This Year"
-              icon={TbCurrencyRupee}
-              iconColor="text-teal-600"
+              icon={IconRupee}
+              iconColor="text-teal-700"
               iconBg="bg-teal-50"
               sub="In constituency development"
             />
             <AnimatedCounter
               end={18450}
               suffix="+"
+              index="03"
+              accent="amber"
+              tag="Works"
               title="Total Projects"
-              icon={IoIosConstruct}
-              iconColor="text-[#123b63]"
+              icon={IconConstruct}
+              iconColor="text-[#0a2540]"
               iconBg="bg-[#f0f7ff]"
               sub="Across sectors and regions"
             />
             <AnimatedCounter
               end={142}
+              index="04"
+              accent="rose"
+              tag="AI Alerts"
               title="Critical Cases"
-              icon={TbAlertTriangle}
-              iconColor="text-red-500"
+              icon={IconAlertTriangle}
+              iconColor="text-red-700"
               iconBg="bg-red-50"
               sub="Requiring closer monitoring"
             />

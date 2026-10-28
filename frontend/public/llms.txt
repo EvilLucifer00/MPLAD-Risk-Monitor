@@ -1,0 +1,23 @@
+# MPLADS Risk Monitor
+
+> AI-driven monitoring, real-time risk assessment, and surveillance platform for Member of Parliament Local Area Development Scheme (MPLADS) developmental projects under the Ministry of Statistics and Programme Implementation (MoSPI), Government of India.
+
+The platform provides citizen transparency, geospatial risk mapping, fund allocation tracking, and automated anomaly detection across all 543 Lok Sabha parliamentary constituencies in India.
+
+## Core Services
+
+- [Geospatial Risk Map](https://mplads-risk-monitor.gov.in/#geospatial-map): Interactive national GIS map visualizing fund utilization, project progress, and AI anomaly scores across 543 constituencies.
+- [National Statistics & Overview](https://mplads-risk-monitor.gov.in/#overview): Macro indicators tracking ₹12,500+ Cr invested across 18,450+ ongoing and completed infrastructure projects.
+- [Key Features & Pillars](https://mplads-risk-monitor.gov.in/#features): Fund tracking, AI radar surveillance, cross-state performance benchmarks, and public accountability records.
+
+## Documentation & Portals
+
+- [Citizen Transparency Portal](https://mplads-risk-monitor.gov.in/): Public dashboard for tracking regional development works and fund utilization.
+- [Member of Parliament (MP) Portal](https://mplads-risk-monitor.gov.in/login): Role-based portal for MPs to propose and track constituency project recommendations.
+- [District Authority (DA) Portal](https://mplads-risk-monitor.gov.in/login): Administrative verification and sanction management interface for implementing agencies.
+- [Full LLM Specification](https://mplads-risk-monitor.gov.in/llms-full.txt): Extended documentation and machine-readable data dictionary for autonomous agents.
+
+## Optional
+
+- [Agent Catalog](https://mplads-risk-monitor.gov.in/.well-known/ai-catalog.json): WebMCP and Agentic Resource Discovery manifest for autonomous agents.
+- [Sitemap](https://mplads-risk-monitor.gov.in/sitemap.xml): Complete XML sitemap of accessible endpoints.

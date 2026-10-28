@@ -145,3 +145,52 @@ def get_current_dm(
         "dist": payload.get("dist"),
         "state": payload.get("state"),
     }
+
+
+#------------------- CURRENT USER (MP OR DM) --------------------#
+def get_current_user(
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+) -> dict:
+    """
+    Dependency function to authenticate either an MP or DM user.
+    """
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+    token = credentials.credentials
+
+    try:
+        payload = jwt.decode(
+            token,
+            settings.JWT_SECRET,
+            algorithms=[settings.JWT_ALGORITHM]
+        )
+        user_id = payload.get("id")
+        if not user_id:
+            raise credentials_exception
+    except JWTError:
+        raise credentials_exception
+
+    if payload.get("mp_name"):
+        return {
+            "id": user_id,
+            "role": "MP",
+            "mp_name": payload.get("mp_name"),
+            "constituency": payload.get("constituency"),
+            "house": payload.get("house"),
+            "state": payload.get("state"),
+            "dist": payload.get("dist"),
+            "dm_id": payload.get("dm_id"),
+        }
+    else:
+        return {
+            "id": user_id,
+            "role": "DM",
+            "dm_name": payload.get("dm_name"),
+            "dist": payload.get("dist"),
+            "state": payload.get("state"),
+        }
+

@@ -5,6 +5,8 @@ const TOKEN_KEY = 'mplads_auth_token';
 const ROLE_KEY = 'mplads_auth_role';
 const USER_KEY = 'mplads_auth_user';
 
+let inFlightValidationPromise = null;
+
 /**
  * Zustand Store for Authentication and User Session.
  * Persists auth token, role, and profile in localStorage.
@@ -52,37 +54,50 @@ export const useAuthStore = create((set, get) => ({
   /**
    * Validates stored token with backend on reload.
    * If valid, updates profile in state; if invalid/expired, clears session.
+   * Uses in-flight promise deduplication to prevent duplicate /me calls.
    */
   validateSession: async () => {
+    if (inFlightValidationPromise) {
+      return inFlightValidationPromise;
+    }
+
     const { token, role } = get();
     if (!token || !role) {
       get().logout();
       return null;
     }
 
-    try {
-      set({ isLoading: true });
-      let profile = null;
-      if (role === 'MP') {
-        profile = await authApi.getMpProfile(token);
-      } else if (role === 'DM') {
-        profile = await authApi.getDmProfile(token);
-      }
+    inFlightValidationPromise = (async () => {
+      try {
+        let profile = null;
+        if (role === 'MP') {
+          profile = await authApi.getMpProfile(token);
+        } else if (role === 'DM') {
+          profile = await authApi.getDmProfile(token);
+        }
 
-      if (profile) {
-        localStorage.setItem(USER_KEY, JSON.stringify(profile));
-        set({ user: profile, isLoading: false, error: null });
-        return profile;
-      } else {
-        get().logout();
-        set({ isLoading: false });
-        return null;
+        if (profile) {
+          localStorage.setItem(USER_KEY, JSON.stringify(profile));
+          set({ user: profile, isLoading: false, error: null });
+          return profile;
+        } else {
+          return get().user;
+        }
+      } catch (err) {
+        if (err && err.message === 'UNAUTHORIZED') {
+          get().logout();
+          set({ isLoading: false });
+          return null;
+        }
+        // Network timeout / Render cold start: preserve cached authenticated profile
+        set({ isLoading: false, error: null });
+        return get().user;
+      } finally {
+        inFlightValidationPromise = null;
       }
-    } catch (err) {
-      console.warn('Session expired or invalid:', err.message);
-      get().logout();
-      set({ isLoading: false, error: null });
-      return null;
-    }
+    })();
+
+    return inFlightValidationPromise;
   },
 }));
+

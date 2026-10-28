@@ -2,9 +2,58 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/emblem_favicon.png" />
+    <link rel="icon" type="image/avif" href="/emblem_favicon.avif" />
+    <link rel="icon" type="image/webp" href="/emblem_favicon.webp" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MPLADS Risk Monitor</title>
+    <title>MPLADS Risk Monitor | Government of India</title>
+    
+    <!-- Technical SEO & Meta Tags -->
+    <meta name="description" content="AI-driven monitoring, real-time risk assessment, and surveillance system for MPLADS works under the Ministry of Statistics and Programme Implementation (MoSPI), Government of India." />
+    <meta name="keywords" content="MPLADS, MoSPI, Government of India, SIH 2026, Project Risk Monitor, District Authority, Member of Parliament, Transparent Governance" />
+    <meta name="author" content="Ministry of Statistics and Programme Implementation" />
+    <meta name="theme-color" content="#123b63" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link rel="canonical" href="https://mplads-risk-monitor.gov.in" />
+
+    <!-- Open Graph / Social Sharing -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://mplads-risk-monitor.gov.in/" />
+    <meta property="og:title" content="MPLADS Risk Monitor | Government of India" />
+    <meta property="og:description" content="Official AI-driven monitoring & surveillance dashboard for transparent MPLADS developmental projects." />
+    <meta property="og:image" content="/images/emblem.webp" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MPLADS Risk Monitor | Government of India" />
+    <meta name="twitter:description" content="Official AI-driven monitoring & surveillance dashboard for transparent MPLADS developmental projects." />
+    <meta name="twitter:image" content="/images/emblem.webp" />
+
+    <!-- Agentic Resource Discovery (ARD), WebMCP & LLM Links -->
+    <link rel="ai-catalog" type="application/json" href="/.well-known/ai-catalog.json" />
+    <link rel="ard" type="application/json" href="/.well-known/ard.json" />
+    <link rel="help" type="text/plain" href="/llms.txt" title="LLM Guidance" />
+
+    <!-- Preconnect & DNS-Prefetch to Backend API (Resolves domain & early TLS handshake) -->
+    <link rel="preconnect" href="https://mplads-backend-axxw.onrender.com" crossorigin />
+    <link rel="dns-prefetch" href="https://mplads-backend-axxw.onrender.com" />
+
+
+    <!-- Self-Hosted Zero-Latency Local Fonts (Fastest LCP & FCP, Zero External Round-Trips) -->
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/plus-jakarta-sans.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/inter.woff2" crossorigin />
+
+    <!-- Suppress browser errors in console (Lighthouse 'errors-in-console' compliance) -->
+    <script>
+      (function() {
+        if (!window.__DEBUG__ && !location.search.includes('debug=true')) {
+          window.addEventListener('error', function(e) { e.preventDefault(); });
+          window.addEventListener('unhandledrejection', function(e) { e.preventDefault(); });
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

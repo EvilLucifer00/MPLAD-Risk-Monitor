@@ -1,106 +1,128 @@
 // src/api/mockMpApi.js
-import { mockProjects, mockNotifications, mockRecommendations, mockMpProfile } from '../data/mockMpData';
-
-// Simulate network delay
-const delay = (ms = 500) => new Promise(resolve => setTimeout(resolve, ms));
+import { projectsApi, dashboardApi } from './mpladsApi';
+import { useAuthStore } from '../store/useAuthStore';
 
 export const api = {
   // Projects
   /**
-   * Retrieves all projects submitted by the currently logged-in MP.
+   * Retrieves all projects submitted by the currently logged-in MP from the real backend API.
    */
-  getProjects: async () => {
-    await delay();
-    return [...mockProjects];
+  getProjects: async (params = {}) => {
+    try {
+      const token = useAuthStore.getState().token;
+      if (token) {
+        return await projectsApi.getAllProjects(params);
+      }
+    } catch {
+      // Graceful fallback to empty array on network/auth error
+    }
+    return [];
   },
   
   getProjectById: async (id) => {
-    await delay();
-    const project = mockProjects.find(p => p.id === id);
-    if (!project) throw new Error("Project not found");
-    return { ...project };
+    try {
+      const token = useAuthStore.getState().token;
+      if (token) {
+        return await projectsApi.getProjectById(id);
+      }
+    } catch {
+      // Graceful fallback
+    }
+    return null;
   },
 
   /**
-   * Submits a new project proposal.
-   * Assigns a mock ID and sets default fields (like risk score and status).
+   * Submits a new project proposal to the real backend.
    */
   submitProject: async (projectData) => {
-    await delay(1000);
-    const newProject = {
-      ...projectData,
-      id: `PRJ-2026-${String(mockProjects.length + 1).padStart(3, '0')}`,
-      status: "Pending Sanction",
-      riskScore: 0,
-      riskLevel: "Low",
-      riskFactors: [],
-      documents: projectData.documents || [],
-      amountSpent: 0,
-    };
-    mockProjects.unshift(newProject);
-    return newProject;
+    const token = useAuthStore.getState().token;
+    if (token) {
+      return await projectsApi.submitProject(projectData);
+    }
+    throw new Error('Authentication required to submit proposals.');
   },
 
   // Notifications
   getNotifications: async () => {
-    await delay(300);
-    return [...mockNotifications];
+    return [];
   },
 
   markNotificationRead: async (id) => {
-    await delay(200);
-    const notif = mockNotifications.find(n => n.id === id);
-    if (notif) notif.read = true;
     return true;
   },
 
   // Recommendations
   /**
-   * Generates tailored recommendations for the MP.
-   * Calculates unspent funds percentage and modifies warning messages accordingly.
+   * Generates tailored recommendations for the MP derived from live backend statistics and projects.
    */
   getRecommendations: async () => {
-    await delay(400);
-    const totalUtilized = mockProjects.reduce((acc, p) => acc + (p.amountSpent || 0), 0);
-    const unspentPercentage = Math.round(((mockMpProfile.totalEntitlement - totalUtilized) / mockMpProfile.totalEntitlement) * 100);
-    
-    return mockRecommendations.map(rec => {
-      if (rec.type === "Utilization Warning") {
-        return {
-          ...rec,
-          message: `Your unspent balance is ${unspentPercentage}% with 2 months left in the fiscal year. Consider expediting pending proposals.`
-        };
+    try {
+      const token = useAuthStore.getState().token;
+      if (token) {
+        const stats = await dashboardApi.getMpStats().catch(() => null);
+        const projects = await projectsApi.getAllProjects().catch(() => []);
+        const recs = [];
+
+        const highRisk = projects.filter(p => p.riskLevel === 'High' || p.riskLevel === 'Critical');
+        if (highRisk.length > 0) {
+          recs.push({
+            id: 'rec-hr',
+            type: 'Vendor Alert',
+            message: `${highRisk.length} active project(s) flagged with High or Critical risk. Review vendor performance and milestones.`,
+            relatedProjectIds: [highRisk[0].id],
+          });
+        }
+
+        if (stats && stats.totalEntitlement > 0) {
+          const unspent = Math.round(((stats.totalEntitlement - stats.totalUtilized) / stats.totalEntitlement) * 100);
+          if (unspent > 50) {
+            recs.push({
+              id: 'rec-util',
+              type: 'Utilization Warning',
+              message: `Your unspent balance is ${unspent}% with 2 months left in the fiscal year. Consider expediting pending proposals.`,
+            });
+          }
+        }
+        return recs;
       }
-      return rec;
-    });
+    } catch {
+      return [];
+    }
+    return [];
   },
 
   // Dashboard Stats
   /**
-   * Aggregates project statistics for the MP's dashboard summary.
-   * Computes active projects, total funds utilized, pending approvals, and risk distributions.
+   * Fetches aggregate project statistics from the real backend API.
+   * If values are zero, returns zero metrics rather than fallback mock numbers.
    */
   getDashboardStats: async () => {
-    await delay(600);
-    
-    const activeProjects = mockProjects.filter(p => ["In Progress", "Sanctioned"].includes(p.status)).length;
-    const totalEntitlement = mockMpProfile.totalEntitlement;
-    const totalUtilized = mockProjects.reduce((acc, p) => acc + (p.amountSpent || 0), 0);
-    const pendingApprovals = mockProjects.filter(p => p.status === "Pending Sanction").length;
-    
-    const riskCounts = {
-      Low: mockProjects.filter(p => p.riskLevel === "Low").length,
-      Moderate: mockProjects.filter(p => p.riskLevel === "Moderate").length,
-      High: mockProjects.filter(p => p.riskLevel === "High").length,
-      Critical: mockProjects.filter(p => p.riskLevel === "Critical").length,
-    };
-
+    try {
+      const token = useAuthStore.getState().token;
+      if (token) {
+        return await dashboardApi.getMpStats();
+      }
+    } catch {
+      // Graceful zero fallback
+    }
     return {
-      activeProjects,
-      totalEntitlement,
-      totalUtilized,
-      pendingApprovals,
-      riskCounts
+      activeProjects: 0,
+      totalEntitlement: 50000000,
+      totalUtilized: 0,
+      pendingApprovals: 0,
+      totalProjects: 0,
+      riskCounts: {
+        Low: 0,
+        Moderate: 0,
+        High: 0,
+        Critical: 0,
+      },
+      statusBreakdown: {
+        on_track: 0,
+        high_risk: 0,
+        completed: 0,
+      },
+      recentProjects: [],
     };
   }
 };

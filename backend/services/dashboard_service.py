@@ -5,6 +5,7 @@ from fastapi import Query
 
 from schemas.project_schema import DashboardStats, ProjectStatus, ProjectRiskLevel
 from database.database import supabase
+from services.project_service import enrich_projects
 
 async def mp_dashboard_stats(mp: dict):
     """
@@ -23,7 +24,7 @@ async def mp_dashboard_stats(mp: dict):
         .execute()
     )
     
-    projects = response.data or []
+    projects = enrich_projects(response.data or [])
     total = len(projects)
 
     active = sum(
@@ -98,7 +99,7 @@ async def dm_dashboard_stats(dm: dict):
         .execute()
     )
     
-    projects = result.data or []
+    projects = enrich_projects(result.data or [])
     
     awaiting_review = [p for p in projects if p.get("status") == ProjectStatus.PENDING_REVIEW.value]
     high_risk = [

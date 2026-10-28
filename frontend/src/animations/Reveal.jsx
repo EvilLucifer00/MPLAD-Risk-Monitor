@@ -1,40 +1,64 @@
-import React, { useRef, useEffect } from "react";
-import { motion, useInView, useAnimation } from "framer-motion";
+import React, { useRef, useState, useEffect } from "react";
 
 export const defaultEasing = [0.22, 1, 0.36, 1];
 
-export const Reveal = ({ children, width = "100%", delay = 0, staggerChildren = 0, className = "" }) => {
+export const Reveal = ({ children, width, delay = 0, staggerChildren = 0, className = "" }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
-  const mainControls = useAnimation();
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    if (isInView) {
-      mainControls.start("visible");
+    if (!ref.current) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setIsVisible(true);
+      return;
     }
-  }, [isInView, mainControls]);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "0px 0px -40px 0px", threshold: 0.05 }
+    );
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
 
-  return (
-    <div ref={ref} style={{ width }} className={className}>
-      <motion.div
-        variants={{
-          hidden: { opacity: 0, y: 24 },
-          visible: { 
-            opacity: 1, 
-            y: 0,
-            transition: {
-              duration: 0.6,
-              ease: defaultEasing,
-              delay: delay,
-              staggerChildren: staggerChildren
-            }
-          },
-        }}
-        initial="hidden"
-        animate={mainControls}
+  const renderContent = () => {
+    // If staggerChildren is requested and the child is a container with multiple children (e.g. grid of cards)
+    if (staggerChildren > 0 && React.isValidElement(children)) {
+      const innerChildren = children.props?.children;
+      if (Array.isArray(innerChildren) && innerChildren.length > 0) {
+        const staggered = innerChildren.map((child, idx) => {
+          if (!React.isValidElement(child)) return child;
+          return (
+            <div
+              key={child.key || idx}
+              className={`h-full ${isVisible ? "reveal-visible" : "reveal-init"}`}
+              style={{ animationDelay: `${(delay || 0) + idx * staggerChildren}s` }}
+            >
+              {child}
+            </div>
+          );
+        });
+        return React.cloneElement(children, {}, staggered);
+      }
+    }
+
+    return (
+      <div
+        className={isVisible ? "reveal-visible" : "reveal-init"}
+        style={delay ? { animationDelay: `${delay}s` } : undefined}
       >
         {children}
-      </motion.div>
+      </div>
+    );
+  };
+
+  return (
+    <div ref={ref} style={width ? { width } : undefined} className={className}>
+      {renderContent()}
     </div>
   );
 };

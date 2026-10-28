@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   TbLayoutDashboard, 
@@ -7,17 +7,18 @@ import {
   TbSettings, 
   TbBell, 
   TbSearch, 
-  TbMenu2,
-  TbX,
-  TbUserCircle,
-  TbChartBar,
-  TbFileDescription,
-  TbLogout
+  TbChartBar, 
+  TbFileDescription, 
+  TbLogout,
+  TbX
 } from 'react-icons/tb';
+import { IconMenu } from '../../components/shared/HomeIcons';
+import EmblemImage from '../../components/shared/EmblemImage';
 import { api } from '../../api/mockMpApi';
-import { useMpStore } from '../../store/useMpStore.js';
 import { useAuthStore } from '../../store/useAuthStore';
-import AiAssistantWidget from '../../components/shared/AiAssistantWidget.jsx';
+
+// Lazy-loaded to eliminate heavy AI chat bundle from critical route waterfall
+const AiAssistantWidget = lazy(() => import('../../components/shared/AiAssistantWidget.jsx'));
 
 const MpLayout = () => {
   const { user, logout } = useAuthStore();
@@ -26,6 +27,8 @@ const MpLayout = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [globalSearch, setGlobalSearch] = useState('');
+  const notificationsRef = useRef(null);
+  const profileMenuRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -41,6 +44,33 @@ const MpLayout = () => {
       setGlobalSearch('');
     }
   };
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (notificationsRef.current && !notificationsRef.current.contains(e.target)) {
+        setShowNotifications(false);
+      }
+      if (profileMenuRef.current && !profileMenuRef.current.contains(e.target)) {
+        setShowProfileMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Lock browser viewport to single page (eliminates browser window scrollbar)
+    document.documentElement.classList.add('portal-locked');
+    document.body.classList.add('portal-locked');
+    return () => {
+      document.documentElement.classList.remove('portal-locked');
+      document.body.classList.remove('portal-locked');
+    };
+  }, []);
 
   useEffect(() => {
     // Fetch notifications on mount
@@ -64,19 +94,32 @@ const MpLayout = () => {
     setNotifications(notifications.map(n => n.id === id ? { ...n, read: true } : n));
   };
 
-  const SidebarContent = () => (
-    <div className="flex flex-col h-full bg-[#0d2744] text-white overflow-y-auto overflow-x-hidden relative">
+  const renderSidebarContent = () => (
+    <div className="flex flex-col h-full bg-[#0d2744] text-white overflow-y-auto custom-scrollbar-dark overflow-x-hidden relative">
       {/* Top Header */}
-      <div className="p-6 flex items-center gap-4 border-b border-white/5 relative z-10">
-        <img src="/emblem.png" alt="Emblem" className="w-10 h-12 object-contain" />
-        <div>
-          <h2 className="font-bold text-xl leading-tight tracking-tight">MP Portal</h2>
-          <p className="text-[11px] text-[#00b4d8] font-medium tracking-wide">MPLADS | SIH 2026</p>
+      <div className="p-5 sm:p-6 flex items-start justify-between gap-2 border-b border-white/5 relative z-10">
+        <div className="flex items-center gap-3.5">
+          <EmblemImage width="40" height="48" className="w-10 h-12 object-contain shrink-0" />
+          <div>
+            <div className="text-[10px] font-bold uppercase tracking-wider text-sky-400 leading-none">Govt of India</div>
+            <h2 className="font-bold text-xl leading-tight tracking-tight mt-0.5">MP Portal</h2>
+            <p className="text-[11px] text-sky-200/80 font-medium tracking-tight mt-0.5 leading-snug whitespace-normal">
+              Member of Parliament • MPLADS
+            </p>
+          </div>
         </div>
+        <button
+          type="button"
+          onClick={() => setIsSidebarOpen(false)}
+          aria-label="Close navigation sidebar"
+          className="p-1.5 text-slate-300 hover:text-white hover:bg-white/10 active:scale-95 rounded-lg lg:hidden transition-all duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 shrink-0 mt-0.5"
+        >
+          <TbX size={20} />
+        </button>
       </div>
       
       {/* Navigation Links */}
-      <div className="flex-1 px-4 space-y-1 mt-4 relative z-10">
+      <nav aria-label="Member of Parliament Portal Navigation" className="flex-1 px-4 space-y-1 mt-4 relative z-10">
         {navLinks.map((link) => {
           const isActive = location.pathname === link.path || 
                           (link.path !== '/mp' && location.pathname.startsWith(link.path));
@@ -87,25 +130,27 @@ const MpLayout = () => {
               key={link.path}
               to={link.path}
               onClick={() => setIsSidebarOpen(false)}
+              aria-current={isActive ? 'page' : undefined}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 ${
                 isActive 
                   ? 'bg-[#00a8e8] text-white shadow-md' 
                   : 'text-slate-300 hover:bg-white/5 hover:text-white'
               }`}
             >
-              <Icon size={20} className={isActive ? 'text-white' : 'text-slate-400'} />
+              <Icon size={20} className={isActive ? 'text-white' : 'text-slate-400'} aria-hidden="true" />
               <span className="font-medium text-sm">{link.name}</span>
               
               {/* Notification Badge specifically for the Notifications tab */}
               {link.name === 'Notifications' && unreadCount > 0 && (
                 <span className="ml-auto w-4 h-4 bg-[#ef4444] rounded-full border border-[#0d2744] flex items-center justify-center">
-                  <span className="w-1.5 h-1.5 bg-white rounded-full"></span>
+                  <span className="sr-only">({unreadCount} unread)</span>
+                  <span className="w-1.5 h-1.5 bg-white rounded-full" aria-hidden="true"></span>
                 </span>
               )}
             </Link>
           );
         })}
-      </div>
+      </nav>
 
       {/* Bottom Footer Section */}
       <div className="px-6 pb-6 pt-32 relative z-10 mt-auto overflow-hidden">
@@ -195,7 +240,7 @@ const MpLayout = () => {
   );
 
   return (
-    <div className="flex h-screen bg-slate-50 font-sans">
+    <div className="flex h-screen h-[100dvh] max-h-[100dvh] w-full max-w-full min-w-0 overflow-hidden bg-slate-50 font-sans">
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div 
@@ -205,42 +250,61 @@ const MpLayout = () => {
       )}
 
       {/* Sidebar */}
-      <aside className={`
+      <aside 
+        aria-label="Member of Parliament Navigation"
+        className={`
         fixed lg:static inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
-        <SidebarContent />
+        {renderSidebarContent()}
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 w-full max-w-full overflow-hidden">
         {/* Top Navbar */}
-        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 z-30">
-          <div className="flex items-center gap-4">
+        <header className="sticky top-0 h-16 bg-white/95 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-3 sm:px-4 lg:px-8 z-30 transition-all duration-200 gap-2 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0 max-w-xl">
             <button 
               onClick={() => setIsSidebarOpen(true)}
-              className="p-2 -ml-2 text-slate-500 hover:bg-slate-100 rounded-lg lg:hidden"
+              aria-label="Open navigation sidebar"
+              className="p-2 text-slate-700 bg-slate-100/90 hover:bg-slate-200/90 border border-slate-200 rounded-xl lg:hidden transition-all active:scale-95 shrink-0 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] shadow-xs"
             >
-              <TbMenu2 size={24} />
+              <IconMenu size={22} className="sm:w-6 sm:h-6" />
             </button>
-            <form onSubmit={handleGlobalSearch} className="hidden sm:flex items-center bg-slate-100 rounded-full px-4 py-2 w-64 md:w-96">
-              <TbSearch className="text-slate-400 mr-2" size={18} />
+            <form 
+              onSubmit={handleGlobalSearch} 
+              className="flex items-center bg-slate-100/90 hover:bg-slate-100 focus-within:bg-white focus-within:ring-2 focus-within:ring-[#123b63]/25 focus-within:border-slate-300 border border-transparent rounded-full px-3 py-1.5 sm:px-4 sm:py-2 flex-1 min-w-0 transition-all duration-150"
+            >
+              <TbSearch className="text-slate-400 mr-2 shrink-0" size={16} aria-hidden="true" />
               <input 
                 type="text" 
                 value={globalSearch}
                 onChange={(e) => setGlobalSearch(e.target.value)}
                 placeholder="Search projects, vendors..." 
-                className="bg-transparent border-none outline-none text-sm w-full placeholder:text-slate-400"
+                aria-label="Search projects and vendors"
+                className="bg-transparent border-none outline-none text-base sm:text-sm w-full min-w-0 placeholder:text-slate-400 leading-normal text-slate-800"
               />
+              {globalSearch && (
+                <button
+                  type="button"
+                  onClick={() => setGlobalSearch('')}
+                  aria-label="Clear search input"
+                  className="p-1 -mr-1 text-slate-400 hover:text-slate-600 rounded-full transition-colors shrink-0"
+                >
+                  <TbX size={14} />
+                </button>
+              )}
             </form>
           </div>
 
-          <div className="flex items-center gap-4 relative">
+          <div className="flex items-center gap-2 sm:gap-4 shrink-0 relative">
             {/* Notification Bell */}
-            <div className="relative">
+            <div ref={notificationsRef} className="relative">
               <button 
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="p-2 text-slate-500 hover:bg-slate-100 rounded-full relative transition-colors"
+                aria-label={`Notifications, ${unreadCount} unread`}
+                aria-expanded={showNotifications}
+                className="p-2 text-slate-500 hover:bg-slate-100 rounded-full relative transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
               >
                 <TbBell size={22} />
                 {unreadCount > 0 && (
@@ -268,13 +332,13 @@ const MpLayout = () => {
                         >
                           <p className="text-sm text-slate-700 leading-relaxed">{notif.message}</p>
                           <div className="flex justify-between items-center mt-2">
-                            <span className="text-[10px] text-slate-400">
+                            <span className="text-[10px] text-slate-500 font-medium">
                               {new Date(notif.timestamp).toLocaleDateString()}
                             </span>
                             {!notif.read && (
                               <button 
                                 onClick={() => handleMarkAsRead(notif.id)}
-                                className="text-[10px] font-semibold text-cyan-600 hover:text-cyan-700"
+                                className="text-[10px] font-bold text-sky-800 hover:text-sky-950 focus-visible:underline"
                               >
                                 Mark Read
                               </button>
@@ -289,9 +353,11 @@ const MpLayout = () => {
             </div>
             
             {/* Profile Menu */}
-            <div className="relative">
+            <div ref={profileMenuRef} className="relative">
               <button 
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
+                aria-label="Member of Parliament Profile menu"
+                aria-expanded={showProfileMenu}
                 className="w-8 h-8 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-800 font-bold border border-cyan-200 hover:bg-cyan-200 transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-1"
               >
                 MP
@@ -320,7 +386,7 @@ const MpLayout = () => {
                   <div className="p-2">
                     <button
                       onClick={handleLogout}
-                      className="flex items-center gap-3 w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      className="flex items-center gap-3 w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
                     >
                       <TbLogout size={18} />
                       <span className="font-medium">Log Out</span>
@@ -333,15 +399,17 @@ const MpLayout = () => {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-auto bg-slate-50 p-4 lg:p-8">
-          <div className="max-w-7xl mx-auto h-full">
+        <main id="main-content" className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar bg-slate-50 p-4 sm:p-6 lg:p-8 w-full max-w-full min-w-0">
+          <div className="max-w-7xl mx-auto min-h-full pb-20 w-full min-w-0">
             <Outlet />
           </div>
         </main>
       </div>
 
       {/* Global Floating Assistant */}
-      <AiAssistantWidget />
+      <Suspense fallback={null}>
+        <AiAssistantWidget />
+      </Suspense>
     </div>
   );
 };
