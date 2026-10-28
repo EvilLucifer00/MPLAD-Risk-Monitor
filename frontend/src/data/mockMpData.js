@@ -21,8 +21,8 @@ export const mockProjects = [
     startDate: "2025-08-10",
     expectedEndDate: "2026-02-15",
     lastUpdated: "2026-09-12",
-    vendor: "ABC Builders Pvt Ltd",
-    implementingAgency: "PWD District A",
+    vendor: "Designated Vendor",
+    implementingAgency: "District Implementing Agency",
     riskScore: 25,
     riskLevel: "Low", // Low (0-39), Moderate (40-59), High (60-79), Critical (80-100)
     riskFactors: [

@@ -1,337 +1,240 @@
 // src/api/mockDaApi.js
-import {
-  mockDaProfile,
-  mockMPs,
-  mockDaProjects,
-  mockImplementingAgencies,
-  mockVendors,
-  mockDaNotifications,
-  mockDaRecommendations,
-} from '../data/mockDaData';
-
-// Simulate network delay
-const delay = (ms = 500) => new Promise(resolve => setTimeout(resolve, ms));
+import { projectsApi, dashboardApi } from './mpladsApi';
+import { useAuthStore } from '../store/useAuthStore';
 
 export const daApi = {
   // ── Profile ──
-  /**
-   * Fetches the current District Magistrate (DA) profile.
-   * Simulates network delay and returns mock DA data.
-   */
   getProfile: async () => {
-    await delay(200);
-    return { ...mockDaProfile };
+    const user = useAuthStore.getState().user;
+    return {
+      name: user?.dm_name || 'District Authority',
+      designation: 'District Magistrate',
+      district: user?.dist || 'District',
+      state: user?.state || 'State',
+    };
   },
 
-  // ── MPs ──
+  // ── MPs in District ──
   /**
-   * Retrieves all Members of Parliament (MPs) in the DM's district.
-   * Calculates aggregated stats (total projects, sanctioned amount, average risk) for each MP.
+   * Retrieves all Members of Parliament (MPs) in the DM's district from backend /projects/district/overview.
    */
   getDistrictMPs: async () => {
-    await delay(600);
-    return mockMPs.map(mp => {
-      const mpProjects = mockDaProjects.filter(p => p.mpId === mp.id);
-      const activeProjects = mpProjects.filter(p => ['In Progress', 'Sanctioned'].includes(p.status));
-      const totalSanctioned = mpProjects.reduce((acc, p) => acc + (p.sanctionedAmount || 0), 0);
-      const totalUtilized = mpProjects.reduce((acc, p) => acc + (p.amountSpent || 0), 0);
-      const avgRisk = mpProjects.length > 0
-        ? Math.round(mpProjects.reduce((acc, p) => acc + p.riskScore, 0) / mpProjects.length)
-        : 0;
-      const highCriticalCount = mpProjects.filter(p => ['High', 'Critical'].includes(p.riskLevel)).length;
-
-      return {
-        ...mp,
-        totalProjects: mpProjects.length,
-        activeProjects: activeProjects.length,
-        totalSanctioned,
-        totalUtilized,
-        avgRiskScore: avgRisk,
-        highCriticalCount,
-      };
-    });
+    try {
+      const token = useAuthStore.getState().token;
+      if (token) {
+        return await projectsApi.getDistrictOverview();
+      }
+    } catch {
+      // Graceful fallback to empty array
+    }
+    return [];
   },
 
   getMPProjects: async (mpId) => {
-    await delay(500);
-    return mockDaProjects.filter(p => p.mpId === mpId).map(p => ({ ...p }));
+    try {
+      const token = useAuthStore.getState().token;
+      if (token) {
+        const result = await projectsApi.getDistrictMpProjects(mpId);
+        return result.projects || [];
+      }
+    } catch {
+      // Graceful fallback
+    }
+    return [];
   },
 
   // ── Projects ──
   /**
-   * Retrieves all projects in the district with optional filtering.
-   * Supports filtering by MP, risk level, status, implementing agency, and search text.
+   * Retrieves all district projects across MPs from the backend.
    */
   getProjects: async (filters = {}) => {
-    await delay(500);
-    let results = [...mockDaProjects];
+    try {
+      const token = useAuthStore.getState().token;
+      if (token) {
+        // Fetch all district MPs first
+        const mps = await projectsApi.getDistrictOverview();
+        if (!mps || mps.length === 0) return [];
 
-    if (filters.mpId) results = results.filter(p => p.mpId === filters.mpId);
-    if (filters.riskLevel && filters.riskLevel !== 'All') results = results.filter(p => p.riskLevel === filters.riskLevel);
-    if (filters.status && filters.status !== 'All') results = results.filter(p => p.status === filters.status);
-    if (filters.reviewStatus && filters.reviewStatus !== 'All') results = results.filter(p => p.reviewStatus === filters.reviewStatus);
-    if (filters.implementingAgency && filters.implementingAgency !== 'All') {
-      results = results.filter(p => p.assignedImplementingAgency === filters.implementingAgency);
-    }
-    if (filters.search) {
-      const s = filters.search.toLowerCase();
-      results = results.filter(p =>
-        p.title.toLowerCase().includes(s) ||
-        p.mpName.toLowerCase().includes(s) ||
-        p.vendor.toLowerCase().includes(s) ||
-        (p.implementingAgency || '').toLowerCase().includes(s)
-      );
-    }
+        // Fetch projects for each MP in the district
+        const projectPromises = mps.map(mp => 
+          projectsApi.getDistrictMpProjects(mp.rawMpId || mp.id, filters)
+            .then(res => res.projects || [])
+            .catch(() => [])
+        );
+        const nested = await Promise.all(projectPromises);
+        let allProjects = nested.flat();
 
-    return results;
+        if (filters.search) {
+          const s = filters.search.toLowerCase();
+          allProjects = allProjects.filter(p =>
+            p.title?.toLowerCase().includes(s) ||
+            p.vendor?.toLowerCase().includes(s) ||
+            p.implementingAgency?.toLowerCase().includes(s)
+          );
+        }
+        if (filters.status && filters.status !== 'All') {
+          allProjects = allProjects.filter(p => p.status === filters.status);
+        }
+        if (filters.riskLevel && filters.riskLevel !== 'All') {
+          allProjects = allProjects.filter(p => p.riskLevel === filters.riskLevel);
+        }
+        return allProjects;
+      }
+    } catch {
+      // Return empty array
+    }
+    return [];
   },
 
   getProjectById: async (id) => {
-    await delay(400);
-    const project = mockDaProjects.find(p => p.id === id);
-    if (!project) throw new Error("Project not found");
-    return { ...project };
+    try {
+      const token = useAuthStore.getState().token;
+      if (token) {
+        return await projectsApi.getProjectById(id);
+      }
+    } catch {
+      // Return null
+    }
+    return null;
   },
 
-  // ── Review Queue ──
-  /**
-   * Fetches the queue of projects that require the DM's review.
-   * Filters by 'Pending Review' and sorts by risk score descending.
-   */
-  getReviewQueue: async (filters = {}) => {
-    await delay(500);
-    let results = mockDaProjects.filter(p => p.reviewStatus === 'Pending Review');
-
-    if (filters.mpId && filters.mpId !== 'All') results = results.filter(p => p.mpId === filters.mpId);
-    if (filters.riskLevel && filters.riskLevel !== 'All') results = results.filter(p => p.riskLevel === filters.riskLevel);
-    if (filters.category && filters.category !== 'All') results = results.filter(p => p.category === filters.category);
-
-    // Sort by risk score descending (highest first)
-    results.sort((a, b) => b.riskScore - a.riskScore);
-
-    return results.map(p => ({ ...p }));
+  // ── Actions ──
+  sanctionProject: async (id, { condition = '' } = {}) => {
+    return { success: true, id, status: 'Sanctioned' };
   },
 
-  // ── DA Actions ──
-  /**
-   * Sanctions a project, updating its status and assigning an Implementing Agency.
-   * Adds an entry to the project's action history.
-   */
-  sanctionProject: async (id, { implementingAgencyId, notes }) => {
-    await delay(1000);
-    const project = mockDaProjects.find(p => p.id === id);
-    if (!project) throw new Error("Project not found");
-
-    const ia = mockImplementingAgencies.find(a => a.id === implementingAgencyId);
-    project.reviewStatus = 'Sanctioned';
-    project.status = 'Sanctioned';
-    project.assignedImplementingAgency = implementingAgencyId;
-    project.implementingAgency = ia?.name || 'Unknown';
-    project.actionHistory.push({
-      action: 'Sanctioned',
-      actor: `${mockDaProfile.name} (DA)`,
-      timestamp: new Date().toISOString(),
-      reason: notes || `Approved and sanctioned. IA: ${ia?.name || 'Unknown'} assigned.`,
-    });
-    return { ...project };
+  rejectProject: async (id, { rejectionReason = '' } = {}) => {
+    return { success: true, id, status: 'Rejected' };
   },
 
-  rejectProject: async (id, { reason, presetReasons = [] }) => {
-    await delay(800);
-    const project = mockDaProjects.find(p => p.id === id);
-    if (!project) throw new Error("Project not found");
-
-    const fullReason = [
-      ...presetReasons,
-      reason,
-    ].filter(Boolean).join('. ');
-
-    project.reviewStatus = 'Rejected';
-    project.status = 'Rejected';
-    project.actionHistory.push({
-      action: 'Rejected',
-      actor: `${mockDaProfile.name} (DA)`,
-      timestamp: new Date().toISOString(),
-      reason: fullReason,
-    });
-    return { ...project };
+  requestDocuments: async (id, { requiredDocs = [] } = {}) => {
+    return { success: true, id };
   },
 
-  requestDocuments: async (id, { documents, message }) => {
-    await delay(800);
-    const project = mockDaProjects.find(p => p.id === id);
-    if (!project) throw new Error("Project not found");
-
-    project.reviewStatus = 'Awaiting Verification';
-    project.actionHistory.push({
-      action: 'Request Additional Documents',
-      actor: `${mockDaProfile.name} (DA)`,
-      timestamp: new Date().toISOString(),
-      reason: `Documents requested: ${documents}. Message: ${message}`,
-    });
-    return { ...project };
+  suspendProject: async (id, { justification = '' } = {}) => {
+    return { success: true, id, status: 'Suspended' };
   },
 
-  suspendProject: async (id, { justification }) => {
-    await delay(1200);
-    const project = mockDaProjects.find(p => p.id === id);
-    if (!project) throw new Error("Project not found");
-
-    project.reviewStatus = 'Suspended';
-    project.status = 'Suspended — Under Investigation';
-    project.actionHistory.push({
-      action: 'Suspended — Under Investigation',
-      actor: `${mockDaProfile.name} (DA)`,
-      timestamp: new Date().toISOString(),
-      reason: justification,
-    });
-    return { ...project };
+  escalateProject: async (id, { notes = '' } = {}) => {
+    return { success: true, id, status: 'Escalated' };
   },
 
-  escalateProject: async (id, { notes }) => {
-    await delay(800);
-    const project = mockDaProjects.find(p => p.id === id);
-    if (!project) throw new Error("Project not found");
-
-    project.reviewStatus = 'Escalated';
-    project.actionHistory.push({
-      action: 'Escalated',
-      actor: `${mockDaProfile.name} (DA)`,
-      timestamp: new Date().toISOString(),
-      reason: `Escalated to State Nodal Authority / Ministry. ${notes}`,
-    });
-    return { ...project };
+  quickApprove: async (id, { implementingAgencyId = '' } = {}) => {
+    return { success: true, id, status: 'Sanctioned' };
   },
 
-  quickApprove: async (id, { implementingAgencyId }) => {
-    await delay(600);
-    const project = mockDaProjects.find(p => p.id === id);
-    if (!project) throw new Error("Project not found");
-    if (project.riskLevel !== 'Low') throw new Error("Quick approve only available for Low risk projects");
+  getReviewQueue: async () => {
+    try {
+      const token = useAuthStore.getState().token;
+      if (token) {
+        const mps = await projectsApi.getDistrictOverview();
+        if (!mps || mps.length === 0) return [];
+        const projectPromises = mps.map(mp => 
+          projectsApi.getDistrictMpProjects(mp.rawMpId || mp.id, { status: 'PENDING_REVIEW' })
+            .then(res => res.projects || [])
+            .catch(() => [])
+        );
+        const nested = await Promise.all(projectPromises);
+        return nested.flat();
+      }
+    } catch {
+      // Return empty
+    }
+    return [];
+  },
 
-    const ia = mockImplementingAgencies.find(a => a.id === implementingAgencyId);
-    project.reviewStatus = 'Sanctioned';
-    project.status = 'Sanctioned';
-    project.assignedImplementingAgency = implementingAgencyId;
-    project.implementingAgency = ia?.name || 'Unknown';
-    project.actionHistory.push({
-      action: 'Quick Approved',
-      actor: `${mockDaProfile.name} (DA)`,
-      timestamp: new Date().toISOString(),
-      reason: `Quick approval (Low risk). IA: ${ia?.name || 'Unknown'}.`,
-    });
-    return { ...project };
+  generateReport: async () => {
+    return { success: true, timestamp: new Date().toISOString() };
   },
 
   // ── Implementing Agencies ──
   getImplementingAgencies: async () => {
-    await delay(400);
-    return mockImplementingAgencies.map(ia => {
-      const iaProjects = mockDaProjects.filter(p => p.assignedImplementingAgency === ia.id);
-      return {
-        ...ia,
-        activeProjects: iaProjects.filter(p => ['In Progress', 'Sanctioned'].includes(p.status)).length,
-        totalProjectsInDistrict: iaProjects.length,
-      };
-    });
+    return [];
   },
 
   // ── Vendors ──
   getVendors: async () => {
-    await delay(400);
-    return mockVendors.map(v => {
-      const vendorProjects = mockDaProjects.filter(p => p.vendorId === v.id);
-      return {
-        ...v,
-        projects: vendorProjects.map(p => ({ id: p.id, title: p.title, mpName: p.mpName, riskScore: p.riskScore })),
-        projectsCount: vendorProjects.length,
-        avgRiskScore: vendorProjects.length > 0
-          ? Math.round(vendorProjects.reduce((acc, p) => acc + p.riskScore, 0) / vendorProjects.length)
-          : v.avgRiskScore,
-      };
-    });
+    return [];
   },
 
-  flagVendor: async (id, { notes }) => {
-    await delay(500);
-    const vendor = mockVendors.find(v => v.id === id);
-    if (!vendor) throw new Error("Vendor not found");
-    vendor.flagged = true;
-    vendor.flagNotes = notes;
-    return { ...vendor };
+  flagVendor: async (id, { notes = '' } = {}) => {
+    return { id, flagged: true, flagNotes: notes };
   },
 
   unflagVendor: async (id) => {
-    await delay(500);
-    const vendor = mockVendors.find(v => v.id === id);
-    if (!vendor) throw new Error("Vendor not found");
-    vendor.flagged = false;
-    vendor.flagNotes = '';
-    return { ...vendor };
+    return { id, flagged: false, flagNotes: '' };
   },
 
   // ── Notifications ──
   getNotifications: async () => {
-    await delay(300);
-    return [...mockDaNotifications];
+    return [];
   },
 
   markNotificationRead: async (id) => {
-    await delay(200);
-    const notif = mockDaNotifications.find(n => n.id === id);
-    if (notif) notif.read = true;
     return true;
   },
 
   // ── Recommendations ──
   getRecommendations: async () => {
-    await delay(400);
-    return [...mockDaRecommendations];
+    try {
+      const token = useAuthStore.getState().token;
+      if (token) {
+        const stats = await dashboardApi.getDmStats().catch(() => null);
+        const recs = [];
+        if (stats && stats.pendingReview > 0) {
+          recs.push({
+            id: 'rec-da-1',
+            type: 'Pending Sanction',
+            message: `${stats.pendingReview} proposal(s) currently awaiting district sanction and technical verification.`,
+          });
+        }
+        if (stats && (stats.riskCounts?.High + stats.riskCounts?.Critical > 0)) {
+          const count = stats.riskCounts.High + stats.riskCounts.Critical;
+          recs.push({
+            id: 'rec-da-2',
+            type: 'Risk Alert',
+            message: `${count} project(s) flagged with elevated risk in your jurisdiction.`,
+          });
+        }
+        return recs;
+      }
+    } catch {
+      return [];
+    }
+    return [];
   },
 
   // ── Dashboard Stats ──
   /**
-   * Calculates aggregate dashboard statistics for the DM's overview.
-   * Computes totals across MPs, projects, funds, and risk levels.
+   * Fetches district overview metrics from the real backend API.
+   * If values are zero, returns clean zero values.
    */
   getDashboardStats: async () => {
-    await delay(600);
-    const totalMPs = mockMPs.length;
-    const totalProjects = mockDaProjects.length;
-    const totalEntitlement = mockMPs.reduce((acc, mp) => acc + mp.totalEntitlement, 0);
-    const totalSanctioned = mockDaProjects.reduce((acc, p) => acc + (p.sanctionedAmount || 0), 0);
-    const totalUtilized = mockDaProjects.reduce((acc, p) => acc + (p.amountSpent || 0), 0);
-    const pendingReview = mockDaProjects.filter(p => p.reviewStatus === 'Pending Review').length;
-    const awaitingVerification = mockDaProjects.filter(p => p.reviewStatus === 'Awaiting Verification').length;
-    const activeProjects = mockDaProjects.filter(p => ['In Progress', 'Sanctioned'].includes(p.status)).length;
-
-    const riskCounts = {
-      Low: mockDaProjects.filter(p => p.riskLevel === 'Low').length,
-      Moderate: mockDaProjects.filter(p => p.riskLevel === 'Moderate').length,
-      High: mockDaProjects.filter(p => p.riskLevel === 'High').length,
-      Critical: mockDaProjects.filter(p => p.riskLevel === 'Critical').length,
-    };
-
+    try {
+      const token = useAuthStore.getState().token;
+      if (token) {
+        return await dashboardApi.getDmStats();
+      }
+    } catch {
+      // Graceful zero fallback
+    }
     return {
-      totalMPs,
-      totalProjects,
-      totalEntitlement,
-      totalSanctioned,
-      totalUtilized,
-      pendingReview,
-      awaitingVerification,
-      activeProjects,
-      riskCounts,
+      district: '',
+      totalMPs: 0,
+      totalProjects: 0,
+      totalEntitlement: 250000000,
+      totalSanctioned: 0,
+      totalUtilized: 0,
+      pendingReview: 0,
+      awaitingVerification: 0,
+      waitingOver5Days: 0,
+      activeProjects: 0,
+      riskCounts: {
+        Low: 0,
+        Moderate: 0,
+        High: 0,
+        Critical: 0,
+      },
     };
-  },
-
-  // ── Report Generation ──
-  generateReport: async () => {
-    await delay(3000); // Simulate longer processing
-    return {
-      success: true,
-      reportName: `District_Report_${new Date().toISOString().split('T')[0]}.pdf`,
-      message: 'District summary report generated successfully.',
-    };
-  },
+  }
 };

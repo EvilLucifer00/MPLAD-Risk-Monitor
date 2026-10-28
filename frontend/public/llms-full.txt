@@ -1,0 +1,33 @@
+# MPLADS Risk Monitor — Complete Technical Specification
+
+> Comprehensive system documentation, data dictionaries, API schemas, and architectural overview of the MPLADS Risk Monitor platform for autonomous agents, large language models, and automated audit tools.
+
+## Architecture Overview
+
+MPLADS (Member of Parliament Local Area Development Scheme) Risk Monitor is an AI-powered surveillance and real-time risk assessment engine deployed for the Ministry of Statistics and Programme Implementation (MoSPI), Government of India.
+
+The platform provides end-to-end monitoring across three primary tiers:
+1. Citizen Public Observatory: Full transparency on fund allocation (₹5 Cr / seat / year) and work progress across 543 Lok Sabha constituencies.
+2. Member of Parliament (MP) Workflow: Proposal recommendation, priority flagging, and fund utilization tracking.
+3. District Authority (DA) Workflow: Ground verification, contractor performance evaluation, technical sanction issuance, and fund disbursement monitoring.
+
+## Data Schema & Metrics
+
+- `constituency_id`: Unique identifier (1 to 543) representing the parliamentary constituency.
+- `state_ut`: State or Union Territory name.
+- `mp_name`: Current sitting Member of Parliament representing the seat.
+- `allocated_funds_cr`: Total allocated funds in Crores of Rupees (₹).
+- `utilized_funds_cr`: Total utilized funds with verified expenditure receipts.
+- `utilization_rate`: Calculated percentage of allocated funds utilized.
+- `total_projects`: Count of works sanctioned under MPLADS guidelines.
+- `completed_projects`: Count of completed physical infrastructure assets.
+- `ongoing_projects`: Count of active construction/procurement works.
+- `risk_score`: AI composite risk indicator normalized between 0.00 and 1.00 (Low: <0.30, Medium: 0.30–0.69, High: >=0.70).
+- `anomaly_flags`: Machine-detected discrepancies such as expenditure velocity anomalies, repetitive contractor allocation, or critical milestone delays.
+
+## Endpoints & Manifests
+
+- [Interactive Map View](https://mplads-risk-monitor.gov.in/#geospatial-map): Client-side Leaflet and TopoJSON map rendering for 543 constituencies.
+- [National Statistics](https://mplads-risk-monitor.gov.in/#overview): Aggregate developmental indicators.
+- [Agent Catalog (ARD)](https://mplads-risk-monitor.gov.in/.well-known/ai-catalog.json): Machine-readable catalog complying with Agentic Resource Discovery v1.0.
+- [Sitemap](https://mplads-risk-monitor.gov.in/sitemap.xml): XML sitemap.

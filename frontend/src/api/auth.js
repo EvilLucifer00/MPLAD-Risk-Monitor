@@ -3,8 +3,19 @@
  * Handles communication with the FastAPI backend for user authentication,
  * profile retrieval, and registration.
  */
+const PROD_API_URL = 'https://mplads-backend-axxw.onrender.com';
+const DEV_API_URL = 'http://localhost:8000';
 
-const RAW_API_URL = import.meta.env.VITE_API_URL || '';
+const isProductionOrPreview =
+  import.meta.env.PROD ||
+  import.meta.env.MODE === 'production' ||
+  import.meta.env.MODE === 'preview' ||
+  (typeof window !== 'undefined' && window.location.port === '4173');
+
+const RAW_API_URL =
+  import.meta.env.VITE_API_URL ||
+  (isProductionOrPreview ? PROD_API_URL : DEV_API_URL);
+
 const API_BASE_URL = RAW_API_URL.trim().replace(/\/+$/, '');
 
 /**
@@ -34,6 +45,8 @@ async function parseError(response) {
 
   return response.statusText || `Request failed with status ${response.status}`;
 }
+
+const inFlightAuthGet = new Map();
 
 export const authApi = {
   /**
@@ -71,19 +84,40 @@ export const authApi = {
    * @returns {Promise<{ id: number, mp_name: string, constituency: string, dist: string, state: string, house: string, dm_id: number }>}
    */
   getMpProfile: async (token) => {
-    const response = await fetch(`${API_BASE_URL}/user/auth/MP/me`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      const message = await parseError(response);
-      throw new Error(message);
+    const key = `MP_me:${token}`;
+    if (inFlightAuthGet.has(key)) {
+      return inFlightAuthGet.get(key);
     }
 
-    return await response.json();
+    const p = (async () => {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 4000);
+      try {
+        const response = await fetch(`${API_BASE_URL}/user/auth/MP/me`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            throw new Error('UNAUTHORIZED');
+          }
+          const message = await parseError(response);
+          throw new Error(message);
+        }
+
+        return await response.json();
+      } finally {
+        clearTimeout(timeoutId);
+        inFlightAuthGet.delete(key);
+      }
+    })();
+
+    inFlightAuthGet.set(key, p);
+    return p;
   },
 
   /**
@@ -92,19 +126,40 @@ export const authApi = {
    * @returns {Promise<{ id: number, dm_name: string, dist: string, state: string }>}
    */
   getDmProfile: async (token) => {
-    const response = await fetch(`${API_BASE_URL}/user/auth/DM/me`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      const message = await parseError(response);
-      throw new Error(message);
+    const key = `DM_me:${token}`;
+    if (inFlightAuthGet.has(key)) {
+      return inFlightAuthGet.get(key);
     }
 
-    return await response.json();
+    const p = (async () => {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 4000);
+      try {
+        const response = await fetch(`${API_BASE_URL}/user/auth/DM/me`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            throw new Error('UNAUTHORIZED');
+          }
+          const message = await parseError(response);
+          throw new Error(message);
+        }
+
+        return await response.json();
+      } finally {
+        clearTimeout(timeoutId);
+        inFlightAuthGet.delete(key);
+      }
+    })();
+
+    inFlightAuthGet.set(key, p);
+    return p;
   },
 
   /**
