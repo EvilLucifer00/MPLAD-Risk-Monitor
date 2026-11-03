@@ -1,46 +1,53 @@
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
-import React, { useState } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
-
-import { useDaMpProjects } from '../../api/queries';
+import { useVirtualizer } from '@tanstack/react-virtual';
+import { useDaMpProjects, useDaDistrictMps } from '../../api/queries';
 import { RiskBadge, StatusBadge } from '../mp/MpProjects';
 import usePageSeo from '../../hooks/usePageSeo';
 import { TbArrowLeft, TbSearch, TbFilter, TbChevronRight, TbBriefcase } from 'react-icons/tb';
 
-
 const DaMPDetail = () => {
   const { mpId } = useParams();
-  const fallbackMp = null;
   const { data: projectsData, isLoading } = useDaMpProjects(mpId);
-  const projects = Array.isArray(projectsData) ? projectsData : [];
-  const [mpInfo, setMpInfo] = useState(null);
+  const { data: districtMps } = useDaDistrictMps();
+
+  const matchedMp = useMemo(() => {
+    if (!districtMps || !Array.isArray(districtMps)) return null;
+    return districtMps.find(m => String(m.id) === String(mpId) || String(m.rawMpId) === String(mpId));
+  }, [districtMps, mpId]);
+
+  const projects = useMemo(() => {
+    if (Array.isArray(projectsData)) return projectsData;
+    if (projectsData?.projects && Array.isArray(projectsData.projects)) return projectsData.projects;
+    return [];
+  }, [projectsData]);
+
   const loading = isLoading && !projectsData;
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [riskFilter, setRiskFilter] = useState('All');
 
-  const mpDisplayName = mpInfo?.mp_name || fallbackMp?.name || 'Member of Parliament';
-  const mpDisplayConstituency = mpInfo?.constituency || fallbackMp?.constituency || '';
+  const mpDisplayName = matchedMp?.name || projectsData?.mpDetails?.mp_name || 'Member of Parliament';
+  const mpDisplayConstituency = matchedMp?.constituency || projectsData?.mpDetails?.constituency || '';
 
   usePageSeo(
     `${mpDisplayName} | DA Portal`,
     `Projects and sanction review oversight for ${mpDisplayName}, ${mpDisplayConstituency}.`
   );
 
-  if (loading) {
-    return <PortalPageLoader message="Loading MP Details..." />;
-  }
-
-  const filteredProjects = projects.filter(p => {
-    const searchLower = (searchTerm || '').toLowerCase();
-    const matchesSearch = 
-      (p.title || '').toLowerCase().includes(searchLower) || 
-      (p.vendor || '').toLowerCase().includes(searchLower) ||
-      (p.implementingAgency || '').toLowerCase().includes(searchLower);
-    const matchesStatus = statusFilter === 'All' || p.status === statusFilter;
-    const matchesRisk = riskFilter === 'All' || p.riskLevel === riskFilter;
-    return matchesSearch && matchesStatus && matchesRisk;
-  });
+  const filteredProjects = useMemo(() => {
+    return projects.filter(p => {
+      const searchLower = (searchTerm || '').toLowerCase();
+      const matchesSearch = 
+        (p.title || '').toLowerCase().includes(searchLower) || 
+        (p.vendor || '').toLowerCase().includes(searchLower) ||
+        (p.implementingAgency || '').toLowerCase().includes(searchLower);
+      const matchesStatus = statusFilter === 'All' || p.status === statusFilter;
+      const matchesRisk = riskFilter === 'All' || p.riskLevel === riskFilter;
+      return matchesSearch && matchesStatus && matchesRisk;
+    });
+  }, [projects, searchTerm, statusFilter, riskFilter]);
 
   const tableContainerRef = useRef(null);
   const rowVirtualizer = useVirtualizer({
@@ -61,6 +68,10 @@ const DaMPDetail = () => {
   const totalSanctioned = projects.reduce((acc, p) => acc + (p.sanctionedAmount || 0), 0);
   const totalUtilized = projects.reduce((acc, p) => acc + (p.amountSpent || 0), 0);
   const activeCount = projects.filter(p => ['In Progress', 'Sanctioned'].includes(p.status)).length;
+
+  if (loading) {
+    return <PortalPageLoader message="Loading MP Details..." />;
+  }
 
   return (
     <div className="space-y-6 flex flex-col min-h-full">
@@ -186,12 +197,7 @@ const DaMPDetail = () => {
       >
         <h2 id="projects-portfolio-heading" className="sr-only">Projects Portfolio</h2>
         <div ref={tableContainerRef} className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-320px)] min-h-[300px]">
-          {loading ? (
-            <div className="flex flex-col items-center justify-center p-12 h-64 text-slate-500" role="status" aria-live="polite">
-              <div className="w-8 h-8 border-4 border-[#123b63] border-t-transparent rounded-full animate-spin mb-3"></div>
-              <p className="text-sm font-medium">Loading MP projects...</p>
-            </div>
-          ) : filteredProjects.length === 0 ? (
+          {filteredProjects.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-12 h-64 text-slate-500">
               <TbBriefcase size={48} className="text-slate-300 mb-4" aria-hidden="true" />
               <p className="font-semibold text-slate-700">No projects found</p>
@@ -212,49 +218,63 @@ const DaMPDetail = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {filteredProjects.map(project => (
-                  <tr key={project.id} className="hover:bg-slate-50/50 transition-colors group">
-                    <td className="px-5 py-4">
-                      <p className="font-bold text-[#123b63] text-sm tracking-tight line-clamp-1">{project.title}</p>
-                      <p className="text-xs text-slate-500 mt-0.5">{project.id} • {project.category}</p>
-                    </td>
-                    <td className="px-5 py-4 hidden sm:table-cell">
-                      <p className="text-sm font-medium text-slate-700">{project.implementingAgency}</p>
-                      <p className="text-xs text-slate-500 mt-0.5">{project.vendor}</p>
-                    </td>
-                    <td className="px-5 py-4 hidden md:table-cell">
-                      <p className="text-sm font-bold text-[#123b63]">₹{(project.estimatedCost / 100000).toFixed(2)} L</p>
-                    </td>
-                    <td className="px-5 py-4">
-                      <StatusBadge status={project.status} />
-                    </td>
-                    <td className="px-5 py-4">
-                      <RiskBadge level={project.riskLevel} score={project.riskScore} />
-                    </td>
-                    <td className="px-5 py-4">
-                      <span className={`px-2.5 py-0.5 rounded-full text-[10.5px] font-bold uppercase tracking-wider ${
-                        project.reviewStatus === 'Pending Review' ? 'bg-orange-100 text-orange-700' :
-                        project.reviewStatus === 'Sanctioned' ? 'bg-emerald-100 text-emerald-700' :
-                        project.reviewStatus === 'Rejected' ? 'bg-red-100 text-red-700' :
-                        project.reviewStatus === 'Suspended' ? 'bg-slate-200 text-slate-700' :
-                        project.reviewStatus === 'Escalated' ? 'bg-amber-100 text-amber-700' :
-                        project.reviewStatus === 'Awaiting Verification' ? 'bg-blue-100 text-blue-700' :
-                        'bg-slate-100 text-slate-700'
-                      }`}>
-                        {project.reviewStatus}
-                      </span>
-                    </td>
-                    <td className="px-5 py-4 text-right">
-                      <Link 
-                        to={`/da/review/${project.id}`}
-                        aria-label={`Review project ${project.title}`}
-                        className="inline-flex items-center justify-center p-2 text-slate-400 hover:text-[#123b63] hover:bg-slate-100 rounded-lg active:scale-90 transition-[transform,background-color,color] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
-                      >
-                        <TbChevronRight size={20} aria-hidden="true" />
-                      </Link>
-                    </td>
+                {paddingTop > 0 && (
+                  <tr>
+                    <td colSpan={7} style={{ height: `${paddingTop}px` }} />
                   </tr>
-                ))}
+                )}
+                {virtualRows.map(virtualRow => {
+                  const project = filteredProjects[virtualRow.index];
+                  if (!project) return null;
+                  return (
+                    <tr key={project.id} className="hover:bg-slate-50/50 transition-colors group">
+                      <td className="px-5 py-4">
+                        <p className="font-bold text-[#123b63] text-sm tracking-tight line-clamp-1">{project.title}</p>
+                        <p className="text-xs text-slate-500 mt-0.5">{project.id} • {project.category}</p>
+                      </td>
+                      <td className="px-5 py-4 hidden sm:table-cell">
+                        <p className="text-sm font-medium text-slate-700">{project.implementingAgency}</p>
+                        <p className="text-xs text-slate-500 mt-0.5">{project.vendor}</p>
+                      </td>
+                      <td className="px-5 py-4 hidden md:table-cell">
+                        <p className="text-sm font-bold text-[#123b63]">₹{(project.estimatedCost / 100000).toFixed(2)} L</p>
+                      </td>
+                      <td className="px-5 py-4">
+                        <StatusBadge status={project.status} />
+                      </td>
+                      <td className="px-5 py-4">
+                        <RiskBadge level={project.riskLevel} score={project.riskScore} />
+                      </td>
+                      <td className="px-5 py-4">
+                        <span className={`px-2.5 py-0.5 rounded-full text-[10.5px] font-bold uppercase tracking-wider ${
+                          project.reviewStatus === 'Pending Review' ? 'bg-orange-100 text-orange-700' :
+                          project.reviewStatus === 'Sanctioned' ? 'bg-emerald-100 text-emerald-700' :
+                          project.reviewStatus === 'Rejected' ? 'bg-red-100 text-red-700' :
+                          project.reviewStatus === 'Suspended' ? 'bg-slate-200 text-slate-700' :
+                          project.reviewStatus === 'Escalated' ? 'bg-amber-100 text-amber-700' :
+                          project.reviewStatus === 'Awaiting Verification' ? 'bg-blue-100 text-blue-700' :
+                          'bg-slate-100 text-slate-700'
+                        }`}>
+                          {project.reviewStatus}
+                        </span>
+                      </td>
+                      <td className="px-5 py-4 text-right">
+                        <Link 
+                          to={`/da/review/${project.id}`}
+                          aria-label={`Review project ${project.title}`}
+                          className="inline-flex items-center justify-center p-2 text-slate-400 hover:text-[#123b63] hover:bg-slate-100 rounded-lg active:scale-90 transition-[transform,background-color,color] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
+                        >
+                          <TbChevronRight size={20} aria-hidden="true" />
+                        </Link>
+                      </td>
+                    </tr>
+                  );
+                })}
+                {paddingBottom > 0 && (
+                  <tr>
+                    <td colSpan={7} style={{ height: `${paddingBottom}px` }} />
+                  </tr>
+                )}
               </tbody>
             </table>
           )}

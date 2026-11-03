@@ -50,7 +50,7 @@ const DaProjectReview = () => {
     const search = searchTerm.toLowerCase();
     return queue.filter(p => {
       const matchesSearch = !search || p.title.toLowerCase().includes(search) || (p.mpName && p.mpName.toLowerCase().includes(search));
-      const matchesMp = reviewMpFilter === 'All' || p.mpId === reviewMpFilter;
+      const matchesMp = reviewMpFilter === 'All' || String(p.mpId) === String(reviewMpFilter);
       const matchesRisk = reviewRiskFilter === 'All' || p.riskLevel === reviewRiskFilter;
       const matchesCat = reviewCategoryFilter === 'All' || p.category === reviewCategoryFilter;
       return matchesSearch && matchesMp && matchesRisk && matchesCat;
@@ -187,6 +187,20 @@ const DaProjectReview = () => {
               <TbClipboardCheck size={48} className="text-slate-300 mb-4" aria-hidden="true" />
               <p className="font-semibold">Review queue is empty!</p>
               <p className="text-sm mt-1">No projects match your current filters.</p>
+              {(reviewMpFilter !== 'All' || reviewRiskFilter !== 'All' || reviewCategoryFilter !== 'All' || searchTerm) && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchTerm('');
+                    setReviewMpFilter('All');
+                    setReviewRiskFilter('All');
+                    setReviewCategoryFilter('All');
+                  }}
+                  className="mt-3 px-3.5 py-1.5 text-xs font-semibold text-cyan-700 bg-cyan-50 hover:bg-cyan-100 rounded-lg transition-colors cursor-pointer"
+                >
+                  Clear all filters
+                </button>
+              )}
             </div>
           ) : (
             <ul role="list" className="divide-y divide-slate-100">

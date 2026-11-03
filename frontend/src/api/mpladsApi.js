@@ -245,6 +245,8 @@ export function mapProjectFromBackend(p) {
   return {
     id: p.id ? (typeof p.id === 'string' && p.id.startsWith('PRJ-') ? p.id : `PRJ-2026-${String(p.id).padStart(3, '0')}`) : `PRJ-${Date.now()}`,
     rawId: p.id,
+    mpId: p.mp_id ? String(p.mp_id) : undefined,
+    mpName: p.mp_name || undefined,
     title: p.project_title || 'Untitled Project',
     category: formatCategory(p.category),
     description: p.description || '',

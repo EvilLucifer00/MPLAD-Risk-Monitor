@@ -35,7 +35,10 @@ export const daApi = {
       const token = useAuthStore.getState().token;
       if (token) {
         const result = await projectsApi.getDistrictMpProjects(mpId);
-        return result.projects || [];
+        const projects = result.projects || [];
+        projects.mpDetails = result.mpDetails || {};
+        projects.stats = result.stats || {};
+        return projects;
       }
     } catch {
       // Graceful fallback
@@ -58,7 +61,12 @@ export const daApi = {
         // Fetch projects for each MP in the district
         const projectPromises = mps.map(mp => 
           projectsApi.getDistrictMpProjects(mp.rawMpId || mp.id, filters)
-            .then(res => res.projects || [])
+            .then(res => (res.projects || []).map(p => ({
+              ...p,
+              mpId: p.mpId || String(mp.rawMpId || mp.id),
+              mpName: p.mpName || mp.name,
+              constituency: p.constituency || mp.constituency,
+            })))
             .catch(() => [])
         );
         const nested = await Promise.all(projectPromises);
@@ -129,11 +137,30 @@ export const daApi = {
       if (token) {
         const mps = await projectsApi.getDistrictOverview();
         if (!mps || mps.length === 0) return [];
-        const projectPromises = mps.map(mp => 
-          projectsApi.getDistrictMpProjects(mp.rawMpId || mp.id, { status: 'PENDING_REVIEW' })
-            .then(res => res.projects || [])
-            .catch(() => [])
-        );
+        const projectPromises = mps.map(async (mp) => {
+          const mpIdStr = String(mp.rawMpId || mp.id);
+          try {
+            const res = await projectsApi.getDistrictMpProjects(mpIdStr, { status: 'PENDING_REVIEW' });
+            let list = res.projects || [];
+            if (list.length === 0) {
+              const allRes = await projectsApi.getDistrictMpProjects(mpIdStr);
+              list = (allRes.projects || []).filter(p => 
+                p.status === 'Pending Sanction' || 
+                p.reviewStatus === 'Pending Review' || 
+                p.status === 'Pending Review' ||
+                p.status === 'SUBMITTED'
+              );
+            }
+            return list.map(p => ({
+              ...p,
+              mpId: p.mpId || mpIdStr,
+              mpName: p.mpName || mp.name,
+              constituency: p.constituency || mp.constituency,
+            }));
+          } catch {
+            return [];
+          }
+        });
         const nested = await Promise.all(projectPromises);
         return nested.flat();
       }

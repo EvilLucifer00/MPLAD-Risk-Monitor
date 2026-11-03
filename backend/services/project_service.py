@@ -1091,7 +1091,7 @@ async def dm_mp_projects(
         supabase
         .table("mplads_mp")
         .select(
-            "id, mp_name, constituency, district, state"
+            "*"
         )
         .eq("id", mp_id)
         .limit(1)
@@ -1112,7 +1112,7 @@ async def dm_mp_projects(
 
     if (
         mp_info.get("state") != dm["state"]
-        or mp_info.get("district") != dm["dist"]
+        or (mp_info.get("dist") or mp_info.get("district")) != dm["dist"]
     ):
 
         raise HTTPException(

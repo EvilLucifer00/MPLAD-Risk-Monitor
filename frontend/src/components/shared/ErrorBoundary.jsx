@@ -26,6 +26,15 @@ class ErrorBoundary extends React.Component {
     window.location.reload();
   };
 
+  handleGoBack = () => {
+    this.setState({ hasError: false, error: null });
+    if (typeof window !== 'undefined' && window.history && window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = '/';
+    }
+  };
+
   render() {
     if (this.state.hasError) {
       if (this.props.fallback) {
@@ -53,7 +62,17 @@ class ErrorBoundary extends React.Component {
                 {this.state.error.toString()}
               </pre>
             )}
-            <div className="flex gap-3 justify-center">
+            <div className="flex flex-wrap gap-3 justify-center">
+              <button
+                type="button"
+                onClick={this.handleGoBack}
+                className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 flex items-center gap-1.5"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Go Back
+              </button>
               <button
                 type="button"
                 onClick={this.handleReload}
