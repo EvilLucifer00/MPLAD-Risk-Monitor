@@ -13,7 +13,7 @@ async def reports(mp: dict, year: Optional[int] = None):
     proj_response = (
         supabase
         .table("mplads_new_projects")
-        .select("id, category, status, sanctioned_amount, utilized_amount, start_date, created_at")
+        .select("*")
         .eq("mp_id", mp_id)
         .execute()
     )

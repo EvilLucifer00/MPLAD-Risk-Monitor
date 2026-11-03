@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { TbSearch, TbFilter, TbMenu2, TbX } from 'react-icons/tb';
+import { IconSearch, IconFilter, IconMenu, IconClose } from './HomeIcons';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import EmblemImage from './EmblemImage';
 
 const Toolbar = ({
   searchTerm,
@@ -16,38 +16,45 @@ const Toolbar = ({
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <motion.div 
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-      className="flex-none flex flex-col md:flex-row flex-wrap md:justify-between md:items-center px-4 md:px-8 py-4 min-h-15 bg-white border-b border-slate-200 z-1000 shadow-sm gap-4 md:gap-6"
-    >
+    <header className="sticky top-0 z-[1100] flex-none flex flex-col md:flex-row flex-wrap md:justify-between md:items-center px-4 md:px-8 py-3.5 min-h-15 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm gap-3 md:gap-6 transition-all duration-200">
       <div className="flex justify-between items-center w-full md:w-auto">
-        <div className="flex items-center gap-2">
-        <img
-          src="/emblem.png"
-          alt="MPLADS Risk Monitor"
-          className="w-11 h-11 object-contain"
-        />
-
-        <h2 className="text-xl md:text-2xl font-bold text-slate-800">
-          MPLADS Risk Monitor
-        </h2>
+        <div className="flex items-center gap-3">
+          <EmblemImage
+            width="40"
+            height="44"
+            className="w-10 h-11 object-contain shrink-0"
+          />
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-lg md:text-xl font-bold tracking-tight text-[#123b63] leading-tight block">
+                MPLADS Risk Monitor
+              </span>
+              <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[10px] font-bold tracking-wider uppercase bg-amber-50 text-amber-800 rounded border border-amber-200">
+                GOI
+              </span>
+            </div>
+            <p className="text-[11px] font-medium text-slate-500 tracking-tight leading-none mt-0.5">
+              Ministry of Statistics & Programme Implementation
+            </p>
+          </div>
         </div>
         <button 
-          className="md:hidden p-2 -mr-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+          className="md:hidden p-2 -mr-1 text-slate-700 bg-slate-100/90 hover:bg-slate-200/90 border border-slate-200 rounded-xl transition-all active:scale-95 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] shadow-xs"
           onClick={() => setIsExpanded(!isExpanded)}
+          aria-label={isExpanded ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={isExpanded}
         >
-          {isExpanded ? <TbX size={24} /> : <TbMenu2 size={24} />}
+          {isExpanded ? <IconClose size={24} /> : <IconMenu size={24} />}
         </button>
       </div>
 
-      <div className={`${isExpanded ? 'flex' : 'hidden'} md:flex flex-col md:flex-row flex-wrap w-full md:flex-1 md:justify-end gap-4 md:items-center`}>
+      <div className={`${isExpanded ? 'flex' : 'hidden'} md:flex flex-col md:flex-row flex-wrap w-full md:flex-1 md:justify-end gap-3 md:gap-4 md:items-center max-h-[calc(100vh-5rem)] overflow-y-auto`}>
         <div className="flex items-center bg-slate-50 border border-slate-200 rounded-lg transition-all px-5 py-2.5 duration-200 focus-within:ring-[3px] focus-within:ring-blue-500/10 w-full md:w-auto">
-          <TbSearch size={18} className="text-slate-500 mr-2 shrink-0" />
+          <IconSearch size={18} className="text-slate-500 mr-2 shrink-0" aria-hidden="true" />
           <input
             type="text"
             placeholder="Search constituency..."
+            aria-label="Search constituency by name"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="border-none bg-transparent outline-none font-sans text-base text-slate-900 w-full md:w-50"
@@ -55,10 +62,11 @@ const Toolbar = ({
         </div>
 
         <div className="flex items-center bg-slate-50 border border-slate-200 rounded-lg px-5 py-2.5 transition-all duration-200 focus-within:ring-[3px] focus-within:ring-blue-500/10 w-full md:w-auto">
-          <TbFilter size={18} className="text-slate-500 mr-2 shrink-0" />
+          <IconFilter size={18} className="text-slate-500 mr-2 shrink-0" aria-hidden="true" />
           <select
             value={filterState}
             onChange={(e) => setFilterState(e.target.value)}
+            aria-label="Filter by state"
             className="border-none bg-transparent outline-none font-sans text-base text-slate-900 cursor-pointer w-full md:w-auto"
           >
             <option value="">All States</option>
@@ -74,6 +82,7 @@ const Toolbar = ({
           <select
             value={filterRisk}
             onChange={(e) => setFilterRisk(e.target.value)}
+            aria-label="Filter by risk level"
             className="border-none bg-transparent outline-none font-sans text-base text-slate-900 cursor-pointer w-full md:w-auto"
           >
             <option value="">All Risk Levels</option>
@@ -89,13 +98,13 @@ const Toolbar = ({
           <button
             onClick={() => navigate('/login')}
             className="px-5 py-2.5 bg-blue-600 text-white rounded-lg font-medium
-               hover:bg-blue-700 transition-colors duration-200"
+               hover:bg-blue-700 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
           >
             Login
           </button>
         </div>
       </div>
-    </motion.div>
+    </header>
   );
 };
 

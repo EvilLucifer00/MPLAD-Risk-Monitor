@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /mp/
+Disallow: /da/
+
+Sitemap: https://mplads-risk-monitor.gov.in/sitemap.xml
+
