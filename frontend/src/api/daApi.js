@@ -35,14 +35,41 @@ export const daApi = {
       const token = useAuthStore.getState().token;
       if (token) {
         const result = await projectsApi.getDistrictMpProjects(mpId);
-        const projects = result.projects || [];
-        projects.mpDetails = result.mpDetails || {};
-        projects.stats = result.stats || {};
-        return projects;
+        let projects = result?.projects || [];
+        if (projects.length > 0) {
+          projects.mpDetails = result.mpDetails || {};
+          projects.stats = result.stats || {};
+          return projects;
+        }
       }
     } catch {
-      // Graceful fallback
+      // Direct fetch failed - proceed to review queue fallback
     }
+
+    // Fallback: check review queue for this MP's projects
+    try {
+      const queue = await daApi.getReviewQueue();
+      const mpQueue = (queue || []).filter(p => String(p.mpId) === String(mpId) || String(p.rawMpId) === String(mpId));
+      if (mpQueue.length > 0) {
+        const fallbackProjects = [...mpQueue];
+        fallbackProjects.mpDetails = {
+          mp_id: mpId,
+          mp_name: mpQueue[0].mpName,
+          constituency: mpQueue[0].constituency,
+          total_projects: mpQueue.length,
+        };
+        fallbackProjects.stats = {
+          active_projects: mpQueue.length,
+          sanctioned_amount_cr: 0,
+          utilized_amount_cr: 0,
+          avg_risk_score: Math.round(mpQueue.reduce((acc, p) => acc + (p.riskScore || 0), 0) / mpQueue.length),
+        };
+        return fallbackProjects;
+      }
+    } catch {
+      // Ignore
+    }
+
     return [];
   },
 

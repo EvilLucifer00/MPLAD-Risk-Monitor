@@ -149,6 +149,8 @@ export const useDaMpProjects = (mpId) => {
     queryKey: queryKeys.da.mpProjects(mpId),
     queryFn: () => daApi.getMPProjects(mpId),
     enabled: Boolean(mpId),
+    refetchOnMount: 'always',
+    staleTime: 0,
   });
 };
 

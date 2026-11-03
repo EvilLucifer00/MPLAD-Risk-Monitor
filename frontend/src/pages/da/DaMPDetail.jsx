@@ -65,9 +65,14 @@ const DaMPDetail = () => {
   const riskLevels = ['All', 'Low', 'Moderate', 'High', 'Critical'];
 
   // Computed stats
-  const totalSanctioned = projects.reduce((acc, p) => acc + (p.sanctionedAmount || 0), 0);
-  const totalUtilized = projects.reduce((acc, p) => acc + (p.amountSpent || 0), 0);
-  const activeCount = projects.filter(p => ['In Progress', 'Sanctioned'].includes(p.status)).length;
+  const totalSanctioned = projectsData?.stats?.sanctioned_amount_cr != null 
+    ? projectsData.stats.sanctioned_amount_cr * 10000000 
+    : projects.reduce((acc, p) => acc + (p.sanctionedAmount || 0), 0);
+  const totalUtilized = projectsData?.stats?.utilized_amount_cr != null 
+    ? projectsData.stats.utilized_amount_cr * 10000000 
+    : projects.reduce((acc, p) => acc + (p.amountSpent || 0), 0);
+  const activeCount = projectsData?.stats?.active_projects ?? 
+    projects.filter(p => !['Completed', 'Rejected'].includes(p.status)).length;
 
   if (loading) {
     return <PortalPageLoader message="Loading MP Details..." />;
@@ -201,7 +206,22 @@ const DaMPDetail = () => {
             <div className="flex flex-col items-center justify-center p-12 h-64 text-slate-500">
               <TbBriefcase size={48} className="text-slate-300 mb-4" aria-hidden="true" />
               <p className="font-semibold text-slate-700">No projects found</p>
-              <p className="text-sm text-slate-400 mt-1">Try adjusting your filters or search term.</p>
+              <p className="text-sm text-slate-400 mt-1">
+                {projects.length > 0 ? 'No projects match your current filters.' : 'No projects found for this MP.'}
+              </p>
+              {(statusFilter !== 'All' || riskFilter !== 'All' || searchTerm) && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchTerm('');
+                    setStatusFilter('All');
+                    setRiskFilter('All');
+                  }}
+                  className="mt-3 px-3.5 py-1.5 text-xs font-semibold text-cyan-700 bg-cyan-50 hover:bg-cyan-100 rounded-lg transition-colors cursor-pointer"
+                >
+                  Clear all filters
+                </button>
+              )}
             </div>
           ) : (
             <table className="w-full text-left border-collapse">
