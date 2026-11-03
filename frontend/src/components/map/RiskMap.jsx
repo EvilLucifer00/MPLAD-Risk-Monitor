@@ -31,7 +31,6 @@ const RiskMap = ({ searchTerm, filterState, filterRisk, setStatesList }) => {
   }, [filterState, filterRisk, searchTerm, hoveredRiskLevel]);
 
   useEffect(() => {
-<<<<<<< HEAD
     // Singleton cached GeoJSON fetch with persistent CacheStorage across sessions
     if (!window.__GEOJSON_PROMISE__) {
       window.__GEOJSON_PROMISE__ = (async () => {
@@ -62,19 +61,6 @@ const RiskMap = ({ searchTerm, filterState, filterRisk, setStatesList }) => {
         window.__GEOJSON_PROMISE__ = null;
         throw err;
       });
-=======
-    // Singleton cached GeoJSON fetch - prevents duplicate downloads during re-renders/StrictMode
-    if (!window.__GEOJSON_PROMISE__) {
-      window.__GEOJSON_PROMISE__ = fetch("/data/india_constituencies_simplified.geojson")
-        .then((res) => {
-          if (!res.ok) throw new Error("Failed to load map boundaries");
-          return res.json();
-        })
-        .catch((err) => {
-          window.__GEOJSON_PROMISE__ = null; // allow retry
-          throw err;
-        });
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
     }
 
     let isMounted = true;
@@ -124,7 +110,6 @@ const RiskMap = ({ searchTerm, filterState, filterRisk, setStatesList }) => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleClosePanel]);
 
-<<<<<<< HEAD
   // Debounced map resize invalidation to keep canvas viewport crisp without layout thrash
   useEffect(() => {
     let timeoutId;
@@ -144,8 +129,6 @@ const RiskMap = ({ searchTerm, filterState, filterRisk, setStatesList }) => {
     };
   }, []);
 
-=======
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
   // Reset map when clicking on the empty background of the map
   useEffect(() => {
     const map = mapRef.current;

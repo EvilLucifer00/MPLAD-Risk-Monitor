@@ -1,14 +1,7 @@
-<<<<<<< HEAD
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useState, useEffect, useMemo, Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
 import { useDaDistrictMps } from '../../api/queries';
-=======
-import React, { useState, useEffect, useMemo, Suspense, lazy } from 'react';
-import { Link } from 'react-router-dom';
-import { daApi } from '../../api/mockDaApi';
-import { mockMPs } from '../../data/mockDaData';
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 import { useDaStore } from '../../store/useDaStore';
 import { useAuthStore } from '../../store/useAuthStore';
 import { RiskBadge } from '../mp/MpProjects';
@@ -32,7 +25,6 @@ const AnalyticsSkeleton = () => (
 );
 
 const DaProjects = () => {
-<<<<<<< HEAD
   const user = useAuthStore((s) => s.user);
   usePageSeo(
     'District Projects | DA Portal',
@@ -45,40 +37,6 @@ const DaProjects = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { projectsView, setProjectsView } = useDaStore();
 
-=======
-  usePageSeo(
-    'District Projects | DA Portal',
-    'Directory and risk oversight of Members of Parliament and projects across constituencies in Lucknow District.'
-  );
-
-  const [mps, setMps] = useState(() => {
-    try {
-      const cached = sessionStorage.getItem('mplads_da_mps_cache');
-      if (cached) return JSON.parse(cached);
-    } catch {
-      // Session storage fallback
-    }
-    return mockMPs;
-  });
-  const [searchTerm, setSearchTerm] = useState('');
-  const { projectsView, setProjectsView } = useDaStore();
-
-  useEffect(() => {
-    let isMounted = true;
-    daApi.getDistrictMPs().then(data => {
-      if (isMounted && data?.length) {
-        setMps(data);
-        try {
-          sessionStorage.setItem('mplads_da_mps_cache', JSON.stringify(data));
-        } catch {}
-      }
-    }).catch(() => {
-      // Fallback to initial mock data
-    });
-    return () => { isMounted = false; };
-  }, []);
-
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
   const filteredMPs = useMemo(() => {
     const term = searchTerm.toLowerCase();
     return mps.filter(mp =>
@@ -110,24 +68,17 @@ const DaProjects = () => {
     total: mp.totalProjects,
     highCritical: mp.highCriticalCount,
   })), [mps]);
-<<<<<<< HEAD
 
   if (loading) {
     return <PortalPageLoader message="Loading District Projects..." />;
   }
-=======
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 
   return (
     <div className="space-y-6 flex flex-col min-h-full">
       <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-[#123b63]">District Projects</h1>
-<<<<<<< HEAD
           <p className="text-sm text-slate-500 mt-1 leading-normal">All MPs and their projects across {user?.dist ? `${user.dist} District` : "the district"}.</p>
-=======
-          <p className="text-sm text-slate-500 mt-1 leading-normal">All MPs and their projects across Lucknow District.</p>
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
         </div>
         <div className="flex items-center gap-2" role="toolbar" aria-label="Projects view mode">
           <button

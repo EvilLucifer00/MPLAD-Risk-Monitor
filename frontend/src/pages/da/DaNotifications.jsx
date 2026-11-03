@@ -1,14 +1,9 @@
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-<<<<<<< HEAD
 import { daApi } from '../../api/daApi';
 import { useDaNotifications, queryKeys } from '../../api/queries';
 import { useQueryClient } from '@tanstack/react-query';
-=======
-import { daApi } from '../../api/mockDaApi';
-import { mockDaNotifications } from '../../data/mockDaData';
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 import { 
   TbBell, TbCheck, TbAlertTriangle, TbInfoCircle, TbChecklist, TbTrash, TbX
 } from 'react-icons/tb';
@@ -19,7 +14,6 @@ const DaNotifications = () => {
     'Notifications | DA Portal',
     'District Authority notifications, risk alerts, project reviews, and sanction updates.'
   );
-<<<<<<< HEAD
 
   const queryClient = useQueryClient();
   const { data: notifData, isLoading } = useDaNotifications();
@@ -27,21 +21,6 @@ const DaNotifications = () => {
   const notifications = localNotifications ?? (Array.isArray(notifData) ? notifData : []);
   const loading = isLoading && !notifData;
   const [filter, setFilter] = useState('All');
-=======
-
-  const [notifications, setNotifications] = useState(() => mockDaNotifications);
-  const [loading, setLoading] = useState(false);
-  const [filter, setFilter] = useState('All');
-
-  useEffect(() => {
-    daApi.getNotifications().then(data => {
-      if (data && data.length) {
-        setNotifications(data);
-      }
-      setLoading(false);
-    });
-  }, []);
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 
   const handleMarkAsRead = async (id) => {
     await daApi.markNotificationRead(id);

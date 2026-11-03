@@ -1,18 +1,11 @@
-<<<<<<< HEAD
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useState } from 'react';
 import { useDaAgencies } from '../../api/queries';
 import { useAuthStore } from '../../store/useAuthStore';
-=======
-import React, { useState, useEffect } from 'react';
-import { daApi } from '../../api/mockDaApi';
-import { mockImplementingAgencies } from '../../data/mockDaData';
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 import { TbSearch, TbBuildingBank, TbClock, TbAlertTriangle, TbBriefcase } from 'react-icons/tb';
 import { usePageSeo } from '../../hooks/usePageSeo';
 
 const DaIADirectory = () => {
-<<<<<<< HEAD
   const user = useAuthStore((s) => s.user);
   usePageSeo(
     'Implementing Agencies Directory | DA Portal',
@@ -24,46 +17,19 @@ const DaIADirectory = () => {
   const loading = isLoading && !agenciesData;
   const [searchTerm, setSearchTerm] = useState('');
 
-=======
-  usePageSeo(
-    'Implementing Agencies Directory | DA Portal',
-    'Directory, capacity tracking, and risk performance monitoring of all empanelled Implementing Agencies in Lucknow District.'
-  );
-
-  const [agencies, setAgencies] = useState(() => mockImplementingAgencies);
-  const [loading, setLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-
-  useEffect(() => {
-    daApi.getImplementingAgencies().then(data => {
-      if (data && data.length) {
-        setAgencies(data);
-      }
-      setLoading(false);
-    });
-  }, []);
-
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
   const filtered = agencies.filter(ia =>
     ia.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-<<<<<<< HEAD
   if (loading) {
     return <PortalPageLoader message="Loading Implementing Agencies..." />;
   }
 
-=======
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
   return (
     <div className="space-y-6 max-w-7xl mx-auto min-h-full flex flex-col">
       <header>
         <h1 className="text-2xl font-bold tracking-tight text-[#123b63]">Implementing Agency Directory</h1>
-<<<<<<< HEAD
         <p className="text-sm text-slate-500 mt-1">Track record and performance of IAs across {user?.dist ? `${user.dist} District` : "the district"}.</p>
-=======
-        <p className="text-sm text-slate-500 mt-1">Track record and performance of IAs in Lucknow District.</p>
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
       </header>
 
       <section aria-labelledby="ia-search-heading" className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
@@ -105,11 +71,7 @@ const DaIADirectory = () => {
                         <span className={`text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${
                           ia.status === 'Active' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'
                         }`}>
-<<<<<<< HEAD
                           {ia.status || 'Active'}
-=======
-                          {ia.status}
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
                         </span>
                       </div>
                     </div>
@@ -119,22 +81,14 @@ const DaIADirectory = () => {
                         <div className="flex items-center justify-center gap-1 text-slate-500 mb-1">
                           <TbBriefcase size={14} aria-hidden="true" />
                         </div>
-<<<<<<< HEAD
                         <div className="text-2xl font-extrabold tracking-tight text-[#123b63]">{ia.projectsHandled ?? 0}</div>
-=======
-                        <div className="text-2xl font-extrabold tracking-tight text-[#123b63]">{ia.projectsHandled}</div>
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
                         <div className="text-[10.5px] font-bold text-slate-600 uppercase tracking-wider">Total Projects</div>
                       </div>
                       <div className="bg-slate-50 rounded-xl p-3 text-center">
                         <div className="flex items-center justify-center gap-1 text-slate-500 mb-1">
                           <TbBriefcase size={14} aria-hidden="true" />
                         </div>
-<<<<<<< HEAD
                         <div className="text-2xl font-extrabold tracking-tight text-[#123b63]">{ia.activeProjects ?? 0}</div>
-=======
-                        <div className="text-2xl font-extrabold tracking-tight text-[#123b63]">{ia.activeProjects}</div>
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
                         <div className="text-[10.5px] font-bold text-slate-600 uppercase tracking-wider">Active Now</div>
                       </div>
                     </div>
@@ -147,11 +101,7 @@ const DaIADirectory = () => {
                         Avg Completion
                       </span>
                       <span className={`text-sm font-bold ${ia.avgCompletionMonths > 9 ? 'text-orange-800' : 'text-[#123b63]'}`}>
-<<<<<<< HEAD
                         {ia.avgCompletionMonths ?? 6} months
-=======
-                        {ia.avgCompletionMonths} months
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
@@ -160,49 +110,29 @@ const DaIADirectory = () => {
                         Avg Risk Score
                       </span>
                       <span className={`text-sm font-bold ${
-<<<<<<< HEAD
                         (ia.avgRiskScore ?? 0) >= 60 ? 'text-red-700' :
                         (ia.avgRiskScore ?? 0) >= 40 ? 'text-amber-800' :
                         'text-emerald-800'
                       }`}>
                         {ia.avgRiskScore ?? 25}/100
-=======
-                        ia.avgRiskScore >= 60 ? 'text-red-700' :
-                        ia.avgRiskScore >= 40 ? 'text-amber-800' :
-                        'text-emerald-800'
-                      }`}>
-                        {ia.avgRiskScore}/100
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
                       </span>
                     </div>
                     {/* Risk bar */}
                     <div 
                       role="meter" 
                       aria-label={`Average risk score for ${ia.name}`} 
-<<<<<<< HEAD
                       aria-valuenow={ia.avgRiskScore ?? 25} 
-=======
-                      aria-valuenow={ia.avgRiskScore} 
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
                       aria-valuemin={0} 
                       aria-valuemax={100}
                       className="w-full bg-slate-100 rounded-full h-1.5"
                     >
                       <div 
                         className={`h-1.5 rounded-full transition-all ${
-<<<<<<< HEAD
                           (ia.avgRiskScore ?? 0) >= 60 ? 'bg-red-500' :
                           (ia.avgRiskScore ?? 0) >= 40 ? 'bg-amber-500' :
                           'bg-emerald-500'
                         }`}
                         style={{ width: `${ia.avgRiskScore ?? 25}%` }}
-=======
-                          ia.avgRiskScore >= 60 ? 'bg-red-500' :
-                          ia.avgRiskScore >= 40 ? 'bg-amber-500' :
-                          'bg-emerald-500'
-                        }`}
-                        style={{ width: `${ia.avgRiskScore}%` }}
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
                       ></div>
                     </div>
                   </div>

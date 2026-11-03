@@ -1,17 +1,10 @@
-<<<<<<< HEAD
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
-=======
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { daApi } from '../../api/daApi';
 import { useDaReviewQueue, useDaDistrictMps, useDaAgencies, useDaReviewActionMutation, queryKeys } from '../../api/queries';
 import { useQueryClient } from '@tanstack/react-query';
 import { useDaStore } from '../../store/useDaStore';
-<<<<<<< HEAD
-=======
-import { mockMPs, mockImplementingAgencies, mockDaProjects } from '../../data/mockDaData';
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 import { RiskBadge } from '../mp/MpProjects';
 import usePageSeo from '../../hooks/usePageSeo';
 import { 
@@ -25,7 +18,6 @@ const DaProjectReview = () => {
     'Prioritized district review queue for sanctioning MPLADS proposals, sorted by AI risk score.'
   );
 
-<<<<<<< HEAD
   const queryClient = useQueryClient();
   const { data: queueData, isLoading } = useDaReviewQueue();
   const { data: districtMpsData } = useDaDistrictMps();
@@ -35,14 +27,6 @@ const DaProjectReview = () => {
   const queue = Array.isArray(queueData) ? queueData : [];
   const loading = isLoading && !queueData;
 
-=======
-  const [queue, setQueue] = useState(() => 
-    mockDaProjects
-      .filter(p => p.reviewStatus === 'Pending Review' || p.reviewStatus === 'Awaiting Verification')
-      .sort((a, b) => b.riskScore - a.riskScore)
-  );
-  const [loading, setLoading] = useState(false);
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
   const [searchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
   const { 
@@ -58,26 +42,10 @@ const DaProjectReview = () => {
   const [showIASelect, setShowIASelect] = useState(null);
 
   useEffect(() => {
-    let isMounted = true;
     const mpParam = searchParams.get('mp');
     if (mpParam) setReviewMpFilter(mpParam);
-<<<<<<< HEAD
   }, [searchParams, setReviewMpFilter]);
 
-=======
-
-    daApi.getReviewQueue().then(data => {
-      if (isMounted && data?.length) {
-        setQueue(data);
-      }
-    }).catch(() => {
-      // Fallback to initial state
-    });
-
-    return () => { isMounted = false; };
-  }, [searchParams, setReviewMpFilter]);
-
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
   const filteredQueue = useMemo(() => {
     const search = searchTerm.toLowerCase();
     return queue.filter(p => {
@@ -90,11 +58,8 @@ const DaProjectReview = () => {
   }, [queue, searchTerm, reviewMpFilter, reviewRiskFilter, reviewCategoryFilter]);
 
   const categories = useMemo(() => [...new Set(queue.map(p => p.category))], [queue]);
-<<<<<<< HEAD
 
   const reviewMutation = useDaReviewActionMutation();
-=======
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 
   const handleQuickApprove = async (projectId) => {
     if (!quickApproveIA) return;
@@ -113,13 +78,10 @@ const DaProjectReview = () => {
     setQuickApproving(null);
   };
 
-<<<<<<< HEAD
   if (loading) {
     return <PortalPageLoader message="Loading Review Queue..." />;
   }
 
-=======
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
   return (
     <div className="space-y-6 flex flex-col min-h-full">
       <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -174,11 +136,7 @@ const DaProjectReview = () => {
               className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#123b63]/20 focus:border-[#123b63] transition-[border-color,box-shadow] duration-150 flex-1 md:flex-none"
             >
               <option value="All">All MPs</option>
-<<<<<<< HEAD
               {districtMps.map(mp => <option key={mp.id} value={mp.id}>{mp.name}</option>)}
-=======
-              {mockMPs.map(mp => <option key={mp.id} value={mp.id}>{mp.name}</option>)}
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
             </select>
             <select 
               id="review-risk-filter"
@@ -282,11 +240,7 @@ const DaProjectReview = () => {
                               className="bg-white border border-emerald-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-200"
                             >
                               <option value="">Select IA...</option>
-<<<<<<< HEAD
                               {agencies.map(ia => (
-=======
-                              {mockImplementingAgencies.map(ia => (
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
                                 <option key={ia.id} value={ia.id}>{ia.name}</option>
                               ))}
                             </select>

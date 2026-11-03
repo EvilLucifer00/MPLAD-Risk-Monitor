@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useState, useMemo } from 'react';
 import { useMpDocuments, useMpProjects } from '../../api/queries';
@@ -84,100 +83,6 @@ const MpDocuments = () => {
   if (loading) {
     return <PortalPageLoader message="Loading Documents..." />;
   }
-=======
-import React, { useState, useEffect, useMemo } from 'react';
-import { documentsApi } from '../../api/mpladsApi';
-import { api } from '../../api/mockMpApi';
-import { mockProjects } from '../../data/mockMpData';
-import { TbSearch, TbFileDescription, TbDownload, TbEye, TbFilter } from 'react-icons/tb';
-import usePageSeo from '../../hooks/usePageSeo';
-
-const getInitialMpDocs = () => {
-  try {
-    const cached = sessionStorage.getItem('mplads_mp_documents_cache');
-    if (cached) return JSON.parse(cached);
-  } catch {}
-  const allDocs = mockProjects.flatMap(p => 
-    (p.documents || []).map(doc => ({
-      ...doc,
-      projectId: p.id,
-      projectTitle: p.title
-    }))
-  );
-  return allDocs.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
-};
-
-const MpDocuments = () => {
-  usePageSeo(
-    'Documents | MP Portal',
-    'View, search, and manage verified MPLADS project proposals, sanctions, and completion certificates for Member of Parliament.'
-  );
-
-  const [documents, setDocuments] = useState(getInitialMpDocs);
-  const [loading, setLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-
-  useEffect(() => {
-    let isMounted = true;
-    const loadDocs = async () => {
-      try {
-        const realDocs = await documentsApi.getMpDocuments();
-        if (isMounted && realDocs && realDocs.length > 0) {
-          setDocuments(realDocs);
-          try { sessionStorage.setItem('mplads_mp_documents_cache', JSON.stringify(realDocs)); } catch {}
-          setLoading(false);
-          return;
-        }
-      } catch {
-        // Fallback gracefully
-      }
-
-      // Fallback: Fetch all projects and flatten their documents
-      try {
-        const projects = await api.getProjects();
-        if (!isMounted) return;
-        const allDocs = projects.flatMap(p => 
-          (p.documents || []).map(doc => ({
-            ...doc,
-            projectId: p.id,
-            projectTitle: p.title
-          }))
-        );
-        allDocs.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
-        setDocuments(allDocs);
-      } catch {
-        // Handled gracefully
-      } finally {
-        if (isMounted) setLoading(false);
-      }
-    };
-
-    // Defer background data loading past initial paint and LCP measurement
-    let timerId = null;
-    let idleId = null;
-    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-      idleId = window.requestIdleCallback(() => { loadDocs(); }, { timeout: 1500 });
-    } else {
-      timerId = setTimeout(loadDocs, 100);
-    }
-
-    return () => {
-      isMounted = false;
-      if (idleId && typeof window !== 'undefined' && 'cancelIdleCallback' in window) {
-        window.cancelIdleCallback(idleId);
-      }
-      if (timerId) clearTimeout(timerId);
-    };
-  }, []);
-
-  const filteredDocs = useMemo(() => {
-    const term = searchTerm.toLowerCase();
-    return documents.filter(doc => 
-      doc.name.toLowerCase().includes(term) ||
-      (doc.projectTitle && doc.projectTitle.toLowerCase().includes(term))
-    );
-  }, [documents, searchTerm]);
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto min-h-full flex flex-col">

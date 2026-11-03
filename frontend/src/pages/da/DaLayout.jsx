@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
-<<<<<<< HEAD
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
-=======
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   TbLayoutDashboard, 
@@ -19,7 +16,6 @@ import {
 } from 'react-icons/tb';
 import { IconMenu } from '../../components/shared/HomeIcons';
 import EmblemImage from '../../components/shared/EmblemImage';
-<<<<<<< HEAD
 import { daApi } from '../../api/daApi';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useNetworkStatus } from '../../hooks/useNetworkStatus';
@@ -28,10 +24,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '../../api/queries';
 import { useDaReviewQueue } from '../../api/queries';
 import useDialogA11y from '../../hooks/useDialogA11y';
-=======
-import { daApi } from '../../api/mockDaApi';
-import { useAuthStore } from '../../store/useAuthStore';
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 
 // Lazy-loaded to eliminate heavy AI chat bundle from critical route waterfall
 const AiAssistantWidget = lazy(() => import('../../components/shared/AiAssistantWidget.jsx'));
@@ -205,17 +197,10 @@ const DaLayout = () => {
               <span className="font-medium text-sm">{link.name}</span>
               
               {/* Badge for review queue */}
-<<<<<<< HEAD
               {link.name === 'Project Review' && pendingReviewCount > 0 && (
                 <span className="ml-auto text-[10px] font-bold bg-orange-600 text-white px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
                   <span className="sr-only">({pendingReviewCount} pending reviews)</span>
                   <span aria-hidden="true">{pendingReviewCount}</span>
-=======
-              {link.name === 'Project Review' && (
-                <span className="ml-auto text-[10px] font-bold bg-orange-600 text-white px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
-                  <span className="sr-only">(11 pending reviews)</span>
-                  <span aria-hidden="true">11</span>
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
                 </span>
               )}
               
@@ -330,14 +315,10 @@ const DaLayout = () => {
 
       {/* Sidebar */}
       <aside
-<<<<<<< HEAD
         ref={isSidebarOpen ? sidebarA11yRef : null}
         aria-label="District Authority Navigation"
         aria-modal={isSidebarOpen ? "true" : undefined}
         role={isSidebarOpen ? "dialog" : undefined}
-=======
-        aria-label="District Authority Navigation"
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
         className={`
         fixed lg:static inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
@@ -385,7 +366,6 @@ const DaLayout = () => {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-4 shrink-0 relative">
-<<<<<<< HEAD
             {/* Network Connectivity Pill */}
             {!isOnline && (
               <div role="status" className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-full text-xs font-semibold">
@@ -400,8 +380,6 @@ const DaLayout = () => {
               </div>
             )}
             
-=======
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
             {/* Notification Bell */}
             <div ref={notificationsRef} className="relative">
               <button
@@ -488,11 +466,7 @@ const DaLayout = () => {
                       </div>
                       <div>
                         <h3 className="font-bold text-slate-800 leading-tight">
-<<<<<<< HEAD
                           {user?.dm_name || user?.name || "District Magistrate"}
-=======
-                          {user?.dm_name || "Priya Singh"}
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
                         </h3>
                         <p className="text-xs text-slate-500 mt-0.5">
                           District Magistrate
@@ -500,11 +474,7 @@ const DaLayout = () => {
                         <p className="text-[10px] font-semibold text-amber-600 mt-1">
                           {user?.dist
                             ? `${user.dist}${user?.state ? `, ${user.state}` : ""}`
-<<<<<<< HEAD
                             : (user?.district ? `${user.district}${user?.state ? `, ${user.state}` : ""}` : "District Authority")}
-=======
-                            : "Varanasi, UP"}
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
                         </p>
                       </div>
                     </div>
@@ -531,13 +501,9 @@ const DaLayout = () => {
           className="flex-1 overflow-y-auto custom-scrollbar bg-slate-50 p-4 lg:p-8"
         >
           <div className="max-w-7xl mx-auto min-h-full pb-20 w-full min-w-0">
-<<<<<<< HEAD
             <Suspense fallback={<PortalPageLoader message="Loading page..." />}>
               <Outlet />
             </Suspense>
-=======
-            <Outlet />
->>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
           </div>
         </main>
       </div>
