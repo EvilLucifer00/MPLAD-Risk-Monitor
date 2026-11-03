@@ -4,6 +4,7 @@ from routers.projects_route import project_router
 from routers.report_route import report_router
 from routers.user_router import user_router
 from routers.document_router import document_router
+from routers.chat_router import chat_router
 from fastapi.middleware.cors import CORSMiddleware
 
 # Initialize the main FastAPI application with title and version
@@ -25,3 +26,4 @@ app.include_router(project_router)   # Endpoints for project creation, listing, 
 app.include_router(report_router)    # Endpoints for generating and managing reports
 app.include_router(user_router)      # Endpoints for user management and authentication
 app.include_router(document_router)  # Endpoints for uploading and handling documents
+app.include_router(chat_router)      # Endpoints for AI Assistant and RAG chat

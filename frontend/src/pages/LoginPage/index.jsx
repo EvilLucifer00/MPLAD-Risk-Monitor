@@ -4,6 +4,8 @@ import { TbEye, TbEyeOff, TbLogin, TbChevronDown } from "react-icons/tb";
 import { IoShieldCheckmark } from "react-icons/io5";
 import { authApi } from "../../api/auth";
 import { useAuthStore } from "../../store/useAuthStore";
+import IndianMonumentsSkyline from "../../components/shared/IndianMonumentsSkyline";
+import EmblemImage from "../../components/shared/EmblemImage";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -168,91 +170,39 @@ const LoginPage = () => {
       </svg>
 
       {/* Bottom Right Skyline & Tagline */}
-      <div className="absolute bottom-4 right-12 flex flex-col items-end gap-2 z-0 pointer-events-none">
-        <svg
-          className="w-[450px] h-[55px] opacity-[0.12]"
-          viewBox="0 0 700 90"
-          fill="#94a3b8"
-          preserveAspectRatio="xMaxYMax meet"
-        >
-          <rect x="5" y="25" width="35" height="65" rx="2" />
-          <rect x="10" y="30" width="8" height="10" rx="4" fill="#cbd5e1" />
-          <rect x="22" y="30" width="8" height="10" rx="4" fill="#cbd5e1" />
-          <rect x="10" y="45" width="8" height="10" rx="4" fill="#cbd5e1" />
-          <rect x="22" y="45" width="8" height="10" rx="4" fill="#cbd5e1" />
-          <path d="M5,25 L22,10 L40,25 Z" />
-          <path d="M55,90 L55,50 Q70,30 85,50 L85,90 Z" />
-          <rect x="68" y="22" width="3" height="28" />
-          <path d="M105,90 L110,15 L120,15 L125,90 Z" />
-          <circle cx="115" cy="12" r="6" />
-          <rect x="108" y="35" width="14" height="3" rx="1" fill="#cbd5e1" />
-          <rect x="109" y="55" width="12" height="3" rx="1" fill="#cbd5e1" />
-          <rect x="145" y="40" width="45" height="50" rx="3" />
-          <rect x="152" y="47" width="10" height="14" rx="1" fill="#cbd5e1" />
-          <rect x="168" y="47" width="10" height="14" rx="1" fill="#cbd5e1" />
-          <rect x="152" y="67" width="10" height="14" rx="1" fill="#cbd5e1" />
-          <rect x="168" y="67" width="10" height="14" rx="1" fill="#cbd5e1" />
-          <rect x="210" y="30" width="8" height="60" />
-          <rect x="250" y="30" width="8" height="60" />
-          <rect x="210" y="25" width="48" height="10" rx="2" />
-          <path d="M218,90 L218,55 Q234,40 250,55 L250,90 Z" fill="#cbd5e1" />
-          <rect x="230" y="15" width="4" height="15" />
-          <path d="M290,90 L290,55 Q305,25 320,55 L320,90 Z" />
-          <path d="M280,90 L295,50 Q305,35 315,50 L330,90 Z" fill="#cbd5e1" />
-          <path d="M298,90 L298,60 Q305,40 312,60 L312,90 Z" />
-          <rect x="350" y="45" width="60" height="45" rx="3" />
-          <path d="M350,45 Q380,0 410,45 Z" />
-          <rect x="377" y="-5" width="4" height="50" />
-          <rect x="355" y="55" width="15" height="25" rx="7" fill="#cbd5e1" />
-          <rect x="390" y="55" width="15" height="25" rx="7" fill="#cbd5e1" />
-          <rect x="335" y="35" width="7" height="55" />
-          <circle cx="338" cy="32" r="5" />
-          <rect x="418" y="35" width="7" height="55" />
-          <circle cx="422" cy="32" r="5" />
-          <path d="M450,90 L450,35 L465,22 L480,35 L480,90 Z" />
-          <rect x="458" y="50" width="14" height="40" rx="7" fill="#cbd5e1" />
-          <rect x="450" y="30" width="30" height="8" rx="2" />
-          <rect x="505" y="45" width="70" height="45" rx="4" />
-          <path d="M505,45 Q540,15 575,45 Z" />
-          <rect x="515" y="52" width="8" height="22" rx="1" fill="#cbd5e1" />
-          <rect x="530" y="52" width="8" height="22" rx="1" fill="#cbd5e1" />
-          <rect x="545" y="52" width="8" height="22" rx="1" fill="#cbd5e1" />
-          <rect x="560" y="52" width="8" height="22" rx="1" fill="#cbd5e1" />
-          <rect x="600" y="40" width="30" height="50" rx="2" />
-          <rect x="595" y="30" width="6" height="60" />
-          <rect x="630" y="30" width="6" height="60" />
-          <path d="M600,40 L615,25 L630,40 Z" />
-          <rect x="610" y="55" width="10" height="20" rx="5" fill="#cbd5e1" />
-          <path d="M655,90 L655,50 Q672,25 690,50 L690,90 Z" />
-          <rect x="671" y="18" width="3" height="32" />
-        </svg>
-        <div className="flex items-center gap-3">
-          <div className="flex gap-0.5">
-            <div className="w-4 h-0.5 bg-[#FF9933]"></div>
-            <div className="w-4 h-0.5 bg-[#ffffff]"></div>
-            <div className="w-4 h-0.5 bg-[#138808]"></div>
+      <div className="absolute bottom-4 right-2 sm:right-6 lg:right-12 flex flex-col items-end gap-1.5 lg:gap-2 z-0 pointer-events-none max-w-[95vw]">
+        <IndianMonumentsSkyline
+          variant="light"
+          idPrefix="loginSkyline"
+          className="w-[280px] sm:w-[350px] lg:w-[450px] h-auto lg:h-[55px] opacity-80 hover:opacity-100 transition-opacity duration-300"
+        />
+        <div className="flex items-center gap-1.5 lg:gap-3 w-full justify-end">
+          <div className="flex gap-0.5 shrink-0">
+            <div className="w-2.5 lg:w-4 h-0.5 bg-[#FF9933]"></div>
+            <div className="w-2.5 lg:w-4 h-0.5 bg-[#ffffff]"></div>
+            <div className="w-2.5 lg:w-4 h-0.5 bg-[#138808]"></div>
           </div>
-          <p className="text-[9px] font-bold tracking-[0.2em] text-slate-500/60 uppercase">
-            Sabka Vikas | Sajha Prayas | Mazboot Bharat
+          <p className="text-[6.5px] sm:text-[7.5px] lg:text-[9px] font-bold tracking-[0.1em] lg:tracking-[0.2em] text-slate-600 uppercase whitespace-nowrap">
+            Sabka Saath | Sabka Vikas | Mazboot Bharat
           </p>
-          <div className="flex gap-0.5">
-            <div className="w-4 h-0.5 bg-[#FF9933]"></div>
-            <div className="w-4 h-0.5 bg-[#ffffff]"></div>
-            <div className="w-4 h-0.5 bg-[#138808]"></div>
+          <div className="flex gap-0.5 shrink-0">
+            <div className="w-2.5 lg:w-4 h-0.5 bg-[#FF9933]"></div>
+            <div className="w-2.5 lg:w-4 h-0.5 bg-[#ffffff]"></div>
+            <div className="w-2.5 lg:w-4 h-0.5 bg-[#138808]"></div>
           </div>
         </div>
       </div>
 
       {/* ── Navbar ── */}
-      <div className="flex-none flex items-center px-8 py-2.5 bg-white border-b border-slate-200 shadow-sm z-10">
+      <div className="sticky top-0 z-50 flex-none flex items-center px-4 md:px-8 py-2.5 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all duration-200">
         <button
           onClick={() => navigate("/")}
           className="flex items-center gap-2 group"
           aria-label="Back to home"
         >
-          <img
-            src="/emblem.png"
-            alt="MPLADS Risk Monitor"
+          <EmblemImage
+            width="44"
+            height="44"
             className="w-11 h-11 object-contain"
           />
           <h2 className="text-2xl font-bold text-slate-800 group-hover:text-[#123b63] transition-colors duration-200">
@@ -262,20 +212,20 @@ const LoginPage = () => {
       </div>
 
       {/* ── Main Content ── */}
-      <div className="flex flex-1 items-center justify-center px-4 py-4 relative z-10">
+      <main id="main-content" className="flex flex-1 items-center justify-center px-4 py-4 relative z-10">
         <div className="w-full max-w-md">
           {/* Card */}
           <div className="relative overflow-hidden rounded-3xl shadow-2xl bg-white border border-slate-200">
             {/* Card top banner — same gradient style as hero */}
             <div
-              className="relative px-8 pt-8 pb-6 bg-cover bg-center"
-              style={{ backgroundImage: "url('/mplad_headquarters.png')" }}
+              className="relative px-8 pt-8 pb-6 bg-cover bg-center bg-mplad-headquarters"
             >
               <div className="absolute inset-0 bg-gradient-to-tr from-[#123b63]/95 via-[#123b63]/75 to-black/30" />
               <div className="relative z-10 flex flex-col items-center gap-3">
                 <div className="flex items-center gap-3">
-                  <img
-                    src="/emblem.png"
+                  <EmblemImage
+                    width="36"
+                    height="44"
                     alt="Government of India"
                     className="w-9 h-11 object-contain"
                   />
@@ -424,7 +374,7 @@ const LoginPage = () => {
 
                 {/* Error message */}
                 {error && (
-                  <p className="mb-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-2">
+                  <p role="alert" aria-live="assertive" className="mb-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-2">
                     {error}
                   </p>
                 )}
@@ -476,7 +426,7 @@ const LoginPage = () => {
               {/* Divider */}
               <div className="flex items-center gap-3 my-3">
                 <div className="flex-1 h-px bg-slate-200" />
-                <span className="text-xs text-slate-400 font-medium">or</span>
+                <span className="text-xs text-slate-600 font-medium">or</span>
                 <div className="flex-1 h-px bg-slate-200" />
               </div>
 
@@ -489,14 +439,14 @@ const LoginPage = () => {
                 ← Back to Home
               </button>
               {/* Footer note inside card */}
-              <p className="mt-3 text-center text-[10px] text-slate-400 leading-relaxed">
+              <p className="mt-3 text-center text-[11px] text-slate-600 leading-relaxed font-medium">
                 Authorised government officials only. Unauthorised access is
                 prohibited.
               </p>
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

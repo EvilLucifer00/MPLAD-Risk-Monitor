@@ -8,6 +8,49 @@ from database.database import supabase
 from ml_model.service.risk_service import score_project
 from services import cloudinary_service
 
+def enrich_projects(projects: list) -> list:
+    if not projects:
+        return []
+
+    # 1. Fetch cost details
+    cost_ids = [p["cost_details_id"] for p in projects if p.get("cost_details_id")]
+    cost_map = {}
+    if cost_ids:
+        try:
+            cost_res = supabase.table("mplads_cost_details").select("*").in_("id", cost_ids).execute()
+            cost_map = {c["id"]: c for c in (cost_res.data or [])}
+        except Exception:
+            pass
+
+    # 2. Fetch implementing agencies
+    agency_ids = [p["implementing_agency_id"] for p in projects if p.get("implementing_agency_id")]
+    agency_map = {}
+    if agency_ids:
+        try:
+            agency_res = supabase.table("mplads_implementing_agencies").select("*").in_("id", agency_ids).execute()
+            agency_map = {a["id"]: a.get("name") for a in (agency_res.data or [])}
+        except Exception:
+            pass
+
+    enriched = []
+    for p in projects:
+        item = dict(p)
+        c_id = item.get("cost_details_id")
+        if c_id and c_id in cost_map:
+            c = cost_map[c_id]
+            item["estimated_cost"] = c.get("estimated_cost")
+            item["sanctioned_amount"] = c.get("sanctioned_amount")
+            item["utilized_amount"] = c.get("utilized_amount")
+            item["unspent_balance"] = c.get("unspent_balance")
+        
+        a_id = item.get("implementing_agency_id")
+        if a_id and a_id in agency_map:
+            item["implementing_agency"] = agency_map[a_id]
+            
+        enriched.append(item)
+    return enriched
+
+
 async def list_projects(
     mp: dict,
     search: Optional[str] = Query(None, description="Search in title/description"),
@@ -28,18 +71,13 @@ async def list_projects(
     )
 
     if search:
-        query = query.or_(
-            f"project_title.ilike.%{search}%,"
-            f"vendor_name.ilike.%{search}%,"
-            f"implementing_agency.ilike.%{search}%"
-        )
+        query = query.ilike("project_title", f"%{search}%")
 
     if category:
         query = query.eq("category", category.upper())
 
     if risk_filter:
         query = query.eq("risk_level", risk_filter.upper())
-        
 
     if status_filter:
         status_val = status_filter.upper().replace(" ", "_")
@@ -50,34 +88,47 @@ async def list_projects(
     end = start + page_size - 1
     response = query.range(start, end).order("updated_at", desc=True).execute()
     
+    enriched = enrich_projects(response.data or [])
     return {
-        "data": response.data,
+        "data": enriched,
         "count": response.count,
         "page": page,
         "page_size": page_size,
     }
     
 
-async def project_by_id(project_id: int, mp: dict):
+async def project_by_id(project_id: int, user: dict):
     """
-    Fetches a single project by ID, ensuring it belongs to the requesting MP (Screenshot 4 from previous prompt).
+    Fetches a single project by ID, ensuring it belongs to the requesting MP or DM.
     """
-    mp_id = mp["id"]
-    
-    response = (
+    query = (
         supabase
         .table("mplads_new_projects")
         .select("*")
         .eq("id", project_id)
-        .eq("mp_id", mp_id)
-        .limit(1)
-        .execute()
     )
+
+    if user.get("role") == "MP":
+        query = query.eq("mp_id", user["id"])
+    elif user.get("role") == "DM":
+        query = query.eq("district", user["dist"]).eq("state", user["state"])
+
+    response = query.limit(1).execute()
     
     if not response.data:
         raise HTTPException(status_code=404, detail="Project not found or unauthorized")
     
-    return response.data[0]
+    enriched = enrich_projects(response.data)
+    project_item = enriched[0]
+
+    # Fetch documents for this project
+    try:
+        docs_res = supabase.table("mplads_documents").select("*").eq("project_id", project_id).execute()
+        project_item["documents"] = docs_res.data or []
+    except Exception:
+        project_item["documents"] = []
+
+    return project_item
 
 
 async def create_new_project(
@@ -89,7 +140,6 @@ async def create_new_project(
     files: Optional[List[UploadFile]] = File(None),
     mp: dict = None 
 ):
-    
     
     if not mp or "id" not in mp:
         raise HTTPException(status_code=401, detail="Unauthorized MP context")
@@ -105,9 +155,10 @@ async def create_new_project(
     )
     dm_id = dm_result.data[0]["id"] if dm_result.data else None
 
+    category_str = category.value if hasattr(category, "value") else str(category)
     project_data_for_ml = {
         "project_title": project_title,
-        "category": category.value,
+        "category": category_str,
         "estimated_cost": estimated_cost,
         "implementing_agency": implementing_agency,
         "description": description,
@@ -116,6 +167,62 @@ async def create_new_project(
     }
     risk_results = score_project(payload=project_data_for_ml)
 
+    if isinstance(risk_results, dict):
+        risk_score = risk_results.get("overall_risk_score", 0)
+        risk_level = risk_results.get("risk_level", ProjectRiskLevel.LOW.value)
+        cost_anomaly = risk_results.get("cost_anomaly_risk", 0)
+        timeline_delay = risk_results.get("timeline_delay_risk", 0)
+        duplicate_work = risk_results.get("duplicate_work_risk", 0)
+        vendor_risk = risk_results.get("vendor_risk", 0)
+    else:
+        risk_score = int(risk_results or 0)
+        if risk_score > 80:
+            risk_level = ProjectRiskLevel.CRITICAL.value
+        elif risk_score > 60:
+            risk_level = ProjectRiskLevel.HIGH.value
+        elif risk_score > 40:
+            risk_level = ProjectRiskLevel.MODERATE.value
+        else:
+            risk_level = ProjectRiskLevel.LOW.value
+        cost_anomaly = risk_score
+        timeline_delay = max(0, risk_score - 10)
+        duplicate_work = max(0, risk_score - 20)
+        vendor_risk = max(0, risk_score - 5)
+
+    # 1. Create entry in mplads_cost_details
+    cost_details_id = None
+    try:
+        cost_res = supabase.table("mplads_cost_details").insert({
+            "estimated_cost": estimated_cost,
+            "sanctioned_amount": None,
+            "utilized_amount": 0,
+            "unspent_balance": None
+        }).execute()
+        if cost_res.data:
+            cost_details_id = cost_res.data[0]["id"]
+    except Exception as e:
+        print(f"Error creating cost details: {e}")
+
+    # 2. Resolve implementing agency
+    agency_id = None
+    if implementing_agency:
+        try:
+            ag_check = supabase.table("mplads_implementing_agencies").select("id").eq("name", implementing_agency).limit(1).execute()
+            if ag_check.data:
+                agency_id = ag_check.data[0]["id"]
+            else:
+                ag_ins = supabase.table("mplads_implementing_agencies").insert({
+                    "name": implementing_agency,
+                    "dist": mp.get("dist"),
+                    "state": mp.get("state")
+                }).execute()
+                if ag_ins.data:
+                    agency_id = ag_ins.data[0]["id"]
+        except Exception as e:
+            print(f"Error resolving implementing agency: {e}")
+
+    # 3. Create entry in mplads_new_projects matching exact table schema
+    now_iso = datetime.now(timezone.utc).isoformat()
     db_payload = {
         "mp_id": mp["id"],
         "dm_id": dm_id,
@@ -123,36 +230,15 @@ async def create_new_project(
         "district": mp["dist"],
         "constituency": mp["constituency"],
         "project_title": project_title,
-        "category": category.value,
-        "estimated_cost": estimated_cost,
+        "category": category_str,
         "description": description,
-        "implementing_agency": implementing_agency,
         "status": ProjectStatus.PENDING_REVIEW.value,
         "submit_date": datetime.now(timezone.utc).date().isoformat(),
-        
-        # ML Results
-        "risk_score": risk_results.get("overall_risk_score", 0),
-        "risk_level": risk_results.get("risk_level", ProjectRiskLevel.LOW.value),
-        "cost_anomaly_risk": risk_results.get("cost_anomaly_risk", 0),
-        "timeline_delay_risk": risk_results.get("timeline_delay_risk", 0),
-        "duplicate_work_risk": risk_results.get("duplicate_work_risk", 0),
-        "vendor_risk": risk_results.get("vendor_risk", 0),
-        
-        # Default empty values for columns not filled yet
-        "sanctioned_amount": None,
-        "utilized_amount": None,
-        "unspent_balance": None,
-        "start_date": None,
-        "end_date": None,
-        "vendor_name": None,
-        "vendor_id": None,
-        "latitude": None,
-        "longitude": None,
-        "rejection_reason": None,
-        "created_at": datetime.now(timezone.utc).isoformat(),
-        "updated_at": datetime.now(timezone.utc).isoformat(),
+        "cost_details_id": cost_details_id,
+        "implementing_agency_id": agency_id,
+        "created_at": now_iso,
+        "updated_at": now_iso,
     }
-    
 
     response = (
         supabase
@@ -166,17 +252,18 @@ async def create_new_project(
         
     new_project = response.data[0]
     project_id = new_project["id"]
-    constituency = new_project["constituency"]
-    dist = new_project["district"]
+    constituency = new_project.get("constituency") or mp.get("constituency") or ""
+    dist = new_project.get("district") or mp.get("dist") or ""
 
     uploaded_documents = []
     first_doc_url = None
 
     if files:
         for file in files:
+            if not file or not getattr(file, "filename", None):
+                continue
             try:
                 file_url = await cloudinary_service.upload_file(file)
-                
                 if not first_doc_url:
                     first_doc_url = file_url
 
@@ -186,9 +273,9 @@ async def create_new_project(
                     "file_url": file_url,
                     "uploaded_by": f"MP {mp.get('mp_name', 'Office')}",
                     "uploaded_at": datetime.now(timezone.utc).isoformat(),
-                    "constituency" : constituency.upper(),
-                    "district" : dist,
-                    "upload_date" : date.today()
+                    "constituency": constituency.upper() if constituency else None,
+                    "district": dist,
+                    "upload_date": date.today().isoformat()
                 }
 
                 doc_response = (
@@ -202,8 +289,19 @@ async def create_new_project(
                     uploaded_documents.append(doc_response.data[0])
                     
             except Exception as e:
-                print(f"Error uploading file {file.filename}: {str(e)}")
+                print(f"Error uploading file {getattr(file, 'filename', '')}: {str(e)}")
                 continue
+
+    # Enrich returned object for response
+    new_project["estimated_cost"] = estimated_cost
+    new_project["implementing_agency"] = implementing_agency
+    new_project["risk_score"] = risk_score
+    new_project["risk_level"] = risk_level
+    new_project["cost_anomaly_risk"] = cost_anomaly
+    new_project["timeline_delay_risk"] = timeline_delay
+    new_project["duplicate_work_risk"] = duplicate_work
+    new_project["vendor_risk"] = vendor_risk
+    new_project["documents"] = uploaded_documents
 
     return {
         "message": "Project created successfully",
@@ -230,21 +328,23 @@ async def dm_district_projects(dm: dict, search: Optional[str] = None):
         .eq("district", dm["dist"]) # Matches the 'district' column in mplads_new_projects
         .execute()
     )
-    projects = result.data or []
+    projects = enrich_projects(result.data or [])
     
     if not projects:
         return []
         
     # 2. Fetch MP details to map mp_id to MP Name and Constituency
     mp_ids = list({p["mp_id"] for p in projects if p.get("mp_id")})
-    mp_result = (
-        supabase
-        .table("mplads_mp")
-        .select("id, mp_name, constituency")
-        .in_("id", mp_ids)
-        .execute()
-    )
-    mp_map = {mp["id"]: mp for mp in (mp_result.data or [])}
+    mp_map = {}
+    if mp_ids:
+        mp_result = (
+            supabase
+            .table("mplads_mp")
+            .select("id, mp_name, constituency")
+            .in_("id", mp_ids)
+            .execute()
+        )
+        mp_map = {mp["id"]: mp for mp in (mp_result.data or [])}
     
     # 3. Group and aggregate in Python
     aggregated_data = {}
@@ -357,11 +457,7 @@ async def dm_mp_projects(
 
     # 3. Apply Filters
     if search:
-        base_query = base_query.or_(
-            f"project_title.ilike.%{search}%,"
-            f"vendor_name.ilike.%{search}%,"
-            f"implementing_agency.ilike.%{search}%"
-        )
+        base_query = base_query.ilike("project_title", f"%{search}%")
     if status_filter:
         status_val = status_filter.upper().replace(" ", "_")
         base_query = base_query.eq("status", status_val)
@@ -376,17 +472,16 @@ async def dm_mp_projects(
     response = base_query.range(start, end).order("updated_at", desc=True).execute()
     
     # 5. Fetch All Projects for this MP to calculate top-level Stats Cards
-    # (Supabase doesn't support complex aggregations in one go easily, so we fetch and compute in Python)
     stats_query = (
         supabase
         .table("mplads_new_projects")
-        .select("status, sanctioned_amount, utilized_amount, risk_score")
+        .select("*")
         .eq("mp_id", mp_id)
         .eq("district", dm["dist"])
         .eq("state", dm["state"])
         .execute()
     )
-    all_projects = stats_query.data or []
+    all_projects = enrich_projects(stats_query.data or [])
     
     total_count = len(all_projects)
     active_count = sum(1 for p in all_projects if p.get("status") not in ("COMPLETED", "REJECTED"))
@@ -409,7 +504,7 @@ async def dm_mp_projects(
             "utilized_amount_cr": round(total_utilized / 1e7, 2),
             "avg_risk_score": round(avg_risk)
         },
-        "data": response.data,
+        "data": enrich_projects(response.data or []),
         "count": response.count,
         "page": page,
         "page_size": page_size,

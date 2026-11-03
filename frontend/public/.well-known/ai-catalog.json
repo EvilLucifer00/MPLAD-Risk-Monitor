@@ -1,0 +1,63 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Ministry of Statistics and Programme Implementation (MoSPI)",
+    "identifier": "did:web:mplads-risk-monitor.gov.in",
+    "documentationUrl": "https://mplads-risk-monitor.gov.in/llms.txt",
+    "logoUrl": "https://mplads-risk-monitor.gov.in/images/emblem.webp"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:gov.in:mplads:risk-engine",
+      "displayName": "MPLADS AI Anomaly & Risk Engine",
+      "type": "application/vnd.mcp+json",
+      "url": "https://mplads-risk-monitor.gov.in/api/v1/risk",
+      "description": "AI-driven risk scoring and anomaly detection service for MPLADS projects across 543 Indian parliamentary constituencies.",
+      "tags": [
+        "governance",
+        "mplads",
+        "risk-monitoring",
+        "mospi",
+        "india"
+      ],
+      "capabilities": [
+        "RiskScoring",
+        "AnomalyDetection",
+        "ConstituencyAudit"
+      ],
+      "representativeQueries": [
+        "What is the anomaly risk score for Varanasi constituency?",
+        "List high risk MPLADS projects in Maharashtra",
+        "Which constituencies have slow expenditure velocity?"
+      ],
+      "version": "1.0.0",
+      "updatedAt": "2026-10-27T00:00:00Z"
+    },
+    {
+      "identifier": "urn:air:gov.in:mplads:geospatial-analytics",
+      "displayName": "MPLADS Geospatial Analytics Service",
+      "type": "application/vnd.mcp+json",
+      "url": "https://mplads-risk-monitor.gov.in/api/v1/constituencies",
+      "description": "Interactive GIS service providing parliamentary boundary coordinates, fund utilization, and progress metrics for all 543 Lok Sabha seats.",
+      "tags": [
+        "gis",
+        "geospatial",
+        "constituencies",
+        "lok-sabha",
+        "mapping"
+      ],
+      "capabilities": [
+        "GeospatialQuery",
+        "StateAggregates",
+        "SeatMetrics"
+      ],
+      "representativeQueries": [
+        "Show MPLADS fund utilization across all 543 parliamentary seats",
+        "Compare project completion rates between states",
+        "Retrieve GIS indicators for South Delhi constituency"
+      ],
+      "version": "1.0.0",
+      "updatedAt": "2026-10-27T00:00:00Z"
+    }
+  ]
+}
