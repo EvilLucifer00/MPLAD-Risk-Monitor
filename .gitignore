@@ -24,4 +24,7 @@ Thumbs.db
 # Agent skills
 .agents/
 skills-lock.json
+<<<<<<< HEAD
 preparation
+=======
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276

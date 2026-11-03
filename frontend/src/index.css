@@ -5,6 +5,7 @@
   --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --font-serif: 'Merriweather', Georgia, Cambria, 'Times New Roman', serif;
   --font-display: 'Plus Jakarta Sans', 'Inter', sans-serif;
+<<<<<<< HEAD
 
   /* Government Design Tokens */
   --color-gov-navy: #123b63;
@@ -16,6 +17,8 @@
   --color-gov-amber: #f59e0b;
   --color-gov-saffron: #f97316;
   --color-gov-emerald: #10b981;
+=======
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 }
 
 @layer base {
@@ -64,6 +67,7 @@
       url('/images/mplad_headquarters.webp') type('image/webp')
     );
   }
+<<<<<<< HEAD
 
   @media (max-width: 640px) {
     .bg-mplad-headquarters {
@@ -79,6 +83,8 @@
       );
     }
   }
+=======
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 }
 
 /* Leaflet Path Transitions */

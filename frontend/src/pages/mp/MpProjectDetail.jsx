@@ -1,7 +1,12 @@
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
 import { useMpProjectDetail } from '../../api/queries';
+=======
+import { api } from '../../api/mockMpApi';
+import { mockProjects } from '../../data/mockMpData';
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 import { StatusBadge, RiskBadge } from './MpProjects';
 import { usePageSeo } from '../../hooks/usePageSeo';
 import { 
@@ -23,7 +28,14 @@ import {
 const MpProjectDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+<<<<<<< HEAD
   const { data: project, isLoading, isError } = useMpProjectDetail(id);
+=======
+  const [project, setProject] = useState(() => {
+    return mockProjects.find(p => p.id === id) || null;
+  });
+  const [loading, setLoading] = useState(() => !mockProjects.some(p => p.id === id));
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
   const [expandedRisk, setExpandedRisk] = useState(null);
 
   usePageSeo(
@@ -34,6 +46,7 @@ const MpProjectDetail = () => {
   );
 
   useEffect(() => {
+<<<<<<< HEAD
     if (isError) {
       navigate('/mp/projects');
     }
@@ -43,6 +56,42 @@ const MpProjectDetail = () => {
 
   if (loading || !project) {
     return <PortalPageLoader message="Loading Project Details..." />;
+=======
+    let isMounted = true;
+    api.getProjectById(id)
+      .then(data => {
+        if (isMounted) {
+          setProject(data);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (isMounted) {
+          navigate('/mp/projects'); // Fallback if not found
+        }
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, [id, navigate]);
+
+  if (loading || !project) {
+    return (
+      <div className="space-y-6 max-w-5xl mx-auto animate-pulse" role="status" aria-label="Loading project details">
+        <div className="h-4 w-48 bg-slate-200 rounded"></div>
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
+          <div className="h-8 w-2/3 bg-slate-200 rounded"></div>
+          <div className="h-4 w-1/3 bg-slate-100 rounded"></div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-slate-100">
+            <div className="h-16 bg-slate-50 rounded-xl"></div>
+            <div className="h-16 bg-slate-50 rounded-xl"></div>
+            <div className="h-16 bg-slate-50 rounded-xl"></div>
+            <div className="h-16 bg-slate-50 rounded-xl"></div>
+          </div>
+        </div>
+      </div>
+    );
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
   }
 
   const stages = ["Recommended", "Pending Sanction", "Sanctioned", "In Progress", "Completed"];

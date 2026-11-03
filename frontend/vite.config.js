@@ -48,6 +48,7 @@ export default defineConfig({
             if (normalized.includes('react-router') || normalized.includes('@remix-run')) {
               return 'vendor-router';
             }
+<<<<<<< HEAD
             if (normalized.includes('zustand') || normalized.includes('@tanstack/react-query')) {
               return 'vendor-state';
             }
@@ -63,14 +64,23 @@ export default defineConfig({
             if (normalized.includes('react-icons')) {
               return 'vendor-icons';
             }
+=======
+            if (normalized.includes('zustand')) {
+              return 'vendor-state';
+            }
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
           }
         }
       }
     }
+<<<<<<< HEAD
   },
   test: {
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/test/setup.js',
+=======
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
   }
 });
+

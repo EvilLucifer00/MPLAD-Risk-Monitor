@@ -91,6 +91,7 @@ const Home = () => {
       }
     };
     const useAvif = isAvifSupported();
+<<<<<<< HEAD
     const isMobile = typeof window !== 'undefined' && window.innerWidth <= 640;
     const link = document.createElement("link");
     link.rel = "preload";
@@ -98,6 +99,12 @@ const Home = () => {
     link.href = useAvif
       ? (isMobile ? "/images/mplad_headquarters-mobile.avif" : "/images/mplad_headquarters.avif")
       : (isMobile ? "/images/mplad_headquarters-mobile.webp" : "/images/mplad_headquarters.webp");
+=======
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "image";
+    link.href = useAvif ? "/images/mplad_headquarters.avif" : "/images/mplad_headquarters.webp";
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
     link.type = useAvif ? "image/avif" : "image/webp";
     link.fetchPriority = "high";
     document.head.appendChild(link);

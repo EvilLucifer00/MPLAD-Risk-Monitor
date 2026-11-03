@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useState, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
@@ -5,6 +6,14 @@ import { useMpProjects } from '../../api/queries';
 import { useMpStore } from '../../store/useMpStore';
 import { usePageSeo } from '../../hooks/usePageSeo';
 import { useVirtualizer } from '@tanstack/react-virtual';
+=======
+import React, { useState, useEffect, useMemo } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { api } from '../../api/mockMpApi';
+import { mockProjects } from '../../data/mockMpData';
+import { useMpStore } from '../../store/useMpStore';
+import { usePageSeo } from '../../hooks/usePageSeo';
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 import { TbSearch, TbFilter, TbChevronRight, TbBriefcase } from 'react-icons/tb';
 
 // Reusable Risk Badge Component
@@ -42,12 +51,29 @@ export const StatusBadge = ({ status }) => {
   );
 };
 
+const getInitialProjects = () => {
+  try {
+    const cached = sessionStorage.getItem('mplads_mp_projects_cache');
+    if (cached) return JSON.parse(cached);
+  } catch {
+    // Session storage fallback
+  }
+  return mockProjects;
+};
+
 const MpProjects = () => {
+<<<<<<< HEAD
   const { data: projectsData, isLoading } = useMpProjects();
   const projects = Array.isArray(projectsData) ? projectsData : [];
   const loading = isLoading && !projectsData;
   const tableContainerRef = useRef(null);
   
+=======
+  const location = useLocation();
+  const [projects, setProjects] = useState(getInitialProjects);
+  
+  // Filters initialized without cascading effect renders
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
   const [searchTerm, setSearchTerm] = useState(() => {
     try {
       return new URLSearchParams(window.location.search).get('search') || '';
@@ -63,6 +89,24 @@ const MpProjects = () => {
     'Browse, filter, and track recommended MPLADS development works, implementing agencies, budgets, and risk scores.'
   );
 
+<<<<<<< HEAD
+=======
+  useEffect(() => {
+    let isMounted = true;
+    api.getProjects().then(data => {
+      if (isMounted && data?.length) {
+        setProjects(data);
+        try {
+          sessionStorage.setItem('mplads_mp_projects_cache', JSON.stringify(data));
+        } catch {}
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
   const filteredProjects = useMemo(() => {
     const searchLower = (searchTerm || '').toLowerCase();
     return projects.filter(p => {
@@ -75,6 +119,7 @@ const MpProjects = () => {
       return matchesSearch && matchesStatus && matchesRisk;
     });
   }, [projects, searchTerm, statusFilter, riskFilter]);
+<<<<<<< HEAD
 
   const rowVirtualizer = useVirtualizer({
     count: filteredProjects.length,
@@ -82,6 +127,8 @@ const MpProjects = () => {
     estimateSize: () => 72,
     overscan: 5,
   });
+=======
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 
   const virtualRows = rowVirtualizer.getVirtualItems();
   const totalSize = rowVirtualizer.getTotalSize();
@@ -91,10 +138,13 @@ const MpProjects = () => {
   const statuses = ['All', 'Pending Sanction', 'Sanctioned', 'In Progress', 'Completed', 'Rejected'];
   const riskLevels = ['All', 'Low', 'Moderate', 'High', 'Critical'];
 
+<<<<<<< HEAD
   if (loading) {
     return <PortalPageLoader message="Loading Projects..." />;
   }
 
+=======
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
   return (
     <div className="space-y-6 flex flex-col min-h-full">
       <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -154,7 +204,11 @@ const MpProjects = () => {
       {/* Projects Table Section */}
       <section aria-labelledby="projects-portfolio-heading" className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex-1">
         <h2 id="projects-portfolio-heading" className="sr-only">Recommended Projects Portfolio</h2>
+<<<<<<< HEAD
         <div ref={tableContainerRef} className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-280px)] min-h-[300px]">
+=======
+        <div className="overflow-x-auto h-full">
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
           {filteredProjects.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-12 h-64 text-slate-500">
               <TbBriefcase size={48} className="text-slate-300 mb-4" />
@@ -164,8 +218,13 @@ const MpProjects = () => {
           ) : (
             <table className="w-full text-left border-collapse">
               <caption className="sr-only">Projects Portfolio List</caption>
+<<<<<<< HEAD
               <thead className="sticky top-0 z-10">
                 <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wider font-semibold">
+=======
+              <thead>
+                <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wider font-semibold">
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
                   <th scope="col" className="px-5 py-3.5">Project Details</th>
                   <th scope="col" className="px-5 py-3.5 hidden sm:table-cell">IA & Vendor</th>
                   <th scope="col" className="px-5 py-3.5 hidden md:table-cell">Amount</th>
@@ -175,9 +234,44 @@ const MpProjects = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
+<<<<<<< HEAD
                 {paddingTop > 0 && (
                   <tr>
                     <td colSpan={6} style={{ height: `${paddingTop}px` }} />
+=======
+                {filteredProjects.map(project => (
+                  <tr key={project.id} className="hover:bg-slate-50/50 transition-colors group">
+                    <td className="px-5 py-4">
+                      <p className="font-bold text-[#123b63] text-sm tracking-tight line-clamp-1">{project.title}</p>
+                      <p className="text-xs text-slate-500 mt-0.5">{project.id} • {project.category}</p>
+                    </td>
+                    <td className="px-5 py-4 hidden sm:table-cell">
+                      <p className="text-sm font-medium text-slate-700">{project.implementingAgency}</p>
+                      <p className="text-xs text-slate-500 mt-0.5">{project.vendor}</p>
+                    </td>
+                    <td className="px-5 py-4 hidden md:table-cell">
+                      <p className="text-sm font-bold text-[#123b63]">₹{(project.estimatedCost / 100000).toFixed(2)} L</p>
+                    </td>
+                    <td className="px-5 py-4">
+                      <StatusBadge status={project.status} />
+                    </td>
+                    <td className="px-5 py-4">
+                      {project.status === 'Pending Sanction' || project.status === 'Rejected' ? (
+                        <span className="text-xs text-slate-400 font-medium">N/A</span>
+                      ) : (
+                        <RiskBadge level={project.riskLevel} score={project.riskScore} />
+                      )}
+                    </td>
+                    <td className="px-5 py-4 text-right">
+                      <Link 
+                        to={`/mp/projects/${project.id}`}
+                        aria-label={`View details for ${project.title}`}
+                        className="inline-flex items-center justify-center p-2 text-slate-400 hover:text-[#123b63] hover:bg-slate-100 rounded-lg active:scale-90 transition-[transform,background-color,color] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
+                      >
+                        <TbChevronRight size={20} aria-hidden="true" />
+                      </Link>
+                    </td>
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
                   </tr>
                 )}
                 {virtualRows.map(virtualRow => {

@@ -1,5 +1,6 @@
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useState, useEffect } from 'react';
+<<<<<<< HEAD
 import { useDaDocuments, useDaProjects } from '../../api/queries';
 import { useAuthStore } from '../../store/useAuthStore';
 import { TbSearch, TbFileDescription, TbDownload, TbEye, TbFilter } from 'react-icons/tb';
@@ -53,6 +54,90 @@ const DaDocuments = () => {
   }, [docsData, projectsData]);
   const loading = isLoading && !docsData;
   const [searchTerm, setSearchTerm] = useState('');
+=======
+import { documentsApi } from '../../api/mpladsApi';
+import { daApi } from '../../api/mockDaApi';
+import { mockDaProjects } from '../../data/mockDaData';
+import { TbSearch, TbFileDescription, TbDownload, TbEye, TbFilter } from 'react-icons/tb';
+import { usePageSeo } from '../../hooks/usePageSeo';
+
+const getInitialDaDocs = () => {
+  try {
+    const cached = sessionStorage.getItem('mplads_da_documents_cache');
+    if (cached) return JSON.parse(cached);
+  } catch {}
+  return mockDaProjects.flatMap(p => 
+    (p.documents || []).map(doc => ({
+      ...doc,
+      projectId: p.id,
+      projectTitle: p.title,
+      mpName: p.mpName,
+      constituency: p.constituency,
+    }))
+  ).sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
+};
+
+const DaDocuments = () => {
+  usePageSeo(
+    'Document Center | DA Portal',
+    'Access, search, preview, and download project documents, sanction orders, and utilization certificates across district MPLADS works.'
+  );
+
+  const [documents, setDocuments] = useState(getInitialDaDocs);
+  const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    const loadDocs = async () => {
+      try {
+        const realDocs = await documentsApi.getDmDocuments();
+        if (realDocs && realDocs.length > 0) {
+          setDocuments(realDocs);
+          try { sessionStorage.setItem('mplads_da_documents_cache', JSON.stringify(realDocs)); } catch {}
+          setLoading(false);
+          return;
+        }
+      } catch {
+        // Fallback gracefully
+      }
+
+      // Fallback: Fetch all projects and flatten their documents
+      try {
+        const projects = await daApi.getProjects();
+        const allDocs = projects.flatMap(p => 
+          (p.documents || []).map(doc => ({
+            ...doc,
+            projectId: p.id,
+            projectTitle: p.title,
+            mpName: p.mpName,
+            constituency: p.constituency,
+          }))
+        );
+        allDocs.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
+        setDocuments(allDocs);
+      } catch {
+        // Handled gracefully
+      }
+      setLoading(false);
+    };
+
+    // Defer background data loading past initial paint and LCP measurement
+    let timerId = null;
+    let idleId = null;
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      idleId = window.requestIdleCallback(() => { loadDocs(); }, { timeout: 1500 });
+    } else {
+      timerId = setTimeout(loadDocs, 100);
+    }
+
+    return () => {
+      if (idleId && typeof window !== 'undefined' && 'cancelIdleCallback' in window) {
+        window.cancelIdleCallback(idleId);
+      }
+      if (timerId) clearTimeout(timerId);
+    };
+  }, []);
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 
   const filteredDocs = documents.filter(doc => 
     doc.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -60,16 +145,23 @@ const DaDocuments = () => {
     doc.mpName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+<<<<<<< HEAD
   if (loading) {
     return <PortalPageLoader message="Loading Documents..." />;
   }
 
+=======
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
   return (
     <div className="space-y-6 max-w-7xl mx-auto min-h-full flex flex-col">
       <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-[#123b63]">Document Center</h1>
+<<<<<<< HEAD
           <p className="text-sm text-slate-500 mt-1">Access all project documents across {user?.dist ? `${user.dist} District` : 'the district'}.</p>
+=======
+          <p className="text-sm text-slate-500 mt-1">Access all project documents across the district.</p>
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
         </div>
       </header>
 

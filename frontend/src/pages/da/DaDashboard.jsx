@@ -1,7 +1,12 @@
+<<<<<<< HEAD
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useEffect, useState, Suspense, lazy } from 'react';
 import { useDaStats, useDaRecommendations, useDaDistrictMps, useDaProjects } from '../../api/queries';
 import { daApi } from '../../api/daApi';
+=======
+import React, { useEffect, useState, Suspense, lazy } from 'react';
+import { daApi } from '../../api/mockDaApi';
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 import Reveal from '../../animations/Reveal';
 import AnimatedCounter from '../../components/shared/AnimatedCounter';
 import usePageSeo from '../../hooks/usePageSeo';
@@ -21,9 +26,24 @@ import {
 } from 'react-icons/tb';
 import { Link } from 'react-router-dom';
 
+<<<<<<< HEAD
 import DaDashboardChart from './components/DaDashboardChart';
 
 
+=======
+// Lazy-loaded to remove recharts (~5MB in dev) from the critical request chain
+const DaDashboardChart = lazy(() => import('./components/DaDashboardChart'));
+
+const ChartSkeleton = () => (
+  <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col min-h-[380px] animate-pulse">
+    <div className="h-5 w-36 bg-slate-200 rounded mb-2"></div>
+    <div className="h-4 w-52 bg-slate-100 rounded mb-6"></div>
+    <div className="flex-1 flex items-center justify-center">
+      <div className="w-40 h-40 rounded-full border-8 border-slate-100 border-t-cyan-500/40 animate-spin"></div>
+    </div>
+  </div>
+);
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 
 const initialZeroDaStats = {
   district: '',
@@ -58,6 +78,7 @@ const getInitialDaStats = () => {
 const DaDashboard = () => {
   usePageSeo(
     'District Dashboard | DA Portal',
+<<<<<<< HEAD
     'Real-time surveillance & risk monitor for all MPLADS works across district constituencies.'
   );
 
@@ -77,6 +98,58 @@ const DaDashboard = () => {
   const displayStats = stats || initialZeroDaStats;
 
   const loading = (statsLoading && !statsData) || (projectsLoading && !projectsData);
+=======
+    'Real-time surveillance & risk monitor for all MPLADS works across constituencies in Lucknow District.'
+  );
+
+  const [stats, setStats] = useState(getInitialDaStats);
+  const [recommendations, setRecommendations] = useState([]);
+  const [showAllRecommendations, setShowAllRecommendations] = useState(false);
+  const [mps, setMps] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [reportGenerating, setReportGenerating] = useState(false);
+  const [reportSuccess, setReportSuccess] = useState(false);
+  const [chartsReady, setChartsReady] = useState(false);
+
+  useEffect(() => {
+    // Decouple heavy Recharts mounting by one frame so initial layout & animations settle cleanly without forced reflow
+    const raf = requestAnimationFrame(() => setChartsReady(true));
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+    const loadData = async () => {
+      try {
+        const [dashboardStats, recs, allMPs, allProjects] = await Promise.all([
+          daApi.getDashboardStats(),
+          daApi.getRecommendations(),
+          daApi.getDistrictMPs(),
+          daApi.getProjects()
+        ]);
+        if (isMounted) {
+          if (dashboardStats) {
+            setStats(dashboardStats);
+            try {
+              sessionStorage.setItem('mplads_da_dashboard_stats', JSON.stringify(dashboardStats));
+            } catch {
+              // Ignore session storage error
+            }
+          }
+          setRecommendations(Array.isArray(recs) ? recs : []);
+          setMps(Array.isArray(allMPs) ? allMPs : []);
+          setProjects(Array.isArray(allProjects) ? allProjects : []);
+        }
+      } catch {
+        // Handled gracefully without console error
+      }
+    };
+    loadData();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 
   const handleGenerateReport = async () => {
     setReportGenerating(true);
@@ -90,6 +163,7 @@ const DaDashboard = () => {
     setReportGenerating(false);
   };
 
+<<<<<<< HEAD
   // Recent actions from projects
   const recentActions = (projects || [])
     .flatMap(p => (Array.isArray(p.actionHistory) ? p.actionHistory : []).map(a => ({
@@ -100,6 +174,13 @@ const DaDashboard = () => {
       action: a.action || 'Updated',
       actor: a.actor || 'System',
     })))
+=======
+  const displayStats = stats || initialZeroDaStats;
+
+  // Recent actions from projects
+  const recentActions = (projects || [])
+    .flatMap(p => (p.actionHistory || []).map(a => ({ ...a, projectId: p.id, projectTitle: p.title })))
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
     .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
     .slice(0, 5);
 
@@ -285,7 +366,17 @@ const DaDashboard = () => {
         {/* Chart Section */}
         <section aria-labelledby="district-analytics-heading" className="flex flex-col">
           <h2 id="district-analytics-heading" className="sr-only">District Project Analytics</h2>
+<<<<<<< HEAD
           <DaDashboardChart stats={displayStats} projects={projects} mps={mps} />
+=======
+          {chartsReady ? (
+            <Suspense fallback={<ChartSkeleton />}>
+              <DaDashboardChart stats={displayStats} projects={projects} mps={mps} />
+            </Suspense>
+          ) : (
+            <ChartSkeleton />
+          )}
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
         </section>
 
         {/* AI Recommendations */}

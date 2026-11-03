@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
+<<<<<<< HEAD
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
+=======
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   TbLayoutDashboard, 
@@ -15,6 +18,7 @@ import {
 } from 'react-icons/tb';
 import { IconMenu } from '../../components/shared/HomeIcons';
 import EmblemImage from '../../components/shared/EmblemImage';
+<<<<<<< HEAD
 import { api } from '../../api/mpApi';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useNetworkStatus } from '../../hooks/useNetworkStatus';
@@ -22,6 +26,10 @@ import { subscribePortalSync } from '../../utils/portalSync';
 import { useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '../../api/queries';
 import useDialogA11y from '../../hooks/useDialogA11y';
+=======
+import { api } from '../../api/mockMpApi';
+import { useAuthStore } from '../../store/useAuthStore';
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 
 // Lazy-loaded to eliminate heavy AI chat bundle from critical route waterfall
 const AiAssistantWidget = lazy(() => import('../../components/shared/AiAssistantWidget.jsx'));
@@ -297,10 +305,14 @@ const MpLayout = () => {
 
       {/* Sidebar */}
       <aside 
+<<<<<<< HEAD
         ref={isSidebarOpen ? sidebarA11yRef : null}
         aria-label="Member of Parliament Navigation"
         aria-modal={isSidebarOpen ? "true" : undefined}
         role={isSidebarOpen ? "dialog" : undefined}
+=======
+        aria-label="Member of Parliament Navigation"
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
         className={`
         fixed lg:static inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
@@ -347,6 +359,7 @@ const MpLayout = () => {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-4 shrink-0 relative">
+<<<<<<< HEAD
             {/* Network Connectivity Pill */}
             {!isOnline && (
               <div role="status" className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-full text-xs font-semibold">
@@ -361,6 +374,8 @@ const MpLayout = () => {
               </div>
             )}
             
+=======
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
             {/* Notification Bell */}
             <div ref={notificationsRef} className="relative">
               <button 

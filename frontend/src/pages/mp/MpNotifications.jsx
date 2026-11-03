@@ -1,8 +1,13 @@
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useState, useEffect } from 'react';
+<<<<<<< HEAD
 import { api } from '../../api/mpApi';
 import { useMpNotifications, queryKeys } from '../../api/queries';
 import { useQueryClient } from '@tanstack/react-query';
+=======
+import { api } from '../../api/mockMpApi';
+import { mockNotifications } from '../../data/mockMpData';
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 import { 
   TbBell, 
   TbCheck, 
@@ -18,6 +23,7 @@ const MpNotifications = () => {
     'Notifications | MP Portal',
     'Review system alerts, risk escalations, and project sanction updates for Member of Parliament.'
   );
+<<<<<<< HEAD
 
   const queryClient = useQueryClient();
   const { data: notifData, isLoading } = useMpNotifications();
@@ -30,6 +36,28 @@ const MpNotifications = () => {
     await api.markNotificationRead(id);
     setLocalNotifications(prev => (prev ?? notifications).map(n => n.id === id ? { ...n, read: true } : n));
     queryClient.invalidateQueries({ queryKey: queryKeys.mp.notifications() });
+=======
+
+  const [notifications, setNotifications] = useState(() => mockNotifications || []);
+  const [loading, setLoading] = useState(false);
+  const [filter, setFilter] = useState('All');
+
+  useEffect(() => {
+    let isMounted = true;
+    api.getNotifications().then(data => {
+      if (isMounted && data?.length) {
+        setNotifications(data);
+      }
+    }).catch(() => {
+      // Graceful fallback to initial mock notifications
+    });
+    return () => { isMounted = false; };
+  }, []);
+
+  const handleMarkAsRead = async (id) => {
+    await api.markNotificationRead(id);
+    setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
   };
 
   const handleMarkAllRead = async () => {

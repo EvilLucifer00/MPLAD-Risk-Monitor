@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { TbUser, TbBell, TbShield, TbDeviceFloppy, TbCheck } from 'react-icons/tb';
 import { usePageSeo } from '../../hooks/usePageSeo';
+<<<<<<< HEAD
 import { useAuthStore } from '../../store/useAuthStore';
+=======
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
 
 const DaSettings = () => {
   usePageSeo(
@@ -9,12 +12,15 @@ const DaSettings = () => {
     'District Authority account preferences, notification alerts, and administrative security settings.'
   );
 
+<<<<<<< HEAD
   const user = useAuthStore((state) => state.user);
   const displayName = user?.dm_name || user?.name || 'District Authority';
   const displayDesignation = user?.designation || 'District Collector & District Authority';
   const displayDistrict = user?.dist ? `${user.dist} District` : (user?.district ? `${user.district} District` : 'District Authority');
   const displayState = user?.state || 'Uttar Pradesh';
 
+=======
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
   const [saved, setSaved] = useState(false);
   const [notifSettings, setNotifSettings] = useState({
     newSubmissions: true,
@@ -55,22 +61,38 @@ const DaSettings = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label htmlFor="da-fullname" className="block text-sm font-semibold text-slate-700 mb-1.5">Full Name</label>
+<<<<<<< HEAD
               <input id="da-fullname" type="text" defaultValue={displayName} readOnly
+=======
+              <input id="da-fullname" type="text" defaultValue="Shri R.K. Verma, IAS" readOnly
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]" />
             </div>
             <div>
               <label htmlFor="da-designation" className="block text-sm font-semibold text-slate-700 mb-1.5">Designation</label>
+<<<<<<< HEAD
               <input id="da-designation" type="text" defaultValue={displayDesignation} readOnly
+=======
+              <input id="da-designation" type="text" defaultValue="District Collector & District Authority" readOnly
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]" />
             </div>
             <div>
               <label htmlFor="da-district" className="block text-sm font-semibold text-slate-700 mb-1.5">District</label>
+<<<<<<< HEAD
               <input id="da-district" type="text" defaultValue={displayDistrict} readOnly
+=======
+              <input id="da-district" type="text" defaultValue="Lucknow District" readOnly
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]" />
             </div>
             <div>
               <label htmlFor="da-state" className="block text-sm font-semibold text-slate-700 mb-1.5">State</label>
+<<<<<<< HEAD
               <input id="da-state" type="text" defaultValue={displayState} readOnly
+=======
+              <input id="da-state" type="text" defaultValue="Uttar Pradesh" readOnly
+>>>>>>> 0cc7204af2d25e77145bc95a8d6cd281e94a9276
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]" />
             </div>
           </div>
