@@ -1,8 +1,9 @@
-// src/api/mockMpApi.js
+// src/api/mpApi.js
 import { projectsApi, dashboardApi } from './mpladsApi';
 import { useAuthStore } from '../store/useAuthStore';
 
-export const api = {
+export const mpApi = {
+
   // Projects
   /**
    * Retrieves all projects submitted by the currently logged-in MP from the real backend API.
@@ -126,3 +127,5 @@ export const api = {
     };
   }
 };
+
+export const api = mpApi;

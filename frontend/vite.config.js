@@ -48,13 +48,29 @@ export default defineConfig({
             if (normalized.includes('react-router') || normalized.includes('@remix-run')) {
               return 'vendor-router';
             }
-            if (normalized.includes('zustand')) {
+            if (normalized.includes('zustand') || normalized.includes('@tanstack/react-query')) {
               return 'vendor-state';
+            }
+            if (normalized.includes('recharts') || normalized.includes('d3-') || normalized.includes('victory-vendor')) {
+              return 'vendor-charts';
+            }
+            if (normalized.includes('leaflet') || normalized.includes('react-leaflet')) {
+              return 'vendor-maps';
+            }
+            if (normalized.includes('framer-motion')) {
+              return 'vendor-motion';
+            }
+            if (normalized.includes('react-icons')) {
+              return 'vendor-icons';
             }
           }
         }
       }
     }
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/test/setup.js',
   }
 });
-

@@ -1,8 +1,10 @@
+import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { daApi } from '../../api/mockDaApi';
+import { daApi } from '../../api/daApi';
+import { useDaReviewQueue, useDaDistrictMps, useDaAgencies, useDaReviewActionMutation, queryKeys } from '../../api/queries';
+import { useQueryClient } from '@tanstack/react-query';
 import { useDaStore } from '../../store/useDaStore';
-import { mockMPs, mockImplementingAgencies, mockDaProjects } from '../../data/mockDaData';
 import { RiskBadge } from '../mp/MpProjects';
 import usePageSeo from '../../hooks/usePageSeo';
 import { 
@@ -16,12 +18,15 @@ const DaProjectReview = () => {
     'Prioritized district review queue for sanctioning MPLADS proposals, sorted by AI risk score.'
   );
 
-  const [queue, setQueue] = useState(() => 
-    mockDaProjects
-      .filter(p => p.reviewStatus === 'Pending Review' || p.reviewStatus === 'Awaiting Verification')
-      .sort((a, b) => b.riskScore - a.riskScore)
-  );
-  const [loading, setLoading] = useState(false);
+  const queryClient = useQueryClient();
+  const { data: queueData, isLoading } = useDaReviewQueue();
+  const { data: districtMpsData } = useDaDistrictMps();
+  const districtMps = Array.isArray(districtMpsData) ? districtMpsData : [];
+  const { data: agenciesData } = useDaAgencies();
+  const agencies = Array.isArray(agenciesData) ? agenciesData : [];
+  const queue = Array.isArray(queueData) ? queueData : [];
+  const loading = isLoading && !queueData;
+
   const [searchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
   const { 
@@ -37,19 +42,8 @@ const DaProjectReview = () => {
   const [showIASelect, setShowIASelect] = useState(null);
 
   useEffect(() => {
-    let isMounted = true;
     const mpParam = searchParams.get('mp');
     if (mpParam) setReviewMpFilter(mpParam);
-
-    daApi.getReviewQueue().then(data => {
-      if (isMounted && data?.length) {
-        setQueue(data);
-      }
-    }).catch(() => {
-      // Fallback to initial state
-    });
-
-    return () => { isMounted = false; };
   }, [searchParams, setReviewMpFilter]);
 
   const filteredQueue = useMemo(() => {
@@ -65,12 +59,17 @@ const DaProjectReview = () => {
 
   const categories = useMemo(() => [...new Set(queue.map(p => p.category))], [queue]);
 
+  const reviewMutation = useDaReviewActionMutation();
+
   const handleQuickApprove = async (projectId) => {
     if (!quickApproveIA) return;
     setQuickApproving(projectId);
     try {
-      await daApi.quickApprove(projectId, { implementingAgencyId: quickApproveIA });
-      setQueue(prev => prev.filter(p => p.id !== projectId));
+      await reviewMutation.mutateAsync({
+        id: projectId,
+        action: 'Sanction',
+        details: { implementingAgencyId: quickApproveIA },
+      });
       setShowIASelect(null);
       setQuickApproveIA('');
     } catch {
@@ -78,6 +77,10 @@ const DaProjectReview = () => {
     }
     setQuickApproving(null);
   };
+
+  if (loading) {
+    return <PortalPageLoader message="Loading Review Queue..." />;
+  }
 
   return (
     <div className="space-y-6 flex flex-col min-h-full">
@@ -133,7 +136,7 @@ const DaProjectReview = () => {
               className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#123b63]/20 focus:border-[#123b63] transition-[border-color,box-shadow] duration-150 flex-1 md:flex-none"
             >
               <option value="All">All MPs</option>
-              {mockMPs.map(mp => <option key={mp.id} value={mp.id}>{mp.name}</option>)}
+              {districtMps.map(mp => <option key={mp.id} value={mp.id}>{mp.name}</option>)}
             </select>
             <select 
               id="review-risk-filter"
@@ -237,7 +240,7 @@ const DaProjectReview = () => {
                               className="bg-white border border-emerald-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-200"
                             >
                               <option value="">Select IA...</option>
-                              {mockImplementingAgencies.map(ia => (
+                              {agencies.map(ia => (
                                 <option key={ia.id} value={ia.id}>{ia.name}</option>
                               ))}
                             </select>

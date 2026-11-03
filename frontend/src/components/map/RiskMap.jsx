@@ -31,17 +31,36 @@ const RiskMap = ({ searchTerm, filterState, filterRisk, setStatesList }) => {
   }, [filterState, filterRisk, searchTerm, hoveredRiskLevel]);
 
   useEffect(() => {
-    // Singleton cached GeoJSON fetch - prevents duplicate downloads during re-renders/StrictMode
+    // Singleton cached GeoJSON fetch with persistent CacheStorage across sessions
     if (!window.__GEOJSON_PROMISE__) {
-      window.__GEOJSON_PROMISE__ = fetch("/data/india_constituencies_simplified.geojson")
-        .then((res) => {
-          if (!res.ok) throw new Error("Failed to load map boundaries");
-          return res.json();
-        })
-        .catch((err) => {
-          window.__GEOJSON_PROMISE__ = null; // allow retry
-          throw err;
-        });
+      window.__GEOJSON_PROMISE__ = (async () => {
+        const GEO_URL = '/data/india_constituencies_simplified.geojson';
+        const CACHE_NAME = 'mplads_geo_cache_v1';
+
+        if (typeof window !== 'undefined' && 'caches' in window) {
+          try {
+            const cache = await caches.open(CACHE_NAME);
+            const cachedRes = await cache.match(GEO_URL);
+            if (cachedRes) {
+              return await cachedRes.json();
+            }
+            const networkRes = await fetch(GEO_URL);
+            if (networkRes.ok) {
+              cache.put(GEO_URL, networkRes.clone()).catch(() => {});
+              return await networkRes.json();
+            }
+          } catch {
+            // Fall through to standard fetch
+          }
+        }
+
+        const res = await fetch(GEO_URL);
+        if (!res.ok) throw new Error('Failed to load map boundaries');
+        return await res.json();
+      })().catch((err) => {
+        window.__GEOJSON_PROMISE__ = null;
+        throw err;
+      });
     }
 
     let isMounted = true;
@@ -90,6 +109,25 @@ const RiskMap = ({ searchTerm, filterState, filterRisk, setStatesList }) => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleClosePanel]);
+
+  // Debounced map resize invalidation to keep canvas viewport crisp without layout thrash
+  useEffect(() => {
+    let timeoutId;
+    const handleResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        if (mapRef.current) {
+          mapRef.current.invalidateSize({ debounceMoveEvents: true });
+        }
+      }, 150);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   // Reset map when clicking on the empty background of the map
   useEffect(() => {

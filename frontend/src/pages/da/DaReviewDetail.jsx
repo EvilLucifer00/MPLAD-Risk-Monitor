@@ -1,9 +1,12 @@
+import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { daApi } from '../../api/mockDaApi';
-import { mockImplementingAgencies, mockDaProjects } from '../../data/mockDaData';
+import { daApi } from '../../api/daApi';
+import { useDaProjectDetail, useDaAgencies, useDaReviewActionMutation } from '../../api/queries';
+import { useQueryClient } from '@tanstack/react-query';
 import { StatusBadge, RiskBadge } from '../mp/MpProjects';
 import usePageSeo from '../../hooks/usePageSeo';
+import useDialogA11y from '../../hooks/useDialogA11y';
 import { 
   TbArrowLeft, TbMapPin, TbBuilding, TbUser, TbCalendar, TbFileDescription, 
   TbDownload, TbAlertTriangle, TbChevronDown, TbChevronUp, TbCheck, TbX,
@@ -13,6 +16,9 @@ import {
 // ── Modals ──
 
 const SanctionModal = ({ open, onClose, onConfirm, loading }) => {
+  const modalRef = useDialogA11y(open, onClose);
+  const { data: agenciesData } = useDaAgencies();
+  const agencies = Array.isArray(agenciesData) ? agenciesData : [];
   const [iaId, setIaId] = useState('');
   const [notes, setNotes] = useState('');
   if (!open) return null;
@@ -24,7 +30,7 @@ const SanctionModal = ({ open, onClose, onConfirm, loading }) => {
       aria-modal="true"
       aria-labelledby="sanction-modal-title"
     >
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg" onClick={e => e.stopPropagation()}>
+      <div ref={modalRef} className="bg-white rounded-2xl shadow-2xl w-full max-w-lg" onClick={e => e.stopPropagation()}>
         <div className="p-6 border-b border-slate-100">
           <h3 id="sanction-modal-title" className="text-lg font-bold text-emerald-700 flex items-center gap-2">
             <TbCheck size={22} aria-hidden="true" /> Sanction Project
@@ -42,7 +48,7 @@ const SanctionModal = ({ open, onClose, onConfirm, loading }) => {
               className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
             >
               <option value="">Select an Implementing Agency...</option>
-              {mockImplementingAgencies.map(ia => (
+              {agencies.map(ia => (
                 <option key={ia.id} value={ia.id}>{ia.name} (Avg Risk: {ia.avgRiskScore})</option>
               ))}
             </select>
@@ -81,6 +87,7 @@ const SanctionModal = ({ open, onClose, onConfirm, loading }) => {
 };
 
 const RejectModal = ({ open, onClose, onConfirm, loading }) => {
+  const modalRef = useDialogA11y(open, onClose);
   const [reason, setReason] = useState('');
   const [presets, setPresets] = useState([]);
   const presetOptions = [
@@ -100,7 +107,7 @@ const RejectModal = ({ open, onClose, onConfirm, loading }) => {
       aria-modal="true"
       aria-labelledby="reject-modal-title"
     >
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg" onClick={e => e.stopPropagation()}>
+      <div ref={modalRef} className="bg-white rounded-2xl shadow-2xl w-full max-w-lg" onClick={e => e.stopPropagation()}>
         <div className="p-6 border-b border-orange-100 bg-orange-50/30">
           <h3 id="reject-modal-title" className="text-lg font-bold tracking-tight text-orange-700 flex items-center gap-2">
             <TbX size={22} aria-hidden="true" /> Reject Project
@@ -159,6 +166,7 @@ const RejectModal = ({ open, onClose, onConfirm, loading }) => {
 };
 
 const RequestDocsModal = ({ open, onClose, onConfirm, loading }) => {
+  const modalRef = useDialogA11y(open, onClose);
   const [documents, setDocuments] = useState('');
   const [message, setMessage] = useState('');
   if (!open) return null;
@@ -170,7 +178,7 @@ const RequestDocsModal = ({ open, onClose, onConfirm, loading }) => {
       aria-modal="true"
       aria-labelledby="request-docs-modal-title"
     >
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg" onClick={e => e.stopPropagation()}>
+      <div ref={modalRef} className="bg-white rounded-2xl shadow-2xl w-full max-w-lg" onClick={e => e.stopPropagation()}>
         <div className="p-6 border-b border-blue-100 bg-blue-50/30">
           <h3 id="request-docs-modal-title" className="text-lg font-bold text-blue-700 flex items-center gap-2">
             <TbFileAlert size={22} aria-hidden="true" /> Request Additional Documents
@@ -224,6 +232,7 @@ const RequestDocsModal = ({ open, onClose, onConfirm, loading }) => {
 };
 
 const SuspendModal = ({ open, onClose, onConfirm, loading }) => {
+  const modalRef = useDialogA11y(open, onClose);
   const [justification, setJustification] = useState('');
   if (!open) return null;
   return (
@@ -234,7 +243,7 @@ const SuspendModal = ({ open, onClose, onConfirm, loading }) => {
       aria-modal="true"
       aria-labelledby="suspend-modal-title"
     >
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg border-2 border-red-200" onClick={e => e.stopPropagation()}>
+      <div ref={modalRef} className="bg-white rounded-2xl shadow-2xl w-full max-w-lg border-2 border-red-200" onClick={e => e.stopPropagation()}>
         <div className="p-6 border-b border-red-200 bg-red-50">
           <h3 id="suspend-modal-title" className="text-lg font-bold tracking-tight text-red-700 flex items-center gap-2">
             <TbHandStop size={22} aria-hidden="true" /> Stop / Suspend Project
@@ -282,6 +291,7 @@ const SuspendModal = ({ open, onClose, onConfirm, loading }) => {
 };
 
 const EscalateModal = ({ open, onClose, onConfirm, loading }) => {
+  const modalRef = useDialogA11y(open, onClose);
   const [notes, setNotes] = useState('');
   if (!open) return null;
   return (
@@ -292,7 +302,7 @@ const EscalateModal = ({ open, onClose, onConfirm, loading }) => {
       aria-modal="true"
       aria-labelledby="escalate-modal-title"
     >
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg" onClick={e => e.stopPropagation()}>
+      <div ref={modalRef} className="bg-white rounded-2xl shadow-2xl w-full max-w-lg" onClick={e => e.stopPropagation()}>
         <div className="p-6 border-b border-amber-100 bg-amber-50/30">
           <h3 id="escalate-modal-title" className="text-lg font-bold tracking-tight text-amber-700 flex items-center gap-2">
             <TbArrowUpRight size={22} aria-hidden="true" /> Escalate to State / Ministry
@@ -334,12 +344,12 @@ const EscalateModal = ({ open, onClose, onConfirm, loading }) => {
 // ── Main Component ──
 
 const DaReviewDetail = () => {
+  const reviewMutation = useDaReviewActionMutation();
   const { id } = useParams();
   const navigate = useNavigate();
-  const [project, setProject] = useState(() => {
-    return mockDaProjects.find(p => p.id === id) || null;
-  });
-  const [loading, setLoading] = useState(() => !mockDaProjects.some(p => p.id === id));
+  const queryClient = useQueryClient();
+  const { data: projectData, isLoading, isError } = useDaProjectDetail(id);
+  const [projectOverride, setProjectOverride] = useState(null);
   const [expandedRisk, setExpandedRisk] = useState(null);
   const [actionLoading, setActionLoading] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
@@ -351,47 +361,39 @@ const DaReviewDetail = () => {
   const [showSuspend, setShowSuspend] = useState(false);
   const [showEscalate, setShowEscalate] = useState(false);
 
+  const project = projectOverride || projectData;
+  const loading = isLoading && !project;
+
   usePageSeo(
     `${project ? project.title : 'Project Review'} | DA Portal`,
-    `Sanction review, risk breakdown, and audit log for MPLADS project ${project?.id || id} in Lucknow District.`
+    `Sanction review, risk breakdown, and audit log for MPLADS project ${project?.id || id}.`
   );
 
   useEffect(() => {
-    daApi.getProjectById(id)
-      .then(data => { setProject(data); setLoading(false); })
-      .catch(() => navigate('/da/review'));
-  }, [id, navigate]);
+    if (isError) {
+      navigate('/da/review');
+    }
+  }, [isError, navigate]);
 
-  const handleAction = async (actionFn, params, closeModal, msg) => {
+  const handleAction = async (actionName, params, closeModal, msg) => {
     setActionLoading(true);
     try {
-      const updated = await actionFn(id, params);
-      setProject(updated);
+      await reviewMutation.mutateAsync({
+        id,
+        action: actionName,
+        details: params,
+      });
       closeModal();
       setSuccessMsg(msg);
       setTimeout(() => setSuccessMsg(''), 4000);
     } catch {
-      // Handled gracefully
+      // Handled gracefully with rollback
     }
     setActionLoading(false);
   };
 
   if (loading || !project) {
-    return (
-      <div className="space-y-6 max-w-6xl mx-auto animate-pulse" role="status" aria-label="Loading project review details">
-        <div className="h-4 w-48 bg-slate-200 rounded"></div>
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
-          <div className="h-8 w-2/3 bg-slate-200 rounded"></div>
-          <div className="h-4 w-1/3 bg-slate-100 rounded"></div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-slate-100">
-            <div className="h-16 bg-slate-50 rounded-xl"></div>
-            <div className="h-16 bg-slate-50 rounded-xl"></div>
-            <div className="h-16 bg-slate-50 rounded-xl"></div>
-            <div className="h-16 bg-slate-50 rounded-xl"></div>
-          </div>
-        </div>
-      </div>
-    );
+    return <PortalPageLoader message="Loading Review Details..." />;
   }
 
   const stages = ["Recommended", "Pending Review", "Sanctioned", "In Progress", "Completed"];
@@ -417,15 +419,15 @@ const DaReviewDetail = () => {
 
       {/* Modals */}
       <SanctionModal open={showSanction} onClose={() => setShowSanction(false)} loading={actionLoading}
-        onConfirm={(params) => handleAction(daApi.sanctionProject, params, () => setShowSanction(false), 'Project sanctioned successfully!')} />
+        onConfirm={(params) => handleAction('Sanction', params, () => setShowSanction(false), 'Project sanctioned successfully!')} />
       <RejectModal open={showReject} onClose={() => setShowReject(false)} loading={actionLoading}
-        onConfirm={(params) => handleAction(daApi.rejectProject, params, () => setShowReject(false), 'Project rejected. MP notified.')} />
+        onConfirm={(params) => handleAction('Reject', params, () => setShowReject(false), 'Project rejected. MP notified.')} />
       <RequestDocsModal open={showRequestDocs} onClose={() => setShowRequestDocs(false)} loading={actionLoading}
-        onConfirm={(params) => handleAction(daApi.requestDocuments, params, () => setShowRequestDocs(false), 'Document request sent to MP.')} />
+        onConfirm={(params) => handleAction('Request Documents', params, () => setShowRequestDocs(false), 'Document request sent to MP.')} />
       <SuspendModal open={showSuspend} onClose={() => setShowSuspend(false)} loading={actionLoading}
-        onConfirm={(params) => handleAction(daApi.suspendProject, params, () => setShowSuspend(false), 'Project suspended. Investigation initiated.')} />
+        onConfirm={(params) => handleAction('Suspend', params, () => setShowSuspend(false), 'Project suspended. Investigation initiated.')} />
       <EscalateModal open={showEscalate} onClose={() => setShowEscalate(false)} loading={actionLoading}
-        onConfirm={(params) => handleAction(daApi.escalateProject, params, () => setShowEscalate(false), 'Project escalated to State Nodal Authority.')} />
+        onConfirm={(params) => handleAction('Escalate', params, () => setShowEscalate(false), 'Project escalated to State Nodal Authority.')} />
 
       {/* Breadcrumb Navigation */}
       <nav aria-label="Breadcrumb">

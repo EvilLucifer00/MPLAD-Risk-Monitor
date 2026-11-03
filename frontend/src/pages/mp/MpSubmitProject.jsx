@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { projectsApi, userManagementApi } from '../../api/mpladsApi';
+import { useQueryClient } from '@tanstack/react-query';
+import { queryKeys, useMpSubmitProjectMutation } from '../../api/queries';
 import { useAuthStore } from '../../store/useAuthStore';
 import { usePageSeo } from '../../hooks/usePageSeo';
+import { compressFiles } from '../../utils/imageCompressor';
 import { 
   TbUpload, 
   TbFile, 
@@ -17,6 +20,7 @@ import {
 } from 'react-icons/tb';
 
 const MpSubmitProject = () => {
+  const submitMutation = useMpSubmitProjectMutation();
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
 
@@ -81,18 +85,19 @@ const MpSubmitProject = () => {
     setError(null);
     try {
       const rawFileObjects = files.map(f => f.rawFile).filter(Boolean);
-      await projectsApi.submitProject({
+      const optimizedFiles = await compressFiles(rawFileObjects);
+      await submitMutation.mutateAsync({
         title: formData.title,
         category: formData.category,
         estimatedCost: Number(formData.estimatedCost),
         implementingAgency: formData.implementingAgency,
         description: formData.description,
-        files: rawFileObjects
+        files: optimizedFiles
       });
       setSuccess(true);
       setTimeout(() => {
         navigate('/mp/projects');
-      }, 2000);
+      }, 1500);
     } catch (err) {
       setError(err.message || 'Failed to submit proposal. Please verify all fields.');
       setSubmitting(false);
@@ -210,7 +215,7 @@ const MpSubmitProject = () => {
                   <input 
                     id="project-district-input"
                     type="text" name="district" value={formData.district} onChange={handleInputChange}
-                    placeholder="e.g. North Delhi"
+                    placeholder={user?.constituency ? `e.g. ${user.constituency}` : "e.g. Constituency Name"}
                     className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-[border-color,box-shadow] duration-150"
                   />
                 </div>

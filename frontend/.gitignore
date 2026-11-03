@@ -102,6 +102,7 @@ stats.html
 report.html
 bundle-analysis.html
 heapdump*
+project analysis.md
 
 # ------------------------------------------------------------------------------
 # Linter & Formatter Caches

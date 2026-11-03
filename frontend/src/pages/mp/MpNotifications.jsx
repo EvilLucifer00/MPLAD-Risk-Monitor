@@ -1,6 +1,8 @@
+import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useState, useEffect } from 'react';
-import { api } from '../../api/mockMpApi';
-import { mockNotifications } from '../../data/mockMpData';
+import { api } from '../../api/mpApi';
+import { useMpNotifications, queryKeys } from '../../api/queries';
+import { useQueryClient } from '@tanstack/react-query';
 import { 
   TbBell, 
   TbCheck, 
@@ -17,25 +19,17 @@ const MpNotifications = () => {
     'Review system alerts, risk escalations, and project sanction updates for Member of Parliament.'
   );
 
-  const [notifications, setNotifications] = useState(() => mockNotifications || []);
-  const [loading, setLoading] = useState(false);
+  const queryClient = useQueryClient();
+  const { data: notifData, isLoading } = useMpNotifications();
+  const [localNotifications, setLocalNotifications] = useState(null);
+  const notifications = localNotifications ?? (Array.isArray(notifData) ? notifData : []);
+  const loading = isLoading && !notifData;
   const [filter, setFilter] = useState('All');
-
-  useEffect(() => {
-    let isMounted = true;
-    api.getNotifications().then(data => {
-      if (isMounted && data?.length) {
-        setNotifications(data);
-      }
-    }).catch(() => {
-      // Graceful fallback to initial mock notifications
-    });
-    return () => { isMounted = false; };
-  }, []);
 
   const handleMarkAsRead = async (id) => {
     await api.markNotificationRead(id);
-    setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
+    setLocalNotifications(prev => (prev ?? notifications).map(n => n.id === id ? { ...n, read: true } : n));
+    queryClient.invalidateQueries({ queryKey: queryKeys.mp.notifications() });
   };
 
   const handleMarkAllRead = async () => {
@@ -62,6 +56,10 @@ const MpNotifications = () => {
       default: return <TbInfoCircle size={24} className="text-blue-500" aria-hidden="true" />;
     }
   };
+
+  if (loading) {
+    return <PortalPageLoader message="Loading Notifications..." />;
+  }
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto min-h-full flex flex-col">

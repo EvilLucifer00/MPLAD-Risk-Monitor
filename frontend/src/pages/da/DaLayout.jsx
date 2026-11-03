@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
+import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   TbLayoutDashboard, 
@@ -15,14 +16,26 @@ import {
 } from 'react-icons/tb';
 import { IconMenu } from '../../components/shared/HomeIcons';
 import EmblemImage from '../../components/shared/EmblemImage';
-import { daApi } from '../../api/mockDaApi';
+import { daApi } from '../../api/daApi';
 import { useAuthStore } from '../../store/useAuthStore';
+import { useNetworkStatus } from '../../hooks/useNetworkStatus';
+import { subscribePortalSync } from '../../utils/portalSync';
+import { useQueryClient } from '@tanstack/react-query';
+import { queryKeys } from '../../api/queries';
+import { useDaReviewQueue } from '../../api/queries';
+import useDialogA11y from '../../hooks/useDialogA11y';
 
 // Lazy-loaded to eliminate heavy AI chat bundle from critical route waterfall
 const AiAssistantWidget = lazy(() => import('../../components/shared/AiAssistantWidget.jsx'));
 const DaLayout = () => {
-  const { user, logout } = useAuthStore();
+  const { isOnline, wasOffline } = useNetworkStatus();
+  const queryClient = useQueryClient();
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const sidebarA11yRef = useDialogA11y(isSidebarOpen, () => setIsSidebarOpen(false));
+  const { data: queueData } = useDaReviewQueue();
+  const pendingReviewCount = Array.isArray(queueData) ? queueData.length : 0;
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -31,6 +44,16 @@ const DaLayout = () => {
   const profileMenuRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
+
+    useEffect(() => {
+    return subscribePortalSync((event) => {
+      if (event.type === 'PROJECT_SUBMITTED') {
+        queryClient.invalidateQueries({ queryKey: queryKeys.da.reviewQueue() });
+        queryClient.invalidateQueries({ queryKey: queryKeys.da.stats() });
+        queryClient.invalidateQueries({ queryKey: queryKeys.da.projects() });
+      }
+    });
+  }, [queryClient]);
 
   const handleLogout = () => {
     logout();
@@ -77,6 +100,37 @@ const DaLayout = () => {
   }, []);
 
   const unreadCount = notifications.filter(n => !n.read).length;
+
+  const prefetchDaRoute = (routePath) => {
+    switch (routePath) {
+      case '/da':
+        import('./DaDashboard.jsx');
+        break;
+      case '/da/projects':
+        import('./DaProjects.jsx');
+        break;
+      case '/da/review':
+        import('./DaProjectReview.jsx');
+        break;
+      case '/da/documents':
+        import('./DaDocuments.jsx');
+        break;
+      case '/da/notifications':
+        import('./DaNotifications.jsx');
+        break;
+      case '/da/agencies':
+        import('./DaIADirectory.jsx');
+        break;
+      case '/da/vendors':
+        import('./DaVendorWatchlist.jsx');
+        break;
+      case '/da/settings':
+        import('./DaSettings.jsx');
+        break;
+      default:
+        break;
+    }
+  };
 
   const navLinks = [
     { name: 'Dashboard', path: '/da', icon: TbLayoutDashboard },
@@ -129,6 +183,8 @@ const DaLayout = () => {
             <Link
               key={link.path}
               to={link.path}
+              onMouseEnter={() => prefetchDaRoute(link.path)}
+              onFocus={() => prefetchDaRoute(link.path)}
               onClick={() => setIsSidebarOpen(false)}
               aria-current={isActive ? 'page' : undefined}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 ${
@@ -141,10 +197,10 @@ const DaLayout = () => {
               <span className="font-medium text-sm">{link.name}</span>
               
               {/* Badge for review queue */}
-              {link.name === 'Project Review' && (
+              {link.name === 'Project Review' && pendingReviewCount > 0 && (
                 <span className="ml-auto text-[10px] font-bold bg-orange-600 text-white px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
-                  <span className="sr-only">(11 pending reviews)</span>
-                  <span aria-hidden="true">11</span>
+                  <span className="sr-only">({pendingReviewCount} pending reviews)</span>
+                  <span aria-hidden="true">{pendingReviewCount}</span>
                 </span>
               )}
               
@@ -259,7 +315,10 @@ const DaLayout = () => {
 
       {/* Sidebar */}
       <aside
+        ref={isSidebarOpen ? sidebarA11yRef : null}
         aria-label="District Authority Navigation"
+        aria-modal={isSidebarOpen ? "true" : undefined}
+        role={isSidebarOpen ? "dialog" : undefined}
         className={`
         fixed lg:static inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
@@ -307,6 +366,20 @@ const DaLayout = () => {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-4 shrink-0 relative">
+            {/* Network Connectivity Pill */}
+            {!isOnline && (
+              <div role="status" className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-full text-xs font-semibold">
+                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                <span>Offline (Cached)</span>
+              </div>
+            )}
+            {wasOffline && isOnline && (
+              <div role="status" className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full text-xs font-semibold">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span>Synced</span>
+              </div>
+            )}
+            
             {/* Notification Bell */}
             <div ref={notificationsRef} className="relative">
               <button
@@ -393,7 +466,7 @@ const DaLayout = () => {
                       </div>
                       <div>
                         <h3 className="font-bold text-slate-800 leading-tight">
-                          {user?.dm_name || "Priya Singh"}
+                          {user?.dm_name || user?.name || "District Magistrate"}
                         </h3>
                         <p className="text-xs text-slate-500 mt-0.5">
                           District Magistrate
@@ -401,7 +474,7 @@ const DaLayout = () => {
                         <p className="text-[10px] font-semibold text-amber-600 mt-1">
                           {user?.dist
                             ? `${user.dist}${user?.state ? `, ${user.state}` : ""}`
-                            : "Varanasi, UP"}
+                            : (user?.district ? `${user.district}${user?.state ? `, ${user.state}` : ""}` : "District Authority")}
                         </p>
                       </div>
                     </div>
@@ -428,7 +501,9 @@ const DaLayout = () => {
           className="flex-1 overflow-y-auto custom-scrollbar bg-slate-50 p-4 lg:p-8"
         >
           <div className="max-w-7xl mx-auto min-h-full pb-20 w-full min-w-0">
-            <Outlet />
+            <Suspense fallback={<PortalPageLoader message="Loading page..." />}>
+              <Outlet />
+            </Suspense>
           </div>
         </main>
       </div>

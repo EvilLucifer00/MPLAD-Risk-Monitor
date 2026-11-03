@@ -1,6 +1,7 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { TbDownload, TbChartBar, TbFilter } from 'react-icons/tb';
-import { reportsApi } from '../../api/mpladsApi';
+import PortalPageLoader from '../../components/shared/PortalPageLoader';
+import React, { Suspense, lazy } from 'react';
+import { TbDownload, TbFilter } from 'react-icons/tb';
+import { useMpReports } from '../../api/queries';
 import usePageSeo from '../../hooks/usePageSeo';
 
 // Lazy-loaded to eliminate Recharts from the critical route bundle of MP Reports
@@ -46,30 +47,21 @@ const MpReports = () => {
     'Detailed insights into MPLADS fund utilization, category-wise expenditure, and monthly trends for Member of Parliament.'
   );
 
-  const [categoryData, setCategoryData] = useState(defaultCategoryData);
-  const [monthlyData, setMonthlyData] = useState(defaultMonthlyData);
-  const [chartsReady, setChartsReady] = useState(false);
+  const { data: summaryData, isLoading } = useMpReports();
 
-  useEffect(() => {
-    // Decouple heavy Recharts mounting by one frame so initial layout settles cleanly without forced reflow
-    const raf = requestAnimationFrame(() => setChartsReady(true));
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  const categoryData = (summaryData?.byCategory && summaryData.byCategory.length > 0)
+    ? summaryData.byCategory
+    : defaultCategoryData;
 
-  useEffect(() => {
-    reportsApi.getSummary()
-      .then(res => {
-        if (res.byCategory && res.byCategory.length > 0) {
-          setCategoryData(res.byCategory);
-        }
-        if (res.cumulativeUtilization && res.cumulativeUtilization.length > 0) {
-          setMonthlyData(res.cumulativeUtilization);
-        }
-      })
-      .catch(() => {
-        // Fallback to default data
-      });
-  }, []);
+  const monthlyData = (summaryData?.cumulativeUtilization && summaryData.cumulativeUtilization.length > 0)
+    ? summaryData.cumulativeUtilization
+    : defaultMonthlyData;
+
+  const loading = isLoading && !summaryData;
+
+  if (loading) {
+    return <PortalPageLoader message="Loading Reports & Analytics..." />;
+  }
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto min-h-full flex flex-col">
@@ -98,13 +90,9 @@ const MpReports = () => {
         </div>
       </header>
 
-      {chartsReady ? (
-        <Suspense fallback={<ChartSkeleton />}>
-          <MpReportsCharts monthlyData={monthlyData} categoryData={categoryData} />
-        </Suspense>
-      ) : (
-        <ChartSkeleton />
-      )}
+      <Suspense fallback={<ChartSkeleton />}>
+        <MpReportsCharts monthlyData={monthlyData} categoryData={categoryData} />
+      </Suspense>
     </div>
   );
 };

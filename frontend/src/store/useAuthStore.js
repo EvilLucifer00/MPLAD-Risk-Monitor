@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { authApi } from '../api/auth';
+import { clearPersistedQueryCache } from '../queryClient';
 
 const TOKEN_KEY = 'mplads_auth_token';
 const ROLE_KEY = 'mplads_auth_role';
@@ -34,6 +35,7 @@ export const useAuthStore = create((set, get) => ({
 
     if (user) localStorage.setItem(USER_KEY, JSON.stringify(user));
     else localStorage.removeItem(USER_KEY);
+    clearPersistedQueryCache();
 
     set({ token, role, user, error: null });
   },

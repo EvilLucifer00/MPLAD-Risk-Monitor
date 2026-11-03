@@ -91,7 +91,7 @@ export const authApi = {
 
     const p = (async () => {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 4000);
+      const timeoutId = setTimeout(() => controller.abort(), 45000);
       try {
         const response = await fetch(`${API_BASE_URL}/user/auth/MP/me`, {
           method: 'GET',
@@ -133,7 +133,7 @@ export const authApi = {
 
     const p = (async () => {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 4000);
+      const timeoutId = setTimeout(() => controller.abort(), 45000);
       try {
         const response = await fetch(`${API_BASE_URL}/user/auth/DM/me`, {
           method: 'GET',

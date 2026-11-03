@@ -1,6 +1,8 @@
+import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useState, useEffect } from 'react';
-import { daApi } from '../../api/mockDaApi';
-import { mockVendors } from '../../data/mockDaData';
+import { daApi } from '../../api/daApi';
+import { useDaVendors, queryKeys } from '../../api/queries';
+import { useQueryClient } from '@tanstack/react-query';
 import { TbSearch, TbFlag, TbAlertTriangle, TbUserScan, TbX, TbCheck, TbLoader2 } from 'react-icons/tb';
 import { usePageSeo } from '../../hooks/usePageSeo';
 
@@ -10,8 +12,12 @@ const DaVendorWatchlist = () => {
     'Monitor and flag contracted vendors across district MPLADS projects based on risk scores and audit findings.'
   );
 
-  const [vendors, setVendors] = useState(() => mockVendors);
-  const [loading, setLoading] = useState(false);
+  const queryClient = useQueryClient();
+  const { data: vendorsData, isLoading } = useDaVendors();
+  const [vendorsOverride, setVendorsOverride] = useState(null);
+  const vendors = vendorsOverride || (Array.isArray(vendorsData) ? vendorsData : []);
+  const loading = isLoading && !vendorsData;
+
   const [searchTerm, setSearchTerm] = useState('');
   const [filterFlagged, setFilterFlagged] = useState('All');
   
@@ -20,21 +26,13 @@ const DaVendorWatchlist = () => {
   const [flagNotes, setFlagNotes] = useState('');
   const [flagging, setFlagging] = useState(false);
 
-  useEffect(() => {
-    daApi.getVendors().then(data => {
-      if (data && data.length) {
-        setVendors(data);
-      }
-      setLoading(false);
-    });
-  }, []);
-
   const handleFlag = async (vendorId) => {
     if (!flagNotes.trim()) return;
     setFlagging(true);
     try {
-      const updated = await daApi.flagVendor(vendorId, { notes: flagNotes });
-      setVendors(prev => prev.map(v => v.id === vendorId ? { ...v, flagged: true, flagNotes: flagNotes } : v));
+      await daApi.flagVendor(vendorId, { notes: flagNotes });
+      setVendorsOverride(vendors.map(v => v.id === vendorId ? { ...v, flagged: true, flagNotes: flagNotes } : v));
+      queryClient.invalidateQueries({ queryKey: queryKeys.da.all });
       setShowFlagModal(null);
     } catch {
       // Handled gracefully
@@ -45,6 +43,8 @@ const DaVendorWatchlist = () => {
   const handleUnflag = async (vendorId) => {
     try {
       await daApi.unflagVendor(vendorId);
+      setVendorsOverride(vendors.map(v => v.id === vendorId ? { ...v, flagged: false, flagNotes: '' } : v));
+      queryClient.invalidateQueries({ queryKey: queryKeys.da.all });
     } catch {
       // Handled gracefully
     }
@@ -59,6 +59,10 @@ const DaVendorWatchlist = () => {
   });
 
   const flaggedCount = vendors.filter(v => v.flagged).length;
+
+  if (loading) {
+    return <PortalPageLoader message="Loading Vendor Watchlist..." />;
+  }
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto min-h-full flex flex-col">

@@ -1,5 +1,5 @@
 import React, { useEffect, Suspense, lazy } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './index.css';
 import ProtectedRoute from './components/shared/ProtectedRoute.jsx';
 import { useAuthStore } from './store/useAuthStore.js';
@@ -131,6 +131,9 @@ function App() {
             <Route path="vendors" element={<DaVendorWatchlist />} />
             <Route path="settings" element={<DaSettings />} />
           </Route>
+
+          {/* Catch-all route to redirect invalid routes back to home */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

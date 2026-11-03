@@ -91,10 +91,13 @@ const Home = () => {
       }
     };
     const useAvif = isAvifSupported();
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 640;
     const link = document.createElement("link");
     link.rel = "preload";
     link.as = "image";
-    link.href = useAvif ? "/images/mplad_headquarters.avif" : "/images/mplad_headquarters.webp";
+    link.href = useAvif
+      ? (isMobile ? "/images/mplad_headquarters-mobile.avif" : "/images/mplad_headquarters.avif")
+      : (isMobile ? "/images/mplad_headquarters-mobile.webp" : "/images/mplad_headquarters.webp");
     link.type = useAvif ? "image/avif" : "image/webp";
     link.fetchPriority = "high";
     document.head.appendChild(link);

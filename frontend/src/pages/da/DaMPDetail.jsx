@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import PortalPageLoader from '../../components/shared/PortalPageLoader';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { daApi } from '../../api/mockDaApi';
-import { mockMPs, mockDaProjects } from '../../data/mockDaData';
+
+import { useDaMpProjects } from '../../api/queries';
 import { RiskBadge, StatusBadge } from '../mp/MpProjects';
 import usePageSeo from '../../hooks/usePageSeo';
 import { TbArrowLeft, TbSearch, TbFilter, TbChevronRight, TbBriefcase } from 'react-icons/tb';
-import { projectsApi } from '../../api/mpladsApi';
+
 
 const DaMPDetail = () => {
   const { mpId } = useParams();
-  const fallbackMp = mockMPs.find(m => m.id === mpId || String(m.id) === String(mpId));
-  const [projects, setProjects] = useState(() => {
-    return mockDaProjects.filter(p => p.mpId === mpId || String(p.mpId) === String(mpId));
-  });
+  const fallbackMp = null;
+  const { data: projectsData, isLoading } = useDaMpProjects(mpId);
+  const projects = Array.isArray(projectsData) ? projectsData : [];
   const [mpInfo, setMpInfo] = useState(null);
-  const [loading, setLoading] = useState(() => !mockDaProjects.some(p => p.mpId === mpId || String(p.mpId) === String(mpId)));
+  const loading = isLoading && !projectsData;
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [riskFilter, setRiskFilter] = useState('All');
@@ -24,39 +24,12 @@ const DaMPDetail = () => {
 
   usePageSeo(
     `${mpDisplayName} | DA Portal`,
-    `Projects and sanction review oversight for ${mpDisplayName}, ${mpDisplayConstituency} in Lucknow District.`
+    `Projects and sanction review oversight for ${mpDisplayName}, ${mpDisplayConstituency}.`
   );
 
-  useEffect(() => {
-    let isMounted = true;
-    const loadData = async () => {
-      try {
-        const res = await projectsApi.getDistrictMpProjects(mpId);
-        if (isMounted && res && res.projects) {
-          setProjects(res.projects);
-          if (res.mpDetails) setMpInfo(res.mpDetails);
-          setLoading(false);
-          return;
-        }
-      } catch {
-        // Fallback gracefully
-      }
-
-      try {
-        const data = await daApi.getMPProjects(mpId);
-        if (isMounted && data) {
-          setProjects(data);
-        }
-      } catch {
-        // Handled gracefully
-      } finally {
-        if (isMounted) setLoading(false);
-      }
-    };
-
-    loadData();
-    return () => { isMounted = false; };
-  }, [mpId]);
+  if (loading) {
+    return <PortalPageLoader message="Loading MP Details..." />;
+  }
 
   const filteredProjects = projects.filter(p => {
     const searchLower = (searchTerm || '').toLowerCase();
@@ -68,6 +41,18 @@ const DaMPDetail = () => {
     const matchesRisk = riskFilter === 'All' || p.riskLevel === riskFilter;
     return matchesSearch && matchesStatus && matchesRisk;
   });
+
+  const tableContainerRef = useRef(null);
+  const rowVirtualizer = useVirtualizer({
+    count: filteredProjects.length,
+    getScrollElement: () => tableContainerRef.current,
+    estimateSize: () => 72,
+    overscan: 5,
+  });
+  const virtualRows = rowVirtualizer.getVirtualItems();
+  const totalSize = rowVirtualizer.getTotalSize();
+  const paddingTop = virtualRows.length > 0 ? virtualRows[0]?.start || 0 : 0;
+  const paddingBottom = virtualRows.length > 0 ? totalSize - (virtualRows[virtualRows.length - 1]?.end || 0) : 0;
 
   const statuses = ['All', 'Pending Sanction', 'Sanctioned', 'In Progress', 'Completed', 'Rejected'];
   const riskLevels = ['All', 'Low', 'Moderate', 'High', 'Critical'];
@@ -200,7 +185,7 @@ const DaMPDetail = () => {
         className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex-1"
       >
         <h2 id="projects-portfolio-heading" className="sr-only">Projects Portfolio</h2>
-        <div className="overflow-x-auto h-full">
+        <div ref={tableContainerRef} className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-320px)] min-h-[300px]">
           {loading ? (
             <div className="flex flex-col items-center justify-center p-12 h-64 text-slate-500" role="status" aria-live="polite">
               <div className="w-8 h-8 border-4 border-[#123b63] border-t-transparent rounded-full animate-spin mb-3"></div>

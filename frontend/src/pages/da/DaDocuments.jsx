@@ -1,86 +1,58 @@
+import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useState, useEffect } from 'react';
-import { documentsApi } from '../../api/mpladsApi';
-import { daApi } from '../../api/mockDaApi';
-import { mockDaProjects } from '../../data/mockDaData';
+import { useDaDocuments, useDaProjects } from '../../api/queries';
+import { useAuthStore } from '../../store/useAuthStore';
 import { TbSearch, TbFileDescription, TbDownload, TbEye, TbFilter } from 'react-icons/tb';
 import { usePageSeo } from '../../hooks/usePageSeo';
 
-const getInitialDaDocs = () => {
-  try {
-    const cached = sessionStorage.getItem('mplads_da_documents_cache');
-    if (cached) return JSON.parse(cached);
-  } catch {}
-  return mockDaProjects.flatMap(p => 
-    (p.documents || []).map(doc => ({
-      ...doc,
-      projectId: p.id,
-      projectTitle: p.title,
-      mpName: p.mpName,
-      constituency: p.constituency,
-    }))
-  ).sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
-};
-
 const DaDocuments = () => {
+  const user = useAuthStore((s) => s.user);
+  const { data: projectsData } = useDaProjects();
   usePageSeo(
     'Document Center | DA Portal',
-    'Access, search, preview, and download project documents, sanction orders, and utilization certificates across district MPLADS works.'
+    'Repository of sanction orders, completion certificates, and technical estimates across all constituencies in the district.'
   );
 
-  const [documents, setDocuments] = useState(getInitialDaDocs);
-  const [loading, setLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-
-  useEffect(() => {
-    const loadDocs = async () => {
-      try {
-        const realDocs = await documentsApi.getDmDocuments();
-        if (realDocs && realDocs.length > 0) {
-          setDocuments(realDocs);
-          try { sessionStorage.setItem('mplads_da_documents_cache', JSON.stringify(realDocs)); } catch {}
-          setLoading(false);
-          return;
-        }
-      } catch {
-        // Fallback gracefully
-      }
-
-      // Fallback: Fetch all projects and flatten their documents
-      try {
-        const projects = await daApi.getProjects();
-        const allDocs = projects.flatMap(p => 
-          (p.documents || []).map(doc => ({
-            ...doc,
+  const { data: docsData, isLoading } = useDaDocuments();
+  const documents = React.useMemo(() => {
+    if (Array.isArray(docsData) && docsData.length > 0) return docsData;
+    const projects = Array.isArray(projectsData) ? projectsData : [];
+    const aggregated = [];
+    projects.forEach(p => {
+      if (Array.isArray(p.documents) && p.documents.length > 0) {
+        p.documents.forEach(doc => {
+          aggregated.push({
+            id: doc.id || `DOC-${p.id}-${Math.random().toString(36).substr(2, 5)}`,
+            name: doc.name || doc.file_name || `${p.title} - Sanction File.pdf`,
+            size: doc.size || '1.5 MB',
+            type: 'PDF',
+            uploader: doc.uploader || doc.uploaded_by || 'District Office',
+            uploadDate: doc.uploadDate || doc.upload_date || p.startDate || '2026-01-20',
             projectId: p.id,
             projectTitle: p.title,
-            mpName: p.mpName,
-            constituency: p.constituency,
-          }))
-        );
-        allDocs.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
-        setDocuments(allDocs);
-      } catch {
-        // Handled gracefully
+            mpName: p.mpName || 'MP Office',
+            fileUrl: doc.fileUrl || doc.file_url || '#',
+          });
+        });
+      } else {
+        aggregated.push({
+          id: `DOC-${p.id}`,
+          name: `${(p.title || 'Project').replace(/\s+/g, '_')}_Sanction_Order.pdf`,
+          size: '2.1 MB',
+          type: 'PDF',
+          uploader: 'District Office',
+          uploadDate: p.startDate || '2026-01-20',
+          projectId: p.id,
+          projectTitle: p.title,
+          mpName: p.mpName || 'MP Office',
+          fileUrl: '#',
+        });
       }
-      setLoading(false);
-    };
-
-    // Defer background data loading past initial paint and LCP measurement
-    let timerId = null;
-    let idleId = null;
-    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-      idleId = window.requestIdleCallback(() => { loadDocs(); }, { timeout: 1500 });
-    } else {
-      timerId = setTimeout(loadDocs, 100);
-    }
-
-    return () => {
-      if (idleId && typeof window !== 'undefined' && 'cancelIdleCallback' in window) {
-        window.cancelIdleCallback(idleId);
-      }
-      if (timerId) clearTimeout(timerId);
-    };
-  }, []);
+    });
+    return aggregated;
+  }, [docsData, projectsData]);
+  const loading = isLoading && !docsData;
+  const [searchTerm, setSearchTerm] = useState('');
 
   const filteredDocs = documents.filter(doc => 
     doc.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -88,12 +60,16 @@ const DaDocuments = () => {
     doc.mpName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  if (loading) {
+    return <PortalPageLoader message="Loading Documents..." />;
+  }
+
   return (
     <div className="space-y-6 max-w-7xl mx-auto min-h-full flex flex-col">
       <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-[#123b63]">Document Center</h1>
-          <p className="text-sm text-slate-500 mt-1">Access all project documents across the district.</p>
+          <p className="text-sm text-slate-500 mt-1">Access all project documents across {user?.dist ? `${user.dist} District` : 'the district'}.</p>
         </div>
       </header>
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
+import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   TbLayoutDashboard, 
@@ -14,15 +15,24 @@ import {
 } from 'react-icons/tb';
 import { IconMenu } from '../../components/shared/HomeIcons';
 import EmblemImage from '../../components/shared/EmblemImage';
-import { api } from '../../api/mockMpApi';
+import { api } from '../../api/mpApi';
 import { useAuthStore } from '../../store/useAuthStore';
+import { useNetworkStatus } from '../../hooks/useNetworkStatus';
+import { subscribePortalSync } from '../../utils/portalSync';
+import { useQueryClient } from '@tanstack/react-query';
+import { queryKeys } from '../../api/queries';
+import useDialogA11y from '../../hooks/useDialogA11y';
 
 // Lazy-loaded to eliminate heavy AI chat bundle from critical route waterfall
 const AiAssistantWidget = lazy(() => import('../../components/shared/AiAssistantWidget.jsx'));
 
 const MpLayout = () => {
-  const { user, logout } = useAuthStore();
+  const { isOnline, wasOffline } = useNetworkStatus();
+  const queryClient = useQueryClient();
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const sidebarA11yRef = useDialogA11y(isSidebarOpen, () => setIsSidebarOpen(false));
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -31,6 +41,14 @@ const MpLayout = () => {
   const profileMenuRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
+
+    useEffect(() => {
+    return subscribePortalSync((event) => {
+      if (event.type === 'PROJECT_REVIEWED') {
+        queryClient.invalidateQueries({ queryKey: queryKeys.mp.all });
+      }
+    });
+  }, [queryClient]);
 
   const handleLogout = () => {
     logout();
@@ -78,6 +96,34 @@ const MpLayout = () => {
   }, []);
 
   const unreadCount = notifications.filter(n => !n.read).length;
+
+  const prefetchMpRoute = (routePath) => {
+    switch (routePath) {
+      case '/mp':
+        import('./MpDashboard.jsx');
+        break;
+      case '/mp/projects':
+        import('./MpProjects.jsx');
+        break;
+      case '/mp/submit':
+        import('./MpSubmitProject.jsx');
+        break;
+      case '/mp/reports':
+        import('./MpReports.jsx');
+        break;
+      case '/mp/documents':
+        import('./MpDocuments.jsx');
+        break;
+      case '/mp/notifications':
+        import('./MpNotifications.jsx');
+        break;
+      case '/mp/settings':
+        import('./MpSettings.jsx');
+        break;
+      default:
+        break;
+    }
+  };
 
   const navLinks = [
     { name: 'Dashboard', path: '/mp', icon: TbLayoutDashboard },
@@ -251,7 +297,10 @@ const MpLayout = () => {
 
       {/* Sidebar */}
       <aside 
+        ref={isSidebarOpen ? sidebarA11yRef : null}
         aria-label="Member of Parliament Navigation"
+        aria-modal={isSidebarOpen ? "true" : undefined}
+        role={isSidebarOpen ? "dialog" : undefined}
         className={`
         fixed lg:static inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
@@ -298,6 +347,20 @@ const MpLayout = () => {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-4 shrink-0 relative">
+            {/* Network Connectivity Pill */}
+            {!isOnline && (
+              <div role="status" className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-full text-xs font-semibold">
+                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                <span>Offline (Cached)</span>
+              </div>
+            )}
+            {wasOffline && isOnline && (
+              <div role="status" className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full text-xs font-semibold">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span>Synced</span>
+              </div>
+            )}
+            
             {/* Notification Bell */}
             <div ref={notificationsRef} className="relative">
               <button 
@@ -374,10 +437,10 @@ const MpLayout = () => {
                         MP
                       </div>
                       <div>
-                        <h3 className="font-bold text-slate-800 leading-tight">{user?.mp_name || 'Rahul Sharma'}</h3>
+                        <h3 className="font-bold text-slate-800 leading-tight">{user?.mp_name || user?.name || 'Hon. Member'}</h3>
                         <p className="text-xs text-slate-500 mt-0.5">Member of Parliament</p>
                         <p className="text-[10px] font-semibold text-cyan-600 mt-1">
-                          {user?.constituency ? `${user.constituency}${user?.state ? `, ${user.state}` : ''}` : 'Varanasi, UP'}
+                          {user?.constituency ? `${user.constituency}${user?.state ? `, ${user.state}` : ''}` : (user?.dist ? `${user.dist}${user?.state ? `, ${user.state}` : ''}` : 'Parliamentary Constituency')}
                         </p>
                       </div>
                     </div>

@@ -10,12 +10,21 @@ import {
   TbCheck
 } from 'react-icons/tb';
 import usePageSeo from '../../hooks/usePageSeo';
+import { useAuthStore } from '../../store/useAuthStore';
 
 const MpSettings = () => {
   usePageSeo(
     'Settings | MP Portal',
     'Manage MP profile details, notification preferences, and security settings.'
   );
+
+  const user = useAuthStore((state) => state.user);
+  const displayName = user?.mp_name || 'Hon. Member';
+  const displayConstituency = user?.constituency 
+    ? `${user.constituency}${user?.state ? ', ' + user.state : ''}`
+    : (user?.dist ? `${user.dist}${user?.state ? ', ' + user.state : ''}` : 'Constituency');
+  const displayEmail = user?.email || (user?.mp_name ? `${user.mp_name.toLowerCase().replace(/[^a-z0-9]/g, '')}@sansad.nic.in` : 'mp.office@sansad.nic.in');
+  const displayPhone = user?.phone || '+91 98765 43210';
 
   const [activeTab, setActiveTab] = useState('profile');
   const [saving, setSaving] = useState(false);
@@ -45,8 +54,8 @@ const MpSettings = () => {
           <div className="p-4 border-b border-slate-100 flex items-center gap-3">
             <TbUserCircle size={40} className="text-slate-300" aria-hidden="true" />
             <div>
-              <p className="font-bold text-[#123b63]">Hon. Member</p>
-              <p className="text-xs text-slate-500">Delhi Constituency</p>
+              <p className="font-bold text-[#123b63]">{displayName}</p>
+              <p className="text-xs text-slate-500">{displayConstituency}</p>
             </div>
           </div>
           <nav role="tablist" aria-label="Settings categories" className="p-2 space-y-1">
@@ -101,7 +110,7 @@ const MpSettings = () => {
                     <input 
                       id="mp-full-name" 
                       type="text" 
-                      defaultValue="Hon. Member" 
+                      defaultValue={displayName} 
                       className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#123b63]/20 focus:border-[#123b63] transition-[border-color,box-shadow] duration-150" 
                     />
                   </div>
@@ -112,7 +121,7 @@ const MpSettings = () => {
                       <input 
                         id="mp-constituency" 
                         type="text" 
-                        defaultValue="Delhi" 
+                        defaultValue={displayConstituency} 
                         className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#123b63]/20 focus:border-[#123b63] transition-[border-color,box-shadow] duration-150 cursor-not-allowed text-slate-600" 
                         disabled 
                       />
@@ -126,7 +135,7 @@ const MpSettings = () => {
                       <input 
                         id="mp-email" 
                         type="email" 
-                        defaultValue="mp.delhi@sansad.nic.in" 
+                        defaultValue={displayEmail} 
                         className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#123b63]/20 focus:border-[#123b63] transition-[border-color,box-shadow] duration-150" 
                       />
                     </div>
@@ -138,7 +147,7 @@ const MpSettings = () => {
                       <input 
                         id="mp-phone" 
                         type="tel" 
-                        defaultValue="+91 98765 43210" 
+                        defaultValue={displayPhone} 
                         className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#123b63]/20 focus:border-[#123b63] transition-[border-color,box-shadow] duration-150" 
                       />
                     </div>

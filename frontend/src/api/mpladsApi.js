@@ -119,7 +119,7 @@ export async function authFetch(endpoint, options = {}) {
   // Execute request and store in-flight promise with a 4s timeout for GET to prevent hanging on Render cold-starts
   const executePromise = (async () => {
     const controller = new AbortController();
-    const timeoutMs = options.timeout ?? 4000;
+    const timeoutMs = options.timeout ?? 45000; // 45s to accommodate Render free-tier cold starts
     const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
     try {
       const response = await fetch(url, { ...options, headers, signal: controller.signal });

@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { api } from '../../api/mockMpApi';
-import { mockProjects } from '../../data/mockMpData';
+import PortalPageLoader from '../../components/shared/PortalPageLoader';
+import React, { useState, useMemo, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import { useMpProjects } from '../../api/queries';
 import { useMpStore } from '../../store/useMpStore';
 import { usePageSeo } from '../../hooks/usePageSeo';
+import { useVirtualizer } from '@tanstack/react-virtual';
 import { TbSearch, TbFilter, TbChevronRight, TbBriefcase } from 'react-icons/tb';
 
 // Reusable Risk Badge Component
@@ -41,21 +42,12 @@ export const StatusBadge = ({ status }) => {
   );
 };
 
-const getInitialProjects = () => {
-  try {
-    const cached = sessionStorage.getItem('mplads_mp_projects_cache');
-    if (cached) return JSON.parse(cached);
-  } catch {
-    // Session storage fallback
-  }
-  return mockProjects;
-};
-
 const MpProjects = () => {
-  const location = useLocation();
-  const [projects, setProjects] = useState(getInitialProjects);
+  const { data: projectsData, isLoading } = useMpProjects();
+  const projects = Array.isArray(projectsData) ? projectsData : [];
+  const loading = isLoading && !projectsData;
+  const tableContainerRef = useRef(null);
   
-  // Filters initialized without cascading effect renders
   const [searchTerm, setSearchTerm] = useState(() => {
     try {
       return new URLSearchParams(window.location.search).get('search') || '';
@@ -71,21 +63,6 @@ const MpProjects = () => {
     'Browse, filter, and track recommended MPLADS development works, implementing agencies, budgets, and risk scores.'
   );
 
-  useEffect(() => {
-    let isMounted = true;
-    api.getProjects().then(data => {
-      if (isMounted && data?.length) {
-        setProjects(data);
-        try {
-          sessionStorage.setItem('mplads_mp_projects_cache', JSON.stringify(data));
-        } catch {}
-      }
-    });
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
   const filteredProjects = useMemo(() => {
     const searchLower = (searchTerm || '').toLowerCase();
     return projects.filter(p => {
@@ -99,8 +76,24 @@ const MpProjects = () => {
     });
   }, [projects, searchTerm, statusFilter, riskFilter]);
 
+  const rowVirtualizer = useVirtualizer({
+    count: filteredProjects.length,
+    getScrollElement: () => tableContainerRef.current,
+    estimateSize: () => 72,
+    overscan: 5,
+  });
+
+  const virtualRows = rowVirtualizer.getVirtualItems();
+  const totalSize = rowVirtualizer.getTotalSize();
+  const paddingTop = virtualRows.length > 0 ? virtualRows[0]?.start || 0 : 0;
+  const paddingBottom = virtualRows.length > 0 ? totalSize - (virtualRows[virtualRows.length - 1]?.end || 0) : 0;
+
   const statuses = ['All', 'Pending Sanction', 'Sanctioned', 'In Progress', 'Completed', 'Rejected'];
   const riskLevels = ['All', 'Low', 'Moderate', 'High', 'Critical'];
+
+  if (loading) {
+    return <PortalPageLoader message="Loading Projects..." />;
+  }
 
   return (
     <div className="space-y-6 flex flex-col min-h-full">
@@ -161,7 +154,7 @@ const MpProjects = () => {
       {/* Projects Table Section */}
       <section aria-labelledby="projects-portfolio-heading" className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex-1">
         <h2 id="projects-portfolio-heading" className="sr-only">Recommended Projects Portfolio</h2>
-        <div className="overflow-x-auto h-full">
+        <div ref={tableContainerRef} className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-280px)] min-h-[300px]">
           {filteredProjects.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-12 h-64 text-slate-500">
               <TbBriefcase size={48} className="text-slate-300 mb-4" />
@@ -171,8 +164,8 @@ const MpProjects = () => {
           ) : (
             <table className="w-full text-left border-collapse">
               <caption className="sr-only">Projects Portfolio List</caption>
-              <thead>
-                <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wider font-semibold">
+              <thead className="sticky top-0 z-10">
+                <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wider font-semibold">
                   <th scope="col" className="px-5 py-3.5">Project Details</th>
                   <th scope="col" className="px-5 py-3.5 hidden sm:table-cell">IA & Vendor</th>
                   <th scope="col" className="px-5 py-3.5 hidden md:table-cell">Amount</th>
@@ -182,40 +175,54 @@ const MpProjects = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {filteredProjects.map(project => (
-                  <tr key={project.id} className="hover:bg-slate-50/50 transition-colors group">
-                    <td className="px-5 py-4">
-                      <p className="font-bold text-[#123b63] text-sm tracking-tight line-clamp-1">{project.title}</p>
-                      <p className="text-xs text-slate-500 mt-0.5">{project.id} • {project.category}</p>
-                    </td>
-                    <td className="px-5 py-4 hidden sm:table-cell">
-                      <p className="text-sm font-medium text-slate-700">{project.implementingAgency}</p>
-                      <p className="text-xs text-slate-500 mt-0.5">{project.vendor}</p>
-                    </td>
-                    <td className="px-5 py-4 hidden md:table-cell">
-                      <p className="text-sm font-bold text-[#123b63]">₹{(project.estimatedCost / 100000).toFixed(2)} L</p>
-                    </td>
-                    <td className="px-5 py-4">
-                      <StatusBadge status={project.status} />
-                    </td>
-                    <td className="px-5 py-4">
-                      {project.status === 'Pending Sanction' || project.status === 'Rejected' ? (
-                        <span className="text-xs text-slate-400 font-medium">N/A</span>
-                      ) : (
-                        <RiskBadge level={project.riskLevel} score={project.riskScore} />
-                      )}
-                    </td>
-                    <td className="px-5 py-4 text-right">
-                      <Link 
-                        to={`/mp/projects/${project.id}`}
-                        aria-label={`View details for ${project.title}`}
-                        className="inline-flex items-center justify-center p-2 text-slate-400 hover:text-[#123b63] hover:bg-slate-100 rounded-lg active:scale-90 transition-[transform,background-color,color] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
-                      >
-                        <TbChevronRight size={20} aria-hidden="true" />
-                      </Link>
-                    </td>
+                {paddingTop > 0 && (
+                  <tr>
+                    <td colSpan={6} style={{ height: `${paddingTop}px` }} />
                   </tr>
-                ))}
+                )}
+                {virtualRows.map(virtualRow => {
+                  const project = filteredProjects[virtualRow.index];
+                  if (!project) return null;
+                  return (
+                    <tr key={project.id} className="hover:bg-slate-50/50 transition-colors group">
+                      <td className="px-5 py-4">
+                        <p className="font-bold text-[#123b63] text-sm tracking-tight line-clamp-1">{project.title}</p>
+                        <p className="text-xs text-slate-500 mt-0.5">{project.id} • {project.category}</p>
+                      </td>
+                      <td className="px-5 py-4 hidden sm:table-cell">
+                        <p className="text-sm font-medium text-slate-700">{project.implementingAgency}</p>
+                        <p className="text-xs text-slate-500 mt-0.5">{project.vendor}</p>
+                      </td>
+                      <td className="px-5 py-4 hidden md:table-cell">
+                        <p className="text-sm font-bold text-[#123b63]">₹{(project.estimatedCost / 100000).toFixed(2)} L</p>
+                      </td>
+                      <td className="px-5 py-4">
+                        <StatusBadge status={project.status} />
+                      </td>
+                      <td className="px-5 py-4">
+                        {project.status === 'Pending Sanction' || project.status === 'Rejected' ? (
+                          <span className="text-xs text-slate-400 font-medium">N/A</span>
+                        ) : (
+                          <RiskBadge level={project.riskLevel} score={project.riskScore} />
+                        )}
+                      </td>
+                      <td className="px-5 py-4 text-right">
+                        <Link 
+                          to={`/mp/projects/${project.id}`}
+                          aria-label={`View details for ${project.title}`}
+                          className="inline-flex items-center justify-center p-2 text-slate-400 hover:text-[#123b63] hover:bg-slate-100 rounded-lg active:scale-90 transition-[transform,background-color,color] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
+                        >
+                          <TbChevronRight size={20} aria-hidden="true" />
+                        </Link>
+                      </td>
+                    </tr>
+                  );
+                })}
+                {paddingBottom > 0 && (
+                  <tr>
+                    <td colSpan={6} style={{ height: `${paddingBottom}px` }} />
+                  </tr>
+                )}
               </tbody>
             </table>
           )}

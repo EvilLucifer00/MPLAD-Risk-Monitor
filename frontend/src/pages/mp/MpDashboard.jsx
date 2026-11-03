@@ -1,5 +1,6 @@
+import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useEffect, useState, Suspense, lazy } from 'react';
-import { api } from '../../api/mockMpApi';
+import { useMpStats, useMpRecommendations, useMpProjects } from '../../api/queries';
 import Reveal from '../../animations/Reveal';
 import AnimatedCounter from '../../components/shared/AnimatedCounter';
 import { 
@@ -15,18 +16,9 @@ import {
 import { Link } from 'react-router-dom';
 import { usePageSeo } from '../../hooks/usePageSeo';
 
-// Lazy-loaded to remove recharts (~5MB in dev) from the critical request chain
-const MpDashboardChart = lazy(() => import('./components/MpDashboardChart'));
+import MpDashboardChart from './components/MpDashboardChart';
 
-const ChartSkeleton = () => (
-  <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col min-h-[380px] animate-pulse">
-    <div className="h-5 w-36 bg-slate-200 rounded mb-2"></div>
-    <div className="h-4 w-52 bg-slate-100 rounded mb-6"></div>
-    <div className="flex-1 flex items-center justify-center">
-      <div className="w-40 h-40 rounded-full border-8 border-slate-100 border-t-cyan-500/40 animate-spin"></div>
-    </div>
-  </div>
-);
+
 
 const initialZeroMpStats = {
   activeProjects: 0,
@@ -60,55 +52,27 @@ const getInitialMpStats = () => {
 };
 
 const MpDashboard = () => {
-  const [stats, setStats] = useState(getInitialMpStats);
-  const [recommendations, setRecommendations] = useState([]);
-  const [projects, setProjects] = useState([]);
+  const { data: statsData, isLoading: statsLoading } = useMpStats();
+  const { data: recsData } = useMpRecommendations();
+  const { data: projectsData, isLoading: projectsLoading } = useMpProjects();
+
   const [showAllRecommendations, setShowAllRecommendations] = useState(false);
-  const [chartsReady, setChartsReady] = useState(false);
 
-  useEffect(() => {
-    // Decouple heavy Recharts mounting by one frame so initial layout & animations settle cleanly without forced reflow
-    const raf = requestAnimationFrame(() => setChartsReady(true));
-    return () => cancelAnimationFrame(raf);
-  }, []);
-
-  useEffect(() => {
-    let isMounted = true;
-    const loadData = async () => {
-      try {
-        const [dashboardStats, recs, allProjects] = await Promise.all([
-          api.getDashboardStats(),
-          api.getRecommendations(),
-          api.getProjects()
-        ]);
-        if (isMounted) {
-          if (dashboardStats) {
-            setStats(dashboardStats);
-            try {
-              sessionStorage.setItem('mplads_mp_dashboard_stats', JSON.stringify(dashboardStats));
-            } catch {
-              // Ignore session storage errors
-            }
-          }
-          setRecommendations(Array.isArray(recs) ? recs : []);
-          setProjects(Array.isArray(allProjects) ? allProjects : []);
-        }
-      } catch {
-        // Handled gracefully without console error
-      }
-    };
-    loadData();
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
+  const stats = statsData || null;
+  const recommendations = Array.isArray(recsData) ? recsData : [];
+  const projects = Array.isArray(projectsData) ? projectsData : [];
   const displayStats = stats || initialZeroMpStats;
+
+  const loading = (statsLoading && !statsData) || (projectsLoading && !projectsData);
 
   usePageSeo(
     'Dashboard Overview | MP Portal',
     'Real-time overview of Member of Parliament (MP) MPLADS development portfolio, expenditure tracking, and AI risk radar.'
   );
+
+  if (loading || !stats) {
+    return <PortalPageLoader message="Loading MP Dashboard..." />;
+  }
 
   return (
     <div className="space-y-6 w-full max-w-full min-w-0 overflow-x-hidden">
@@ -201,13 +165,7 @@ const MpDashboard = () => {
         {/* Project Status Section */}
         <section aria-labelledby="portfolio-analytics-heading" className="flex flex-col min-w-0 w-full">
           <h2 id="portfolio-analytics-heading" className="sr-only">Expenditure & Project Status Analytics</h2>
-          {chartsReady ? (
-            <Suspense fallback={<ChartSkeleton />}>
-              <MpDashboardChart stats={displayStats} projects={projects} />
-            </Suspense>
-          ) : (
-            <ChartSkeleton />
-          )}
+          <MpDashboardChart stats={displayStats} projects={projects} />
         </section>
 
         {/* AI Recommendations Section */}

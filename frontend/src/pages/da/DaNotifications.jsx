@@ -1,7 +1,9 @@
+import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { daApi } from '../../api/mockDaApi';
-import { mockDaNotifications } from '../../data/mockDaData';
+import { daApi } from '../../api/daApi';
+import { useDaNotifications, queryKeys } from '../../api/queries';
+import { useQueryClient } from '@tanstack/react-query';
 import { 
   TbBell, TbCheck, TbAlertTriangle, TbInfoCircle, TbChecklist, TbTrash, TbX
 } from 'react-icons/tb';
@@ -13,22 +15,17 @@ const DaNotifications = () => {
     'District Authority notifications, risk alerts, project reviews, and sanction updates.'
   );
 
-  const [notifications, setNotifications] = useState(() => mockDaNotifications);
-  const [loading, setLoading] = useState(false);
+  const queryClient = useQueryClient();
+  const { data: notifData, isLoading } = useDaNotifications();
+  const [localNotifications, setLocalNotifications] = useState(null);
+  const notifications = localNotifications ?? (Array.isArray(notifData) ? notifData : []);
+  const loading = isLoading && !notifData;
   const [filter, setFilter] = useState('All');
-
-  useEffect(() => {
-    daApi.getNotifications().then(data => {
-      if (data && data.length) {
-        setNotifications(data);
-      }
-      setLoading(false);
-    });
-  }, []);
 
   const handleMarkAsRead = async (id) => {
     await daApi.markNotificationRead(id);
-    setNotifications(notifications.map(n => n.id === id ? { ...n, read: true } : n));
+    setLocalNotifications(prev => (prev ?? notifications).map(n => n.id === id ? { ...n, read: true } : n));
+    queryClient.invalidateQueries({ queryKey: queryKeys.da.notifications() });
   };
 
   const handleMarkAllRead = async () => {
@@ -52,6 +49,10 @@ const DaNotifications = () => {
       default: return <TbInfoCircle size={24} className="text-blue-500" />;
     }
   };
+
+  if (loading) {
+    return <PortalPageLoader message="Loading Notifications..." />;
+  }
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto min-h-full flex flex-col">
