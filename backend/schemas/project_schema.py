@@ -16,6 +16,7 @@ class ProjectStatus(str, Enum):
     IN_PROGRESS = "IN_PROGRESS"
     COMPLETED = "COMPLETED"
     ESCALATED = "ESCALATED"
+    SUBMITTED = "SUBMITTED"
 
 class ProjectType(str, Enum):
     COMMUNITY_INFRASTRUCTURE = "COMMUNITY_INFRASTRUCTURE"
@@ -92,3 +93,56 @@ class NewProject(BaseModel):
     implementing_agency: str
     description: str 
     document_link: Optional[str] = None
+    
+    
+    
+class NotificationType(str, Enum):
+    ALERT = "ALERT"
+    SUCCESS = "SUCCESS"
+    INFO = "INFO"
+    ERROR = "ERROR"
+
+
+class NotificationResponse(BaseModel):
+    recipient_id: int
+    notification_id: int
+
+    project_id: Optional[int] = None
+
+    type: NotificationType
+
+    title: str
+    message: str
+
+    actor_role: Optional[str] = None
+    actor_id: Optional[int] = None
+
+    metadata: dict = {}
+
+    created_at: datetime
+
+    is_read: bool
+    read_at: Optional[datetime] = None
+
+
+class ProjectTimelineEvent(BaseModel):
+    id: int
+    project_id: int
+
+    event_type: str
+
+    title: str
+    message: str
+
+    actor_role: Optional[str] = None
+    actor_id: Optional[int] = None
+
+    old_status: Optional[ProjectStatus] = None
+    new_status: Optional[ProjectStatus] = None
+
+    risk_score: Optional[float] = None
+    risk_level: Optional[ProjectRiskLevel] = None
+
+    metadata: dict = {}
+
+    created_at: datetime
