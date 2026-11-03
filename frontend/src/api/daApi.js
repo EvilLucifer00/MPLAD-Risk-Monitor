@@ -1,5 +1,5 @@
 // src/api/daApi.js
-import { projectsApi, dashboardApi } from './mpladsApi';
+import { projectsApi, dashboardApi, notificationsApi } from './mpladsApi';
 import { useAuthStore } from '../store/useAuthStore';
 
 export const daApi = {

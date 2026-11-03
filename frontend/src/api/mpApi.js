@@ -1,5 +1,5 @@
 // src/api/mpApi.js
-import { projectsApi, dashboardApi } from './mpladsApi';
+import { projectsApi, dashboardApi, notificationsApi } from './mpladsApi';
 import { useAuthStore } from '../store/useAuthStore';
 
 export const mpApi = {
@@ -44,11 +44,51 @@ export const mpApi = {
   },
 
   // Notifications
-  getNotifications: async () => {
+  getNotifications: async (filter = null) => {
+    try {
+      const token = useAuthStore.getState().token;
+      if (token) {
+        return await notificationsApi.getMpNotifications(filter);
+      }
+    } catch {
+      // Graceful fallback
+    }
     return [];
   },
 
-  markNotificationRead: async (id) => {
+  markNotificationRead: async (id, isRead = true) => {
+    try {
+      const token = useAuthStore.getState().token;
+      if (token) {
+        return await notificationsApi.markMpRead(id, isRead);
+      }
+    } catch {
+      // Graceful fallback
+    }
+    return true;
+  },
+
+  markAllNotificationsRead: async () => {
+    try {
+      const token = useAuthStore.getState().token;
+      if (token) {
+        return await notificationsApi.markAllMpRead();
+      }
+    } catch {
+      // Graceful fallback
+    }
+    return true;
+  },
+
+  deleteNotification: async (id) => {
+    try {
+      const token = useAuthStore.getState().token;
+      if (token) {
+        return await notificationsApi.deleteMpNotification(id);
+      }
+    } catch {
+      // Graceful fallback
+    }
     return true;
   },
 

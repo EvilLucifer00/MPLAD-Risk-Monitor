@@ -156,6 +156,7 @@ const DaNotifications = () => {
                       </button>
                     )}
                     <button 
+                      onClick={() => handleDeleteNotification(notif.id)}
                       className="p-2 text-slate-500 hover:text-red-700 hover:bg-red-50 rounded-lg active:scale-90 transition-[transform,color,background-color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
                       title="Delete"
                       aria-label="Delete notification"

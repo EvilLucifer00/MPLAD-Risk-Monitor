@@ -592,5 +592,106 @@ export const userManagementApi = {
 
 // ── 6. RAG CHATBOT API ─────────────────────────────────────────
 
+
+// ── NOTIFICATION HELPERS & API ─────────────────────────────────
+
+export function mapNotificationFromBackend(n) {
+  if (!n) return null;
+  const rawType = (n.type || '').toUpperCase();
+  let type = 'info';
+  if (rawType === 'ALERT') type = 'warning';
+  else if (rawType === 'SUCCESS') type = 'success';
+  else if (rawType === 'ERROR') type = 'error';
+
+  return {
+    id: n.notification_id || n.id,
+    rawId: n.notification_id || n.id,
+    recipientId: n.recipient_id,
+    projectId: n.project_id ? (typeof n.project_id === 'string' && n.project_id.startsWith('PRJ-') ? n.project_id : `PRJ-2026-${String(n.project_id).padStart(3, '0')}`) : null,
+    rawProjectId: n.project_id,
+    title: n.title || (type === 'warning' ? 'AI Risk Alert' : type === 'success' ? 'Update' : 'Notification'),
+    message: n.message || '',
+    type: type,
+    rawType: rawType,
+    read: Boolean(n.is_read),
+    isRead: Boolean(n.is_read),
+    timestamp: n.created_at || new Date().toISOString(),
+    createdAt: n.created_at,
+    actorRole: n.actor_role,
+    actorId: n.actor_id,
+    metadata: n.metadata || {},
+  };
+}
+
+export const notificationsApi = {
+  getMpNotifications: async (filter = null) => {
+    const query = filter && filter !== 'All' ? `?filter=${encodeURIComponent(filter.toLowerCase())}` : '';
+    const res = await authFetch(`/notification/mp${query}`);
+    const json = await res.json();
+    const rows = Array.isArray(json.data) ? json.data : (Array.isArray(json) ? json : []);
+    const mapped = rows.map(mapNotificationFromBackend);
+    mapped.unreadCount = typeof json.unread_count === 'number' ? json.unread_count : mapped.filter(n => !n.read).length;
+    return mapped;
+  },
+
+  getDmNotifications: async (filter = null) => {
+    const query = filter && filter !== 'All' ? `?filter=${encodeURIComponent(filter.toLowerCase())}` : '';
+    const res = await authFetch(`/notification/dm${query}`);
+    const json = await res.json();
+    const rows = Array.isArray(json.data) ? json.data : (Array.isArray(json) ? json : []);
+    const mapped = rows.map(mapNotificationFromBackend);
+    mapped.unreadCount = typeof json.unread_count === 'number' ? json.unread_count : mapped.filter(n => !n.read).length;
+    return mapped;
+  },
+
+  markMpRead: async (notificationId, isRead = true) => {
+    const numericId = typeof notificationId === 'number' ? notificationId : parseInt(String(notificationId).match(/(\d+)$/)?.[1] || notificationId, 10);
+    const res = await authFetch(`/notification/mp/${numericId}/read`, {
+      method: 'PATCH',
+      body: JSON.stringify({ is_read: isRead }),
+    });
+    return await res.json();
+  },
+
+  markDmRead: async (notificationId, isRead = true) => {
+    const numericId = typeof notificationId === 'number' ? notificationId : parseInt(String(notificationId).match(/(\d+)$/)?.[1] || notificationId, 10);
+    const res = await authFetch(`/notification/dm/${numericId}/read`, {
+      method: 'PATCH',
+      body: JSON.stringify({ is_read: isRead }),
+    });
+    return await res.json();
+  },
+
+  markAllMpRead: async () => {
+    const res = await authFetch('/notification/mp/read-all', {
+      method: 'PATCH',
+    });
+    return await res.json();
+  },
+
+  markAllDmRead: async () => {
+    const res = await authFetch('/notification/dm/read-all', {
+      method: 'PATCH',
+    });
+    return await res.json();
+  },
+
+  deleteMpNotification: async (notificationId) => {
+    const numericId = typeof notificationId === 'number' ? notificationId : parseInt(String(notificationId).match(/(\d+)$/)?.[1] || notificationId, 10);
+    const res = await authFetch(`/notification/mp/${numericId}`, {
+      method: 'DELETE',
+    });
+    return await res.json();
+  },
+
+  deleteDmNotification: async (notificationId) => {
+    const numericId = typeof notificationId === 'number' ? notificationId : parseInt(String(notificationId).match(/(\d+)$/)?.[1] || notificationId, 10);
+    const res = await authFetch(`/notification/dm/${numericId}`, {
+      method: 'DELETE',
+    });
+    return await res.json();
+  },
+};
+
 export { sendChatMessage } from './ragApi';
 
