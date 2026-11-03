@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Query, File, UploadFile, Form
 from typing import Optional, List
 
-from auth.auth import get_current_mp, get_current_dm
+from auth.auth import get_current_mp, get_current_dm, get_current_user
 from schemas.project_schema import ProjectType
 from services.project_service import (
     list_projects, 
@@ -108,15 +108,16 @@ async def get_dm_mp_projects(
 
 
 # ==========================================
-# 5. SINGLE PROJECT DETAILS (Generic)
+# 5. SINGLE PROJECT DETAILS (MP or DM)
 # ==========================================
 @project_router.get("/{project_id}")
 async def get_project_by_id(
     project_id: int,
-    mp: dict = Depends(get_current_mp)
+    user: dict = Depends(get_current_user)
 ):
     """
     Fetches detailed information for a specific project.
+    Accessible to both MP (for their projects) and DM (for their district projects).
     """
-    result = await project_by_id(project_id=project_id, mp=mp)
+    result = await project_by_id(project_id=project_id, user=user)
     return result

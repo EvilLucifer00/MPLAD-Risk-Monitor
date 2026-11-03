@@ -369,11 +369,7 @@ const DaReviewDetail = () => {
     `Sanction review, risk breakdown, and audit log for MPLADS project ${project?.id || id}.`
   );
 
-  useEffect(() => {
-    if (isError) {
-      navigate('/da/review');
-    }
-  }, [isError, navigate]);
+  // Keep user on page and show graceful error UI if project fails to load
 
   const handleAction = async (actionName, params, closeModal, msg) => {
     setActionLoading(true);
@@ -392,8 +388,26 @@ const DaReviewDetail = () => {
     setActionLoading(false);
   };
 
-  if (loading || !project) {
+  if (loading) {
     return <PortalPageLoader message="Loading Review Details..." />;
+  }
+
+  if (isError || !project) {
+    return (
+      <div className="flex flex-col items-center justify-center p-12 text-center bg-white rounded-2xl shadow-sm border border-slate-200 my-8">
+        <TbAlertTriangle size={48} className="text-amber-500 mb-4" aria-hidden="true" />
+        <h2 className="text-lg font-bold text-slate-800">Unable to load project review</h2>
+        <p className="text-sm text-slate-500 mt-1 max-w-md">
+          The requested project could not be found or you may not have permission to view it.
+        </p>
+        <Link
+          to="/da/review"
+          className="mt-5 px-4 py-2 bg-[#123b63] text-white text-sm font-semibold rounded-xl hover:bg-[#0e2f50] active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
+        >
+          Return to Review Queue
+        </Link>
+      </div>
+    );
   }
 
   const stages = ["Recommended", "Pending Review", "Sanctioned", "In Progress", "Completed"];

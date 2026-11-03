@@ -379,24 +379,44 @@ async def list_projects(
 
 
 # ============================================================================
-# MP: single project
+# MP & DM: single project
 # ============================================================================
 async def project_by_id(
     project_id: int,
-    mp: dict,
+    user: dict,
 ):
+    is_mp = user.get("role") == "MP" or "mp_name" in user
 
-    mp_id = mp["id"]
-
-    response = (
-        supabase
-        .table("mplads_new_projects")
-        .select("*")
-        .eq("id", project_id)
-        .eq("mp_id", mp_id)
-        .limit(1)
-        .execute()
-    )
+    if is_mp:
+        mp_id = user["id"]
+        response = (
+            supabase
+            .table("mplads_new_projects")
+            .select("*")
+            .eq("id", project_id)
+            .eq("mp_id", mp_id)
+            .limit(1)
+            .execute()
+        )
+    else:
+        # DM caller: authorized for projects in their district/state
+        response = (
+            supabase
+            .table("mplads_new_projects")
+            .select("*")
+            .eq("id", project_id)
+            .limit(1)
+            .execute()
+        )
+        if response.data:
+            proj = response.data[0]
+            proj_dist = (proj.get("district") or proj.get("dist") or "").upper()
+            dm_dist = (user.get("dist") or user.get("district") or "").upper()
+            if dm_dist and proj_dist and proj_dist != dm_dist:
+                raise HTTPException(
+                    status_code=403,
+                    detail="Project does not belong to your district",
+                )
 
     if not response.data:
         raise HTTPException(
@@ -404,9 +424,29 @@ async def project_by_id(
             detail="Project not found or unauthorized",
         )
 
-    return _enrich_projects(
+    enriched = _enrich_projects(
         response.data
     )[0]
+
+    # Attach MP details if available
+    if enriched.get("mp_id"):
+        try:
+            mp_res = (
+                supabase
+                .table("mplads_mp")
+                .select("mp_name, constituency, house, dist, state")
+                .eq("id", enriched["mp_id"])
+                .limit(1)
+                .execute()
+            )
+            if mp_res.data:
+                mp_data = mp_res.data[0]
+                enriched["mp_name"] = mp_data.get("mp_name")
+                enriched["constituency"] = mp_data.get("constituency") or enriched.get("constituency")
+        except Exception:
+            pass
+
+    return enriched
 
 
 # ============================================================================

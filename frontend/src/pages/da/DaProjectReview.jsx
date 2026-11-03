@@ -1,6 +1,6 @@
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useState, useEffect, useMemo } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { daApi } from '../../api/daApi';
 import { useDaReviewQueue, useDaDistrictMps, useDaAgencies, useDaReviewActionMutation, queryKeys } from '../../api/queries';
 import { useQueryClient } from '@tanstack/react-query';
@@ -13,6 +13,7 @@ import {
 } from 'react-icons/tb';
 
 const DaProjectReview = () => {
+  const navigate = useNavigate();
   usePageSeo(
     'Project Review Queue | DA Portal',
     'Prioritized district review queue for sanctioning MPLADS proposals, sorted by AI risk score.'
@@ -211,7 +212,11 @@ const DaProjectReview = () => {
                 return (
                   <li key={project.id}>
                     <article 
-                      className={`p-4 sm:p-5 flex items-start gap-4 hover:bg-slate-50/50 transition-colors ${
+                      onClick={(e) => {
+                        if (e.target.closest('button, select, a, input')) return;
+                        navigate(`/da/review/${project.id}`);
+                      }}
+                      className={`p-4 sm:p-5 flex items-start gap-4 hover:bg-slate-50/80 cursor-pointer transition-colors ${
                         project.riskLevel === 'Critical' ? 'border-l-4 border-l-red-400' :
                         project.riskLevel === 'High' ? 'border-l-4 border-l-orange-400' :
                         project.riskLevel === 'Moderate' ? 'border-l-4 border-l-amber-400' :
@@ -231,7 +236,14 @@ const DaProjectReview = () => {
                       {/* Project Info */}
                       <div className="flex-1 min-w-0">
                         <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-                          <h3 className="font-bold text-[#123b63] text-sm truncate">{project.title}</h3>
+                          <h3 className="font-bold text-[#123b63] text-sm truncate">
+                            <Link 
+                              to={`/da/review/${project.id}`}
+                              className="hover:underline hover:text-cyan-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] rounded"
+                            >
+                              {project.title}
+                            </Link>
+                          </h3>
                           <RiskBadge level={project.riskLevel} score={project.riskScore} showScore={false} />
                         </div>
                         <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1.5 text-[12px] text-slate-500">
@@ -297,10 +309,11 @@ const DaProjectReview = () => {
                         <Link
                           to={`/da/review/${project.id}`}
                           aria-label={`Open full review for ${project.title}`}
-                          className="p-2 text-slate-400 hover:text-[#123b63] hover:bg-slate-100 rounded-lg active:scale-90 transition-[transform,background-color,color] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
+                          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-[#123b63] hover:bg-slate-100 rounded-lg active:scale-95 transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
                           title="Open full review"
                         >
-                          <TbChevronRight size={20} aria-hidden="true" />
+                          <span>Review</span>
+                          <TbChevronRight size={16} aria-hidden="true" />
                         </Link>
                       </div>
                     </article>

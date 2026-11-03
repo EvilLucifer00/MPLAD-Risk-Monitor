@@ -98,10 +98,19 @@ export const daApi = {
     try {
       const token = useAuthStore.getState().token;
       if (token) {
-        return await projectsApi.getProjectById(id);
+        const proj = await projectsApi.getProjectById(id);
+        if (proj) return proj;
       }
     } catch {
-      // Return null
+      // Direct fetch error - try review queue fallback
+    }
+
+    try {
+      const queue = await daApi.getReviewQueue();
+      const match = queue.find(p => String(p.id) === String(id) || String(p.rawId) === String(id));
+      if (match) return match;
+    } catch {
+      // Ignore
     }
     return null;
   },
