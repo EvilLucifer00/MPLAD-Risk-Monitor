@@ -1,12 +1,15 @@
 import React, { useEffect, Suspense, lazy } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import './index.css';
 import ProtectedRoute from './components/shared/ProtectedRoute.jsx';
 import { useAuthStore } from './store/useAuthStore.js';
+import { markRouteAsCached, preloadPortalRoutes, isRouteCached, notifyOfflineBlocked } from './utils/offlineCacheTracker.js';
+import OfflineNoticeBanner from './components/shared/OfflineNoticeBanner.jsx';
 
 // Lazy-loaded routes for code-splitting & performance
 const Home = lazy(() => import('./pages/HomePage/index.jsx'));
 const LoginPage = lazy(() => import('./pages/LoginPage/index.jsx'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage/index.jsx'));
 
 // MP (Member of Parliament) Pages
 const MpLayout = lazy(() => import('./pages/mp/MpLayout.jsx'));
@@ -40,6 +43,65 @@ const PageLoader = () => (
     </div>
   </div>
 );
+
+/**
+ * Route cache watcher & offline navigation protector.
+ * Marks visited routes as cached, preloads portal chunks during idle time,
+ * and intercepts any uncached link navigation attempts when offline.
+ */
+function OfflineRouteGuard() {
+  const location = useLocation();
+  const user = useAuthStore((state) => state.user);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && navigator.onLine) {
+      markRouteAsCached(location.pathname);
+    }
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (user?.role && typeof navigator !== 'undefined' && navigator.onLine) {
+      preloadPortalRoutes(user.role);
+    }
+  }, [user?.role]);
+
+  useEffect(() => {
+    const handleOnline = () => {
+      const currentRole = useAuthStore.getState().user?.role;
+      if (currentRole) {
+        preloadPortalRoutes(currentRole);
+      }
+    };
+    window.addEventListener('online', handleOnline);
+    return () => window.removeEventListener('online', handleOnline);
+  }, []);
+
+  useEffect(() => {
+    const handleGlobalClick = (e) => {
+      if (typeof navigator !== 'undefined' && navigator.onLine) return;
+
+      const anchor = e.target.closest('a[href]');
+      if (!anchor) return;
+
+      const href = anchor.getAttribute('href');
+      if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+
+      if (href.startsWith('/') || href.startsWith(window.location.origin)) {
+        const path = href.startsWith('/') ? href : href.replace(window.location.origin, '');
+        if (!isRouteCached(path)) {
+          e.preventDefault();
+          e.stopPropagation();
+          notifyOfflineBlocked(path);
+        }
+      }
+    };
+
+    document.addEventListener('click', handleGlobalClick, true);
+    return () => document.removeEventListener('click', handleGlobalClick, true);
+  }, []);
+
+  return null;
+}
 
 /**
  * Main App Component
@@ -79,6 +141,8 @@ function App() {
 
   return (
     <BrowserRouter>
+      <OfflineRouteGuard />
+      <OfflineNoticeBanner />
       {/* WCAG 2.4.1: Skip to main content link for keyboard & screen reader accessibility */}
       <a 
         href="#main-content" 
@@ -132,8 +196,8 @@ function App() {
             <Route path="settings" element={<DaSettings />} />
           </Route>
 
-          {/* Catch-all route to redirect invalid routes back to home */}
-          <Route path="*" element={<Navigate to="/" replace />} />
+          {/* Dedicated 404 Page Not Found with official government topology */}
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

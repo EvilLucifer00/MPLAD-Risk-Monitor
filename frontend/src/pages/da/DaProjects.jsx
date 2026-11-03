@@ -1,6 +1,7 @@
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useState, useEffect, useMemo, Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
+import OfflineLink from '../../components/shared/OfflineLink';
 import { useDaDistrictMps } from '../../api/queries';
 import { useDaStore } from '../../store/useDaStore';
 import { useAuthStore } from '../../store/useAuthStore';
@@ -141,7 +142,7 @@ const DaProjects = () => {
             <ul role="list" className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
               {filteredMPs.map(mp => (
                 <li key={mp.id}>
-                  <Link 
+                  <OfflineLink 
                     to={`/da/projects/mp/${mp.id}`}
                     aria-label={`View projects and statistics for ${mp.name}, ${mp.constituency}`}
                     className="block bg-white rounded-2xl shadow-sm border border-slate-200 p-5 hover:shadow-md hover:border-slate-300 active:scale-[0.99] transition-[transform,box-shadow,border-color] duration-150 ease-out group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
@@ -189,7 +190,7 @@ const DaProjects = () => {
                         )}
                       </div>
                     </article>
-                  </Link>
+                  </OfflineLink>
                 </li>
               ))}
             </ul>

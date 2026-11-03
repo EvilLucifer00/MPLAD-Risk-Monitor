@@ -12,13 +12,15 @@ import {
   TbBuildingBank,
   TbUserScan,
   TbLogout,
-  TbX
+  TbX,
+  TbCloudOff
 } from 'react-icons/tb';
 import { IconMenu } from '../../components/shared/HomeIcons';
 import EmblemImage from '../../components/shared/EmblemImage';
 import { daApi } from '../../api/daApi';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useNetworkStatus } from '../../hooks/useNetworkStatus';
+import { useOfflineRouteStatus } from '../../hooks/useOfflineRouteStatus';
 import { subscribePortalSync } from '../../utils/portalSync';
 import { useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '../../api/queries';
@@ -29,6 +31,7 @@ import useDialogA11y from '../../hooks/useDialogA11y';
 const AiAssistantWidget = lazy(() => import('../../components/shared/AiAssistantWidget.jsx'));
 const DaLayout = () => {
   const { isOnline, wasOffline } = useNetworkStatus();
+  const { isRouteDisabled, notifyOfflineBlocked } = useOfflineRouteStatus();
   const queryClient = useQueryClient();
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
@@ -178,7 +181,32 @@ const DaLayout = () => {
           const isActive = location.pathname === link.path || 
                           (link.path !== '/da' && location.pathname.startsWith(link.path));
           const Icon = link.icon;
-          
+          const isDisabled = isRouteDisabled(link.path);
+
+          if (isDisabled) {
+            return (
+              <button
+                key={link.path}
+                type="button"
+                disabled
+                aria-disabled="true"
+                title={`${link.name} is not cached offline. Reconnect to the internet to access.`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  notifyOfflineBlocked(link.path);
+                }}
+                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl opacity-40 cursor-not-allowed select-none text-slate-400 bg-white/[0.02] border border-white/5 transition-opacity"
+              >
+                <Icon size={20} className="text-slate-500 shrink-0" aria-hidden="true" />
+                <span className="font-medium text-sm text-left">{link.name}</span>
+                <span className="ml-auto inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-amber-400 bg-amber-400/10 px-1.5 py-0.5 rounded-full border border-amber-400/20">
+                  <TbCloudOff size={11} aria-hidden="true" />
+                  <span>Offline</span>
+                </span>
+              </button>
+            );
+          }
+
           return (
             <Link
               key={link.path}

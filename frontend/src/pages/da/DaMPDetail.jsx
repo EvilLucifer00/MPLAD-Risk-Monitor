@@ -1,6 +1,7 @@
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useState, useRef, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import OfflineLink from '../../components/shared/OfflineLink';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useDaMpProjects, useDaDistrictMps } from '../../api/queries';
 import { RiskBadge, StatusBadge } from '../mp/MpProjects';
@@ -116,12 +117,12 @@ const DaMPDetail = () => {
               <h1 className="text-2xl font-bold tracking-tight text-[#123b63]">{mpDisplayName}</h1>
               <p className="text-sm text-slate-500 mt-1 leading-normal">{mpDisplayConstituency ? `${mpDisplayConstituency} • ` : ''}{projects.length} Projects</p>
             </div>
-            <Link 
+            <OfflineLink 
               to={`/da/review?mp=${mpId}`}
               className="bg-cyan-600 hover:bg-cyan-700 active:scale-95 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-[transform,background-color] duration-150 ease-out flex items-center gap-2 self-start shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-600"
             >
               <span>Review Queue</span> <TbChevronRight size={16} aria-hidden="true" />
-            </Link>
+            </OfflineLink>
           </div>
 
           {/* Quick Stats Section */}
@@ -279,13 +280,13 @@ const DaMPDetail = () => {
                         </span>
                       </td>
                       <td className="px-5 py-4 text-right">
-                        <Link 
+                        <OfflineLink 
                           to={`/da/review/${project.id}`}
                           aria-label={`Review project ${project.title}`}
                           className="inline-flex items-center justify-center p-2 text-slate-400 hover:text-[#123b63] hover:bg-slate-100 rounded-lg active:scale-90 transition-[transform,background-color,color] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
                         >
                           <TbChevronRight size={20} aria-hidden="true" />
-                        </Link>
+                        </OfflineLink>
                       </td>
                     </tr>
                   );

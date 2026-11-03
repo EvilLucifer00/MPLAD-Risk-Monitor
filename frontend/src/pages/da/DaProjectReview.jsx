@@ -1,6 +1,8 @@
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
+import { useOfflineRouteStatus } from '../../hooks/useOfflineRouteStatus';
+import OfflineLink from '../../components/shared/OfflineLink';
 import { daApi } from '../../api/daApi';
 import { useDaReviewQueue, useDaDistrictMps, useDaAgencies, useDaReviewActionMutation, queryKeys } from '../../api/queries';
 import { useQueryClient } from '@tanstack/react-query';
@@ -14,6 +16,7 @@ import {
 
 const DaProjectReview = () => {
   const navigate = useNavigate();
+  const { isRouteDisabled, notifyOfflineBlocked } = useOfflineRouteStatus();
   usePageSeo(
     'Project Review Queue | DA Portal',
     'Prioritized district review queue for sanctioning MPLADS proposals, sorted by AI risk score.'
@@ -214,7 +217,13 @@ const DaProjectReview = () => {
                     <article 
                       onClick={(e) => {
                         if (e.target.closest('button, select, a, input')) return;
-                        navigate(`/da/review/${project.id}`);
+                        const targetPath = `/da/review/${project.id}`;
+                        if (isRouteDisabled(targetPath)) {
+                          e.preventDefault();
+                          notifyOfflineBlocked(targetPath);
+                          return;
+                        }
+                        navigate(targetPath);
                       }}
                       className={`p-4 sm:p-5 flex items-start gap-4 hover:bg-slate-50/80 cursor-pointer transition-colors ${
                         project.riskLevel === 'Critical' ? 'border-l-4 border-l-red-400' :
@@ -237,12 +246,12 @@ const DaProjectReview = () => {
                       <div className="flex-1 min-w-0">
                         <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                           <h3 className="font-bold text-[#123b63] text-sm truncate">
-                            <Link 
+                            <OfflineLink 
                               to={`/da/review/${project.id}`}
                               className="hover:underline hover:text-cyan-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] rounded"
                             >
                               {project.title}
-                            </Link>
+                            </OfflineLink>
                           </h3>
                           <RiskBadge level={project.riskLevel} score={project.riskScore} showScore={false} />
                         </div>
@@ -306,7 +315,7 @@ const DaProjectReview = () => {
                             <TbLock size={12} aria-hidden="true" /> Full Review
                           </span>
                         )}
-                        <Link
+                        <OfflineLink
                           to={`/da/review/${project.id}`}
                           aria-label={`Open full review for ${project.title}`}
                           className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-[#123b63] hover:bg-slate-100 rounded-lg active:scale-95 transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
@@ -314,7 +323,7 @@ const DaProjectReview = () => {
                         >
                           <span>Review</span>
                           <TbChevronRight size={16} aria-hidden="true" />
-                        </Link>
+                        </OfflineLink>
                       </div>
                     </article>
                   </li>
