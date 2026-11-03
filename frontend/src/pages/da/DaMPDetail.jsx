@@ -73,7 +73,7 @@ const DaMPDetail = () => {
     ? projectsData.stats.utilized_amount_cr * 10000000 
     : projects.reduce((acc, p) => acc + (p.amountSpent || 0), 0);
   const activeCount = projectsData?.stats?.active_projects ?? 
-    projects.filter(p => !['Completed', 'Rejected'].includes(p.status)).length;
+    projects.filter(p => ['Sanctioned', 'In Progress', 'APPROVED', 'IN_PROGRESS'].includes(p.status)).length;
 
   if (loading) {
     return <PortalPageLoader message="Loading MP Details..." />;

@@ -26,9 +26,10 @@ async def reports(mp: dict, year: Optional[int] = None):
         raw_cat = p.get("category") or "Other"
         cat = raw_cat.replace("_", " ").title()
 
-        if p.get("status") and p["status"].upper() == "COMPLETED":
+        status_upper = (p.get("status") or "").upper()
+        if status_upper == "COMPLETED":
             by_category[cat]["completed"] += 1
-        else:
+        elif status_upper in ("IN_PROGRESS", "APPROVED", "SANCTIONED"):
             by_category[cat]["ongoing"] += 1
 
     # ------------------------------------------------------------------

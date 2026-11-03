@@ -59,7 +59,7 @@ export const daApi = {
           total_projects: mpQueue.length,
         };
         fallbackProjects.stats = {
-          active_projects: mpQueue.length,
+          active_projects: mpQueue.filter(p => ['Sanctioned', 'In Progress', 'APPROVED', 'IN_PROGRESS'].includes(p.status)).length,
           sanctioned_amount_cr: 0,
           utilized_amount_cr: 0,
           avg_risk_score: Math.round(mpQueue.reduce((acc, p) => acc + (p.riskScore || 0), 0) / mpQueue.length),
@@ -212,12 +212,82 @@ export const daApi = {
 
   // ── Implementing Agencies ──
   getImplementingAgencies: async () => {
-    return [];
+    try {
+      const projects = await daApi.getProjects();
+      const iaMap = new Map();
+      (projects || []).forEach(p => {
+        const name = p.implementingAgency || p.implementing_agency;
+        if (!name || name === 'TBD' || name === 'None' || name === 'null') return;
+        if (!iaMap.has(name)) {
+          iaMap.set(name, {
+            id: `IA-${name.replace(/\s+/g, '-').toUpperCase()}`,
+            name,
+            status: 'Active',
+            projectsHandled: 0,
+            activeProjects: 0,
+            totalRisk: 0,
+            riskCount: 0,
+          });
+        }
+        const ia = iaMap.get(name);
+        ia.projectsHandled += 1;
+        if (['In Progress', 'Sanctioned', 'APPROVED', 'IN_PROGRESS'].includes(p.status)) {
+          ia.activeProjects += 1;
+        }
+        if (p.riskScore != null) {
+          ia.totalRisk += Number(p.riskScore);
+          ia.riskCount += 1;
+        }
+      });
+      return Array.from(iaMap.values()).map(ia => ({
+        ...ia,
+        avgRiskScore: ia.riskCount > 0 ? Math.round(ia.totalRisk / ia.riskCount) : 0,
+      }));
+    } catch {
+      return [];
+    }
   },
 
   // ── Vendors ──
   getVendors: async () => {
-    return [];
+    try {
+      const projects = await daApi.getProjects();
+      const vendorMap = new Map();
+      (projects || []).forEach(p => {
+        const name = p.vendor;
+        if (!name || name === 'TBD' || name === 'None' || name === 'null') return;
+        if (!vendorMap.has(name)) {
+          vendorMap.set(name, {
+            id: `VEN-${name.replace(/\s+/g, '-').toUpperCase()}`,
+            name,
+            pan: p.vendorPan || 'N/A',
+            activeProjects: 0,
+            totalProjects: 0,
+            totalContractCr: 0,
+            avgRiskScore: 0,
+            totalRisk: 0,
+            flagged: false,
+            flagNotes: '',
+          });
+        }
+        const v = vendorMap.get(name);
+        v.totalProjects += 1;
+        if (['In Progress', 'Sanctioned', 'APPROVED', 'IN_PROGRESS'].includes(p.status)) {
+          v.activeProjects += 1;
+        }
+        v.totalContractCr += (Number(p.sanctionedAmount || p.amountSpent || 0) / 1e7);
+        if (p.riskScore != null) {
+          v.totalRisk += Number(p.riskScore);
+        }
+      });
+      return Array.from(vendorMap.values()).map(v => ({
+        ...v,
+        totalContractCr: Number(v.totalContractCr.toFixed(2)),
+        avgRiskScore: v.totalProjects > 0 ? Math.round(v.totalRisk / v.totalProjects) : 0,
+      }));
+    } catch {
+      return [];
+    }
   },
 
   flagVendor: async (id, { notes = '' } = {}) => {

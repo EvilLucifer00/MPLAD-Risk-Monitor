@@ -38,29 +38,17 @@ const MpDocuments = () => {
             fileUrl: doc.fileUrl || doc.file_url || '#',
           });
         });
-      } else {
-        // Synthesize standard project sanction documents for each project
+      } else if (p.document_link) {
         aggregated.push({
           id: `DOC-DPR-${p.id}`,
           name: `${(p.title || 'Project').replace(/\s+/g, '_')}_Detailed_Project_Report.pdf`,
           size: '2.4 MB',
           type: 'PDF',
           uploader: 'MP Office',
-          uploadDate: p.startDate || p.submitDate || '2026-01-15',
+          uploadDate: p.startDate || p.submitDate || new Date().toISOString().split('T')[0],
           projectId: p.id,
           projectTitle: p.title || 'Untitled Project',
-          fileUrl: p.document_link || '#',
-        });
-        aggregated.push({
-          id: `DOC-SAN-${p.id}`,
-          name: `${(p.title || 'Project').replace(/\s+/g, '_')}_Technical_Sanction_Estimate.pdf`,
-          size: '1.2 MB',
-          type: 'PDF',
-          uploader: p.implementingAgency || 'District Authority',
-          uploadDate: p.startDate || p.submitDate || '2026-02-01',
-          projectId: p.id,
-          projectTitle: p.title || 'Untitled Project',
-          fileUrl: '#',
+          fileUrl: p.document_link,
         });
       }
     });

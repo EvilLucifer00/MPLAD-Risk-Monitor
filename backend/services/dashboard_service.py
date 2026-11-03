@@ -82,9 +82,13 @@ async def mp_dashboard_stats(mp: dict):
 
     active = sum(
         1 for p in projects
-        if p.get("status") not in (
-            ProjectStatus.COMPLETED.value,
-            ProjectStatus.REJECTED.value,
+        if p.get("status") in (
+            ProjectStatus.IN_PROGRESS.value,
+            ProjectStatus.APPROVED.value,
+            "SANCTIONED",
+            "IN_PROGRESS",
+            "Sanctioned",
+            "In Progress",
         )
     )
 
@@ -104,10 +108,14 @@ async def mp_dashboard_stats(mp: dict):
 
     completed = sum(
         1 for p in projects
-        if p.get("status") == ProjectStatus.COMPLETED.value
+        if p.get("status") in (
+            ProjectStatus.COMPLETED.value,
+            "COMPLETED",
+            "Completed",
+        )
     )
 
-    on_track = total - high_risk - completed
+    on_track = max(active - high_risk, 0)
 
     recent = sorted(
         projects,
@@ -138,7 +146,15 @@ async def mp_dashboard_stats(mp: dict):
         high_risk_projects=high_risk,
         pending_approvals=sum(
             1 for p in projects
-            if p.get("status") == ProjectStatus.PENDING_REVIEW.value
+            if p.get("status") in (
+                ProjectStatus.PENDING_REVIEW.value,
+                ProjectStatus.SUBMITTED.value,
+                "PENDING_REVIEW",
+                "SUBMITTED",
+                "Pending Review",
+                "Pending Sanction",
+                "PENDING",
+            )
         ),
         total_projects=total,
         status_breakdown={
@@ -167,7 +183,15 @@ async def dm_dashboard_stats(dm: dict):
 
     awaiting_review = [
         p for p in projects
-        if p.get("status") == ProjectStatus.PENDING_REVIEW.value
+        if p.get("status") in (
+            ProjectStatus.PENDING_REVIEW.value,
+            ProjectStatus.SUBMITTED.value,
+            "PENDING_REVIEW",
+            "SUBMITTED",
+            "Pending Review",
+            "Pending Sanction",
+            "PENDING",
+        )
     ]
 
     high_risk = []
@@ -182,9 +206,13 @@ async def dm_dashboard_stats(dm: dict):
         ):
             high_risk.append(p)
 
-        if p.get("status") not in (
-            ProjectStatus.COMPLETED.value,
-            ProjectStatus.REJECTED.value,
+        if p.get("status") in (
+            ProjectStatus.IN_PROGRESS.value,
+            ProjectStatus.APPROVED.value,
+            "SANCTIONED",
+            "IN_PROGRESS",
+            "Sanctioned",
+            "In Progress",
         ):
             active.append(p)
 

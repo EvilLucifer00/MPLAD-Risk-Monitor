@@ -967,9 +967,13 @@ async def dm_district_projects(
             "status"
         )
 
-        if status not in (
-            ProjectStatus.COMPLETED.value,
-            ProjectStatus.REJECTED.value,
+        if status in (
+            ProjectStatus.IN_PROGRESS.value,
+            ProjectStatus.APPROVED.value,
+            "SANCTIONED",
+            "IN_PROGRESS",
+            "Sanctioned",
+            "In Progress",
         ):
             agg["active_projects"] += 1
 
@@ -1312,9 +1316,13 @@ async def dm_mp_projects(
         1
         for project in all_projects
         if project.get("status")
-        not in (
-            ProjectStatus.COMPLETED.value,
-            ProjectStatus.REJECTED.value,
+        in (
+            ProjectStatus.IN_PROGRESS.value,
+            ProjectStatus.APPROVED.value,
+            "SANCTIONED",
+            "IN_PROGRESS",
+            "Sanctioned",
+            "In Progress",
         )
     )
 

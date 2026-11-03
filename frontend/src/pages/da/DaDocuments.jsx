@@ -23,29 +23,29 @@ const DaDocuments = () => {
         p.documents.forEach(doc => {
           aggregated.push({
             id: doc.id || `DOC-${p.id}-${Math.random().toString(36).substr(2, 5)}`,
-            name: doc.name || doc.file_name || `${p.title} - Sanction File.pdf`,
+            name: doc.name || doc.file_name || `${p.title} - Document.pdf`,
             size: doc.size || '1.5 MB',
             type: 'PDF',
             uploader: doc.uploader || doc.uploaded_by || 'District Office',
-            uploadDate: doc.uploadDate || doc.upload_date || p.startDate || '2026-01-20',
+            uploadDate: doc.uploadDate || doc.upload_date || p.startDate || new Date().toISOString().split('T')[0],
             projectId: p.id,
             projectTitle: p.title,
             mpName: p.mpName || 'MP Office',
             fileUrl: doc.fileUrl || doc.file_url || '#',
           });
         });
-      } else {
+      } else if (p.document_link) {
         aggregated.push({
           id: `DOC-${p.id}`,
-          name: `${(p.title || 'Project').replace(/\s+/g, '_')}_Sanction_Order.pdf`,
-          size: '2.1 MB',
+          name: `${(p.title || 'Project').replace(/\s+/g, '_')}_Document.pdf`,
+          size: '1.5 MB',
           type: 'PDF',
           uploader: 'District Office',
-          uploadDate: p.startDate || '2026-01-20',
+          uploadDate: p.startDate || new Date().toISOString().split('T')[0],
           projectId: p.id,
           projectTitle: p.title,
           mpName: p.mpName || 'MP Office',
-          fileUrl: '#',
+          fileUrl: p.document_link,
         });
       }
     });

@@ -1,5 +1,6 @@
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
-import React, { Suspense, lazy } from 'react';
+import React, { useMemo, Suspense, lazy } from 'react';
+import { useMpProjects } from '../../api/queries';
 import { TbDownload, TbFilter } from 'react-icons/tb';
 import { useMpReports } from '../../api/queries';
 import usePageSeo from '../../hooks/usePageSeo';
@@ -18,28 +19,7 @@ const ChartSkeleton = () => (
   </div>
 );
 
-const defaultMonthlyData = [
-  { name: 'Apr', utilized: 12, sanctioned: 15 },
-  { name: 'May', utilized: 19, sanctioned: 25 },
-  { name: 'Jun', utilized: 30, sanctioned: 35 },
-  { name: 'Jul', utilized: 45, sanctioned: 50 },
-  { name: 'Aug', utilized: 58, sanctioned: 65 },
-  { name: 'Sep', utilized: 72, sanctioned: 80 },
-  { name: 'Oct', utilized: 85, sanctioned: 95 },
-  { name: 'Nov', utilized: 91, sanctioned: 110 },
-  { name: 'Dec', utilized: 105, sanctioned: 120 },
-  { name: 'Jan', utilized: 120, sanctioned: 140 },
-  { name: 'Feb', utilized: 145, sanctioned: 160 },
-  { name: 'Mar', utilized: 170, sanctioned: 180 },
-];
 
-const defaultCategoryData = [
-  { name: 'Infrastructure', completed: 12, ongoing: 5 },
-  { name: 'Education', completed: 8, ongoing: 14 },
-  { name: 'Health', completed: 15, ongoing: 4 },
-  { name: 'Water', completed: 6, ongoing: 8 },
-  { name: 'Transport', completed: 4, ongoing: 2 },
-];
 
 const MpReports = () => {
   usePageSeo(
@@ -47,17 +27,38 @@ const MpReports = () => {
     'Detailed insights into MPLADS fund utilization, category-wise expenditure, and monthly trends for Member of Parliament.'
   );
 
-  const { data: summaryData, isLoading } = useMpReports();
+  const { data: summaryData, isLoading: summaryLoading } = useMpReports();
+  const { data: projectsData, isLoading: projectsLoading } = useMpProjects();
+  const projects = Array.isArray(projectsData) ? projectsData : [];
 
-  const categoryData = (summaryData?.byCategory && summaryData.byCategory.length > 0)
-    ? summaryData.byCategory
-    : defaultCategoryData;
+  // Derive category breakdown directly from backend projects without hardcoded fallbacks
+  const categoryData = useMemo(() => {
+    if (summaryData?.byCategory && summaryData.byCategory.length > 0) {
+      return summaryData.byCategory;
+    }
+    const catMap = {};
+    projects.forEach(p => {
+      const cat = p.category || 'General';
+      if (!catMap[cat]) catMap[cat] = { name: cat, completed: 0, ongoing: 0 };
+      if (['Completed', 'COMPLETED'].includes(p.status)) {
+        catMap[cat].completed += 1;
+      } else if (['In Progress', 'Sanctioned', 'IN_PROGRESS', 'APPROVED'].includes(p.status)) {
+        catMap[cat].ongoing += 1;
+      }
+    });
+    return Object.values(catMap);
+  }, [summaryData, projects]);
 
-  const monthlyData = (summaryData?.cumulativeUtilization && summaryData.cumulativeUtilization.length > 0)
-    ? summaryData.cumulativeUtilization
-    : defaultMonthlyData;
+  // Derive monthly utilization directly from backend or clean zero timeline
+  const monthlyData = useMemo(() => {
+    if (summaryData?.cumulativeUtilization && summaryData.cumulativeUtilization.length > 0) {
+      return summaryData.cumulativeUtilization;
+    }
+    const monthNames = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
+    return monthNames.map(name => ({ name, utilized: 0, sanctioned: 0 }));
+  }, [summaryData]);
 
-  const loading = isLoading && !summaryData;
+  const loading = (summaryLoading && !summaryData) && (projectsLoading && !projectsData);
 
   if (loading) {
     return <PortalPageLoader message="Loading Reports & Analytics..." />;
