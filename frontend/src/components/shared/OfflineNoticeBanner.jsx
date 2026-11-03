@@ -25,9 +25,14 @@ export const OfflineNoticeBanner = () => {
       }, 4000);
     };
 
+    const handleDismiss = () => setNotice(null);
     window.addEventListener('mplads:offline-blocked', handleBlocked);
+    window.addEventListener('online', handleDismiss);
+    window.addEventListener('mplads:silent-reload', handleDismiss);
 
     return () => {
+      window.removeEventListener('online', handleDismiss);
+      window.removeEventListener('mplads:silent-reload', handleDismiss);
       if (timer) clearTimeout(timer);
       window.removeEventListener('mplads:offline-blocked', handleBlocked);
     };
@@ -62,3 +67,4 @@ export const OfflineNoticeBanner = () => {
 };
 
 export default OfflineNoticeBanner;
+

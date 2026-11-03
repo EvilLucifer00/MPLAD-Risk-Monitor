@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import './index.css';
 import ProtectedRoute from './components/shared/ProtectedRoute.jsx';
 import { useAuthStore } from './store/useAuthStore.js';
+import { queryClient } from './queryClient.js';
 import { markRouteAsCached, preloadPortalRoutes, isRouteCached, notifyOfflineBlocked } from './utils/offlineCacheTracker.js';
 import OfflineNoticeBanner from './components/shared/OfflineNoticeBanner.jsx';
 
@@ -66,14 +67,41 @@ function OfflineRouteGuard() {
   }, [user?.role]);
 
   useEffect(() => {
+    let wasOffline = typeof navigator !== 'undefined' ? !navigator.onLine : false;
+
+    const handleOffline = () => {
+      wasOffline = true;
+    };
+
     const handleOnline = () => {
-      const currentRole = useAuthStore.getState().user?.role;
-      if (currentRole) {
-        preloadPortalRoutes(currentRole);
+      if (wasOffline) {
+        wasOffline = false;
+
+        // Silently reload and refresh all active page queries and data without any loading animations or spinners
+        queryClient.invalidateQueries({ refetchType: 'active' });
+        queryClient.refetchQueries({ type: 'active' });
+
+        // Silently re-validate auth session in background
+        useAuthStore.getState().validateSession?.();
+
+        // Preload portal routes for the user's role
+        const currentRole = useAuthStore.getState().user?.role;
+        if (currentRole) {
+          preloadPortalRoutes(currentRole);
+        }
+
+        // Notify layouts / views to silently refresh non-query state (e.g. notifications)
+        window.dispatchEvent(new CustomEvent('mplads:silent-reload'));
       }
     };
+
+    window.addEventListener('offline', handleOffline);
     window.addEventListener('online', handleOnline);
-    return () => window.removeEventListener('online', handleOnline);
+
+    return () => {
+      window.removeEventListener('offline', handleOffline);
+      window.removeEventListener('online', handleOnline);
+    };
   }, []);
 
   useEffect(() => {

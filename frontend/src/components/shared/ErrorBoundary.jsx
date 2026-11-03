@@ -41,6 +41,10 @@ class ErrorBoundary extends React.Component {
 
   handleOnline = () => {
     this.setState({ isOnline: true, wasReconnected: true });
+    // When returning online from offline mode, silently recover and reload the view without any animations
+    if (this.state.hasError && this.isOfflineChunkError(this.state.error)) {
+      this.setState({ hasError: false, error: null });
+    }
   };
 
   handleOffline = () => {

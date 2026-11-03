@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import {
   isRouteCached,
@@ -9,6 +9,8 @@ import {
   getCachedRoutes,
 } from '../utils/offlineCacheTracker';
 import OfflineLink from '../components/shared/OfflineLink';
+import OfflineNoticeBanner from '../components/shared/OfflineNoticeBanner';
+import ErrorBoundary from '../components/shared/ErrorBoundary';
 
 describe('Offline Navigation & Cache Tracker', () => {
   const originalNavigatorOnLine = navigator.onLine;
@@ -84,5 +86,61 @@ describe('Offline Navigation & Cache Tracker', () => {
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute('href', '/da/projects');
     expect(link).not.toHaveAttribute('aria-disabled');
+  });
+
+  it('silently recovers ErrorBoundary when device gets back online', () => {
+    Object.defineProperty(navigator, 'onLine', { value: false, configurable: true });
+
+    let shouldThrow = true;
+    const ThrowingComponent = () => {
+      if (shouldThrow) {
+        throw new Error('Failed to fetch dynamically imported module');
+      }
+      return <div>Normal Content Loaded</div>;
+    };
+
+    // Suppress console.error in test
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    render(
+      <ErrorBoundary>
+        <ThrowingComponent />
+      </ErrorBoundary>
+    );
+
+    expect(screen.getByText(/page unavailable offline/i)).toBeInTheDocument();
+
+    // Now user gets back online from offline mode
+    shouldThrow = false;
+    Object.defineProperty(navigator, 'onLine', { value: true, configurable: true });
+
+    act(() => {
+      window.dispatchEvent(new Event('online'));
+    });
+
+    // ErrorBoundary silently clears its error and renders the content without reloading animations
+    expect(screen.getByText('Normal Content Loaded')).toBeInTheDocument();
+    expect(screen.queryByText(/page unavailable offline/i)).not.toBeInTheDocument();
+
+    consoleSpy.mockRestore();
+  });
+
+  it('silently dismisses OfflineNoticeBanner when connection is restored', () => {
+    render(<OfflineNoticeBanner />);
+
+    // Trigger blocked alert
+    act(() => {
+      notifyOfflineBlocked('/da/documents');
+    });
+
+    expect(screen.getByRole('status')).toBeInTheDocument();
+    expect(screen.getByText(/unavailable offline/i)).toBeInTheDocument();
+
+    // User gets back online
+    act(() => {
+      window.dispatchEvent(new Event('online'));
+    });
+
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
   });
 });

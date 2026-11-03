@@ -95,7 +95,14 @@ const MpLayout = () => {
 
   useEffect(() => {
     // Fetch notifications on mount
-    api.getNotifications().then(setNotifications);
+    api.getNotifications().then(setNotifications).catch(() => {});
+
+    // Silently refresh notifications on reconnect without any reload animations
+    const handleSilentReload = () => {
+      api.getNotifications().then(setNotifications).catch(() => {});
+    };
+    window.addEventListener('mplads:silent-reload', handleSilentReload);
+    return () => window.removeEventListener('mplads:silent-reload', handleSilentReload);
   }, []);
 
   const unreadCount = notifications.filter(n => !n.read).length;
