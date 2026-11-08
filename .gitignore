@@ -24,4 +24,7 @@ Thumbs.db
 # Agent skills
 .agents/
 skills-lock.json
+
+# unused folders
+scripts
 preparation
