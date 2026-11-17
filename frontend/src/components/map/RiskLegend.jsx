@@ -68,7 +68,7 @@ const RiskLegend = ({ onHoverLevel, hoveredRiskLevel }) => {
   return (
     <div
       ref={containerRef}
-      className="absolute top-2.5 right-2.5 sm:top-auto sm:bottom-12 lg:bottom-16 sm:right-4 lg:right-6 z-[1000] pointer-events-auto origin-top-right sm:origin-bottom-right"
+      className="absolute bottom-12 right-2.5 sm:bottom-12 lg:bottom-16 sm:right-4 lg:right-6 z-[1000] pointer-events-auto origin-bottom-right"
     >
       <AnimatePresence mode="wait">
         {!isOpen ? (

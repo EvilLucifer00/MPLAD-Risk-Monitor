@@ -43,18 +43,18 @@ const MpSettings = () => {
 
   return (
     <div className="max-w-5xl mx-auto space-y-6 min-h-full flex flex-col">
-      <header>
-        <h1 className="text-2xl font-bold tracking-tight text-[#123b63]">Settings</h1>
-        <p className="text-sm text-slate-500 mt-1">Manage your account profile, preferences, and security.</p>
+      <header className="pb-2 border-b border-slate-200">
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#123b63]">Account & Portal Settings</h1>
+        <p className="text-xs sm:text-sm text-slate-500 mt-1">Manage official profile verification details, alert preferences, and credentials.</p>
       </header>
 
       <div className="flex flex-col md:flex-row gap-6 flex-1 items-start">
         {/* Sidebar Nav */}
-        <aside className="w-full md:w-64 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden shrink-0" aria-label="Settings Navigation">
-          <div className="p-4 border-b border-slate-100 flex items-center gap-3">
-            <TbUserCircle size={40} className="text-slate-300" aria-hidden="true" />
+        <aside className="w-full md:w-64 bg-white rounded border border-slate-200 overflow-hidden shrink-0" aria-label="Settings Navigation">
+          <div className="p-4 border-b border-slate-200 flex items-center gap-3 bg-slate-50">
+            <TbUserCircle size={36} className="text-slate-400" aria-hidden="true" />
             <div>
-              <p className="font-bold text-[#123b63]">{displayName}</p>
+              <p className="font-bold text-sm text-[#123b63]">{displayName}</p>
               <p className="text-xs text-slate-500">{displayConstituency}</p>
             </div>
           </div>
@@ -73,13 +73,13 @@ const MpSettings = () => {
                   aria-selected={activeTab === tab.id}
                   aria-controls={`panel-${tab.id}`}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-xl active:scale-95 transition-[transform,background-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] ${
+                  className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 text-xs sm:text-sm font-semibold rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] ${
                     activeTab === tab.id 
-                      ? 'bg-cyan-50 text-[#123b63]' 
-                      : 'text-slate-600 hover:bg-slate-50'
+                      ? 'bg-[#123b63] text-white' 
+                      : 'text-slate-700 hover:bg-slate-100'
                   }`}
                 >
-                  <Icon size={18} className={activeTab === tab.id ? 'text-[#123b63]' : 'text-slate-400'} aria-hidden="true" />
+                  <Icon size={16} className={activeTab === tab.id ? 'text-white' : 'text-slate-500'} aria-hidden="true" />
                   <span>{tab.label}</span>
                 </button>
               );
@@ -90,7 +90,7 @@ const MpSettings = () => {
         {/* Content Area Form */}
         <form 
           onSubmit={handleSave}
-          className="flex-1 bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 w-full"
+          className="flex-1 bg-white rounded border border-slate-200 p-5 sm:p-7 w-full"
         >
           {/* PROFILE TAB */}
           {activeTab === 'profile' && (
@@ -98,57 +98,57 @@ const MpSettings = () => {
               id="panel-profile"
               role="tabpanel"
               aria-labelledby="tab-profile"
-              className="space-y-6 animate-in fade-in duration-300"
+              className="space-y-5"
             >
               <fieldset>
-                <legend className="text-lg font-bold tracking-tight text-[#123b63]">Profile Information</legend>
-                <p className="text-sm text-slate-500 mt-1">Update your official contact details.</p>
+                <legend className="text-base font-bold tracking-tight text-[#123b63] border-b border-slate-200 pb-2 w-full">Official Representative Profile</legend>
+                <p className="text-xs text-slate-500 mt-1">Verified contact details for parliamentary records.</p>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
-                  <div className="space-y-2">
-                    <label htmlFor="mp-full-name" className="text-sm font-semibold text-slate-700 block">Full Name</label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+                  <div className="space-y-1">
+                    <label htmlFor="mp-full-name" className="text-xs font-semibold text-slate-700 block uppercase tracking-wider">Representative Name</label>
                     <input 
                       id="mp-full-name" 
                       type="text" 
                       defaultValue={displayName} 
-                      className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#123b63]/20 focus:border-[#123b63] transition-[border-color,box-shadow] duration-150" 
+                      className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded text-xs sm:text-sm focus:outline-none focus:border-[#123b63] focus:ring-1 focus:ring-[#123b63]" 
                     />
                   </div>
-                  <div className="space-y-2">
-                    <label htmlFor="mp-constituency" className="text-sm font-semibold text-slate-700 block">Constituency</label>
+                  <div className="space-y-1">
+                    <label htmlFor="mp-constituency" className="text-xs font-semibold text-slate-700 block uppercase tracking-wider">Constituency</label>
                     <div className="relative">
                       <TbBuilding className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden="true" />
                       <input 
                         id="mp-constituency" 
                         type="text" 
                         defaultValue={displayConstituency} 
-                        className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#123b63]/20 focus:border-[#123b63] transition-[border-color,box-shadow] duration-150 cursor-not-allowed text-slate-600" 
+                        className="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-300 rounded text-xs sm:text-sm cursor-not-allowed text-slate-600" 
                         disabled 
                       />
                     </div>
-                    <p className="text-[10px] text-slate-500">Constituency allocation is centrally verified and cannot be changed here.</p>
+                    <p className="text-[10px] text-slate-500 mt-0.5">Constituency allocation is centrally verified and cannot be edited locally.</p>
                   </div>
-                  <div className="space-y-2">
-                    <label htmlFor="mp-email" className="text-sm font-semibold text-slate-700 block">Official Email Address</label>
+                  <div className="space-y-1">
+                    <label htmlFor="mp-email" className="text-xs font-semibold text-slate-700 block uppercase tracking-wider">Official Email</label>
                     <div className="relative">
                       <TbMail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden="true" />
                       <input 
                         id="mp-email" 
                         type="email" 
                         defaultValue={displayEmail} 
-                        className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#123b63]/20 focus:border-[#123b63] transition-[border-color,box-shadow] duration-150" 
+                        className="w-full pl-9 pr-3 py-1.5 bg-white border border-slate-300 rounded text-xs sm:text-sm focus:outline-none focus:border-[#123b63] focus:ring-1 focus:ring-[#123b63]" 
                       />
                     </div>
                   </div>
-                  <div className="space-y-2">
-                    <label htmlFor="mp-phone" className="text-sm font-semibold text-slate-700 block">Contact Number</label>
+                  <div className="space-y-1">
+                    <label htmlFor="mp-phone" className="text-xs font-semibold text-slate-700 block uppercase tracking-wider">Contact Number</label>
                     <div className="relative">
                       <TbPhone className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden="true" />
                       <input 
                         id="mp-phone" 
                         type="tel" 
                         defaultValue={displayPhone} 
-                        className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#123b63]/20 focus:border-[#123b63] transition-[border-color,box-shadow] duration-150" 
+                        className="w-full pl-9 pr-3 py-1.5 bg-white border border-slate-300 rounded text-xs sm:text-sm focus:outline-none focus:border-[#123b63] focus:ring-1 focus:ring-[#123b63]" 
                       />
                     </div>
                   </div>
@@ -163,23 +163,23 @@ const MpSettings = () => {
               id="panel-notifications"
               role="tabpanel"
               aria-labelledby="tab-notifications"
-              className="space-y-6 animate-in fade-in duration-300"
+              className="space-y-5"
             >
               <fieldset>
-                <legend className="text-lg font-bold text-[#123b63]">Notification Preferences</legend>
-                <p className="text-sm text-slate-500 mt-1">Choose how and when you receive updates.</p>
+                <legend className="text-base font-bold text-[#123b63] border-b border-slate-200 pb-2 w-full">Notification Preferences</legend>
+                <p className="text-xs text-slate-500 mt-1">Configure automated dispatch of sanction alerts and ML risk flags.</p>
 
-                <div className="space-y-4 pt-6">
+                <div className="space-y-3 pt-4">
                   {[
-                    { id: 'notif-status', title: 'Project Status Updates', desc: 'Receive alerts when a project gets sanctioned, rejected, or completed.' },
-                    { id: 'notif-risk', title: 'AI Risk Warnings', desc: 'Critical alerts when the ML system detects potential fraud or delays.' },
-                    { id: 'notif-reports', title: 'Monthly Reports', desc: 'Get a summary of fund utilization at the end of each month.' },
-                    { id: 'notif-sms', title: 'SMS Alerts', desc: 'Receive urgent notifications via text message.' }
+                    { id: 'notif-status', title: 'Project Status Updates', desc: 'Receive alerts when a project proposal is sanctioned, rejected, or completed.' },
+                    { id: 'notif-risk', title: 'AI Risk Advisories', desc: 'Alerts when the ML risk model flags escalation or anomalies.' },
+                    { id: 'notif-reports', title: 'Monthly Progress Summaries', desc: 'Monthly analytical digest of fund disbursements and completions.' },
+                    { id: 'notif-sms', title: 'SMS Critical Dispatches', desc: 'Direct emergency SMS dispatches for critical project audits.' }
                   ].map((item, idx) => (
-                    <div key={item.id} className="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors">
+                    <div key={item.id} className="flex items-center justify-between p-3.5 rounded border border-slate-200 hover:bg-slate-50 transition-colors">
                       <div>
-                        <label htmlFor={item.id} className="font-semibold text-slate-800 text-sm cursor-pointer">{item.title}</label>
-                        <p className="text-xs text-slate-500 mt-1">{item.desc}</p>
+                        <label htmlFor={item.id} className="font-semibold text-slate-800 text-xs sm:text-sm cursor-pointer">{item.title}</label>
+                        <p className="text-xs text-slate-500 mt-0.5">{item.desc}</p>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
                         <input 
@@ -188,7 +188,7 @@ const MpSettings = () => {
                           className="sr-only peer" 
                           defaultChecked={idx !== 3} 
                         />
-                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#123b63] rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                        <div className="w-10 h-5 bg-slate-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#123b63] rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#123b63]"></div>
                       </label>
                     </div>
                   ))}
@@ -203,38 +203,38 @@ const MpSettings = () => {
               id="panel-security"
               role="tabpanel"
               aria-labelledby="tab-security"
-              className="space-y-6 animate-in fade-in duration-300"
+              className="space-y-5"
             >
               <fieldset>
-                <legend className="text-lg font-bold tracking-tight text-[#123b63]">Security & Password</legend>
-                <p className="text-sm text-slate-500 mt-1">Manage your password and security settings.</p>
+                <legend className="text-base font-bold tracking-tight text-[#123b63] border-b border-slate-200 pb-2 w-full">Portal Authentication</legend>
+                <p className="text-xs text-slate-500 mt-1">Manage official access credentials and password policy.</p>
 
-                <div className="space-y-4 pt-6 max-w-md">
-                  <div className="space-y-2">
-                    <label htmlFor="mp-current-pass" className="text-sm font-semibold text-slate-700 block">Current Password</label>
+                <div className="space-y-3 pt-4 max-w-md">
+                  <div className="space-y-1">
+                    <label htmlFor="mp-current-pass" className="text-xs font-semibold text-slate-700 block uppercase tracking-wider">Current Password</label>
                     <input 
                       id="mp-current-pass" 
                       type="password" 
                       placeholder="••••••••" 
-                      className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#123b63]/20 focus:border-[#123b63] transition-[border-color,box-shadow] duration-150" 
+                      className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded text-xs sm:text-sm focus:outline-none focus:border-[#123b63] focus:ring-1 focus:ring-[#123b63]" 
                     />
                   </div>
-                  <div className="space-y-2">
-                    <label htmlFor="mp-new-pass" className="text-sm font-semibold text-slate-700 block">New Password</label>
+                  <div className="space-y-1">
+                    <label htmlFor="mp-new-pass" className="text-xs font-semibold text-slate-700 block uppercase tracking-wider">New Password</label>
                     <input 
                       id="mp-new-pass" 
                       type="password" 
                       placeholder="Enter new password" 
-                      className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#123b63]/20 focus:border-[#123b63] transition-[border-color,box-shadow] duration-150" 
+                      className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded text-xs sm:text-sm focus:outline-none focus:border-[#123b63] focus:ring-1 focus:ring-[#123b63]" 
                     />
                   </div>
-                  <div className="space-y-2">
-                    <label htmlFor="mp-confirm-pass" className="text-sm font-semibold text-slate-700 block">Confirm New Password</label>
+                  <div className="space-y-1">
+                    <label htmlFor="mp-confirm-pass" className="text-xs font-semibold text-slate-700 block uppercase tracking-wider">Confirm New Password</label>
                     <input 
                       id="mp-confirm-pass" 
                       type="password" 
                       placeholder="Confirm new password" 
-                      className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#123b63]/20 focus:border-[#123b63] transition-[border-color,box-shadow] duration-150" 
+                      className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded text-xs sm:text-sm focus:outline-none focus:border-[#123b63] focus:ring-1 focus:ring-[#123b63]" 
                     />
                   </div>
                 </div>
@@ -242,18 +242,18 @@ const MpSettings = () => {
             </div>
           )}
 
-          <div className="mt-8 pt-6 border-t border-slate-100 flex items-center justify-between">
+          <div className="mt-6 pt-4 border-t border-slate-200 flex items-center justify-between">
             {saveSuccess ? (
-              <span className="text-sm text-emerald-600 font-semibold flex items-center gap-1.5" role="status">
-                <TbCheck size={18} aria-hidden="true" /> Settings updated successfully!
+              <span className="text-xs text-emerald-700 font-semibold flex items-center gap-1.5" role="status">
+                <TbCheck size={16} aria-hidden="true" /> Settings updated successfully!
               </span>
             ) : <span />}
             <button 
               type="submit"
               disabled={saving}
-              className="bg-[#123b63] hover:bg-[#0c2a47] active:scale-95 text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition-[transform,background-color] duration-150 flex items-center gap-2 shadow-sm disabled:opacity-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
+              className="bg-[#123b63] hover:bg-[#0c2a47] text-white px-5 py-2 rounded text-xs sm:text-sm font-semibold transition-colors flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] disabled:opacity-75"
             >
-              <TbDeviceFloppy size={18} aria-hidden="true" />
+              <TbDeviceFloppy size={16} aria-hidden="true" />
               <span>{saving ? 'Saving...' : 'Save Changes'}</span>
             </button>
           </div>

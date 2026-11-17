@@ -16,17 +16,17 @@ const ConstituencyPanel = ({ data, onClose }) => {
       initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.98 }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
-      className="absolute inset-0 md:inset-auto md:top-0 md:right-0 md:bottom-auto md:w-84 lg:w-88 md:h-auto md:max-h-[calc(100%-1.5rem)] w-full h-full bg-white/95 backdrop-blur-md shadow-xl md:shadow-[-5px_5px_25px_rgba(0,0,0,0.08)] z-[2000] flex flex-col rounded-2xl md:rounded-none md:rounded-bl-2xl md:border-l md:border-b border-slate-200 overflow-hidden"
+      transition={{ duration: 0.15, ease: "easeOut" }}
+      className="absolute inset-0 md:inset-auto md:top-10 md:right-0 md:bottom-auto md:w-84 lg:w-88 md:h-auto md:max-h-[calc(100%-1.5rem)] w-full h-full bg-white shadow-md z-[2000] flex flex-col rounded-none md:rounded-bl border-l border-b border-slate-300 overflow-hidden"
     >
       {/* Universal Close Button */}
       <button 
         type="button"
-        className="absolute top-3 right-3 z-30 bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-500 hover:text-slate-800 cursor-pointer w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full transition-all duration-150 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-600 shadow-xs" 
+        className="absolute top-2.5 right-2.5 z-30 bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 cursor-pointer w-7 h-7 flex items-center justify-center rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] border border-slate-300" 
         onClick={onClose}
         aria-label="Close constituency details panel"
       >
-        <span aria-hidden="true" className="text-lg leading-none font-bold select-none">×</span>
+        <span aria-hidden="true" className="text-base leading-none font-bold select-none">×</span>
       </button>
 
       {/* =========================================================================
@@ -34,68 +34,65 @@ const ConstituencyPanel = ({ data, onClose }) => {
          ========================================================================= */}
       <div className="md:hidden flex flex-col h-full p-3.5 select-none overflow-hidden">
         {/* Top Header Row with Name, State and room for close button */}
-        <div className="pr-9 pb-2 border-b border-slate-100 shrink-0">
-          <h2 className="text-base font-extrabold text-slate-900 leading-tight truncate" title={pcName}>
+        <div className="pr-9 pb-2 border-b border-slate-200 shrink-0">
+          <h2 className="text-sm font-bold text-slate-900 leading-tight truncate" title={pcName}>
             {pcName}
           </h2>
-          <div className="flex items-center gap-1 text-slate-500 font-medium text-[11px] truncate mt-0.5">
-            <IconMapPin size={12} className="shrink-0 text-slate-400" />
+          <div className="flex items-center gap-1 text-slate-600 font-normal text-[11px] truncate mt-0.5">
+            <IconMapPin size={12} className="shrink-0 text-slate-500" />
             <span className="truncate">{stName}</span>
           </div>
         </div>
 
         {/* 2-Column Body */}
         <div className="grid grid-cols-2 gap-3 pt-2.5 flex-1 min-h-0 overflow-y-auto">
-          
           {/* Column 1: Overall Risk & Project Details */}
-          <div className="flex flex-col justify-between pr-2 border-r border-slate-100 min-w-0">
+          <div className="flex flex-col justify-between pr-2 border-r border-slate-200 min-w-0">
             {/* Overall Risk Score Card */}
             <div 
-              className="p-2 sm:p-2.5 rounded-xl border text-center shadow-2xs" 
-              style={{ backgroundColor: `${riskColor}10`, borderColor: `${riskColor}35` }}
+              className="p-2 rounded border text-center" 
+              style={{ backgroundColor: `${riskColor}10`, borderColor: `${riskColor}40` }}
             >
-              <span className="text-[9px] uppercase tracking-wider font-bold text-slate-500 block">
+              <span className="text-[9px] uppercase tracking-wider font-bold text-slate-600 block">
                 Overall Risk Score
               </span>
-              <div className="text-2xl font-black leading-tight my-0.5 tabular-nums" style={{ color: riskColor }}>
+              <div className="text-xl font-bold leading-tight my-0.5 tabular-nums" style={{ color: riskColor }}>
                 {data.risk_score !== undefined && data.risk_score !== null ? `${data.risk_score}/100` : 'N/A'}
               </div>
               <span 
-                className="inline-block px-2.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider" 
-                style={{ color: riskColor, backgroundColor: `${riskColor}22` }}
+                className="inline-block px-2 py-0.2 rounded text-[9px] font-bold uppercase tracking-wider border" 
+                style={{ color: riskColor, borderColor: `${riskColor}50`, backgroundColor: 'white' }}
               >
                 {riskLevel}
               </span>
             </div>
 
-            {/* Project Metrics: Projects on 1st row, Anomalies & Delayed on 2nd row to fill empty space */}
+            {/* Project Metrics */}
             <div className="flex flex-col gap-1.5 pt-2">
-              {/* Row 1: Projects full-width row */}
-              <div className="bg-slate-50/90 border border-slate-200/80 rounded-xl px-2.5 py-1.5 flex items-center justify-between shadow-2xs">
+              <div className="bg-slate-50 border border-slate-200 rounded px-2.5 py-1.5 flex items-center justify-between">
                 <div className="flex items-center gap-1.5 min-w-0">
-                  <span className="text-blue-600 bg-blue-100/70 p-1 rounded-md shrink-0">
+                  <span className="text-[#123b63] shrink-0">
                     <IconChartBar size={12} />
                   </span>
-                  <span className="text-[10px] font-bold text-slate-600 truncate">Projects</span>
+                  <span className="text-[10px] font-semibold text-slate-700 truncate">Projects</span>
                 </div>
-                <span className="text-sm font-black text-slate-900 tabular-nums shrink-0">{data.projects ?? '--'}</span>
+                <span className="text-xs font-bold text-slate-900 tabular-nums shrink-0">{data.projects ?? '--'}</span>
               </div>
 
-              {/* Row 2: Anomalies and Delayed side-by-side */}
               <div className="grid grid-cols-2 gap-1.5">
-                <div className="bg-slate-50/90 border border-slate-200/80 rounded-xl p-1.5 text-center flex flex-col items-center shadow-2xs">
-                  <div className="flex items-center gap-1 text-amber-600">
+                <div className="bg-slate-50 border border-slate-200 rounded p-1.5 text-center flex flex-col items-center">
+                  <div className="flex items-center gap-1 text-amber-700">
                     <IconAlertCircle size={11} className="shrink-0" />
-                    <span className="text-[9px] font-bold text-slate-500 leading-tight">Anomalies</span>
+                    <span className="text-[9px] font-semibold text-slate-600 leading-tight">Anomalies</span>
                   </div>
-                  <span className="text-xs font-black text-slate-900 mt-0.5 tabular-nums">{data.anomalies ?? '--'}</span>
+                  <span className="text-xs font-bold text-slate-900 mt-0.5 tabular-nums">{data.anomalies ?? '--'}</span>
                 </div>
-                <div className="bg-slate-50/90 border border-slate-200/80 rounded-xl p-1.5 text-center flex flex-col items-center shadow-2xs">
-                  <div className="flex items-center gap-1 text-rose-600">
+                <div className="bg-slate-50 border border-slate-200 rounded p-1.5 text-center flex flex-col items-center">
+                  <div className="flex items-center gap-1 text-rose-700">
                     <IconClock size={11} className="shrink-0" />
-                    <span className="text-[9px] font-bold text-slate-500 leading-tight">Delayed</span>
+                    <span className="text-[9px] font-semibold text-slate-600 leading-tight">Delayed</span>
                   </div>
-                  <span className="text-xs font-black text-slate-900 mt-0.5 tabular-nums">{data.delayed_projects ?? '--'}</span>
+                  <span className="text-xs font-bold text-slate-900 mt-0.5 tabular-nums">{data.delayed_projects ?? '--'}</span>
                 </div>
               </div>
             </div>
@@ -103,8 +100,8 @@ const ConstituencyPanel = ({ data, onClose }) => {
 
           {/* Column 2: Risk Factors */}
           <div className="flex flex-col justify-between pl-1 min-w-0">
-            <div className="border-b border-slate-100 pb-1 mb-1 shrink-0">
-              <h3 className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+            <div className="border-b border-slate-200 pb-1 mb-1 shrink-0">
+              <h3 className="text-[10px] font-bold uppercase tracking-wider text-slate-600">
                 Risk Factors
               </h3>
             </div>
@@ -117,42 +114,41 @@ const ConstituencyPanel = ({ data, onClose }) => {
               <CompactRiskFactorBar label="Timeline" score={data.timeline_risk} />
             </div>
           </div>
-
         </div>
       </div>
 
       {/* =========================================================================
-          DESKTOP VIEW: Cohesive, naturally sized sidebar with small bottom padding
+          DESKTOP VIEW: Clean, Flat Sidebar
          ========================================================================= */}
       <div className="hidden md:flex flex-col select-none">
         {/* Header with riskColor accent border */}
-        <div className="px-5 py-4 border-b-2 pr-12 shrink-0 bg-slate-50/50" style={{ borderBottomColor: riskColor }}>
-          <h2 className="text-xl font-extrabold text-slate-900 leading-tight truncate" title={pcName}>
+        <div className="px-4 py-3.5 border-b-2 pr-10 shrink-0 bg-slate-50" style={{ borderBottomColor: riskColor }}>
+          <h2 className="text-base font-bold text-slate-900 leading-tight truncate" title={pcName}>
             {pcName}
           </h2>
-          <div className="flex items-center gap-1.5 text-slate-500 font-medium text-xs mt-1 truncate">
-            <IconMapPin size={13} className="shrink-0 text-slate-400" />
+          <div className="flex items-center gap-1.5 text-slate-600 font-normal text-xs mt-0.5 truncate">
+            <IconMapPin size={13} className="shrink-0 text-slate-500" />
             <span className="truncate">{stName}</span>
           </div>
         </div>
 
-        {/* Content Body: Naturally grouped with small white padding at bottom */}
-        <div className="p-5 pb-5 flex flex-col gap-4 overflow-y-auto">
+        {/* Content Body */}
+        <div className="p-4 flex flex-col gap-3.5 overflow-y-auto">
           {/* Overall Risk Score Card */}
           <div 
-            className="p-4 rounded-xl border text-center shadow-xs" 
-            style={{ backgroundColor: `${riskColor}10`, borderColor: `${riskColor}35` }}
+            className="p-3.5 rounded border text-center" 
+            style={{ backgroundColor: `${riskColor}08`, borderColor: `${riskColor}35` }}
           >
-            <div className="text-[11px] uppercase tracking-wider font-bold text-slate-500 mb-1">
+            <div className="text-[10px] uppercase tracking-wider font-bold text-slate-600 mb-0.5">
               Overall Risk Score
             </div>
-            <div className="text-3xl font-black leading-none my-1 tabular-nums" style={{ color: riskColor }}>
+            <div className="text-2xl font-bold leading-none my-1 tabular-nums" style={{ color: riskColor }}>
               {data.risk_score !== undefined && data.risk_score !== null ? `${data.risk_score}/100` : 'N/A'}
             </div>
-            <div className="mt-2">
+            <div className="mt-1.5">
               <span 
-                className="inline-block px-3 py-0.5 rounded-full text-[11px] font-extrabold uppercase tracking-wider shadow-xs" 
-                style={{ color: riskColor, backgroundColor: `${riskColor}22` }}
+                className="inline-block px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border" 
+                style={{ color: riskColor, borderColor: `${riskColor}50`, backgroundColor: 'white' }}
               >
                 {riskLevel}
               </span>
@@ -160,36 +156,36 @@ const ConstituencyPanel = ({ data, onClose }) => {
           </div>
 
           {/* Project Stats (3 cols) */}
-          <div className="grid grid-cols-3 gap-2.5">
-            <div className="bg-white border border-slate-200/80 rounded-xl py-2.5 px-1 text-center flex flex-col items-center shadow-xs">
-              <div className="text-blue-600 bg-blue-50 p-1.5 rounded-lg mb-1.5 flex items-center justify-center">
-                <IconChartBar size={16} />
+          <div className="grid grid-cols-3 gap-2">
+            <div className="bg-white border border-slate-200 rounded py-2 px-1 text-center flex flex-col items-center">
+              <div className="text-[#123b63] bg-blue-50 p-1 rounded mb-1 flex items-center justify-center">
+                <IconChartBar size={14} />
               </div>
-              <span className="text-[10px] text-slate-500 font-semibold block leading-tight">Projects</span>
-              <span className="text-base font-extrabold text-slate-900 mt-0.5 tabular-nums">{data.projects ?? '--'}</span>
+              <span className="text-[10px] text-slate-600 font-semibold block leading-tight">Projects</span>
+              <span className="text-sm font-bold text-slate-900 mt-0.5 tabular-nums">{data.projects ?? '--'}</span>
             </div>
-            <div className="bg-white border border-slate-200/80 rounded-xl py-2.5 px-1 text-center flex flex-col items-center shadow-xs">
-              <div className="text-amber-600 bg-amber-50 p-1.5 rounded-lg mb-1.5 flex items-center justify-center">
-                <IconAlertCircle size={16} />
+            <div className="bg-white border border-slate-200 rounded py-2 px-1 text-center flex flex-col items-center">
+              <div className="text-amber-700 bg-amber-50 p-1 rounded mb-1 flex items-center justify-center">
+                <IconAlertCircle size={14} />
               </div>
-              <span className="text-[10px] text-slate-500 font-semibold block leading-tight">Anomalies</span>
-              <span className="text-base font-extrabold text-slate-900 mt-0.5 tabular-nums">{data.anomalies ?? '--'}</span>
+              <span className="text-[10px] text-slate-600 font-semibold block leading-tight">Anomalies</span>
+              <span className="text-sm font-bold text-slate-900 mt-0.5 tabular-nums">{data.anomalies ?? '--'}</span>
             </div>
-            <div className="bg-white border border-slate-200/80 rounded-xl py-2.5 px-1 text-center flex flex-col items-center shadow-xs">
-              <div className="text-rose-600 bg-rose-50 p-1.5 rounded-lg mb-1.5 flex items-center justify-center">
-                <IconClock size={16} />
+            <div className="bg-white border border-slate-200 rounded py-2 px-1 text-center flex flex-col items-center">
+              <div className="text-rose-700 bg-rose-50 p-1 rounded mb-1 flex items-center justify-center">
+                <IconClock size={14} />
               </div>
-              <span className="text-[10px] text-slate-500 font-semibold block leading-tight">Delayed</span>
-              <span className="text-base font-extrabold text-slate-900 mt-0.5 tabular-nums">{data.delayed_projects ?? '--'}</span>
+              <span className="text-[10px] text-slate-600 font-semibold block leading-tight">Delayed</span>
+              <span className="text-sm font-bold text-slate-900 mt-0.5 tabular-nums">{data.delayed_projects ?? '--'}</span>
             </div>
           </div>
 
           {/* Risk Factors Breakdown */}
-          <div className="bg-white border border-slate-200/70 rounded-xl p-3.5 shadow-xs">
-            <h3 className="text-xs font-bold text-slate-600 uppercase tracking-wider pb-2 border-b border-slate-100 mb-3">
+          <div className="bg-white border border-slate-200 rounded p-3">
+            <h3 className="text-[11px] font-bold text-slate-700 uppercase tracking-wider pb-1.5 border-b border-slate-200 mb-2.5">
               Risk Factors Breakdown
             </h3>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2.5">
               <RiskFactorBar label="Financial Risk" score={data.financial_risk} />
               <RiskFactorBar label="Execution Risk" score={data.execution_risk} />
               <RiskFactorBar label="Vendor Risk" score={data.vendor_risk} />
@@ -211,12 +207,12 @@ const RiskFactorBar = ({ label, score }) => {
   return (
     <div>
       <div className="flex justify-between items-center text-xs">
-        <span className="font-semibold text-slate-700">{label}</span>
+        <span className="font-medium text-slate-700">{label}</span>
         <span className="font-bold text-slate-900 tabular-nums">{score}/100</span>
       </div>
-      <div className="h-2 bg-slate-100 rounded-full overflow-hidden mt-1.5">
+      <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden mt-1">
         <div 
-          className="h-full rounded-full transition-all duration-500 ease-out" 
+          className="h-full rounded-full transition-all duration-300 ease-out" 
           style={{ width: `${score}%`, backgroundColor: color }}
         />
       </div>
@@ -232,10 +228,10 @@ const CompactRiskFactorBar = ({ label, score }) => {
   return (
     <div>
       <div className="flex justify-between items-center text-[10px] leading-tight">
-        <span className="font-medium text-slate-700 truncate">{label}</span>
+        <span className="font-normal text-slate-700 truncate">{label}</span>
         <span className="font-bold text-slate-900 tabular-nums shrink-0 ml-1">{score}/100</span>
       </div>
-      <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden mt-1">
+      <div className="h-1 bg-slate-100 rounded-full overflow-hidden mt-0.5">
         <div 
           className="h-full rounded-full transition-all duration-300 ease-out" 
           style={{ width: `${score}%`, backgroundColor: color }}

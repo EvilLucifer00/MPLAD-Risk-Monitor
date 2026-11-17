@@ -19,8 +19,8 @@ const RiskMap = ({ searchTerm, filterState, filterRisk, setStatesList }) => {
   const filtersRef = useRef({ filterState, filterRisk, searchTerm, hoveredRiskLevel });
 
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-  const initialZoom = isMobile ? 3.6 : 4.8;
-  const initialCenter = useMemo(() => (isMobile ? [22, 84] : [22.5, 82]), [isMobile]);
+  const initialZoom = isMobile ? 3.9 : 4.7;
+  const initialCenter = useMemo(() => (isMobile ? [23.3, 83.5] : [23, 82.5]), [isMobile]);
 
   useEffect(() => {
     selectedConstituencyRef.current = selectedConstituency;

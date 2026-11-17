@@ -10,11 +10,11 @@ const MpReportsCharts = lazy(() => import('./components/MpReportsCharts'));
 
 const ChartSkeleton = () => (
   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 animate-pulse" role="status" aria-label="Loading analytics charts">
-    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 h-[380px] flex flex-col justify-center items-center">
-      <div className="w-10 h-10 border-4 border-[#123b63] border-t-transparent rounded-full animate-spin"></div>
+    <div className="bg-white rounded border border-slate-200 p-6 h-[380px] flex flex-col justify-center items-center">
+      <div className="w-8 h-8 border-3 border-[#123b63] border-t-transparent rounded-full animate-spin"></div>
     </div>
-    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 h-[380px] flex flex-col justify-center items-center">
-      <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+    <div className="bg-white rounded border border-slate-200 p-6 h-[380px] flex flex-col justify-center items-center">
+      <div className="w-8 h-8 border-3 border-[#123b63] border-t-transparent rounded-full animate-spin"></div>
     </div>
   </div>
 );
@@ -66,26 +66,26 @@ const MpReports = () => {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto min-h-full flex flex-col">
-      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-2 border-b border-slate-200">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-[#123b63]">Reports & Analytics</h1>
-          <p className="text-sm text-slate-500 mt-1">Detailed insights into fund utilization and project progress.</p>
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#123b63]">Reports & Analytics</h1>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1">Detailed statistical insights into constituency fund utilization and project progress.</p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex gap-2.5">
           <button 
             type="button"
             aria-label="Filter reports by financial year"
-            className="bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 active:scale-95 px-4 py-2 rounded-xl text-sm font-semibold transition-[transform,background-color] duration-150 flex items-center gap-2 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
+            className="bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-3.5 py-2 rounded text-xs sm:text-sm font-semibold transition-colors flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
           >
-            <TbFilter size={18} aria-hidden="true" />
+            <TbFilter size={16} aria-hidden="true" />
             <span>Filter By Year</span>
           </button>
           <button 
             type="button"
             aria-label="Export reports summary as PDF document"
-            className="bg-[#123b63] hover:bg-[#0c2a47] active:scale-95 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-[transform,background-color] duration-150 flex items-center gap-2 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
+            className="bg-[#123b63] hover:bg-[#0c2a47] text-white px-3.5 py-2 rounded text-xs sm:text-sm font-semibold transition-colors flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
           >
-            <TbDownload size={18} aria-hidden="true" />
+            <TbDownload size={16} aria-hidden="true" />
             <span>Export PDF</span>
           </button>
         </div>

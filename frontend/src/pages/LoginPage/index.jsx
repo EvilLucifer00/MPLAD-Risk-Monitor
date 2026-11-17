@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { TbEye, TbEyeOff, TbLogin, TbChevronDown } from "react-icons/tb";
 import { IoShieldCheckmark } from "react-icons/io5";
@@ -7,6 +7,14 @@ import { useAuthStore } from "../../store/useAuthStore";
 import IndianMonumentsSkyline from "../../components/shared/IndianMonumentsSkyline";
 import EmblemImage from "../../components/shared/EmblemImage";
 
+const ROLES = [
+  { value: "mp", label: "Member of Parliament (MP)", portal: "Member of Parliament Portal (/mp)", ready: true },
+  { value: "district_authority", label: "District Authority (DA / DM)", portal: "District Authority Portal (/da)", ready: true },
+  { value: "state_authority", label: "State Nodal Authority", portal: "State Nodal Authority Portal", ready: false },
+  { value: "pwd_cpwd", label: "PWD / CPWD Implementing Agency", portal: "PWD / CPWD Agency Portal", ready: false },
+  { value: "minister_mospi", label: "MoSPI Ministry Administration", portal: "MoSPI Central Ministry Portal", ready: false },
+];
+
 const LoginPage = () => {
   const navigate = useNavigate();
   const { token, role, setAuth } = useAuthStore();
@@ -14,6 +22,31 @@ const LoginPage = () => {
   const [form, setForm] = useState({ username: "", password: "", role: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
+  const roleDropdownRef = useRef(null);
+
+  // Close custom role dropdown on click outside or escape key
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (roleDropdownRef.current && !roleDropdownRef.current.contains(e.target)) {
+        setRoleDropdownOpen(false);
+      }
+    };
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") setRoleDropdownOpen(false);
+    };
+
+    if (roleDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("touchstart", handleClickOutside);
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [roleDropdownOpen]);
 
   useEffect(() => {
     if (token && role) {
@@ -47,12 +80,18 @@ const LoginPage = () => {
       return;
     }
 
+    const rawUsername = form.username.trim();
+    const normalizedUsername =
+      rawUsername.toLowerCase().startsWith('mp-') || rawUsername.toLowerCase().startsWith('dm-')
+        ? rawUsername.toUpperCase()
+        : rawUsername;
+
     setLoading(true);
     setError("");
 
     try {
       const loginRes = await authApi.login({
-        username: form.username.trim(),
+        username: normalizedUsername,
         password: form.password,
         role: backendRole,
       });
@@ -84,7 +123,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col w-full bg-slate-50 relative overflow-hidden">
+    <div className="min-h-screen flex flex-col w-full bg-slate-50 relative overflow-x-hidden">
       {/* ── Background Decorations (same as HomePage) ── */}
 
       {/* Top Right Ashoka Chakra */}
@@ -193,73 +232,138 @@ const LoginPage = () => {
         </div>
       </div>
 
-      {/* ── Navbar ── */}
-      <div className="sticky top-0 z-50 flex-none flex items-center px-4 md:px-8 py-2.5 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all duration-200">
-        <button
-          onClick={() => navigate("/")}
-          className="flex items-center gap-2 group"
-          aria-label="Back to home"
-        >
-          <EmblemImage
-            width="44"
-            height="44"
-            className="w-11 h-11 object-contain"
-          />
-          <h2 className="text-2xl font-bold text-slate-800 group-hover:text-[#123b63] transition-colors duration-200">
-            MPLADS Risk Monitor
-          </h2>
-        </button>
-      </div>
+      {/* ── Official Header Navbar (Fixed at top) ── */}
+      <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-12 py-2.5 min-h-14 bg-white/95 backdrop-blur-md border-b border-slate-300 shadow-xs">
+        <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
+          <button
+            onClick={() => navigate("/")}
+            className="flex items-center gap-3 text-left group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] rounded cursor-pointer"
+            aria-label="MPLADS Risk Monitor Home"
+          >
+            <EmblemImage
+              width="36"
+              height="40"
+              className="w-9 h-10 object-contain shrink-0"
+            />
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-base md:text-lg font-bold tracking-tight text-[#123b63] leading-tight block group-hover:text-[#0c2a47] transition-colors">
+                  MPLADS Risk Monitor
+                </span>
+                <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[9px] font-bold tracking-wider uppercase bg-slate-100 text-[#123b63] rounded border border-slate-300">
+                  GOI
+                </span>
+              </div>
+              <p className="text-[11px] font-medium text-slate-600 tracking-tight leading-none mt-0.5">
+                Ministry of Statistics & Programme Implementation
+              </p>
+            </div>
+          </button>
 
-      {/* ── Main Content ── */}
-      <main id="main-content" className="flex flex-1 items-center justify-center px-4 py-4 relative z-10">
+          {/* Right Action: Public Portal return button */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            <span className="items-center px-2 py-0.5 text-[11px] font-semibold text-slate-600 bg-slate-50 border border-slate-200 rounded">
+              Security Level: Restricted
+            </span>
+          </div>
+        </div>
+      </header>
+
+      {/* ── Main Content (Offset for fixed navbar) ── */}
+      <main id="main-content" className="flex flex-1 items-center justify-center px-4 pt-20 pb-8 sm:pt-24 sm:pb-12 relative z-10">
         <div className="w-full max-w-md">
           {/* Card */}
-          <div className="relative overflow-hidden rounded-3xl shadow-2xl bg-white border border-slate-200">
-            {/* Card top banner — same gradient style as hero */}
+          <div className="relative overflow-hidden rounded-xl shadow-lg bg-white border border-slate-300">
+            {/* Card top banner — institutional styling matching hero */}
             <div
-              className="relative px-8 pt-8 pb-6 bg-cover bg-center bg-mplad-headquarters"
+              className="relative px-6 sm:px-8 pt-6 pb-5 bg-cover bg-center bg-mplad-headquarters border-b border-slate-200"
             >
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#123b63]/95 via-[#123b63]/75 to-black/30" />
-              <div className="relative z-10 flex flex-col items-center gap-3">
-                <div className="flex items-center gap-3">
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#0b243d]/95 via-[#123b63]/85 to-black/35" />
+              <div className="relative z-10 flex flex-col items-center gap-2.5">
+                <div className="flex items-center gap-2.5 pb-2 border-b border-white/15 w-full justify-center">
                   <EmblemImage
-                    width="36"
-                    height="44"
+                    width="28"
+                    height="34"
                     alt="Government of India"
-                    className="w-9 h-11 object-contain"
+                    className="w-7 h-8.5 object-contain drop-shadow-sm"
                   />
-                  <div className="text-white leading-tight">
-                    <p className="text-[10px] uppercase tracking-wider text-slate-100 font-bold mb-0.5">
+                  <div className="text-white leading-tight text-left">
+                    <p className="text-[10px] uppercase tracking-widest text-slate-200 font-bold">
                       Government of India
                     </p>
-                    <p className="font-semibold text-xs drop-shadow-sm">
+                    <p className="font-semibold text-[11px] text-white tracking-tight mt-0.5">
                       Ministry of Statistics and Programme Implementation
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 mt-2">
-                  <IoShieldCheckmark size={20} className="text-cyan-400" />
-                  <h1 className="text-2xl font-extrabold text-white tracking-tight">
-                    Secure Login
+
+                <div className="text-center mt-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-300 block mb-0.5">
+                    Official Portal Authentication
+                  </span>
+                  <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center justify-center gap-2">
+                    <IoShieldCheckmark size={20} className="text-cyan-400 shrink-0" aria-hidden="true" />
+                    <span>Administrative Sign In</span>
                   </h1>
+                  <p className="text-slate-200/90 text-xs mt-1 leading-relaxed max-w-sm">
+                    Access restricted to Members of Parliament, District Authorities, and authorized MoSPI personnel.
+                  </p>
                 </div>
-                <p className="text-slate-300 text-xs text-center leading-relaxed">
-                  Sign in to access the MPLADS Risk Monitoring Dashboard
-                </p>
               </div>
             </div>
 
             {/* Form body */}
-            <div className="px-6 py-4">
+            <div className="px-6 py-5">
+              {/* Quick-fill Evaluation Accounts */}
+              <div className="mb-4 p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                    Evaluation Demo Accounts
+                  </span>
+                  <span className="text-[9px] font-mono text-emerald-700 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                    One-Click Fill
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setForm({ username: "MP-01", password: "12345678", role: "mp" });
+                      setError("");
+                    }}
+                    className="p-2 rounded text-left bg-white hover:bg-slate-100 border border-slate-300 text-xs transition-colors cursor-pointer group"
+                  >
+                    <div className="font-bold text-[#123b63] group-hover:text-[#0c2a47] flex items-center justify-between">
+                      <span>MP Portal</span>
+                      <span className="text-[9px] font-mono text-slate-500 font-normal">MP-01</span>
+                    </div>
+                    <div className="text-[10.5px] text-slate-500 truncate mt-0.5">Kanthi Constituency</div>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setForm({ username: "DM-01", password: "12345678", role: "district_authority" });
+                      setError("");
+                    }}
+                    className="p-2 rounded text-left bg-white hover:bg-slate-100 border border-slate-300 text-xs transition-colors cursor-pointer group"
+                  >
+                    <div className="font-bold text-[#123b63] group-hover:text-[#0c2a47] flex items-center justify-between">
+                      <span>DA / DM Portal</span>
+                      <span className="text-[9px] font-mono text-slate-500 font-normal">DM-01</span>
+                    </div>
+                    <div className="text-[10.5px] text-slate-500 truncate mt-0.5">East Medinipur Dist</div>
+                  </button>
+                </div>
+              </div>
+
               <form onSubmit={handleSubmit} noValidate>
                 {/* Username */}
-                <div className="mb-3">
+                <div className="mb-3.5">
                   <label
                     htmlFor="login-username"
-                    className="block text-sm font-semibold text-slate-700 mb-1"
+                    className="block text-xs font-bold uppercase tracking-wider text-[#123b63] mb-1"
                   >
-                    Username / Email
+                    Username / Official Email
                   </label>
                   <input
                     id="login-username"
@@ -269,58 +373,94 @@ const LoginPage = () => {
                     value={form.username}
                     onChange={handleChange}
                     placeholder="Enter your username or email"
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm outline-none
-                               focus:ring-[3px] focus:ring-blue-500/20 focus:border-[#123b63] transition-all duration-200 placeholder:text-slate-400"
+                    className="w-full px-3 py-2 rounded border border-slate-300 bg-white text-slate-900 text-sm outline-none
+                               focus:border-[#123b63] focus:ring-1 focus:ring-[#123b63] transition-colors placeholder:text-slate-400"
                   />
                 </div>
 
-                {/* Role Dropdown */}
-                <div className="mb-3">
+                {/* Role Dropdown (Bounded strictly to container width for mobile screen safety) */}
+                <div className="mb-3.5 relative" ref={roleDropdownRef}>
                   <label
                     htmlFor="login-role"
-                    className="block text-sm font-semibold text-slate-700 mb-1"
+                    className="block text-xs font-bold uppercase tracking-wider text-[#123b63] mb-1"
                   >
-                    Login As
+                    Jurisdiction / Role
                   </label>
-                  <div className="relative">
-                    <select
+                  <div className="relative w-full">
+                    <button
                       id="login-role"
-                      name="role"
-                      value={form.role}
-                      onChange={handleChange}
-                      className="w-full appearance-none px-3 py-2 pr-10 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm outline-none
-                                 focus:ring-[3px] focus:ring-blue-500/20 focus:border-[#123b63] transition-all duration-200
-                                 cursor-pointer"
+                      type="button"
+                      onClick={() => setRoleDropdownOpen((prev) => !prev)}
+                      aria-haspopup="listbox"
+                      aria-expanded={roleDropdownOpen}
+                      className="w-full flex items-center justify-between px-3 py-2 rounded border border-slate-300 bg-white text-slate-900 text-sm outline-none focus:border-[#123b63] focus:ring-1 focus:ring-[#123b63] transition-colors cursor-pointer text-left"
                     >
-                      <option value="" disabled>
-                        Select your role…
-                      </option>
-                      <option value="mp">Member of Parliament (MP)</option>
-                      <option value="district_authority">
-                        District Authority
-                      </option>
-                      <option value="state_authority">State Authority</option>
-                      <option value="pwd_cpwd">PWD / CPWD</option>
-                      <option value="minister_mospi">Minister of MoSPI</option>
-                    </select>
-                    <TbChevronDown
-                      size={16}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
-                    />
+                      <span className={form.role ? "text-slate-900 font-medium truncate" : "text-slate-400 truncate"}>
+                        {ROLES.find((r) => r.value === form.role)?.label || "Select administrative role…"}
+                      </span>
+                      <TbChevronDown
+                        size={16}
+                        className={`text-slate-400 shrink-0 ml-2 transition-transform duration-200 ${
+                          roleDropdownOpen ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+
+                    <input type="hidden" name="role" value={form.role} />
+
+                    {roleDropdownOpen && (
+                      <div
+                        role="listbox"
+                        aria-label="Jurisdiction / Role"
+                        className="absolute left-0 right-0 top-full mt-1 w-full max-w-full bg-white border border-slate-300 rounded-lg shadow-xl z-50 py-1 max-h-60 overflow-y-auto no-scrollbar"
+                      >
+                        {ROLES.map((r) => {
+                          const isSelected = form.role === r.value;
+                          return (
+                            <div
+                              key={r.value}
+                              role="option"
+                              aria-selected={isSelected}
+                              onClick={() => {
+                                setForm((prev) => ({ ...prev, role: r.value }));
+                                setError("");
+                                setRoleDropdownOpen(false);
+                              }}
+                              className={`px-3 py-2 text-xs sm:text-sm flex items-center justify-between gap-2 cursor-pointer transition-colors ${
+                                isSelected
+                                  ? "bg-[#123b63] text-white font-semibold"
+                                  : "text-slate-800 hover:bg-slate-100"
+                              }`}
+                            >
+                              <span className="truncate">{r.label}</span>
+                              {!r.ready && (
+                                <span
+                                  className={`text-[9.5px] px-1.5 py-0.5 rounded font-mono shrink-0 ${
+                                    isSelected
+                                      ? "bg-white/20 text-white"
+                                      : "bg-slate-100 text-slate-500 border border-slate-200"
+                                  }`}
+                                >
+                                  Soon
+                                </span>
+                              )}
+                              {r.ready && isSelected && (
+                                <IoShieldCheckmark size={14} className="text-cyan-300 shrink-0" />
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
+
                   {/* Role badge — shown once a role is selected */}
                   {form.role && (
-                    <p className="mt-1.5 text-[11px] text-[#123b63] font-medium flex items-center gap-1">
-                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-cyan-500"></span>
-                      {
-                        {
-                          mp: "Member of Parliament portal",
-                          district_authority: "District Authority portal",
-                          state_authority: "State Authority portal",
-                          pwd_cpwd: "PWD / CPWD portal",
-                          minister_mospi: "Minister of MoSPI portal",
-                        }[form.role]
-                      }
+                    <p className="mt-1.5 text-[11px] text-[#123b63] font-semibold flex items-center gap-1.5 truncate">
+                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-cyan-600 shrink-0"></span>
+                      <span className="truncate">
+                        Target Portal: {ROLES.find((r) => r.value === form.role)?.portal || form.role}
+                      </span>
                     </p>
                   )}
                 </div>
@@ -329,7 +469,7 @@ const LoginPage = () => {
                 <div className="mb-1">
                   <label
                     htmlFor="login-password"
-                    className="block text-sm font-semibold text-slate-700 mb-1"
+                    className="block text-xs font-bold uppercase tracking-wider text-[#123b63] mb-1"
                   >
                     Password
                   </label>
@@ -341,14 +481,14 @@ const LoginPage = () => {
                       autoComplete="current-password"
                       value={form.password}
                       onChange={handleChange}
-                      placeholder="Enter your password"
-                      className="w-full px-3 py-2 pr-12 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm outline-none
-                                 focus:ring-[3px] focus:ring-blue-500/20 focus:border-[#123b63] transition-all duration-200 placeholder:text-slate-400"
+                      placeholder="Enter your security password"
+                      className="w-full px-3 py-2 pr-12 rounded border border-slate-300 bg-white text-slate-900 text-sm outline-none
+                                 focus:border-[#123b63] focus:ring-1 focus:ring-[#123b63] transition-colors placeholder:text-slate-400"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword((v) => !v)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition-colors"
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
                       aria-label={
                         showPassword ? "Hide password" : "Show password"
                       }
@@ -366,7 +506,7 @@ const LoginPage = () => {
                 <div className="flex justify-end mb-3 mt-1.5">
                   <button
                     type="button"
-                    className="text-xs text-[#123b63] hover:text-cyan-600 font-medium transition-colors duration-150"
+                    className="text-xs text-[#123b63] hover:underline font-semibold transition-colors duration-150 cursor-pointer"
                   >
                     Forgot password?
                   </button>
@@ -374,7 +514,7 @@ const LoginPage = () => {
 
                 {/* Error message */}
                 {error && (
-                  <p role="alert" aria-live="assertive" className="mb-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-2">
+                  <p role="alert" aria-live="assertive" className="mb-4 text-xs font-medium text-red-700 bg-red-50 border border-red-300 rounded px-3 py-2">
                     {error}
                   </p>
                 )}
@@ -384,10 +524,10 @@ const LoginPage = () => {
                   id="login-submit-btn"
                   type="submit"
                   disabled={loading}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-semibold text-sm text-white
-                             bg-[#123b63] hover:bg-[#0f2f50] active:scale-[0.98]
-                             transition-all duration-200 shadow-md shadow-[#123b63]/30
-                             disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded font-bold text-sm text-white
+                             bg-[#123b63] hover:bg-[#0c2a47] active:scale-[0.99]
+                             transition-colors shadow-none
+                             disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
                 >
                   {loading ? (
                     <>
@@ -412,36 +552,35 @@ const LoginPage = () => {
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
                         />
                       </svg>
-                      Signing in…
+                      Authenticating…
                     </>
                   ) : (
                     <>
                       <TbLogin size={16} />
-                      Sign In
+                      Sign In to Dashboard
                     </>
                   )}
                 </button>
               </form>
 
               {/* Divider */}
-              <div className="flex items-center gap-3 my-3">
+              <div className="flex items-center gap-3 my-3.5">
                 <div className="flex-1 h-px bg-slate-200" />
-                <span className="text-xs text-slate-600 font-medium">or</span>
+                <span className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">or</span>
                 <div className="flex-1 h-px bg-slate-200" />
               </div>
 
               {/* Back to home */}
               <button
                 onClick={() => navigate("/")}
-                className="w-full py-2 rounded-xl font-semibold text-sm text-[#123b63] border border-slate-200
-                           hover:bg-slate-50 transition-all duration-200"
+                className="w-full py-2 rounded font-semibold text-xs sm:text-sm text-[#123b63] border border-slate-300 bg-white
+                           hover:bg-slate-50 transition-colors cursor-pointer"
               >
-                ← Back to Home
+                ← Return to Public Map & Monitoring
               </button>
               {/* Footer note inside card */}
-              <p className="mt-3 text-center text-[11px] text-slate-600 leading-relaxed font-medium">
-                Authorised government officials only. Unauthorised access is
-                prohibited.
+              <p className="mt-3 text-center text-[11px] text-slate-500 font-medium">
+                Authorized government officials only. Statutory compliance and audit logging active under MoSPI guidelines.
               </p>
             </div>
           </div>

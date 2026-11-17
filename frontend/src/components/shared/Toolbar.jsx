@@ -16,58 +16,59 @@ const Toolbar = ({
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <header className="sticky top-0 z-[1100] flex-none flex flex-col md:flex-row flex-wrap md:justify-between md:items-center px-4 md:px-8 py-3.5 min-h-15 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm gap-3 md:gap-6 transition-all duration-200">
-      <div className="flex justify-between items-center w-full md:w-auto">
+    <header className="sticky top-0 z-[1100] flex-none px-4 sm:px-6 lg:px-12 py-2.5 min-h-14 bg-white border-b border-slate-300 shadow-none">
+      <div className="max-w-7xl mx-auto w-full flex flex-col md:flex-row flex-wrap md:justify-between md:items-center gap-3 md:gap-6">
+        <div className="flex justify-between items-center w-full md:w-auto">
         <div className="flex items-center gap-3">
           <EmblemImage
-            width="40"
-            height="44"
-            className="w-10 h-11 object-contain shrink-0"
+            width="36"
+            height="40"
+            className="w-9 h-10 object-contain shrink-0"
           />
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-lg md:text-xl font-bold tracking-tight text-[#123b63] leading-tight block">
+              <span className="text-base md:text-lg font-bold tracking-tight text-[#123b63] leading-tight block">
                 MPLADS Risk Monitor
               </span>
-              <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[10px] font-bold tracking-wider uppercase bg-amber-50 text-amber-800 rounded border border-amber-200">
+              <span className="hidden sm:inline-flex items-center px-1.5 py-0.2 text-[9px] font-bold tracking-wider uppercase bg-slate-100 text-[#123b63] rounded border border-slate-300">
                 GOI
               </span>
             </div>
-            <p className="text-[11px] font-medium text-slate-500 tracking-tight leading-none mt-0.5">
+            <p className="text-[11px] font-medium text-slate-600 tracking-tight leading-none mt-0.5">
               Ministry of Statistics & Programme Implementation
             </p>
           </div>
         </div>
         <button 
-          className="md:hidden p-2 -mr-1 text-slate-700 bg-slate-100/90 hover:bg-slate-200/90 border border-slate-200 rounded-xl transition-all active:scale-95 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] shadow-xs"
+          className="md:hidden p-1.5 text-slate-700 bg-white hover:bg-slate-100 border border-slate-300 rounded transition-colors flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
           onClick={() => setIsExpanded(!isExpanded)}
           aria-label={isExpanded ? "Close navigation menu" : "Open navigation menu"}
           aria-expanded={isExpanded}
         >
-          {isExpanded ? <IconClose size={24} /> : <IconMenu size={24} />}
+          {isExpanded ? <IconClose size={22} /> : <IconMenu size={22} />}
         </button>
       </div>
 
-      <div className={`${isExpanded ? 'flex' : 'hidden'} md:flex flex-col md:flex-row flex-wrap w-full md:flex-1 md:justify-end gap-3 md:gap-4 md:items-center max-h-[calc(100vh-5rem)] overflow-y-auto`}>
-        <div className="flex items-center bg-slate-50 border border-slate-200 rounded-lg transition-all px-5 py-2.5 duration-200 focus-within:ring-[3px] focus-within:ring-blue-500/10 w-full md:w-auto">
-          <IconSearch size={18} className="text-slate-500 mr-2 shrink-0" aria-hidden="true" />
+      <div className={`${isExpanded ? 'flex' : 'hidden'} md:flex flex-col md:flex-row flex-wrap w-full md:flex-1 md:justify-end gap-2.5 md:gap-3 md:items-center max-h-[calc(100vh-5rem)] overflow-y-auto`}>
+        <div className="flex items-center bg-white border border-slate-300 rounded px-3 py-1.5 focus-within:border-[#123b63] focus-within:ring-1 focus-within:ring-[#123b63] w-full md:w-auto">
+          <IconSearch size={16} className="text-slate-500 mr-2 shrink-0" aria-hidden="true" />
           <input
             type="text"
             placeholder="Search constituency..."
             aria-label="Search constituency by name"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="border-none bg-transparent outline-none font-sans text-base text-slate-900 w-full md:w-50"
+            className="border-none bg-transparent outline-none font-sans text-sm text-slate-900 w-full md:w-44"
           />
         </div>
 
-        <div className="flex items-center bg-slate-50 border border-slate-200 rounded-lg px-5 py-2.5 transition-all duration-200 focus-within:ring-[3px] focus-within:ring-blue-500/10 w-full md:w-auto">
-          <IconFilter size={18} className="text-slate-500 mr-2 shrink-0" aria-hidden="true" />
+        <div className="flex items-center bg-white border border-slate-300 rounded px-2.5 py-1.5 focus-within:border-[#123b63] focus-within:ring-1 focus-within:ring-[#123b63] w-full md:w-auto">
+          <IconFilter size={16} className="text-slate-500 mr-1.5 shrink-0" aria-hidden="true" />
           <select
             value={filterState}
             onChange={(e) => setFilterState(e.target.value)}
             aria-label="Filter by state"
-            className="border-none bg-transparent outline-none font-sans text-base text-slate-900 cursor-pointer w-full md:w-auto"
+            className="border-none bg-transparent outline-none font-sans text-sm text-slate-800 cursor-pointer w-full md:w-auto"
           >
             <option value="">All States</option>
             {statesList.map((st) => (
@@ -78,12 +79,12 @@ const Toolbar = ({
           </select>
         </div>
 
-        <div className="flex items-center bg-slate-50 border border-slate-200 rounded-lg px-5 py-2.5 transition-all duration-200 focus-within:ring-[3px] focus-within:ring-blue-500/10 w-full md:w-auto">
+        <div className="flex items-center bg-white border border-slate-300 rounded px-2.5 py-1.5 focus-within:border-[#123b63] focus-within:ring-1 focus-within:ring-[#123b63] w-full md:w-auto">
           <select
             value={filterRisk}
             onChange={(e) => setFilterRisk(e.target.value)}
             aria-label="Filter by risk level"
-            className="border-none bg-transparent outline-none font-sans text-base text-slate-900 cursor-pointer w-full md:w-auto"
+            className="border-none bg-transparent outline-none font-sans text-sm text-slate-800 cursor-pointer w-full md:w-auto"
           >
             <option value="">All Risk Levels</option>
             <option value="CRITICAL">Critical (80-100)</option>
@@ -97,16 +98,15 @@ const Toolbar = ({
         <div>
           <button
             onClick={() => navigate('/login')}
-            className="px-5 py-2.5 bg-blue-600 text-white rounded-lg font-medium
-               hover:bg-blue-700 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
+            className="px-4 py-1.5 bg-[#123b63] text-white rounded font-medium text-sm hover:bg-[#0c2a47] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#123b63] w-full md:w-auto cursor-pointer"
           >
-            Login
+            Portal Login
           </button>
         </div>
       </div>
-    </header>
+    </div>
+  </header>
   );
 };
 
 export default Toolbar;
-
