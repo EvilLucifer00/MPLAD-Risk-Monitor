@@ -63,18 +63,18 @@ const MpNotifications = () => {
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto min-h-full flex flex-col">
-      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-2 border-b border-slate-200">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-[#123b63]">Notifications</h1>
-          <p className="text-sm text-slate-500 mt-1">Stay updated on your projects and AI risk alerts.</p>
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#123b63]">Official Notifications</h1>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1">Official alerts, sanction advisories, and risk notifications for your constituency.</p>
         </div>
         <button 
           type="button"
           onClick={handleMarkAllRead}
           aria-label="Mark all unread notifications as read"
-          className="bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 active:scale-95 px-4 py-2 rounded-xl text-sm font-semibold transition-[transform,background-color] duration-150 flex items-center gap-2 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
+          className="bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-3.5 py-1.5 rounded text-xs sm:text-sm font-semibold transition-colors flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
         >
-          <TbChecklist size={18} aria-hidden="true" />
+          <TbChecklist size={16} aria-hidden="true" />
           <span>Mark all as read</span>
         </button>
       </header>
@@ -82,17 +82,17 @@ const MpNotifications = () => {
       {/* Filter Section */}
       <section aria-labelledby="notification-filters-heading">
         <h2 id="notification-filters-heading" className="sr-only">Notification Category Filters</h2>
-        <div className="bg-white p-2 rounded-xl shadow-sm border border-slate-200 flex flex-wrap gap-2" role="toolbar" aria-label="Filter notifications by category">
+        <div className="bg-white p-2 rounded border border-slate-200 flex flex-wrap gap-1.5" role="toolbar" aria-label="Filter notifications by category">
           {['All', 'Unread', 'warning', 'success', 'info'].map(f => (
             <button 
               key={f}
               type="button"
               onClick={() => setFilter(f)}
               aria-pressed={filter === f}
-              className={`px-4 py-2 rounded-lg text-sm font-semibold capitalize active:scale-95 transition-[transform,background-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] ${
+              className={`px-3 py-1 rounded text-xs font-semibold capitalize transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] ${
                 filter === f 
-                  ? 'bg-cyan-100 text-[#123b63] font-bold' 
-                  : 'text-slate-600 hover:bg-slate-50'
+                  ? 'bg-[#123b63] text-white' 
+                  : 'bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100'
               }`}
             >
               {f === 'warning' ? 'Alerts' : f}
@@ -104,78 +104,78 @@ const MpNotifications = () => {
       {/* Notifications Feed */}
       <section 
         aria-labelledby="notifications-feed-heading"
-        className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-auto flex-1"
+        className="bg-white rounded border border-slate-200 overflow-auto flex-1"
       >
         <h2 id="notifications-feed-heading" className="sr-only">Notifications List</h2>
         {loading ? (
           <div className="flex flex-col items-center justify-center p-12 h-64 text-slate-500" role="status" aria-live="polite">
-            <div className="w-8 h-8 border-4 border-[#123b63] border-t-transparent rounded-full animate-spin mb-3"></div>
-            <p className="text-sm font-medium">Loading notifications...</p>
+            <div className="w-8 h-8 border-3 border-[#123b63] border-t-transparent rounded-full animate-spin mb-3"></div>
+            <p className="text-xs sm:text-sm font-medium">Loading notifications...</p>
           </div>
         ) : filteredNotifications.length === 0 ? (
           <div className="flex flex-col items-center justify-center p-12 h-64 text-slate-500">
-            <TbBell size={48} className="text-slate-300 mb-4" aria-hidden="true" />
-            <p className="font-semibold">You're all caught up!</p>
-            <p className="text-sm mt-1">No notifications match your current filter.</p>
+            <TbBell size={40} className="text-slate-300 mb-3" aria-hidden="true" />
+            <p className="font-semibold text-sm">No notifications found</p>
+            <p className="text-xs text-slate-400 mt-1">No alerts match the chosen filter category.</p>
           </div>
         ) : (
           <ul role="list" className="divide-y divide-slate-100">
             {filteredNotifications.map(notif => (
               <li key={notif.id}>
                 <article 
-                  className={`p-4 sm:p-6 flex items-start gap-4 transition-colors ${
-                    !notif.read ? 'bg-blue-50/30' : 'hover:bg-slate-50/50'
+                  className={`p-4 sm:p-5 flex items-start gap-3.5 transition-colors ${
+                    !notif.read ? 'bg-blue-50/20' : 'hover:bg-slate-50'
                   }`}
                 >
-                  <div className={`p-3 rounded-full shrink-0 ${
-                    notif.type === 'warning' ? 'bg-orange-100' :
-                    notif.type === 'success' ? 'bg-emerald-100' : 'bg-blue-100'
+                  <div className={`p-2 rounded shrink-0 ${
+                    notif.type === 'warning' ? 'bg-amber-100 text-amber-800' :
+                    notif.type === 'success' ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-[#123b63]'
                   }`} aria-hidden="true">
                     {getIcon(notif.type)}
                   </div>
                   
                   <div className="flex-1 min-w-0">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-1">
-                      <h3 className={`text-base ${!notif.read ? 'font-bold text-[#123b63]' : 'font-semibold text-slate-700'}`}>
-                        {notif.title || (notif.type === 'warning' ? 'AI Risk Alert' : notif.type === 'success' ? 'Update' : 'Information')}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
+                      <h3 className={`text-xs sm:text-sm ${!notif.read ? 'font-bold text-[#123b63]' : 'font-semibold text-slate-800'}`}>
+                        {notif.title || (notif.type === 'warning' ? 'AI Risk Advisory' : notif.type === 'success' ? 'Sanction Update' : 'Administrative Notice')}
                       </h3>
-                      <time dateTime={notif.timestamp} className="text-xs font-medium text-slate-500 whitespace-nowrap">
-                        {new Date(notif.timestamp).toLocaleString()}
+                      <time dateTime={notif.timestamp} className="text-[11px] font-medium text-slate-500 tabular-nums">
+                        {new Date(notif.timestamp).toLocaleString("en-GB")}
                       </time>
                     </div>
-                    <p className={`text-sm ${!notif.read ? 'text-slate-800' : 'text-slate-600'} leading-relaxed`}>
+                    <p className={`text-xs sm:text-sm ${!notif.read ? 'text-slate-800' : 'text-slate-600'} leading-relaxed`}>
                       {notif.message}
                     </p>
                     
                     {notif.projectId && (
-                      <div className="mt-3">
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
-                          Project Ref: {notif.projectId}
+                      <div className="mt-2">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                          Ref: {notif.projectId}
                         </span>
                       </div>
                     )}
                   </div>
                   
-                  <div className="flex flex-col gap-2 shrink-0">
+                  <div className="flex flex-col gap-1 shrink-0">
                     {!notif.read && (
                       <button 
                         type="button"
                         onClick={() => handleMarkAsRead(notif.id)}
-                        className="p-2 text-cyan-800 hover:bg-cyan-50 rounded-lg active:scale-90 transition-[transform,color,background-color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+                        className="p-1 text-[#123b63] hover:bg-slate-100 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
                         title="Mark as read"
                         aria-label="Mark notification as read"
                       >
-                        <TbCheck size={20} aria-hidden="true" />
+                        <TbCheck size={16} aria-hidden="true" />
                       </button>
                     )}
                     <button 
                       type="button"
                       onClick={() => handleDeleteNotification(notif.id)}
-                      className="p-2 text-slate-500 hover:text-red-700 hover:bg-red-50 rounded-lg active:scale-90 transition-[transform,color,background-color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                      className="p-1 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
                       title="Delete"
                       aria-label="Delete notification"
                     >
-                      <TbTrash size={20} aria-hidden="true" />
+                      <TbTrash size={16} aria-hidden="true" />
                     </button>
                   </div>
                 </article>

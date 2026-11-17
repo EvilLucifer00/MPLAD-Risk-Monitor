@@ -15,11 +15,11 @@ const DaProjectsAnalytics = lazy(() => import('./components/DaProjectsAnalytics'
 const AnalyticsSkeleton = () => (
   <div className="space-y-6 flex-1 animate-pulse" role="status" aria-label="Loading analytics charts">
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 h-[380px] flex flex-col justify-center items-center">
-        <div className="w-10 h-10 border-4 border-[#123b63] border-t-transparent rounded-full animate-spin"></div>
+      <div className="bg-white rounded border border-slate-200 p-6 h-[380px] flex flex-col justify-center items-center">
+        <div className="w-8 h-8 border-3 border-[#123b63] border-t-transparent rounded-full animate-spin"></div>
       </div>
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 h-[380px] flex flex-col justify-center items-center">
-        <div className="w-10 h-10 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
+      <div className="bg-white rounded border border-slate-200 p-6 h-[380px] flex flex-col justify-center items-center">
+        <div className="w-8 h-8 border-3 border-[#123b63] border-t-transparent rounded-full animate-spin"></div>
       </div>
     </div>
   </div>
@@ -76,31 +76,31 @@ const DaProjects = () => {
 
   return (
     <div className="space-y-6 flex flex-col min-h-full">
-      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-2 border-b border-slate-200">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-[#123b63]">District Projects</h1>
-          <p className="text-sm text-slate-500 mt-1 leading-normal">All MPs and their projects across {user?.dist ? `${user.dist} District` : "the district"}.</p>
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#123b63]">District Parliamentarian Portfolios</h1>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-normal">Parliamentarians and constituency development portfolios in {user?.dist ? `${user.dist} District` : "the district"}.</p>
         </div>
-        <div className="flex items-center gap-2" role="toolbar" aria-label="Projects view mode">
+        <div className="flex items-center gap-1.5" role="toolbar" aria-label="Projects view mode">
           <button
             type="button"
             onClick={() => setProjectsView('grid')}
             aria-label="Switch to MP Grid View"
             aria-pressed={projectsView === 'grid'}
-            className={`p-2.5 rounded-lg active:scale-90 transition-[transform,background-color,color] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] ${projectsView === 'grid' ? 'bg-cyan-50 text-cyan-700 shadow-xs' : 'text-slate-400 hover:bg-slate-100 hover:text-slate-600'}`}
-            title="MP Grid View"
+            className={`p-2 rounded border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] transition-colors ${projectsView === 'grid' ? 'bg-[#123b63] text-white border-[#123b63]' : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'}`}
+            title="Directory Grid View"
           >
-            <TbLayoutGrid size={20} aria-hidden="true" />
+            <TbLayoutGrid size={18} aria-hidden="true" />
           </button>
           <button
             type="button"
             onClick={() => setProjectsView('analytics')}
             aria-label="Switch to Analytics View"
             aria-pressed={projectsView === 'analytics'}
-            className={`p-2.5 rounded-lg active:scale-90 transition-[transform,background-color,color] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] ${projectsView === 'analytics' ? 'bg-cyan-50 text-cyan-700 shadow-xs' : 'text-slate-400 hover:bg-slate-100 hover:text-slate-600'}`}
-            title="Analytics View"
+            className={`p-2 rounded border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] transition-colors ${projectsView === 'analytics' ? 'bg-[#123b63] text-white border-[#123b63]' : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'}`}
+            title="Comparative Analytics View"
           >
-            <TbChartBar size={20} aria-hidden="true" />
+            <TbChartBar size={18} aria-hidden="true" />
           </button>
         </div>
       </header>
@@ -111,10 +111,10 @@ const DaProjects = () => {
         <form 
           role="search" 
           onSubmit={(e) => e.preventDefault()}
-          className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200"
+          className="bg-white p-3 rounded border border-slate-200"
         >
           <div className="relative">
-            <TbSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={18} aria-hidden="true" />
+            <TbSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} aria-hidden="true" />
             <input 
               id="mp-search-input"
               type="search" 
@@ -122,7 +122,7 @@ const DaProjects = () => {
               aria-label="Search by MP name or constituency"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#123b63]/20 focus:border-[#123b63] transition-[border-color,box-shadow] duration-150 placeholder:text-slate-400"
+              className="w-full pl-9 pr-3 py-1.5 bg-white border border-slate-300 rounded text-xs sm:text-sm focus:outline-none focus:border-[#123b63] focus:ring-1 focus:ring-[#123b63] placeholder:text-slate-400"
             />
           </div>
         </form>
@@ -134,58 +134,58 @@ const DaProjects = () => {
           <h2 id="mp-grid-heading" className="sr-only">Members of Parliament Directory</h2>
           {filteredMPs.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-12 text-slate-500">
-              <TbUser size={48} className="text-slate-300 mb-4" aria-hidden="true" />
-              <p className="font-semibold text-slate-700">No MPs found</p>
-              <p className="text-sm text-slate-400 mt-0.5">Try a different search term.</p>
+              <TbUser size={40} className="text-slate-300 mb-3" aria-hidden="true" />
+              <p className="font-semibold text-sm text-slate-700">No parliamentarians found</p>
+              <p className="text-xs text-slate-400 mt-0.5">Try searching with a different name or constituency.</p>
             </div>
           ) : (
-            <ul role="list" className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            <ul role="list" className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3.5">
               {filteredMPs.map(mp => (
                 <li key={mp.id}>
                   <OfflineLink 
                     to={`/da/projects/mp/${mp.id}`}
                     aria-label={`View projects and statistics for ${mp.name}, ${mp.constituency}`}
-                    className="block bg-white rounded-2xl shadow-sm border border-slate-200 p-5 hover:shadow-md hover:border-slate-300 active:scale-[0.99] transition-[transform,box-shadow,border-color] duration-150 ease-out group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
+                    className="block bg-white rounded border border-slate-300 p-4 hover:border-[#123b63] hover:bg-slate-50/50 transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
                   >
                     <article>
                       {/* MP Header */}
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-[#f0f7ff] flex items-center justify-center text-[#123b63] font-bold text-sm border border-[#d0e4f7]" aria-hidden="true">
+                      <div className="flex items-center justify-between mb-3.5">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-9 h-9 rounded bg-blue-50 flex items-center justify-center text-[#123b63] font-bold text-xs border border-blue-200" aria-hidden="true">
                             {mp.name.split(' ').map(w => w[0]).join('').slice(0, 2)}
                           </div>
                           <div>
-                            <h3 className="font-bold text-[#123b63] text-sm tracking-tight">{mp.name}</h3>
-                            <p className="text-xs text-slate-500 mt-0.5">{mp.constituency}</p>
+                            <h3 className="font-bold text-[#123b63] text-xs sm:text-sm tracking-tight">{mp.name}</h3>
+                            <p className="text-[11px] text-slate-500 mt-0.5">{mp.constituency}</p>
                           </div>
                         </div>
-                        <TbArrowRight size={18} className="text-slate-300 group-hover:text-cyan-600 group-hover:translate-x-0.5 transition-transform duration-150 ease-out" aria-hidden="true" />
+                        <TbArrowRight size={16} className="text-slate-400 group-hover:text-[#123b63] group-hover:translate-x-0.5 transition-all" aria-hidden="true" />
                       </div>
 
                       {/* Stats Grid */}
-                      <div className="grid grid-cols-2 gap-3 mb-4">
-                        <div className="bg-slate-50/80 rounded-xl p-3 border border-slate-100">
-                          <div className="text-xl font-extrabold text-[#123b63] tracking-tight">{mp.activeProjects}</div>
-                          <div className="text-[10.5px] font-bold text-slate-600 uppercase tracking-wider mt-0.5">Active Projects</div>
+                      <div className="grid grid-cols-2 gap-2.5 mb-3.5">
+                        <div className="bg-slate-50 rounded p-2.5 border border-slate-200">
+                          <div className="text-lg font-bold text-[#123b63] tracking-tight tabular-nums">{mp.activeProjects}</div>
+                          <div className="text-[10px] font-semibold text-slate-600 uppercase tracking-wider mt-0.5">Active Projects</div>
                         </div>
-                        <div className="bg-slate-50/80 rounded-xl p-3 border border-slate-100">
-                          <div className="text-xl font-extrabold text-[#123b63] tracking-tight">₹{(mp.totalUtilized / 10000000).toFixed(1)}Cr</div>
-                          <div className="text-[10.5px] font-bold text-slate-600 uppercase tracking-wider mt-0.5">Utilized</div>
+                        <div className="bg-slate-50 rounded p-2.5 border border-slate-200">
+                          <div className="text-lg font-bold text-[#123b63] tracking-tight tabular-nums">₹{(mp.totalUtilized / 10000000).toFixed(2)} Cr</div>
+                          <div className="text-[10px] font-semibold text-slate-600 uppercase tracking-wider mt-0.5">Utilized</div>
                         </div>
                       </div>
 
                       {/* Bottom Bar */}
-                      <div className="flex items-center justify-between pt-3 border-t border-slate-100 text-xs">
-                        <div className="flex items-center gap-2">
-                          <span className="text-slate-600 font-medium">Avg Risk:</span>
+                      <div className="flex items-center justify-between pt-2.5 border-t border-slate-200 text-xs">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-slate-600 text-xs font-medium">Avg Risk:</span>
                           <RiskBadge 
                             level={mp.avgRiskScore >= 80 ? 'Critical' : mp.avgRiskScore >= 60 ? 'High' : mp.avgRiskScore >= 40 ? 'Moderate' : 'Low'} 
                             score={mp.avgRiskScore} 
                           />
                         </div>
                         {mp.highCriticalCount > 0 && (
-                          <span className="flex items-center gap-1 font-bold text-red-800 bg-red-50 border border-red-200 px-2 py-0.5 rounded-md">
-                            <TbAlertTriangle size={13} aria-hidden="true" /> {mp.highCriticalCount} High+
+                          <span className="flex items-center gap-1 font-semibold text-red-800 bg-red-50 border border-red-200 px-1.5 py-0.5 rounded text-[11px]">
+                            <TbAlertTriangle size={12} aria-hidden="true" /> {mp.highCriticalCount} Flagged
                           </span>
                         )}
                       </div>

@@ -104,7 +104,7 @@ export const DaDashboardChart = ({ stats, projects = [], mps = [] }) => {
   const activeSlices = chartData.filter(d => d.value > 0);
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 flex flex-col w-full min-w-0">
+    <div className="bg-white rounded border border-slate-200 p-4 sm:p-5 flex flex-col w-full min-w-0">
       <div className="flex justify-between items-start mb-6 gap-2 min-w-0">
         <div className="min-w-0 flex-1">
           <h2 className="text-base sm:text-lg font-bold text-[#123b63] truncate">{chartTitle}</h2>
@@ -115,13 +115,13 @@ export const DaDashboardChart = ({ stats, projects = [], mps = [] }) => {
             onClick={() => setIsChartDropdownOpen((prev) => !prev)}
             aria-haspopup="true"
             aria-expanded={isChartDropdownOpen}
-            className="text-xs font-semibold text-slate-600 bg-white border border-slate-200 px-3 py-1.5 rounded-lg flex items-center gap-1 hover:bg-slate-50 active:scale-95 shadow-sm transition-[transform,background-color] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+            className="text-xs font-semibold text-slate-700 bg-white border border-slate-300 px-3 py-1.5 rounded flex items-center gap-1 hover:bg-slate-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
           >
             By {chartView === 'MP' ? 'MP Risk' : chartView} 
             <TbChevronDown size={14} className={`transition-transform duration-150 ${isChartDropdownOpen ? 'rotate-180' : ''}`} />
           </button>
           {/* Dropdown Menu */}
-          <div className={`absolute right-0 top-full mt-2 w-44 bg-white border border-slate-100 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] origin-top-right transition-[opacity,transform,visibility] duration-150 ease-out overflow-hidden z-40 ${
+          <div className={`absolute right-0 top-full mt-1.5 w-44 bg-white border border-slate-200 rounded shadow-md origin-top-right transition-[opacity,transform,visibility] duration-150 ease-out overflow-hidden z-40 ${
             isChartDropdownOpen
               ? 'opacity-100 visible scale-100 translate-y-0 pointer-events-auto'
               : 'opacity-0 invisible group-hover:opacity-100 group-hover:visible scale-95 group-hover:scale-100 translate-y-1 group-hover:translate-y-0'
@@ -133,7 +133,7 @@ export const DaDashboardChart = ({ stats, projects = [], mps = [] }) => {
                   setChartView(view);
                   setIsChartDropdownOpen(false);
                 }} 
-                className={`w-full text-left px-4 py-2.5 text-sm font-medium transition-colors ${i !== 0 ? 'border-t border-slate-50' : ''} ${chartView === view ? 'text-cyan-700 bg-cyan-50 font-semibold' : 'text-slate-600 hover:bg-slate-50 hover:text-[#123b63]'}`}
+                className={`w-full text-left px-4 py-2 text-xs font-medium transition-colors ${i !== 0 ? 'border-t border-slate-100' : ''} ${chartView === view ? 'text-[#123b63] bg-slate-100 font-semibold' : 'text-slate-700 hover:bg-slate-50 hover:text-[#123b63]'}`}
               >
                 By {view === 'MP' ? 'MP Risk' : view}
               </button>

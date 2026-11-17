@@ -11,17 +11,17 @@ import { TbSearch, TbFilter, TbChevronRight, TbBriefcase } from 'react-icons/tb'
 // Reusable Risk Badge Component
 export const RiskBadge = ({ level, score, showScore = true }) => {
   const colors = {
-    Low: 'bg-emerald-100 text-emerald-800 border-emerald-200',
-    Moderate: 'bg-amber-100 text-amber-800 border-amber-200',
-    High: 'bg-orange-100 text-orange-800 border-orange-200',
-    Critical: 'bg-red-100 text-red-800 border-red-200'
+    Low: 'bg-emerald-50 text-emerald-900 border-emerald-300',
+    Moderate: 'bg-amber-50 text-amber-950 border-amber-300',
+    High: 'bg-orange-50 text-orange-950 border-orange-300',
+    Critical: 'bg-red-50 text-red-950 border-red-300'
   };
 
   return (
-    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold border ${colors[level] || 'bg-slate-100 text-slate-800 border-slate-200'}`}>
+    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold border ${colors[level] || 'bg-slate-50 text-slate-800 border-slate-200'}`}>
       <span className="w-1.5 h-1.5 rounded-full bg-current opacity-75"></span>
       {level}
-      {showScore && <span className="opacity-75 font-normal ml-0.5">({score})</span>}
+      {showScore && <span className="opacity-80 font-normal ml-0.5">({score})</span>}
     </span>
   );
 };
@@ -29,15 +29,15 @@ export const RiskBadge = ({ level, score, showScore = true }) => {
 // Reusable Status Badge Component
 export const StatusBadge = ({ status }) => {
   const colors = {
-    'Pending Sanction': 'bg-slate-100 text-slate-700',
-    'Sanctioned': 'bg-blue-100 text-blue-700',
-    'In Progress': 'bg-indigo-100 text-indigo-700',
-    'Completed': 'bg-emerald-100 text-emerald-700',
-    'Rejected': 'bg-red-100 text-red-700',
+    'Pending Sanction': 'bg-slate-100 text-slate-700 border-slate-300',
+    'Sanctioned': 'bg-blue-50 text-[#123b63] border-blue-200',
+    'In Progress': 'bg-sky-50 text-sky-900 border-sky-200',
+    'Completed': 'bg-emerald-50 text-emerald-900 border-emerald-300',
+    'Rejected': 'bg-red-50 text-red-900 border-red-300',
   };
   
   return (
-    <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${colors[status] || 'bg-slate-100 text-slate-700'}`}>
+    <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${colors[status] || 'bg-slate-100 text-slate-700 border-slate-300'}`}>
       {status}
     </span>
   );
@@ -105,7 +105,7 @@ const MpProjects = () => {
         </div>
         <OfflineLink 
           to="/mp/submit" 
-          className="bg-[#123b63] hover:bg-[#0c2a47] active:scale-95 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-[transform,background-color] duration-150 ease-out shadow-xs"
+          className="bg-[#123b63] hover:bg-[#0c2a47] text-white px-4 py-2 rounded text-sm font-semibold transition-colors duration-150 shadow-none cursor-pointer"
         >
           Submit Proposal
         </OfflineLink>
@@ -114,7 +114,7 @@ const MpProjects = () => {
       {/* Filters Bar Section */}
       <section aria-labelledby="projects-filters-heading">
         <h2 id="projects-filters-heading" className="sr-only">Project Search and Filter Options</h2>
-        <form role="search" onSubmit={(e) => e.preventDefault()} className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row gap-4 items-center">
+        <form role="search" onSubmit={(e) => e.preventDefault()} className="bg-white p-3.5 rounded border border-slate-200 flex flex-col md:flex-row gap-3 items-center">
           <div className="flex-1 relative w-full">
             <TbSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={18} aria-hidden="true" />
             <input 
@@ -123,7 +123,7 @@ const MpProjects = () => {
               aria-label="Search projects by title, vendor, or agency"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-[border-color,box-shadow] duration-150 placeholder:text-slate-400"
+              className="w-full pl-10 pr-4 py-2 bg-white border border-slate-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-[#123b63] focus:border-[#123b63] placeholder:text-slate-400"
             />
           </div>
           
@@ -134,7 +134,7 @@ const MpProjects = () => {
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
                 aria-label="Filter projects by status"
-                className="w-full md:w-auto bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-[border-color,box-shadow] duration-150"
+                className="w-full md:w-auto bg-white border border-slate-300 rounded px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-1 focus:ring-[#123b63] focus:border-[#123b63]"
               >
                 {statuses.map(s => <option key={s} value={s}>{s === 'All' ? 'All Statuses' : s}</option>)}
               </select>
@@ -144,7 +144,7 @@ const MpProjects = () => {
               value={riskFilter}
               onChange={(e) => setRiskFilter(e.target.value)}
               aria-label="Filter projects by risk level"
-              className="w-full md:w-auto bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-[border-color,box-shadow] duration-150"
+              className="w-full md:w-auto bg-white border border-slate-300 rounded px-3 py-2 text-sm text-slate-800 focus:outline-none focus:ring-1 focus:ring-[#123b63] focus:border-[#123b63]"
             >
               {riskLevels.map(r => <option key={r} value={r}>{r === 'All' ? 'All Risk Levels' : r}</option>)}
             </select>
@@ -153,7 +153,7 @@ const MpProjects = () => {
       </section>
 
       {/* Projects Table Section */}
-      <section aria-labelledby="projects-portfolio-heading" className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex-1">
+      <section aria-labelledby="projects-portfolio-heading" className="bg-white rounded border border-slate-200 overflow-hidden flex-1">
         <h2 id="projects-portfolio-heading" className="sr-only">Recommended Projects Portfolio</h2>
         <div ref={tableContainerRef} className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-280px)] min-h-[300px]">
           {filteredProjects.length === 0 ? (
@@ -211,9 +211,9 @@ const MpProjects = () => {
                         <OfflineLink 
                           to={`/mp/projects/${project.id}`}
                           aria-label={`View details for ${project.title}`}
-                          className="inline-flex items-center justify-center p-2 text-slate-400 hover:text-[#123b63] hover:bg-slate-100 rounded-lg active:scale-90 transition-[transform,background-color,color] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
+                          className="inline-flex items-center justify-center p-2 text-slate-500 hover:text-[#123b63] hover:bg-slate-100 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
                         >
-                          <TbChevronRight size={20} aria-hidden="true" />
+                          <TbChevronRight size={18} aria-hidden="true" />
                         </OfflineLink>
                       </td>
                     </tr>

@@ -130,97 +130,53 @@ const DaDashboard = () => {
           onClick={handleGenerateReport}
           disabled={reportGenerating}
           aria-label="Generate district monthly summary report"
-          className={`shrink-0 self-start sm:self-auto px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-[transform,background-color] duration-150 ease-out active:scale-95 flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] ${
+          className={`shrink-0 self-start sm:self-auto px-4 py-2 rounded text-xs sm:text-sm font-semibold transition-colors flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#123b63] ${
             reportSuccess 
-              ? 'bg-emerald-600 text-white' 
+              ? 'bg-emerald-700 text-white' 
               : 'bg-[#123b63] hover:bg-[#0c2a47] text-white'
-          } disabled:opacity-60 disabled:cursor-not-allowed shadow-xs`}
+          } disabled:opacity-60 disabled:cursor-not-allowed`}
         >
           {reportGenerating ? (
-            <><TbLoader2 size={18} className="animate-spin" aria-hidden="true" /> <span>Generating...</span></>
+            <><TbLoader2 size={16} className="animate-spin" aria-hidden="true" /> <span>Compiling Data...</span></>
           ) : reportSuccess ? (
-            <><TbCheck size={18} aria-hidden="true" /> <span>Report Ready</span></>
+            <><TbCheck size={16} aria-hidden="true" /> <span>Report Ready</span></>
           ) : (
-            <><TbDownload size={18} aria-hidden="true" /> <span>Generate Report</span></>
+            <><TbDownload size={16} aria-hidden="true" /> <span>Generate Report</span></>
           )}
         </button>
       </header>
 
       {/* Pending Actions Widget */}
-      <section aria-labelledby="pending-actions-heading" className="grid grid-cols-2 gap-2.5 sm:gap-4">
+      <section aria-labelledby="pending-actions-heading" className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         <h2 id="pending-actions-heading" className="sr-only">Pending Actions & Verifications</h2>
-        <Link to="/da/review" className="group">
-          <div className="bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-2xl p-3 sm:p-5 hover:shadow-md active:scale-[0.99] transition-[transform,box-shadow] duration-150 ease-out h-full">
-            {/* Mobile View */}
-            <div className="flex sm:hidden flex-col justify-between h-full">
-              <div className="flex items-center justify-between mb-2">
-                <div className="p-2 bg-orange-100 text-orange-600 rounded-xl">
-                  <TbClipboardCheck size={20} strokeWidth={2} />
-                </div>
-                <TbArrowRight size={16} className="text-orange-400 group-hover:translate-x-0.5 transition-transform duration-150 ease-out" />
+        <Link to="/da/review" className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] rounded">
+          <div className="bg-white border border-slate-300 border-l-4 border-l-amber-600 rounded p-4 sm:p-5 hover:bg-slate-50 transition-colors h-full flex items-center justify-between">
+            <div className="flex items-center gap-3.5">
+              <div className="p-2.5 bg-amber-50 text-amber-800 border border-amber-200 rounded">
+                <TbClipboardCheck size={24} strokeWidth={2} />
               </div>
               <div>
-                <div className="text-2xl font-extrabold text-orange-700 leading-none">{displayStats.pendingReview || 0}</div>
-                <div className="text-[10px] font-bold text-orange-700 uppercase tracking-wider mt-1.5 leading-snug">
-                  Projects Awaiting Review
-                </div>
-                <div className="text-[10px] text-orange-600/90 mt-0.5 truncate">
-                  {displayStats.waitingOver5Days || 0} waiting &gt; 5 days
-                </div>
+                <div className="text-2xl font-bold text-slate-900 tabular-nums">{displayStats.pendingReview || 0}</div>
+                <div className="text-xs font-bold text-slate-800 uppercase tracking-wider mt-0.5">Projects Awaiting Sanction</div>
+                <div className="text-xs text-amber-800 mt-0.5">{displayStats.waitingOver5Days || 0} proposals awaiting scrutiny &gt; 5 days</div>
               </div>
             </div>
-
-            {/* Desktop / Tablet View */}
-            <div className="hidden sm:flex sm:items-center sm:justify-between">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-orange-100 text-orange-600 rounded-2xl">
-                  <TbClipboardCheck size={28} strokeWidth={2} />
-                </div>
-                <div>
-                  <div className="text-3xl font-extrabold text-orange-700">{displayStats.pendingReview || 0}</div>
-                  <div className="text-[11px] font-bold text-orange-700 uppercase tracking-wider mt-0.5">Projects Awaiting Review</div>
-                  <div className="text-[11px] text-orange-600/90 mt-0.5">{displayStats.waitingOver5Days || 0} waiting &gt; 5 days</div>
-                </div>
-              </div>
-              <TbArrowRight size={20} className="text-orange-400 group-hover:translate-x-1 transition-transform duration-150 ease-out" />
-            </div>
+            <TbArrowRight size={18} className="text-slate-400 group-hover:text-[#123b63] group-hover:translate-x-1 transition-all" />
           </div>
         </Link>
-        <Link to="/da/documents" className="group">
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-3 sm:p-5 hover:shadow-md active:scale-[0.99] transition-[transform,box-shadow] duration-150 ease-out h-full">
-            {/* Mobile View */}
-            <div className="flex sm:hidden flex-col justify-between h-full">
-              <div className="flex items-center justify-between mb-2">
-                <div className="p-2 bg-blue-100 text-blue-600 rounded-xl">
-                  <TbFileAlert size={20} strokeWidth={2} />
-                </div>
-                <TbArrowRight size={16} className="text-blue-400 group-hover:translate-x-0.5 transition-transform duration-150 ease-out" />
+        <Link to="/da/documents" className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] rounded">
+          <div className="bg-white border border-slate-300 border-l-4 border-l-[#123b63] rounded p-4 sm:p-5 hover:bg-slate-50 transition-colors h-full flex items-center justify-between">
+            <div className="flex items-center gap-3.5">
+              <div className="p-2.5 bg-blue-50 text-[#123b63] border border-blue-200 rounded">
+                <TbFileAlert size={24} strokeWidth={2} />
               </div>
               <div>
-                <div className="text-2xl font-extrabold text-blue-700 leading-none">{displayStats.awaitingVerification || 0}</div>
-                <div className="text-[10px] font-bold text-blue-700 uppercase tracking-wider mt-1.5 leading-snug">
-                  Documents Pending Verification
-                </div>
-                <div className="text-[10px] text-blue-600/90 mt-0.5 truncate">
-                  From {displayStats.awaitingVerification || 0} projects
-                </div>
+                <div className="text-2xl font-bold text-slate-900 tabular-nums">{displayStats.awaitingVerification || 0}</div>
+                <div className="text-xs font-bold text-slate-800 uppercase tracking-wider mt-0.5">Documents Pending Verification</div>
+                <div className="text-xs text-slate-600 mt-0.5">From {displayStats.awaitingVerification || 0} project records</div>
               </div>
             </div>
-
-            {/* Desktop / Tablet View */}
-            <div className="hidden sm:flex sm:items-center sm:justify-between">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-blue-100 text-blue-600 rounded-2xl">
-                  <TbFileAlert size={28} strokeWidth={2} />
-                </div>
-                <div>
-                  <div className="text-3xl font-extrabold text-blue-700">{displayStats.awaitingVerification || 0}</div>
-                  <div className="text-[11px] font-bold text-blue-700 uppercase tracking-wider mt-0.5">Documents Pending Verification</div>
-                  <div className="text-[11px] text-blue-600/90 mt-0.5">From {displayStats.awaitingVerification || 0} projects</div>
-                </div>
-              </div>
-              <TbArrowRight size={20} className="text-blue-400 group-hover:translate-x-1 transition-transform duration-150 ease-out" />
-            </div>
+            <TbArrowRight size={18} className="text-slate-400 group-hover:text-[#123b63] group-hover:translate-x-1 transition-all" />
           </div>
         </Link>
       </section>
@@ -289,57 +245,57 @@ const DaDashboard = () => {
         </section>
 
         {/* AI Recommendations */}
-        <section aria-labelledby="ai-recommendations-heading" className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col">
-          <div className="flex justify-between items-center mb-4">
-            <h2 id="ai-recommendations-heading" className="text-lg font-bold text-[#123b63]">AI Recommendations</h2>
-            <span className="text-xs font-semibold bg-cyan-100 text-cyan-800 px-2.5 py-1 rounded-full">Powered by ML</span>
+        <section aria-labelledby="ai-recommendations-heading" className="bg-white rounded border border-slate-200 p-4 sm:p-5 flex flex-col">
+          <div className="flex justify-between items-center mb-4 pb-2 border-b border-slate-200">
+            <h2 id="ai-recommendations-heading" className="text-base sm:text-lg font-bold text-[#123b63]">District Risk Advisories</h2>
+            <span className="text-[11px] font-semibold bg-slate-100 text-slate-700 px-2.5 py-0.5 rounded border border-slate-300">ML Surveillance</span>
           </div>
           {recommendations.length === 0 ? (
-            <p className="text-slate-500 text-sm py-6 text-center">No recommendations at this time.</p>
+            <p className="text-slate-500 text-xs sm:text-sm py-6 text-center">No risk alerts detected across district projects.</p>
           ) : (
-            <ul role="list" className="space-y-4 overflow-auto flex-1">
+            <ul role="list" className="space-y-3 overflow-auto flex-1">
               {(showAllRecommendations ? recommendations : recommendations.slice(0, 3)).map(rec => {
-                let bgClass = "bg-slate-50/50";
-                let iconWrapperClass = "bg-slate-100 text-slate-500";
+                let borderClass = "border-slate-200 bg-slate-50";
+                let badgeClass = "bg-slate-200 text-slate-700";
                 let titleClass = "text-slate-800";
                 let Icon = TbInfoCircle;
 
                 if (rec.severity === 'Critical') {
-                  bgClass = "bg-red-50/40 border-red-100";
-                  iconWrapperClass = "bg-red-100/80 text-red-700";
-                  titleClass = "text-red-700 font-bold";
+                  borderClass = "border-l-4 border-l-red-600 border-slate-200 bg-red-50/20";
+                  badgeClass = "bg-red-100 text-red-800";
+                  titleClass = "text-red-900 font-bold";
                   Icon = TbAlertTriangle;
                 } else if (rec.severity === 'High') {
-                  bgClass = "bg-amber-50/40 border-amber-100";
-                  iconWrapperClass = "bg-amber-100/80 text-amber-800";
-                  titleClass = "text-amber-800 font-bold";
+                  borderClass = "border-l-4 border-l-amber-600 border-slate-200 bg-amber-50/20";
+                  badgeClass = "bg-amber-100 text-amber-900";
+                  titleClass = "text-amber-900 font-bold";
                   Icon = TbClock;
                 }
 
                 return (
                   <li key={rec.id}>
-                    <article className={`flex gap-4 p-5 rounded-2xl border ${bgClass} transition-colors`}>
-                      <div className={`shrink-0 flex items-center justify-center w-10 h-10 rounded-xl ${iconWrapperClass}`} aria-hidden="true">
-                        <Icon size={24} />
+                    <article className={`flex gap-3 p-3.5 rounded border ${borderClass} transition-colors`}>
+                      <div className={`shrink-0 flex items-center justify-center w-8 h-8 rounded ${badgeClass}`} aria-hidden="true">
+                        <Icon size={18} />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-2">
-                          <h3 className={`text-[15px] ${titleClass}`}>{rec.type}</h3>
+                          <h3 className={`text-xs sm:text-sm ${titleClass} truncate`}>{rec.type}</h3>
                           {rec.projectRef && (
-                            <span className="text-[10px] font-bold text-slate-600 bg-white border border-slate-200 px-2 py-0.5 rounded-full shrink-0">
-                              {rec.projectRef}
+                            <span className="text-[10px] font-semibold text-slate-700 bg-white border border-slate-300 px-1.5 py-0.2 rounded shrink-0">
+                              Ref: {rec.projectRef}
                             </span>
                           )}
                         </div>
-                        <p className="text-[13px] text-slate-600 mt-1 leading-relaxed line-clamp-3">{rec.message}</p>
+                        <p className="text-xs text-slate-600 mt-1 leading-relaxed line-clamp-3">{rec.message}</p>
                         {rec.action && (
-                          <div className="mt-3">
+                          <div className="mt-2.5">
                             <Link 
                               to={rec.action.link || '/da/review'}
                               aria-label={`View details for ${rec.type}`}
-                              className="inline-flex items-center gap-1.5 text-[11px] font-bold text-cyan-700 bg-white border border-cyan-100 px-3 py-1.5 rounded-lg hover:bg-cyan-50 active:scale-95 transition-[transform,background-color] duration-150 ease-out shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
+                              className="inline-flex items-center gap-1 text-xs font-semibold text-[#123b63] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
                             >
-                              <span>View Details</span> <TbArrowRight size={14} aria-hidden="true" />
+                              <span>Take Action</span> <TbArrowRight size={14} aria-hidden="true" />
                             </Link>
                           </div>
                         )}
@@ -355,58 +311,58 @@ const DaDashboard = () => {
               type="button"
               onClick={() => setShowAllRecommendations(!showAllRecommendations)}
               aria-expanded={showAllRecommendations}
-              className="w-full text-center text-[13px] font-bold text-cyan-700 py-3 mt-2 rounded-xl hover:bg-cyan-50 active:scale-95 transition-[transform,background-color] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
+              className="w-full text-center text-xs font-semibold text-[#123b63] py-2 mt-2 rounded border border-slate-200 hover:bg-slate-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
             >
-              {showAllRecommendations ? "Show Less" : "Show More"}
+              {showAllRecommendations ? "Show Less" : "Show More Advisories"}
             </button>
           )}
         </section>
       </div>
 
       {/* Recent Activity */}
-      <section aria-labelledby="recent-activity-heading" className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-        <div className="px-6 py-5 border-b border-slate-100 flex justify-between items-center bg-white">
-          <h2 id="recent-activity-heading" className="text-lg font-bold text-[#123b63]">Recent Activity</h2>
-          <Link to="/da/review" className="text-sm font-semibold text-cyan-700 hover:text-cyan-800 flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] rounded-lg px-2 py-1">
-            <span>View Review Queue</span> <TbArrowRight size={16} aria-hidden="true" />
+      <section aria-labelledby="recent-activity-heading" className="bg-white rounded border border-slate-200 overflow-hidden">
+        <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-200 flex justify-between items-center bg-white">
+          <h2 id="recent-activity-heading" className="text-sm sm:text-base font-bold text-[#123b63]">Recent District Action Log</h2>
+          <Link to="/da/review" className="text-xs font-semibold text-[#123b63] hover:underline flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] rounded px-2 py-1">
+            <span>Review Queue</span> <TbArrowRight size={14} aria-hidden="true" />
           </Link>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm whitespace-nowrap">
+          <table className="w-full text-left text-xs sm:text-sm whitespace-nowrap">
             <caption className="sr-only">Recent District Actions and Activity</caption>
-            <thead className="bg-slate-50/50 text-slate-500 font-semibold border-b border-slate-100">
+            <thead className="bg-slate-100 text-slate-700 font-semibold border-b border-slate-200 uppercase text-[11px] tracking-wider">
               <tr>
-                <th scope="col" className="px-6 py-4 font-semibold">Action</th>
-                <th scope="col" className="px-6 py-4 font-semibold">Project</th>
-                <th scope="col" className="px-6 py-4 font-semibold">By</th>
-                <th scope="col" className="px-6 py-4 font-semibold">Date</th>
+                <th scope="col" className="px-4 sm:px-6 py-3 font-semibold">Action / Stage</th>
+                <th scope="col" className="px-4 sm:px-6 py-3 font-semibold">Project Title</th>
+                <th scope="col" className="px-4 sm:px-6 py-3 font-semibold">Recorded By</th>
+                <th scope="col" className="px-4 sm:px-6 py-3 font-semibold">Date</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-slate-700">
               {recentActions.length === 0 ? (
                 <tr>
-                  <td colSpan="4" className="px-6 py-8 text-center text-slate-400 text-sm">
-                    No recent activity or review history in this district.
+                  <td colSpan="4" className="px-6 py-8 text-center text-slate-500 text-xs">
+                    No recent administrative activity recorded in this district.
                   </td>
                 </tr>
               ) : (
                 recentActions.map((action, idx) => (
-                  <tr key={idx} className="hover:bg-slate-50/50 transition-colors">
-                    <td className="px-6 py-4">
-                      <span className={`inline-flex px-2.5 py-1 rounded-md text-xs font-bold ${
-                        action.action.includes('Sanction') || action.action.includes('Approved') ? 'bg-emerald-50 text-emerald-800' :
-                        action.action.includes('Reject') ? 'bg-red-50 text-red-800' :
-                        action.action.includes('Suspend') ? 'bg-slate-100 text-slate-800' :
-                        action.action.includes('Escalat') ? 'bg-amber-50 text-amber-900' :
-                        action.action.includes('Risk') ? 'bg-orange-50 text-orange-900' :
-                        'bg-blue-50 text-blue-800'
+                  <tr key={idx} className="hover:bg-slate-50 transition-colors">
+                    <td className="px-4 sm:px-6 py-3">
+                      <span className={`inline-flex px-2 py-0.5 rounded text-xs font-medium border ${
+                        action.action.includes('Sanction') || action.action.includes('Approved') ? 'bg-emerald-50 text-emerald-800 border-emerald-300' :
+                        action.action.includes('Reject') ? 'bg-red-50 text-red-800 border-red-300' :
+                        action.action.includes('Suspend') ? 'bg-slate-50 text-slate-800 border-slate-300' :
+                        action.action.includes('Escalat') ? 'bg-amber-50 text-amber-900 border-amber-300' :
+                        action.action.includes('Risk') ? 'bg-orange-50 text-orange-900 border-orange-300' :
+                        'bg-blue-50 text-blue-800 border-blue-300'
                       }`}>
                         {action.action}
                       </span>
                     </td>
-                    <td className="px-6 py-4 font-medium text-[#123b63] max-w-[200px] truncate">{action.projectTitle}</td>
-                    <td className="px-6 py-4 text-slate-600">{action.actor}</td>
-                    <td className="px-6 py-4 text-slate-500">
+                    <td className="px-4 sm:px-6 py-3 font-medium text-[#123b63] max-w-[200px] truncate">{action.projectTitle}</td>
+                    <td className="px-4 sm:px-6 py-3 text-slate-600">{action.actor}</td>
+                    <td className="px-4 sm:px-6 py-3 text-slate-500 tabular-nums">
                       <time dateTime={action.timestamp}>
                         {new Date(action.timestamp).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
                       </time>

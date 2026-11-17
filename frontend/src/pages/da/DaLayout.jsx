@@ -202,11 +202,11 @@ const DaLayout = () => {
                   e.preventDefault();
                   notifyOfflineBlocked(link.path);
                 }}
-                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl opacity-40 cursor-not-allowed select-none text-slate-400 bg-white/[0.02] border border-white/5 transition-opacity"
+                className="w-full flex items-center gap-2.5 px-3 py-2 rounded opacity-40 cursor-not-allowed select-none text-slate-400 bg-white/[0.02] border border-white/5 transition-opacity"
               >
-                <Icon size={20} className="text-slate-500 shrink-0" aria-hidden="true" />
-                <span className="font-medium text-sm text-left">{link.name}</span>
-                <span className="ml-auto inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-amber-400 bg-amber-400/10 px-1.5 py-0.5 rounded-full border border-amber-400/20">
+                <Icon size={18} className="text-slate-500 shrink-0" aria-hidden="true" />
+                <span className="font-medium text-xs sm:text-sm text-left">{link.name}</span>
+                <span className="ml-auto inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-amber-400 bg-amber-400/10 px-1.5 py-0.5 rounded border border-amber-400/20">
                   <TbCloudOff size={11} aria-hidden="true" />
                   <span>Offline</span>
                 </span>
@@ -222,18 +222,18 @@ const DaLayout = () => {
               onFocus={() => prefetchDaRoute(link.path)}
               onClick={() => setIsSidebarOpen(false)}
               aria-current={isActive ? 'page' : undefined}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 ${
+              className={`flex items-center gap-2.5 px-3 py-2 rounded text-xs sm:text-sm font-medium transition-colors ${
                 isActive 
-                  ? 'bg-[#00a8e8] text-white shadow-md' 
-                  : 'text-slate-300 hover:bg-white/5 hover:text-white'
+                  ? 'bg-[#183e68] text-white border-l-4 border-l-[#ff9933] font-semibold' 
+                  : 'text-slate-200 hover:bg-white/10 hover:text-white'
               }`}
             >
-              <Icon size={20} className={isActive ? 'text-white' : 'text-slate-400'} aria-hidden="true" />
-              <span className="font-medium text-sm">{link.name}</span>
+              <Icon size={18} className={isActive ? 'text-white' : 'text-slate-300'} aria-hidden="true" />
+              <span>{link.name}</span>
               
               {/* Badge for review queue */}
               {link.name === 'Project Review' && pendingReviewCount > 0 && (
-                <span className="ml-auto text-[10px] font-bold bg-orange-600 text-white px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+                <span className="ml-auto text-[10px] font-bold bg-[#b91c1c] text-white px-1.5 py-0.5 rounded min-w-[18px] text-center">
                   <span className="sr-only">({pendingReviewCount} pending reviews)</span>
                   <span aria-hidden="true">{pendingReviewCount}</span>
                 </span>
@@ -241,7 +241,7 @@ const DaLayout = () => {
               
               {/* Notification Badge */}
               {link.name === 'Notifications' && unreadCount > 0 && (
-                <span className="ml-auto w-4 h-4 bg-[#ef4444] rounded-full border border-[#0d2744] flex items-center justify-center">
+                <span className="ml-auto w-4 h-4 bg-[#b91c1c] text-white rounded text-[10px] font-bold flex items-center justify-center">
                   <span className="sr-only">({unreadCount} unread)</span>
                   <span className="w-1.5 h-1.5 bg-white rounded-full" aria-hidden="true"></span>
                 </span>
@@ -365,34 +365,34 @@ const DaLayout = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Top Navbar */}
-        <header className="sticky top-0 h-16 bg-white/95 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-3 sm:px-4 lg:px-8 z-30 transition-all duration-200 gap-2 sm:gap-4">
-          <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0 max-w-xl">
+        <header className="sticky top-0 h-14 bg-white border-b border-slate-300 flex items-center justify-between px-3 sm:px-4 lg:px-6 z-30 transition-colors gap-2 sm:gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0 max-w-xl">
             <button 
               onClick={() => setIsSidebarOpen(true)}
               aria-label="Open navigation sidebar"
-              className="p-2 text-slate-700 bg-slate-100/90 hover:bg-slate-200/90 border border-slate-200 rounded-xl lg:hidden transition-all active:scale-95 shrink-0 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] shadow-xs"
+              className="p-1.5 text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded lg:hidden shrink-0 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
             >
-              <IconMenu size={22} className="sm:w-6 sm:h-6" />
+              <IconMenu size={20} className="sm:w-5 sm:h-5" />
             </button>
             <form 
               onSubmit={handleGlobalSearch} 
-              className="flex items-center bg-slate-100/90 hover:bg-slate-100 focus-within:bg-white focus-within:ring-2 focus-within:ring-[#123b63]/25 focus-within:border-slate-300 border border-transparent rounded-full px-3 py-1.5 sm:px-4 sm:py-2 flex-1 min-w-0 transition-all duration-150"
+              className="flex items-center bg-white border border-slate-300 rounded px-3 py-1.5 flex-1 min-w-0 transition-colors focus-within:border-[#123b63] focus-within:ring-1 focus-within:ring-[#123b63]"
             >
-              <TbSearch className="text-slate-400 mr-2 shrink-0" size={16} aria-hidden="true" />
+              <TbSearch className="text-slate-400 mr-2 shrink-0" size={15} aria-hidden="true" />
               <input 
                 type="text" 
                 value={globalSearch}
                 onChange={(e) => setGlobalSearch(e.target.value)}
                 placeholder="Search projects, MPs, vendors..." 
                 aria-label="Search projects, MPs, vendors"
-                className="bg-transparent border-none outline-none text-base sm:text-sm w-full min-w-0 placeholder:text-slate-400 leading-normal text-slate-800"
+                className="bg-transparent border-none outline-none text-xs sm:text-sm w-full min-w-0 placeholder:text-slate-400 leading-normal text-slate-800"
               />
               {globalSearch && (
                 <button
                   type="button"
                   onClick={() => setGlobalSearch('')}
                   aria-label="Clear search input"
-                  className="p-1 -mr-1 text-slate-400 hover:text-slate-600 rounded-full transition-colors shrink-0"
+                  className="p-1 -mr-1 text-slate-400 hover:text-slate-600 rounded transition-colors shrink-0"
                 >
                   <TbX size={14} />
                 </button>
@@ -400,18 +400,18 @@ const DaLayout = () => {
             </form>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-4 shrink-0 relative">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0 relative">
             {/* Network Connectivity Pill */}
             {!isOnline && (
-              <div role="status" className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-full text-xs font-semibold">
-                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                <span>Offline (Cached)</span>
+              <div role="status" className="hidden sm:flex items-center gap-1.5 px-2 py-0.5 bg-amber-50 text-amber-800 border border-amber-300 rounded text-xs font-semibold">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+                <span>Offline Mode</span>
               </div>
             )}
             {wasOffline && isOnline && (
-              <div role="status" className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full text-xs font-semibold">
-                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                <span>Synced</span>
+              <div role="status" className="hidden sm:flex items-center gap-1.5 px-2 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-300 rounded text-xs font-semibold">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                <span>Reconnected</span>
               </div>
             )}
             
@@ -421,45 +421,45 @@ const DaLayout = () => {
                 onClick={() => setShowNotifications(!showNotifications)}
                 aria-label={`Notifications, ${unreadCount} unread`}
                 aria-expanded={showNotifications}
-                className="p-2 text-slate-500 hover:bg-slate-100 rounded-full relative transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
+                className="p-1.5 text-slate-600 hover:bg-slate-100 rounded relative transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
               >
-                <TbBell size={22} />
+                <TbBell size={20} />
                 {unreadCount > 0 && (
-                  <span className="absolute top-1 right-1.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-600 rounded-full border border-white"></span>
                 )}
               </button>
 
               {/* Notification Dropdown */}
               {showNotifications && (
-                <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden z-50">
-                  <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-                    <h3 className="font-bold text-slate-800">Notifications</h3>
-                    <span className="text-xs font-semibold bg-[#123b63] text-white px-2 py-0.5 rounded-full">
-                      {unreadCount} new
+                <div className="absolute right-0 mt-2 w-80 bg-white rounded border border-slate-200 shadow-md overflow-hidden z-50">
+                  <div className="p-3 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+                    <h3 className="font-bold text-xs uppercase tracking-wider text-slate-800">Notifications</h3>
+                    <span className="text-[11px] font-semibold bg-[#123b63] text-white px-2 py-0.5 rounded">
+                      {unreadCount} unread
                     </span>
                   </div>
-                  <div className="max-h-[300px] overflow-y-auto">
+                  <div className="max-h-[300px] overflow-y-auto divide-y divide-slate-100">
                     {notifications.length === 0 ? (
-                      <p className="text-center text-slate-500 py-6 text-sm">
-                        No notifications
+                      <p className="text-center text-slate-500 py-6 text-xs">
+                        No active notifications
                       </p>
                     ) : (
                       notifications.slice(0, 5).map((notif) => (
                         <div
                           key={notif.id}
-                          className={`p-4 border-b border-slate-50 hover:bg-slate-50 transition-colors ${!notif.read ? "bg-blue-50/30" : ""}`}
+                          className={`p-3 hover:bg-slate-50 transition-colors ${!notif.read ? "bg-blue-50/20" : ""}`}
                         >
-                          <p className="text-sm text-slate-700 leading-relaxed">
+                          <p className="text-xs text-slate-700 leading-relaxed">
                             {notif.message}
                           </p>
                           <div className="flex justify-between items-center mt-2">
-                            <span className="text-[10px] text-slate-500 font-medium">
+                            <span className="text-[10px] text-slate-500 font-medium tabular-nums">
                               {new Date(notif.timestamp).toLocaleDateString()}
                             </span>
                             {!notif.read && (
                               <button
                                 onClick={() => handleMarkAsRead(notif.id)}
-                                className="text-[10px] font-bold text-sky-800 hover:text-sky-950 focus-visible:underline"
+                                className="text-[10px] font-bold text-[#123b63] hover:underline"
                               >
                                 Mark Read
                               </button>
@@ -472,7 +472,7 @@ const DaLayout = () => {
                   <Link
                     to="/da/notifications"
                     onClick={() => setShowNotifications(false)}
-                    className="block text-center text-sm font-bold text-sky-800 py-3 hover:bg-slate-50 border-t border-slate-100"
+                    className="block text-center text-xs font-bold text-[#123b63] py-2.5 bg-slate-50 hover:bg-slate-100 border-t border-slate-200 transition-colors"
                   >
                     View All Notifications
                   </Link>
@@ -486,27 +486,27 @@ const DaLayout = () => {
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
                 aria-label="District Authority Profile menu"
                 aria-expanded={showProfileMenu}
-                className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-800 font-bold border border-amber-200 text-xs hover:bg-amber-200 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-1"
+                className="w-8 h-8 rounded bg-slate-100 border border-slate-300 text-[#123b63] font-bold text-xs hover:bg-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-[#123b63]"
               >
                 DA
               </button>
 
               {/* Profile Dropdown */}
               {showProfileMenu && (
-                <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden z-50 transform origin-top-right transition-all duration-200 ease-out animate-in fade-in zoom-in-95">
-                  <div className="p-4 border-b border-slate-100 bg-slate-50/50">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center text-amber-800 font-bold border border-amber-200 text-lg">
+                <div className="absolute right-0 mt-2 w-64 bg-white rounded border border-slate-200 shadow-md overflow-hidden z-50">
+                  <div className="p-3 border-b border-slate-200 bg-slate-50">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-9 h-9 rounded bg-slate-200 border border-slate-300 flex items-center justify-center text-[#123b63] font-bold text-sm">
                         DA
                       </div>
-                      <div>
-                        <h3 className="font-bold text-slate-800 leading-tight">
+                      <div className="min-w-0">
+                        <h3 className="font-bold text-xs text-slate-800 leading-tight truncate">
                           {user?.dm_name || user?.name || "District Magistrate"}
                         </h3>
-                        <p className="text-xs text-slate-500 mt-0.5">
-                          District Magistrate
+                        <p className="text-[11px] text-slate-600 mt-0.5 truncate">
+                          District Authority
                         </p>
-                        <p className="text-[10px] font-semibold text-amber-600 mt-1">
+                        <p className="text-[10px] font-semibold text-[#123b63] mt-0.5 truncate">
                           {user?.dist
                             ? `${user.dist}${user?.state ? `, ${user.state}` : ""}`
                             : (user?.district ? `${user.district}${user?.state ? `, ${user.state}` : ""}` : "District Authority")}
@@ -515,13 +515,13 @@ const DaLayout = () => {
                     </div>
                   </div>
 
-                  <div className="p-2">
+                  <div className="p-1.5">
                     <button
                       onClick={handleLogout}
-                      className="flex items-center gap-3 w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                      className="flex items-center gap-2 w-full px-2.5 py-1.5 text-xs text-red-700 hover:bg-red-50 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600"
                     >
-                      <TbLogout size={18} />
-                      <span className="font-medium">Log Out</span>
+                      <TbLogout size={16} />
+                      <span className="font-semibold">Sign Out</span>
                     </button>
                   </div>
                 </div>

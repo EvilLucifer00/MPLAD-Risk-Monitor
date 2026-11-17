@@ -130,10 +130,12 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), 0 0 6px rgba(255, 153, 51, 0.35);
 }
 
-@supports (animation-timeline: scroll()) {
-  .scroll-progress-indicator {
-    animation: scrollProgressAnim auto linear;
-    animation-timeline: scroll(root);
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    .scroll-progress-indicator {
+      animation: scrollProgressAnim auto linear;
+      animation-timeline: scroll();
+    }
   }
 }
 

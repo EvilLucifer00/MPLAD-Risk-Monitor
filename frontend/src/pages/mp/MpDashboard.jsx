@@ -98,7 +98,7 @@ const MpDashboard = () => {
         </div>
         <Link
           to="/mp/submit"
-          className="shrink-0 self-start sm:self-auto bg-[#123b63] hover:bg-[#0c2a47] active:scale-95 text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-[transform,background-color] duration-150 ease-out flex items-center gap-2 shadow-xs"
+          className="shrink-0 self-start sm:self-auto bg-[#123b63] hover:bg-[#0c2a47] text-white px-4 py-2 rounded text-xs sm:text-sm font-semibold transition-colors duration-150 flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#123b63]"
         >
           <span>New Project</span>
           <TbArrowRight />
@@ -169,44 +169,44 @@ const MpDashboard = () => {
         </section>
 
         {/* AI Recommendations Section */}
-        <section aria-labelledby="ai-recommendations-heading" className="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 flex flex-col min-w-0 w-full">
-          <div className="flex justify-between items-center mb-4">
-            <h2 id="ai-recommendations-heading" className="text-lg font-bold text-[#123b63]">
-              AI Recommendations
+        <section aria-labelledby="ai-recommendations-heading" className="bg-white rounded border border-slate-200 p-4 sm:p-5 flex flex-col min-w-0 w-full">
+          <div className="flex justify-between items-center mb-4 pb-2 border-b border-slate-200">
+            <h2 id="ai-recommendations-heading" className="text-base sm:text-lg font-bold text-[#123b63]">
+              AI Advisory & Alerts
             </h2>
-            <span className="text-xs font-semibold bg-cyan-100 text-cyan-800 px-2.5 py-1 rounded-full">
-              Powered by ML
+            <span className="text-[11px] font-medium bg-slate-100 text-slate-700 px-2.5 py-0.5 rounded border border-slate-300">
+              System Advisory
             </span>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-3">
             {recommendations.length === 0 ? (
-              <p className="text-slate-500 text-sm py-4">
-                No recommendations at this time.
+              <p className="text-slate-500 text-xs sm:text-sm py-4">
+                No advisories recorded for this constituency at this time.
               </p>
             ) : (
-              <ul role="list" className="space-y-4">
+              <ul role="list" className="space-y-3">
                 {(showAllRecommendations
                   ? recommendations
                   : recommendations.slice(0, 3)
                 ).map((rec) => {
-                  let bgClass = "bg-slate-50/50";
-                  let iconWrapperClass = "bg-slate-100 text-slate-500";
+                  let borderClass = "border-slate-200 bg-slate-50";
+                  let badgeClass = "bg-slate-200 text-slate-700";
                   let titleClass = "text-slate-800";
                   let Icon = TbAlertTriangle;
 
                   if (rec.type === "Vendor Alert") {
-                    bgClass = "bg-red-50/40 border-red-100";
-                    iconWrapperClass = "bg-red-100/80 text-red-700";
-                    titleClass = "text-red-700 font-bold";
+                    borderClass = "border-l-4 border-l-red-600 border-slate-200 bg-red-50/20";
+                    badgeClass = "bg-red-100 text-red-800";
+                    titleClass = "text-red-900 font-bold";
                     Icon = TbAlertTriangle;
                   } else if (rec.type === "Utilization Warning") {
-                    bgClass = "bg-amber-50/40 border-amber-100";
-                    iconWrapperClass = "bg-amber-100/80 text-amber-800";
-                    titleClass = "text-amber-800 font-bold";
+                    borderClass = "border-l-4 border-l-amber-600 border-slate-200 bg-amber-50/20";
+                    badgeClass = "bg-amber-100 text-amber-900";
+                    titleClass = "text-amber-900 font-bold";
                     Icon = TbClock;
                   } else if (rec.type === "Duplicate Check") {
-                    bgClass = "bg-sky-50/40 border-sky-100";
-                    iconWrapperClass = "bg-sky-100/80 text-sky-800";
+                    borderClass = "border-l-4 border-l-[#123b63] border-slate-200 bg-blue-50/20";
+                    badgeClass = "bg-blue-100 text-[#123b63]";
                     titleClass = "text-[#123b63] font-bold";
                     Icon = TbInfoCircle;
                   }
@@ -214,38 +214,38 @@ const MpDashboard = () => {
                   return (
                     <li key={rec.id}>
                       <article
-                        className={`flex gap-3 sm:gap-4 p-4 sm:p-5 rounded-2xl border ${bgClass} transition-colors min-w-0`}
+                        className={`flex gap-3 p-3.5 rounded border ${borderClass} min-w-0`}
                         aria-labelledby={`rec-title-${rec.id}`}
                       >
                         <div
-                          className={`shrink-0 flex items-center justify-center w-10 h-10 rounded-xl ${iconWrapperClass}`}
+                          className={`shrink-0 flex items-center justify-center w-8 h-8 rounded ${badgeClass}`}
                           aria-hidden="true"
                         >
-                          <Icon size={24} />
+                          <Icon size={18} />
                         </div>
                         <div className="min-w-0 flex-1">
-                          <h3 id={`rec-title-${rec.id}`} className={`text-[15px] ${titleClass} truncate`}>
+                          <h3 id={`rec-title-${rec.id}`} className={`text-xs sm:text-sm ${titleClass} truncate`}>
                             {rec.type}
                           </h3>
-                          <p className="text-[13px] text-slate-600 mt-1 leading-relaxed line-clamp-3">
+                          <p className="text-xs text-slate-600 mt-1 leading-relaxed line-clamp-3">
                             {rec.message}
                           </p>
-                          <div className="mt-3">
+                          <div className="mt-2.5">
                             {rec.relatedProjectIds?.length > 0 ? (
                               <Link
                                 to={`/mp/projects/${rec.relatedProjectIds[0]}`}
                                 aria-label={`View details for recommendation on ${rec.type}`}
-                                className="inline-flex items-center gap-1.5 text-[11px] font-bold text-cyan-700 bg-white border border-cyan-100 px-3 py-1.5 rounded-lg hover:bg-cyan-50 active:scale-95 transition-[transform,background-color] duration-150 ease-out shadow-sm"
+                                className="inline-flex items-center gap-1 text-xs font-semibold text-[#123b63] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
                               >
-                                View Details <TbArrowRight size={14} aria-hidden="true" />
+                                View Project Details <TbArrowRight size={14} aria-hidden="true" />
                               </Link>
                             ) : (
                               <Link
                                 to="/mp/reports"
                                 aria-label={`View details for recommendation on ${rec.type}`}
-                                className="inline-flex items-center gap-1.5 text-[11px] font-bold text-cyan-700 bg-white border border-cyan-100 px-3 py-1.5 rounded-lg hover:bg-cyan-50 active:scale-95 transition-[transform,background-color] duration-150 ease-out shadow-sm"
+                                className="inline-flex items-center gap-1 text-xs font-semibold text-[#123b63] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
                               >
-                                View Details <TbArrowRight size={14} aria-hidden="true" />
+                                View Report Details <TbArrowRight size={14} aria-hidden="true" />
                               </Link>
                             )}
                           </div>
@@ -263,9 +263,9 @@ const MpDashboard = () => {
                   setShowAllRecommendations(!showAllRecommendations)
                 }
                 aria-expanded={showAllRecommendations}
-                className="w-full text-center text-[13px] font-bold text-cyan-700 py-3 mt-2 rounded-xl hover:bg-cyan-50 active:scale-95 transition-[transform,background-color] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
+                className="w-full text-center text-xs font-semibold text-[#123b63] py-2 mt-2 rounded border border-slate-200 hover:bg-slate-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
               >
-                {showAllRecommendations ? "Show Less" : "Show More"}
+                {showAllRecommendations ? "Show Less" : "Show More Advisories"}
               </button>
             )}
           </div>
@@ -273,33 +273,33 @@ const MpDashboard = () => {
       </div>
 
       {/* Recent Projects Section */}
-      <section aria-labelledby="recent-projects-heading" className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden w-full min-w-0">
-        <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-slate-100 flex justify-between items-center bg-white">
-          <h2 id="recent-projects-heading" className="text-base sm:text-lg font-bold text-[#123b63]">Recent Projects</h2>
+      <section aria-labelledby="recent-projects-heading" className="bg-white rounded border border-slate-200 overflow-hidden w-full min-w-0">
+        <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-200 flex justify-between items-center bg-white">
+          <h2 id="recent-projects-heading" className="text-sm sm:text-base font-bold text-[#123b63]">Recent Projects</h2>
           <Link
             to="/mp/projects"
-            className="text-xs sm:text-sm font-semibold text-cyan-700 hover:text-cyan-800 flex items-center gap-1"
+            className="text-xs font-semibold text-[#123b63] hover:underline flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
           >
-            View All <TbArrowRight size={16} />
+            View All <TbArrowRight size={14} />
           </Link>
         </div>
         <div className="overflow-x-auto w-full max-w-full overscroll-x-contain touch-pan-x">
-          <table className="w-full text-left text-sm whitespace-nowrap min-w-[620px]">
+          <table className="w-full text-left text-xs sm:text-sm whitespace-nowrap min-w-[620px]">
             <caption className="sr-only">Recent Parliamentarian Projects</caption>
-            <thead className="bg-slate-50/50 text-slate-500 font-semibold border-b border-slate-100">
+            <thead className="bg-slate-100 text-slate-700 font-semibold border-b border-slate-200 uppercase text-[11px] tracking-wider">
               <tr>
-                <th scope="col" className="px-4 sm:px-6 py-3.5 sm:py-4 font-semibold">Project Name</th>
-                <th scope="col" className="px-4 sm:px-6 py-3.5 sm:py-4 font-semibold">Amount</th>
-                <th scope="col" className="px-4 sm:px-6 py-3.5 sm:py-4 font-semibold">Status</th>
-                <th scope="col" className="px-4 sm:px-6 py-3.5 sm:py-4 font-semibold">Risk</th>
-                <th scope="col" className="px-4 sm:px-6 py-3.5 sm:py-4 font-semibold">Last Updated</th>
-                <th scope="col" className="px-4 sm:px-6 py-3.5 sm:py-4 w-10 text-right"><span className="sr-only">Actions</span></th>
+                <th scope="col" className="px-4 sm:px-6 py-3 font-semibold">Project Name</th>
+                <th scope="col" className="px-4 sm:px-6 py-3 font-semibold">Amount</th>
+                <th scope="col" className="px-4 sm:px-6 py-3 font-semibold">Status</th>
+                <th scope="col" className="px-4 sm:px-6 py-3 font-semibold">Risk Level</th>
+                <th scope="col" className="px-4 sm:px-6 py-3 font-semibold">Last Updated</th>
+                <th scope="col" className="px-4 sm:px-6 py-3 w-10 text-right"><span className="sr-only">Actions</span></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-slate-700">
               {projects.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="px-6 py-8 text-center text-slate-400 text-sm">
+                  <td colSpan="6" className="px-6 py-8 text-center text-slate-500 text-xs">
                     No projects found for this parliamentarian portfolio.
                   </td>
                 </tr>
@@ -308,49 +308,49 @@ const MpDashboard = () => {
                   return (
                     <tr
                       key={project.id}
-                      className="hover:bg-slate-50/50 transition-colors"
+                      className="hover:bg-slate-50 transition-colors"
                     >
-                      <td className="px-4 sm:px-6 py-3.5 sm:py-4 font-medium text-[#123b63] max-w-[200px] truncate" title={project.title}>
+                      <td className="px-4 sm:px-6 py-3 font-medium text-[#123b63] max-w-[200px] truncate" title={project.title}>
                         {project.title}
                       </td>
-                      <td className="px-4 sm:px-6 py-3.5 sm:py-4 text-slate-600">
+                      <td className="px-4 sm:px-6 py-3 text-slate-800 font-medium tabular-nums">
                         ₹{" "}
                         {(
                           (project.sanctionedAmount > 0
                             ? project.sanctionedAmount
                             : project.estimatedCost) / 10000000
-                        ).toFixed(1)}{" "}
+                        ).toFixed(2)}{" "}
                         Cr
                       </td>
-                      <td className="px-4 sm:px-6 py-3.5 sm:py-4">
+                      <td className="px-4 sm:px-6 py-3">
                         <span
-                          className={`inline-flex px-2.5 py-1 rounded-md text-xs font-bold ${
+                          className={`inline-flex px-2 py-0.5 rounded text-xs font-medium border ${
                             project.status === "In Progress"
-                              ? "bg-sky-50 text-sky-800"
+                              ? "bg-sky-50 text-sky-800 border-sky-300"
                               : project.status === "Sanctioned"
-                                ? "bg-amber-50 text-amber-900"
+                                ? "bg-amber-50 text-amber-900 border-amber-300"
                                 : project.status === "Completed"
-                                  ? "bg-emerald-50 text-emerald-800"
-                                  : "bg-slate-100 text-slate-800"
+                                  ? "bg-emerald-50 text-emerald-800 border-emerald-300"
+                                  : "bg-slate-50 text-slate-800 border-slate-300"
                           }`}
                         >
                           {project.status}
                         </span>
                       </td>
-                      <td className="px-4 sm:px-6 py-3.5 sm:py-4">
+                      <td className="px-4 sm:px-6 py-3">
                         <span
-                          className={`inline-flex px-2.5 py-1 rounded-md text-xs font-bold ${
+                          className={`inline-flex px-2 py-0.5 rounded text-xs font-medium border ${
                             project.riskLevel === "Low"
-                              ? "bg-emerald-50 text-emerald-800"
+                              ? "bg-emerald-50 text-emerald-800 border-emerald-300"
                               : project.riskLevel === "Moderate"
-                                ? "bg-amber-50 text-amber-900"
-                                : "bg-red-50 text-red-800"
+                                ? "bg-amber-50 text-amber-900 border-amber-300"
+                                : "bg-red-50 text-red-800 border-red-300"
                           }`}
                         >
                           {project.riskLevel}
                         </span>
                       </td>
-                      <td className="px-4 sm:px-6 py-3.5 sm:py-4 text-slate-500">
+                      <td className="px-4 sm:px-6 py-3 text-slate-600 tabular-nums">
                         {new Date(
                           project.lastUpdated || project.startDate || new Date(),
                         ).toLocaleDateString("en-GB", {
@@ -359,13 +359,13 @@ const MpDashboard = () => {
                           year: "numeric",
                         })}
                       </td>
-                      <td className="px-4 sm:px-6 py-3.5 sm:py-4 text-right">
+                      <td className="px-4 sm:px-6 py-3 text-right">
                         <Link
                           to={`/mp/projects/${project.id}`}
                           aria-label={`View details for ${project.title}`}
-                          className="inline-flex items-center justify-center p-1.5 text-slate-400 hover:text-[#123b63] hover:bg-slate-100 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
+                          className="inline-flex items-center justify-center p-1.5 text-slate-500 hover:text-[#123b63] hover:bg-slate-100 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
                         >
-                          <TbDotsVertical size={20} aria-hidden="true" />
+                          <TbDotsVertical size={18} aria-hidden="true" />
                         </Link>
                       </td>
                     </tr>
