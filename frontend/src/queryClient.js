@@ -1,66 +1,68 @@
-import { QueryClient, dehydrate, hydrate } from '@tanstack/react-query';
-
-const CACHE_STORAGE_KEY = 'mplads_query_cache';
+import { QueryClient } from '@tanstack/react-query';
 
 /**
- * Global QueryClient instance configured for SPA performance.
- * - staleTime: 5 minutes (data remains fresh and navigation is instantaneous)
- * - gcTime: 30 minutes (cached responses kept in memory for quick back/forth navigation)
- * - refetchOnWindowFocus: false (avoids unnecessary background network calls)
- * - retry: 1 (safe retry for intermittent connectivity)
- * - networkMode: offlineFirst (serves memory/cached state when connection is lost)
+ * Global QueryClient instance configured for safe in-memory caching:
+ * 
+ * SECURITY & PERSISTENCE NOTICE:
+ * Persistence (localStorage, sessionStorage, IndexedDB, Service Worker caches)
+ * is INTENTIONALLY ABSENT by design in this official government portal.
+ * All cached figures live strictly in volatile JavaScript heap memory and are wiped
+ * on logout, role change, 401 unauthorized errors, and window reload.
+ * This guarantees that sensitive public funds, statutory audit states, and project approvals
+ * can NEVER be falsely served from stale disk caches.
  */
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 5 * 60 * 1000,
-      gcTime: 30 * 60 * 1000,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: 'always',
-      retry: 1,
-      networkMode: 'offlineFirst',
+      // 10-minute garbage collection: returning to visited sections within 10m is instant
+      gcTime: 10 * 60 * 1000,
+      // 30-second safe default freshness (overridden per category in cacheConfig.js)
+      staleTime: 30 * 1000,
+      // Revalidate in the background when stale upon mounting
+      refetchOnMount: true,
+      // Revalidate on window focus
+      refetchOnWindowFocus: true,
+      // Explicit reconnect refetch: guarantees fresh live data after connection restoration
+      refetchOnReconnect: true,
+      networkMode: 'online',
+      // Retry up to 2 times for network errors and 5xx, never retry for 4xx (especially 401/403)
+      retry: (failureCount, error) => {
+        const status = error?.status || error?.response?.status;
+        if (typeof status === 'number' && status >= 400 && status < 500) {
+          return false;
+        }
+        if (
+          error?.message &&
+          (error.message.includes('401') ||
+            error.message.includes('403') ||
+            error.message.includes('404') ||
+            error.message.toLowerCase().includes('unauthorized') ||
+            error.message.toLowerCase().includes('forbidden'))
+        ) {
+          return false;
+        }
+        return failureCount < 2;
+      },
     },
     mutations: {
-      networkMode: 'offlineFirst',
+      networkMode: 'online',
     },
   },
 });
 
-// ── Persistent Session Storage Hydration & Sync ───────────────
-if (typeof window !== 'undefined') {
-  try {
-    const serialized = sessionStorage.getItem(CACHE_STORAGE_KEY);
-    if (serialized) {
-      const parsed = JSON.parse(serialized);
-      hydrate(queryClient, parsed);
-    }
-  } catch {
-    // Ignore corrupt storage
-  }
-
-  // Auto-sync successful queries into sessionStorage with debounce
-  let saveTimeout = null;
-  queryClient.getQueryCache().subscribe((event) => {
-    if (['added', 'updated'].includes(event?.type)) {
-      clearTimeout(saveTimeout);
-      saveTimeout = setTimeout(() => {
-        try {
-          const dehydrated = dehydrate(queryClient, {
-            shouldDehydrateQuery: (query) => query.state.status === 'success',
-          });
-          sessionStorage.setItem(CACHE_STORAGE_KEY, JSON.stringify(dehydrated));
-        } catch {
-          // Quota exceeded or private browsing safeguard
-        }
-      }, 400);
-    }
-  });
-}
-
-export function clearPersistedQueryCache() {
+/**
+ * Completely clears in-memory query cache and cleans up any legacy storage artifacts.
+ * Must be invoked on logout, session expiration, 401 responses, and role/office transitions.
+ */
+export function clearInMemoryCache() {
+  queryClient.clear();
   if (typeof window !== 'undefined') {
     try {
-      sessionStorage.removeItem(CACHE_STORAGE_KEY);
+      sessionStorage.removeItem('mplads_query_cache');
+      sessionStorage.removeItem('mplads_cached_routes');
     } catch {}
   }
 }
+
+// Backwards-compatible alias for existing imports
+export const clearPersistedQueryCache = clearInMemoryCache;

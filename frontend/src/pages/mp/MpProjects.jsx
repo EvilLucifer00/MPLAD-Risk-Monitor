@@ -1,7 +1,6 @@
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useState, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import OfflineLink from '../../components/shared/OfflineLink';
 import { useMpProjects } from '../../api/queries';
 import { useMpStore } from '../../store/useMpStore';
 import { usePageSeo } from '../../hooks/usePageSeo';
@@ -103,12 +102,12 @@ const MpProjects = () => {
           <h1 className="text-2xl font-bold tracking-tight text-[#123b63]">My Projects</h1>
           <p className="text-sm text-slate-500 mt-1 leading-normal">Manage and track all recommended works.</p>
         </div>
-        <OfflineLink 
+        <Link 
           to="/mp/submit" 
           className="bg-[#123b63] hover:bg-[#0c2a47] text-white px-4 py-2 rounded text-sm font-semibold transition-colors duration-150 shadow-none cursor-pointer"
         >
           Submit Proposal
-        </OfflineLink>
+        </Link>
       </header>
 
       {/* Filters Bar Section */}
@@ -208,13 +207,13 @@ const MpProjects = () => {
                         )}
                       </td>
                       <td className="px-5 py-4 text-right">
-                        <OfflineLink 
+                        <Link 
                           to={`/mp/projects/${project.id}`}
                           aria-label={`View details for ${project.title}`}
                           className="inline-flex items-center justify-center p-2 text-slate-500 hover:text-[#123b63] hover:bg-slate-100 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
                         >
                           <TbChevronRight size={18} aria-hidden="true" />
-                        </OfflineLink>
+                        </Link>
                       </td>
                     </tr>
                   );

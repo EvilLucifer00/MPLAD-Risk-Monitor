@@ -16,9 +16,24 @@ createRoot(document.getElementById('root')).render(
   </StrictMode>,
 );
 
-// Register Service Worker in production for instant offline navigation
-if (typeof window !== 'undefined' && 'serviceWorker' in navigator && import.meta.env.PROD) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
-  });
+// One-time cleanup: Unregister any previously installed service workers & purge CacheStorage caches
+if (typeof window !== 'undefined') {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (const registration of registrations) {
+        registration.unregister().catch(() => {});
+      }
+    }).catch(() => {});
+  }
+  if ('caches' in window) {
+    caches.keys().then((keys) => {
+      for (const key of keys) {
+        caches.delete(key).catch(() => {});
+      }
+    }).catch(() => {});
+  }
+  try {
+    sessionStorage.removeItem('mplads_query_cache');
+    sessionStorage.removeItem('mplads_cached_routes');
+  } catch {}
 }

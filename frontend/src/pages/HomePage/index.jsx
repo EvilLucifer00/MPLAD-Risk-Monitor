@@ -134,15 +134,11 @@ const Home = () => {
 
   return (
     <div className="w-full bg-slate-50 relative overflow-x-clip min-h-screen">
-      {/* Scroll Progress Bar (Indian Flag Tiranga: Saffron, White, Green) */}
+      {/* Scroll Progress Bar (Indian Flag Tiranga: Saffron, White, Green with smoothly blended boundaries) */}
       <div
-        className="fixed top-0 left-0 right-0 h-[3.5px] origin-left z-[9999] pointer-events-none scroll-progress-indicator flex"
+        className="fixed top-0 left-0 right-0 h-[3.5px] origin-left z-[9999] pointer-events-none scroll-progress-indicator"
         aria-hidden="true"
-      >
-        <div className="h-full w-1/3 bg-[#FF9933]" />
-        <div className="h-full w-1/3 bg-[#FFFFFF]" />
-        <div className="h-full w-1/3 bg-[#138808]" />
-      </div>
+      />
 
       {/* Official Header Toolbar */}
       <Toolbar

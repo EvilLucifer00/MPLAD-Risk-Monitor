@@ -1,8 +1,6 @@
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
-import { useOfflineRouteStatus } from '../../hooks/useOfflineRouteStatus';
-import OfflineLink from '../../components/shared/OfflineLink';
 import { daApi } from '../../api/daApi';
 import { useDaReviewQueue, useDaDistrictMps, useDaAgencies, useDaReviewActionMutation, queryKeys } from '../../api/queries';
 import { useQueryClient } from '@tanstack/react-query';
@@ -16,7 +14,6 @@ import {
 
 const DaProjectReview = () => {
   const navigate = useNavigate();
-  const { isRouteDisabled, notifyOfflineBlocked } = useOfflineRouteStatus();
   usePageSeo(
     'Project Review Queue | DA Portal',
     'Prioritized district review queue for sanctioning MPLADS proposals, sorted by AI risk score.'
@@ -236,12 +233,12 @@ const DaProjectReview = () => {
                       <div className="flex-1 min-w-0">
                         <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                           <h3 className="font-bold text-[#123b63] text-xs sm:text-sm truncate">
-                            <OfflineLink 
+                            <Link 
                               to={`/da/review/${project.id}`}
                               className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] rounded"
                             >
                               {project.title}
-                            </OfflineLink>
+                            </Link>
                           </h3>
                           <RiskBadge level={project.riskLevel} score={project.riskScore} showScore={false} />
                         </div>
@@ -305,7 +302,7 @@ const DaProjectReview = () => {
                             <TbLock size={12} aria-hidden="true" /> Detailed Audit
                           </span>
                         )}
-                        <OfflineLink
+                        <Link
                           to={`/da/review/${project.id}`}
                           aria-label={`Open full review for ${project.title}`}
                           className="flex items-center gap-1 px-3 py-1 text-xs font-semibold bg-[#123b63] text-white hover:bg-[#0c2a47] rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
@@ -313,7 +310,7 @@ const DaProjectReview = () => {
                         >
                           <span>Review</span>
                           <TbChevronRight size={14} aria-hidden="true" />
-                        </OfflineLink>
+                        </Link>
                       </div>
                     </article>
                   </li>

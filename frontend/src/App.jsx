@@ -1,11 +1,8 @@
 import React, { useEffect, Suspense, lazy } from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 import ProtectedRoute from './components/shared/ProtectedRoute.jsx';
 import { useAuthStore } from './store/useAuthStore.js';
-import { queryClient } from './queryClient.js';
-import { markRouteAsCached, preloadPortalRoutes, isRouteCached, notifyOfflineBlocked } from './utils/offlineCacheTracker.js';
-import OfflineNoticeBanner from './components/shared/OfflineNoticeBanner.jsx';
 
 // Lazy-loaded routes for code-splitting & performance
 const Home = lazy(() => import('./pages/HomePage/index.jsx'));
@@ -46,92 +43,6 @@ const PageLoader = () => (
 );
 
 /**
- * Route cache watcher & offline navigation protector.
- * Marks visited routes as cached, preloads portal chunks during idle time,
- * and intercepts any uncached link navigation attempts when offline.
- */
-function OfflineRouteGuard() {
-  const location = useLocation();
-  const user = useAuthStore((state) => state.user);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined' && navigator.onLine) {
-      markRouteAsCached(location.pathname);
-    }
-  }, [location.pathname]);
-
-  useEffect(() => {
-    if (user?.role && typeof navigator !== 'undefined' && navigator.onLine) {
-      preloadPortalRoutes(user.role);
-    }
-  }, [user?.role]);
-
-  useEffect(() => {
-    let wasOffline = typeof navigator !== 'undefined' ? !navigator.onLine : false;
-
-    const handleOffline = () => {
-      wasOffline = true;
-    };
-
-    const handleOnline = () => {
-      if (wasOffline) {
-        wasOffline = false;
-
-        // Silently reload and refresh all active page queries and data without any loading animations or spinners
-        queryClient.invalidateQueries({ refetchType: 'active' });
-        queryClient.refetchQueries({ type: 'active' });
-
-        // Silently re-validate auth session in background
-        useAuthStore.getState().validateSession?.();
-
-        // Preload portal routes for the user's role
-        const currentRole = useAuthStore.getState().user?.role;
-        if (currentRole) {
-          preloadPortalRoutes(currentRole);
-        }
-
-        // Notify layouts / views to silently refresh non-query state (e.g. notifications)
-        window.dispatchEvent(new CustomEvent('mplads:silent-reload'));
-      }
-    };
-
-    window.addEventListener('offline', handleOffline);
-    window.addEventListener('online', handleOnline);
-
-    return () => {
-      window.removeEventListener('offline', handleOffline);
-      window.removeEventListener('online', handleOnline);
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleGlobalClick = (e) => {
-      if (typeof navigator !== 'undefined' && navigator.onLine) return;
-
-      const anchor = e.target.closest('a[href]');
-      if (!anchor) return;
-
-      const href = anchor.getAttribute('href');
-      if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
-
-      if (href.startsWith('/') || href.startsWith(window.location.origin)) {
-        const path = href.startsWith('/') ? href : href.replace(window.location.origin, '');
-        if (!isRouteCached(path)) {
-          e.preventDefault();
-          e.stopPropagation();
-          notifyOfflineBlocked(path);
-        }
-      }
-    };
-
-    document.addEventListener('click', handleGlobalClick, true);
-    return () => document.removeEventListener('click', handleGlobalClick, true);
-  }, []);
-
-  return null;
-}
-
-/**
  * Main App Component
  * Handles the application routing using React Router.
  * Separates views into Public, MP (Member of Parliament), and DA (District Authority) sections.
@@ -169,8 +80,6 @@ function App() {
 
   return (
     <BrowserRouter>
-      <OfflineRouteGuard />
-      <OfflineNoticeBanner />
       {/* WCAG 2.4.1: Skip to main content link for keyboard & screen reader accessibility */}
       <a 
         href="#main-content" 

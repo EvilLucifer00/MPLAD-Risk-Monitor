@@ -1,37 +1,14 @@
 import { broadcastPortalEvent } from '../utils/portalSync';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import { api } from './mpApi';
 import { daApi } from './daApi';
 import { reportsApi, documentsApi, projectsApi } from './mpladsApi';
 import { useAuthStore } from '../store/useAuthStore';
+import { queryKeys } from './queryKeys';
+import { CACHE_TIMES } from '../constants/cacheConfig';
 
-// ── Query Keys Factory ─────────────────────────────────────────
-export const queryKeys = {
-  mp: {
-    all: ['mp'],
-    stats: (id) => ['mp', 'stats', id || 'me'],
-    recommendations: (id) => ['mp', 'recommendations', id || 'me'],
-    projects: (id, filters) => ['mp', 'projects', id || 'me', filters || {}],
-    project: (projectId) => ['mp', 'project', String(projectId)],
-    reports: (id, year) => ['mp', 'reports', id || 'me', year || 'all'],
-    documents: (id, params) => ['mp', 'documents', id || 'me', params || {}],
-    notifications: (id) => ['mp', 'notifications', id || 'me'],
-  },
-  da: {
-    all: ['da'],
-    stats: (dist) => ['da', 'stats', dist || 'me'],
-    recommendations: (dist) => ['da', 'recommendations', dist || 'me'],
-    districtMps: (dist) => ['da', 'districtMps', dist || 'me'],
-    projects: (dist, filters) => ['da', 'projects', dist || 'me', filters || {}],
-    reviewQueue: (dist) => ['da', 'reviewQueue', dist || 'me'],
-    mpProjects: (mpId) => ['da', 'mpProjects', String(mpId)],
-    projectDetail: (projectId) => ['da', 'projectDetail', String(projectId)],
-    documents: (dist, params) => ['da', 'documents', dist || 'me', params || {}],
-    agencies: (dist) => ['da', 'agencies', dist || 'me'],
-    vendors: (dist) => ['da', 'vendors', dist || 'me'],
-    notifications: (dist) => ['da', 'notifications', dist || 'me'],
-  },
-};
+// Re-export queryKeys for backwards-compatibility and direct consumer access
+export { queryKeys };
 
 // ── MP Portal Hooks ───────────────────────────────────────────
 
@@ -39,8 +16,10 @@ export const useMpStats = () => {
   const user = useAuthStore((s) => s.user);
   return useQuery({
     queryKey: queryKeys.mp.stats(user?.id),
-    queryFn: () => api.getDashboardStats(),
+    queryFn: ({ signal }) => api.getDashboardStats({ signal }),
     enabled: true,
+    staleTime: CACHE_TIMES.FINANCIAL_STATUS.staleTime,
+    gcTime: CACHE_TIMES.FINANCIAL_STATUS.gcTime,
   });
 };
 
@@ -48,8 +27,10 @@ export const useMpRecommendations = () => {
   const user = useAuthStore((s) => s.user);
   return useQuery({
     queryKey: queryKeys.mp.recommendations(user?.id),
-    queryFn: () => api.getRecommendations(),
+    queryFn: ({ signal }) => api.getRecommendations({ signal }),
     enabled: true,
+    staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+    gcTime: CACHE_TIMES.LISTS_REPORTS.gcTime,
   });
 };
 
@@ -57,16 +38,21 @@ export const useMpProjects = (filters = {}) => {
   const user = useAuthStore((s) => s.user);
   return useQuery({
     queryKey: queryKeys.mp.projects(user?.id, filters),
-    queryFn: () => api.getProjects(filters),
+    queryFn: ({ signal }) => api.getProjects(filters, { signal }),
     enabled: true,
+    placeholderData: keepPreviousData,
+    staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+    gcTime: CACHE_TIMES.LISTS_REPORTS.gcTime,
   });
 };
 
 export const useMpProjectDetail = (projectId) => {
   return useQuery({
     queryKey: queryKeys.mp.project(projectId),
-    queryFn: () => api.getProjectById(projectId),
+    queryFn: ({ signal }) => api.getProjectById(projectId, { signal }),
     enabled: Boolean(projectId),
+    staleTime: CACHE_TIMES.FINANCIAL_STATUS.staleTime,
+    gcTime: CACHE_TIMES.FINANCIAL_STATUS.gcTime,
   });
 };
 
@@ -74,8 +60,10 @@ export const useMpReports = (year = null) => {
   const user = useAuthStore((s) => s.user);
   return useQuery({
     queryKey: queryKeys.mp.reports(user?.id, year),
-    queryFn: () => reportsApi.getSummary(year),
+    queryFn: ({ signal }) => reportsApi.getSummary(year, { signal }),
     enabled: true,
+    staleTime: CACHE_TIMES.DASHBOARD.staleTime,
+    gcTime: CACHE_TIMES.DASHBOARD.gcTime,
   });
 };
 
@@ -83,8 +71,11 @@ export const useMpDocuments = (params = {}) => {
   const user = useAuthStore((s) => s.user);
   return useQuery({
     queryKey: queryKeys.mp.documents(user?.id, params),
-    queryFn: () => documentsApi.getMpDocuments(params),
+    queryFn: ({ signal }) => documentsApi.getMpDocuments(params, { signal }),
     enabled: true,
+    placeholderData: keepPreviousData,
+    staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+    gcTime: CACHE_TIMES.LISTS_REPORTS.gcTime,
   });
 };
 
@@ -92,8 +83,10 @@ export const useMpNotifications = () => {
   const user = useAuthStore((s) => s.user);
   return useQuery({
     queryKey: queryKeys.mp.notifications(user?.id),
-    queryFn: () => api.getNotifications(),
+    queryFn: ({ signal }) => api.getNotifications(null, { signal }),
     enabled: true,
+    staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+    gcTime: CACHE_TIMES.LISTS_REPORTS.gcTime,
   });
 };
 
@@ -102,101 +95,146 @@ export const useMpNotifications = () => {
 export const useDaStats = () => {
   const user = useAuthStore((s) => s.user);
   return useQuery({
-    queryKey: queryKeys.da.stats(user?.dist),
-    queryFn: () => daApi.getDashboardStats(),
+    queryKey: queryKeys.da.stats(user?.dist || user?.id),
+    queryFn: ({ signal }) => daApi.getDashboardStats({ signal }),
     enabled: true,
+    staleTime: CACHE_TIMES.FINANCIAL_STATUS.staleTime,
+    gcTime: CACHE_TIMES.FINANCIAL_STATUS.gcTime,
   });
 };
 
 export const useDaRecommendations = () => {
   const user = useAuthStore((s) => s.user);
   return useQuery({
-    queryKey: queryKeys.da.recommendations(user?.dist),
-    queryFn: () => daApi.getRecommendations(),
+    queryKey: queryKeys.da.recommendations(user?.dist || user?.id),
+    queryFn: ({ signal }) => daApi.getRecommendations({ signal }),
     enabled: true,
+    staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+    gcTime: CACHE_TIMES.LISTS_REPORTS.gcTime,
   });
 };
 
 export const useDaDistrictMps = () => {
   const user = useAuthStore((s) => s.user);
   return useQuery({
-    queryKey: queryKeys.da.districtMps(user?.dist),
-    queryFn: () => daApi.getDistrictMPs(),
+    queryKey: queryKeys.da.districtMps(user?.dist || user?.id),
+    queryFn: ({ signal }) => daApi.getDistrictMPs({ signal }),
     enabled: true,
+    placeholderData: keepPreviousData,
+    staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+    gcTime: CACHE_TIMES.LISTS_REPORTS.gcTime,
   });
 };
 
 export const useDaProjects = (filters = {}) => {
   const user = useAuthStore((s) => s.user);
   return useQuery({
-    queryKey: queryKeys.da.projects(user?.dist, filters),
-    queryFn: () => daApi.getProjects(filters),
+    queryKey: queryKeys.da.projects(user?.dist || user?.id, filters),
+    queryFn: ({ signal }) => daApi.getProjects(filters, { signal }),
     enabled: true,
+    placeholderData: keepPreviousData,
+    staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+    gcTime: CACHE_TIMES.LISTS_REPORTS.gcTime,
   });
 };
 
 export const useDaReviewQueue = () => {
   const user = useAuthStore((s) => s.user);
   return useQuery({
-    queryKey: queryKeys.da.reviewQueue(user?.dist),
-    queryFn: () => daApi.getReviewQueue(),
+    queryKey: queryKeys.da.reviewQueue(user?.dist || user?.id),
+    queryFn: ({ signal }) => daApi.getReviewQueue({ signal }),
     enabled: true,
+    placeholderData: keepPreviousData,
+    staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+    gcTime: CACHE_TIMES.LISTS_REPORTS.gcTime,
   });
 };
 
 export const useDaMpProjects = (mpId) => {
   return useQuery({
     queryKey: queryKeys.da.mpProjects(mpId),
-    queryFn: () => daApi.getMPProjects(mpId),
+    queryFn: ({ signal }) => daApi.getMPProjects(mpId, { signal }),
     enabled: Boolean(mpId),
-    refetchOnMount: 'always',
-    staleTime: 0,
+    placeholderData: keepPreviousData,
+    staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+    gcTime: CACHE_TIMES.LISTS_REPORTS.gcTime,
   });
 };
 
 export const useDaProjectDetail = (projectId) => {
   return useQuery({
     queryKey: queryKeys.da.projectDetail(projectId),
-    queryFn: () => daApi.getProjectById(projectId),
+    queryFn: ({ signal }) => daApi.getProjectById(projectId, { signal }),
     enabled: Boolean(projectId),
+    staleTime: CACHE_TIMES.FINANCIAL_STATUS.staleTime,
+    gcTime: CACHE_TIMES.FINANCIAL_STATUS.gcTime,
   });
 };
 
 export const useDaDocuments = (params = {}) => {
   const user = useAuthStore((s) => s.user);
   return useQuery({
-    queryKey: queryKeys.da.documents(user?.dist, params),
-    queryFn: () => documentsApi.getDmDocuments(params),
+    queryKey: queryKeys.da.documents(user?.dist || user?.id, params),
+    queryFn: ({ signal }) => documentsApi.getDmDocuments(params, { signal }),
     enabled: true,
+    placeholderData: keepPreviousData,
+    staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+    gcTime: CACHE_TIMES.LISTS_REPORTS.gcTime,
   });
 };
 
 export const useDaAgencies = () => {
   const user = useAuthStore((s) => s.user);
   return useQuery({
-    queryKey: queryKeys.da.agencies(user?.dist),
-    queryFn: () => daApi.getImplementingAgencies(),
+    queryKey: queryKeys.da.agencies(user?.dist || user?.id),
+    queryFn: ({ signal }) => daApi.getImplementingAgencies({ signal }),
     enabled: true,
+    staleTime: CACHE_TIMES.REFERENCE.staleTime,
+    gcTime: CACHE_TIMES.REFERENCE.gcTime,
   });
 };
 
 export const useDaVendors = () => {
   const user = useAuthStore((s) => s.user);
   return useQuery({
-    queryKey: queryKeys.da.vendors(user?.dist),
-    queryFn: () => daApi.getVendors(),
+    queryKey: queryKeys.da.vendors(user?.dist || user?.id),
+    queryFn: ({ signal }) => daApi.getVendors({ signal }),
     enabled: true,
+    placeholderData: keepPreviousData,
+    staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+    gcTime: CACHE_TIMES.LISTS_REPORTS.gcTime,
   });
 };
 
 export const useDaNotifications = () => {
   const user = useAuthStore((s) => s.user);
   return useQuery({
-    queryKey: queryKeys.da.notifications(user?.dist),
-    queryFn: () => daApi.getNotifications(),
+    queryKey: queryKeys.da.notifications(user?.dist || user?.id),
+    queryFn: ({ signal }) => daApi.getNotifications({ signal }),
     enabled: true,
+    staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+    gcTime: CACHE_TIMES.LISTS_REPORTS.gcTime,
   });
 };
+
+// ── Geographic & Public Reference Hooks ─────────────────────────
+
+export const useGeoData = () => {
+  return useQuery({
+    queryKey: queryKeys.geo.indiaConstituencies(),
+    queryFn: async ({ signal }) => {
+      const res = await fetch('/data/india_constituencies_simplified.geojson', { signal });
+      if (!res.ok) {
+        throw new Error(`Failed to load constituency boundaries (${res.status})`);
+      }
+      return res.json();
+    },
+    staleTime: CACHE_TIMES.MAP_GEO.staleTime,
+    gcTime: CACHE_TIMES.MAP_GEO.gcTime,
+  });
+};
+
+// ── Mutations (Safe In-Memory Workflow: Invalidate on Server Response) ──
 
 export const useDaReviewActionMutation = () => {
   const queryClient = useQueryClient();
@@ -217,53 +255,23 @@ export const useDaReviewActionMutation = () => {
       }
       return daApi.reviewProject(id, action, details);
     },
-    onMutate: async ({ id, action, details }) => {
-      await queryClient.cancelQueries({ queryKey: queryKeys.da.reviewQueue(user?.dist) });
-      await queryClient.cancelQueries({ queryKey: queryKeys.da.stats(user?.dist) });
-      if (id) {
-        await queryClient.cancelQueries({ queryKey: queryKeys.da.projectDetail(id) });
+    // No optimistic updates on statutory approvals/financials
+    onSuccess: (data, variables) => {
+      const dist = user?.dist || user?.id;
+      queryClient.invalidateQueries({ queryKey: queryKeys.da.reviewQueue(dist) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.da.stats(dist) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.da.projects(dist) });
+      if (variables?.id) {
+        queryClient.invalidateQueries({ queryKey: queryKeys.da.projectDetail(variables.id) });
       }
-
-      const previousQueue = queryClient.getQueryData(queryKeys.da.reviewQueue(user?.dist));
-      const previousStats = queryClient.getQueryData(queryKeys.da.stats(user?.dist));
-      const previousDetail = id ? queryClient.getQueryData(queryKeys.da.projectDetail(id)) : null;
-
-      // Optimistically remove from queue if approved or rejected
-      if (['Sanction', 'Reject', 'Approve'].includes(action)) {
-        queryClient.setQueryData(queryKeys.da.reviewQueue(user?.dist), (old = []) =>
-          Array.isArray(old) ? old.filter((p) => p.id !== id && p.rawId !== id) : []
-        );
-      }
-
-      // Optimistically update project detail status if present in cache
-      if (id && previousDetail) {
-        const nextStatus = action === 'Sanction' ? 'Sanctioned' : action === 'Reject' ? 'Rejected' : action === 'Suspend' ? 'Suspended' : previousDetail.status;
-        const nextReviewStatus = action === 'Sanction' ? 'Sanctioned' : action === 'Reject' ? 'Rejected' : action === 'Request Documents' ? 'Awaiting Verification' : action === 'Suspend' ? 'Suspended' : action === 'Escalate' ? 'Escalated' : previousDetail.reviewStatus;
-        queryClient.setQueryData(queryKeys.da.projectDetail(id), {
-          ...previousDetail,
-          status: nextStatus,
-          reviewStatus: nextReviewStatus,
-          implementingAgency: details?.implementingAgencyId || previousDetail.implementingAgency,
-        });
-      }
-
-      return { previousQueue, previousStats, previousDetail, id };
-    },
-    onError: (_err, _variables, context) => {
-      if (context?.previousQueue) {
-        queryClient.setQueryData(queryKeys.da.reviewQueue(user?.dist), context.previousQueue);
-      }
-      if (context?.previousStats) {
-        queryClient.setQueryData(queryKeys.da.stats(user?.dist), context.previousStats);
-      }
-      if (context?.id && context?.previousDetail) {
-        queryClient.setQueryData(queryKeys.da.projectDetail(context.id), context.previousDetail);
-      }
+      // Cross-portal invalidation so MP sees approval state change
+      queryClient.invalidateQueries({ queryKey: queryKeys.mp.all });
+      broadcastPortalEvent('PROJECT_REVIEWED', { id: variables.id, action: variables.action });
     },
     onSettled: (_data, _error, variables) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.da.reviewQueue(user?.dist) });
-      queryClient.invalidateQueries({ queryKey: queryKeys.da.stats(user?.dist) });
-      queryClient.invalidateQueries({ queryKey: queryKeys.da.projects(user?.dist) });
+      const dist = user?.dist || user?.id;
+      queryClient.invalidateQueries({ queryKey: queryKeys.da.reviewQueue(dist) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.da.stats(dist) });
       if (variables?.id) {
         queryClient.invalidateQueries({ queryKey: queryKeys.da.projectDetail(variables.id) });
       }
@@ -279,43 +287,15 @@ export const useMpSubmitProjectMutation = () => {
     mutationFn: async (projectData) => {
       return projectsApi.submitProject(projectData);
     },
-    onMutate: async (newProjectData) => {
-      await queryClient.cancelQueries({ queryKey: queryKeys.mp.projects(user?.id) });
-      await queryClient.cancelQueries({ queryKey: queryKeys.mp.stats(user?.id) });
-
-      const previousProjects = queryClient.getQueryData(queryKeys.mp.projects(user?.id));
-      const previousStats = queryClient.getQueryData(queryKeys.mp.stats(user?.id));
-
-      const optimisticProject = {
-        id: `PRJ-TEMP-${Date.now()}`,
-        title: newProjectData.title,
-        category: newProjectData.category,
-        estimatedCost: Number(newProjectData.estimatedCost) || 0,
-        sanctionedAmount: 0,
-        amountSpent: 0,
-        status: 'Pending Sanction',
-        reviewStatus: 'Pending Review',
-        riskLevel: 'Low',
-        riskScore: 0,
-        district: user?.dist || '',
-        implementingAgency: newProjectData.implementingAgency || 'Pending Assignment',
-        startDate: new Date().toISOString().split('T')[0],
-        documents: [],
-      };
-
-      if (previousProjects && Array.isArray(previousProjects)) {
-        queryClient.setQueryData(queryKeys.mp.projects(user?.id), [optimisticProject, ...previousProjects]);
-      }
-
-      return { previousProjects, previousStats };
-    },
-    onError: (_err, _variables, context) => {
-      if (context?.previousProjects) {
-        queryClient.setQueryData(queryKeys.mp.projects(user?.id), context.previousProjects);
-      }
-      if (context?.previousStats) {
-        queryClient.setQueryData(queryKeys.mp.stats(user?.id), context.previousStats);
-      }
+    // No optimistic updates on project submission
+    onSuccess: (data) => {
+      const id = user?.id;
+      queryClient.invalidateQueries({ queryKey: queryKeys.mp.projects(id) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.mp.stats(id) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.mp.reports(id) });
+      // Invalidate DA review queue so district authority sees the new submission
+      queryClient.invalidateQueries({ queryKey: queryKeys.da.all });
+      broadcastPortalEvent('PROJECT_SUBMITTED', { id: data?.id });
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.mp.all });
