@@ -9,6 +9,7 @@
  */
 
 import { useAuthStore } from '../store/useAuthStore';
+import { clearInMemoryCache } from '../queryClient';
 const PROD_API_URL = 'https://mplads-backend-axxw.onrender.com';
 const DEV_API_URL = 'http://localhost:8000';
 
@@ -82,10 +83,21 @@ export async function authFetch(endpoint, options = {}) {
   // If mutation, invalidate cache and perform direct fetch
   if (method !== 'GET') {
     responseCache.clear();
-    const response = await fetch(url, { ...options, headers });
+    const controller = new AbortController();
+    if (options.signal) {
+      if (options.signal.aborted) controller.abort();
+      else options.signal.addEventListener('abort', () => controller.abort(), { once: true });
+    }
+    const response = await fetch(url, { ...options, headers, signal: controller.signal });
     if (!response.ok) {
+      if (response.status === 401) {
+        useAuthStore.getState().logout();
+        clearInMemoryCache();
+      }
       const errorMsg = await parseApiError(response);
-      throw new Error(errorMsg);
+      const err = new Error(errorMsg);
+      err.status = response.status;
+      throw err;
     }
     return response;
   }
@@ -116,16 +128,26 @@ export async function authFetch(endpoint, options = {}) {
     });
   }
 
-  // Execute request and store in-flight promise with a 4s timeout for GET to prevent hanging on Render cold-starts
+  // Execute request and store in-flight promise with a timeout for GET to prevent hanging on Render cold-starts
   const executePromise = (async () => {
     const controller = new AbortController();
+    if (options.signal) {
+      if (options.signal.aborted) controller.abort();
+      else options.signal.addEventListener('abort', () => controller.abort(), { once: true });
+    }
     const timeoutMs = options.timeout ?? 45000; // 45s to accommodate Render free-tier cold starts
     const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
     try {
       const response = await fetch(url, { ...options, headers, signal: controller.signal });
       if (!response.ok) {
+        if (response.status === 401) {
+          useAuthStore.getState().logout();
+          clearInMemoryCache();
+        }
         const errorMsg = await parseApiError(response);
-        throw new Error(errorMsg);
+        const err = new Error(errorMsg);
+        err.status = response.status;
+        throw err;
       }
       const data = await response.json();
       responseCache.set(cacheKey, { data, timestamp: Date.now() });
@@ -285,8 +307,8 @@ export const dashboardApi = {
    * GET /dashboard/details/mp
    * Summary stats for MP Dashboard
    */
-  getMpStats: async () => {
-    const res = await authFetch('/dashboard/details/mp');
+  getMpStats: async (options = {}) => {
+    const res = await authFetch('/dashboard/details/mp', options);
     const data = await res.json();
 
     const fundsUtilizedRaw = Math.round((Number(data.funds_utilized_cr) || 0) * 1e7);
@@ -315,8 +337,8 @@ export const dashboardApi = {
    * GET /dashboard/details/dm
    * Summary stats for District Authority Dashboard
    */
-  getDmStats: async () => {
-    const res = await authFetch('/dashboard/details/dm');
+  getDmStats: async (options = {}) => {
+    const res = await authFetch('/dashboard/details/dm', options);
     const data = await res.json();
 
     const riskBreakdown = data.risk_breakdown || {};
@@ -357,7 +379,7 @@ export const projectsApi = {
    * GET /projects/all
    * MP's projects list with client-ready formatting
    */
-  getAllProjects: async (params = {}) => {
+  getAllProjects: async (params = {}, options = {}) => {
     const query = new URLSearchParams();
     if (params.search) query.append('search', params.search);
     if (params.status && params.status !== 'All') query.append('status', params.status);
@@ -366,7 +388,7 @@ export const projectsApi = {
     query.append('page', params.page || 1);
     query.append('page_size', params.pageSize || 100);
 
-    const res = await authFetch(`/projects/all?${query.toString()}`);
+    const res = await authFetch(`/projects/all?${query.toString()}`, options);
     const json = await res.json();
     const rows = Array.isArray(json) ? json : (json.data || []);
     return rows.map(mapProjectFromBackend);
@@ -404,9 +426,9 @@ export const projectsApi = {
    * GET /projects/district/overview
    * District-wide project overview aggregated by MP
    */
-  getDistrictOverview: async (search = '') => {
+  getDistrictOverview: async (search = '', options = {}) => {
     const query = search ? `?search=${encodeURIComponent(search)}` : '';
-    const res = await authFetch(`/projects/district/overview${query}`);
+    const res = await authFetch(`/projects/district/overview${query}`, options);
     const data = await res.json();
 
     return (Array.isArray(data) ? data : []).map((mp) => {
@@ -431,7 +453,7 @@ export const projectsApi = {
    * GET /projects/district/mp/{mp_id}
    * Drill-down into a specific MP's projects for the DA
    */
-  getDistrictMpProjects: async (mpId, params = {}) => {
+  getDistrictMpProjects: async (mpId, params = {}, options = {}) => {
     const numericId = typeof mpId === 'number' 
       ? mpId 
       : parseInt(String(mpId).match(/(\d+)$/)?.[1] || mpId, 10);
@@ -442,7 +464,7 @@ export const projectsApi = {
     query.append('page', params.page || 1);
     query.append('page_size', params.pageSize || 100);
 
-    const res = await authFetch(`/projects/district/mp/${numericId}?${query.toString()}`);
+    const res = await authFetch(`/projects/district/mp/${numericId}?${query.toString()}`, options);
     const json = await res.json();
 
     const rawProjects = Array.isArray(json.data) ? json.data : [];
@@ -460,11 +482,11 @@ export const projectsApi = {
    * GET /projects/{project_id}
    * Fetch single project detail
    */
-  getProjectById: async (projectId) => {
+  getProjectById: async (projectId, options = {}) => {
     const numericId = typeof projectId === 'number'
       ? projectId
       : parseInt(String(projectId).match(/(\d+)$/)?.[1] || projectId, 10);
-    const res = await authFetch(`/projects/${numericId}`);
+    const res = await authFetch(`/projects/${numericId}`, options);
     const data = await res.json();
     return mapProjectFromBackend(data);
   },
@@ -477,9 +499,9 @@ export const reportsApi = {
    * GET /reports/summary
    * Fetches category breakdown and cumulative fund utilization
    */
-  getSummary: async (year = null) => {
+  getSummary: async (year = null, options = {}) => {
     const query = year ? `?year=${year}` : '';
-    const res = await authFetch(`/reports/summary${query}`);
+    const res = await authFetch(`/reports/summary${query}`, options);
     const data = await res.json();
 
     const byCategory = (data.by_category || []).map((item) => ({
@@ -518,12 +540,12 @@ export const documentsApi = {
   /**
    * GET /document/mp
    */
-  getMpDocuments: async (params = {}) => {
+  getMpDocuments: async (params = {}, options = {}) => {
     const query = new URLSearchParams();
     if (params.search) query.append('search', params.search);
     if (params.uploadDate) query.append('upload_date', params.uploadDate);
 
-    const res = await authFetch(`/document/mp${query.toString() ? `?${query.toString()}` : ''}`);
+    const res = await authFetch(`/document/mp${query.toString() ? `?${query.toString()}` : ''}`, options);
     const json = await res.json();
     const rows = Array.isArray(json.data) ? json.data : [];
 
@@ -543,12 +565,12 @@ export const documentsApi = {
   /**
    * GET /document/dm
    */
-  getDmDocuments: async (params = {}) => {
+  getDmDocuments: async (params = {}, options = {}) => {
     const query = new URLSearchParams();
     if (params.search) query.append('search', params.search);
     if (params.uploadDate) query.append('upload_date', params.uploadDate);
 
-    const res = await authFetch(`/document/dm${query.toString() ? `?${query.toString()}` : ''}`);
+    const res = await authFetch(`/document/dm${query.toString() ? `?${query.toString()}` : ''}`, options);
     const json = await res.json();
     const rows = Array.isArray(json.data) ? json.data : [];
 

@@ -18,11 +18,11 @@ export const daApi = {
   /**
    * Retrieves all Members of Parliament (MPs) in the DM's district from backend /projects/district/overview.
    */
-  getDistrictMPs: async () => {
+  getDistrictMPs: async (options = {}) => {
     try {
       const token = useAuthStore.getState().token;
       if (token) {
-        return await projectsApi.getDistrictOverview();
+        return await projectsApi.getDistrictOverview('', options);
       }
     } catch {
       // Graceful fallback to empty array
@@ -30,11 +30,11 @@ export const daApi = {
     return [];
   },
 
-  getMPProjects: async (mpId) => {
+  getMPProjects: async (mpId, options = {}) => {
     try {
       const token = useAuthStore.getState().token;
       if (token) {
-        const result = await projectsApi.getDistrictMpProjects(mpId);
+        const result = await projectsApi.getDistrictMpProjects(mpId, {}, options);
         let projects = result?.projects || [];
         if (projects.length > 0) {
           projects.mpDetails = result.mpDetails || {};
@@ -48,7 +48,7 @@ export const daApi = {
 
     // Fallback: check review queue for this MP's projects
     try {
-      const queue = await daApi.getReviewQueue();
+      const queue = await daApi.getReviewQueue(options);
       const mpQueue = (queue || []).filter(p => String(p.mpId) === String(mpId) || String(p.rawMpId) === String(mpId));
       if (mpQueue.length > 0) {
         const fallbackProjects = [...mpQueue];
@@ -77,17 +77,17 @@ export const daApi = {
   /**
    * Retrieves all district projects across MPs from the backend.
    */
-  getProjects: async (filters = {}) => {
+  getProjects: async (filters = {}, options = {}) => {
     try {
       const token = useAuthStore.getState().token;
       if (token) {
         // Fetch all district MPs first
-        const mps = await projectsApi.getDistrictOverview();
+        const mps = await projectsApi.getDistrictOverview('', options);
         if (!mps || mps.length === 0) return [];
 
         // Fetch projects for each MP in the district
         const projectPromises = mps.map(mp => 
-          projectsApi.getDistrictMpProjects(mp.rawMpId || mp.id, filters)
+          projectsApi.getDistrictMpProjects(mp.rawMpId || mp.id, filters, options)
             .then(res => (res.projects || []).map(p => ({
               ...p,
               mpId: p.mpId || String(mp.rawMpId || mp.id),
@@ -121,11 +121,11 @@ export const daApi = {
     return [];
   },
 
-  getProjectById: async (id) => {
+  getProjectById: async (id, options = {}) => {
     try {
       const token = useAuthStore.getState().token;
       if (token) {
-        const proj = await projectsApi.getProjectById(id);
+        const proj = await projectsApi.getProjectById(id, options);
         if (proj) return proj;
       }
     } catch {
@@ -133,7 +133,7 @@ export const daApi = {
     }
 
     try {
-      const queue = await daApi.getReviewQueue();
+      const queue = await daApi.getReviewQueue(options);
       const match = queue.find(p => String(p.id) === String(id) || String(p.rawId) === String(id));
       if (match) return match;
     } catch {
@@ -167,19 +167,19 @@ export const daApi = {
     return { success: true, id, status: 'Sanctioned' };
   },
 
-  getReviewQueue: async () => {
+  getReviewQueue: async (options = {}) => {
     try {
       const token = useAuthStore.getState().token;
       if (token) {
-        const mps = await projectsApi.getDistrictOverview();
+        const mps = await projectsApi.getDistrictOverview('', options);
         if (!mps || mps.length === 0) return [];
         const projectPromises = mps.map(async (mp) => {
           const mpIdStr = String(mp.rawMpId || mp.id);
           try {
-            const res = await projectsApi.getDistrictMpProjects(mpIdStr, { status: 'PENDING_REVIEW' });
+            const res = await projectsApi.getDistrictMpProjects(mpIdStr, { status: 'PENDING_REVIEW' }, options);
             let list = res.projects || [];
             if (list.length === 0) {
-              const allRes = await projectsApi.getDistrictMpProjects(mpIdStr);
+              const allRes = await projectsApi.getDistrictMpProjects(mpIdStr, {}, options);
               list = (allRes.projects || []).filter(p => 
                 p.status === 'Pending Sanction' || 
                 p.reviewStatus === 'Pending Review' || 
@@ -211,9 +211,9 @@ export const daApi = {
   },
 
   // ── Implementing Agencies ──
-  getImplementingAgencies: async () => {
+  getImplementingAgencies: async (options = {}) => {
     try {
-      const projects = await daApi.getProjects();
+      const projects = await daApi.getProjects({}, options);
       const iaMap = new Map();
       (projects || []).forEach(p => {
         const name = p.implementingAgency || p.implementing_agency;
@@ -249,9 +249,9 @@ export const daApi = {
   },
 
   // ── Vendors ──
-  getVendors: async () => {
+  getVendors: async (options = {}) => {
     try {
-      const projects = await daApi.getProjects();
+      const projects = await daApi.getProjects({}, options);
       const vendorMap = new Map();
       (projects || []).forEach(p => {
         const name = p.vendor;
@@ -299,7 +299,15 @@ export const daApi = {
   },
 
   // ── Notifications ──
-  getNotifications: async () => {
+  getNotifications: async (options = {}) => {
+    try {
+      const token = useAuthStore.getState().token;
+      if (token) {
+        return await notificationsApi.getDmNotifications(null, options);
+      }
+    } catch {
+      // Graceful fallback
+    }
     return [];
   },
 
@@ -308,11 +316,11 @@ export const daApi = {
   },
 
   // ── Recommendations ──
-  getRecommendations: async () => {
+  getRecommendations: async (options = {}) => {
     try {
       const token = useAuthStore.getState().token;
       if (token) {
-        const stats = await dashboardApi.getDmStats().catch(() => null);
+        const stats = await dashboardApi.getDmStats(options).catch(() => null);
         const recs = [];
         if (stats && stats.pendingReview > 0) {
           recs.push({
@@ -342,11 +350,11 @@ export const daApi = {
    * Fetches district overview metrics from the real backend API.
    * If values are zero, returns clean zero values.
    */
-  getDashboardStats: async () => {
+  getDashboardStats: async (options = {}) => {
     try {
       const token = useAuthStore.getState().token;
       if (token) {
-        return await dashboardApi.getDmStats();
+        return await dashboardApi.getDmStats(options);
       }
     } catch {
       // Graceful zero fallback

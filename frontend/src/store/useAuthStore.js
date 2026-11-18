@@ -47,6 +47,7 @@ export const useAuthStore = create((set, get) => ({
   },
 
   logout: () => {
+    clearPersistedQueryCache();
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(ROLE_KEY);
     localStorage.removeItem(USER_KEY);

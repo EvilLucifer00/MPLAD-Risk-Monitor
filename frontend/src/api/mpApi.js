@@ -8,11 +8,11 @@ export const mpApi = {
   /**
    * Retrieves all projects submitted by the currently logged-in MP from the real backend API.
    */
-  getProjects: async (params = {}) => {
+  getProjects: async (params = {}, options = {}) => {
     try {
       const token = useAuthStore.getState().token;
       if (token) {
-        return await projectsApi.getAllProjects(params);
+        return await projectsApi.getAllProjects(params, options);
       }
     } catch {
       // Graceful fallback to empty array on network/auth error
@@ -20,11 +20,11 @@ export const mpApi = {
     return [];
   },
   
-  getProjectById: async (id) => {
+  getProjectById: async (id, options = {}) => {
     try {
       const token = useAuthStore.getState().token;
       if (token) {
-        return await projectsApi.getProjectById(id);
+        return await projectsApi.getProjectById(id, options);
       }
     } catch {
       // Graceful fallback
@@ -44,11 +44,11 @@ export const mpApi = {
   },
 
   // Notifications
-  getNotifications: async (filter = null) => {
+  getNotifications: async (filter = null, options = {}) => {
     try {
       const token = useAuthStore.getState().token;
       if (token) {
-        return await notificationsApi.getMpNotifications(filter);
+        return await notificationsApi.getMpNotifications(filter, options);
       }
     } catch {
       // Graceful fallback
@@ -96,12 +96,12 @@ export const mpApi = {
   /**
    * Generates tailored recommendations for the MP derived from live backend statistics and projects.
    */
-  getRecommendations: async () => {
+  getRecommendations: async (options = {}) => {
     try {
       const token = useAuthStore.getState().token;
       if (token) {
-        const stats = await dashboardApi.getMpStats().catch(() => null);
-        const projects = await projectsApi.getAllProjects().catch(() => []);
+        const stats = await dashboardApi.getMpStats(options).catch(() => null);
+        const projects = await projectsApi.getAllProjects({}, options).catch(() => []);
         const recs = [];
 
         const highRisk = projects.filter(p => p.riskLevel === 'High' || p.riskLevel === 'Critical');
@@ -137,11 +137,11 @@ export const mpApi = {
    * Fetches aggregate project statistics from the real backend API.
    * If values are zero, returns zero metrics rather than fallback mock numbers.
    */
-  getDashboardStats: async () => {
+  getDashboardStats: async (options = {}) => {
     try {
       const token = useAuthStore.getState().token;
       if (token) {
-        return await dashboardApi.getMpStats();
+        return await dashboardApi.getMpStats(options);
       }
     } catch {
       // Graceful zero fallback

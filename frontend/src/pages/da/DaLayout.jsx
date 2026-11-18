@@ -12,26 +12,24 @@ import {
   TbBuildingBank,
   TbUserScan,
   TbLogout,
-  TbX,
-  TbCloudOff
+  TbX
 } from 'react-icons/tb';
 import { IconMenu } from '../../components/shared/HomeIcons';
 import EmblemImage from '../../components/shared/EmblemImage';
 import { daApi } from '../../api/daApi';
 import { useAuthStore } from '../../store/useAuthStore';
-import { useNetworkStatus } from '../../hooks/useNetworkStatus';
-import { useOfflineRouteStatus } from '../../hooks/useOfflineRouteStatus';
 import { subscribePortalSync } from '../../utils/portalSync';
 import { useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '../../api/queries';
+import { QueryStatusIndicator } from '../../components/shared/QueryStatusBanner';
+import { documentsApi } from '../../api/mpladsApi';
+import { CACHE_TIMES } from '../../constants/cacheConfig';
 import { useDaReviewQueue } from '../../api/queries';
 import useDialogA11y from '../../hooks/useDialogA11y';
 
 // Lazy-loaded to eliminate heavy AI chat bundle from critical route waterfall
 const AiAssistantWidget = lazy(() => import('../../components/shared/AiAssistantWidget.jsx'));
 const DaLayout = () => {
-  const { isOnline, wasOffline } = useNetworkStatus();
-  const { isRouteDisabled, notifyOfflineBlocked } = useOfflineRouteStatus();
   const queryClient = useQueryClient();
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
@@ -112,27 +110,68 @@ const DaLayout = () => {
   const unreadCount = notifications.filter(n => !n.read).length;
 
   const prefetchDaRoute = (routePath) => {
+    const dist = user?.dist || user?.id;
     switch (routePath) {
       case '/da':
         import('./DaDashboard.jsx');
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.stats(dist),
+          queryFn: ({ signal }) => daApi.getDashboardStats({ signal }),
+          staleTime: CACHE_TIMES.FINANCIAL_STATUS.staleTime,
+        });
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.recommendations(dist),
+          queryFn: ({ signal }) => daApi.getRecommendations({ signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
         break;
       case '/da/projects':
         import('./DaProjects.jsx');
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.projects(dist, {}),
+          queryFn: ({ signal }) => daApi.getProjects({}, { signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
         break;
       case '/da/review':
         import('./DaProjectReview.jsx');
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.reviewQueue(dist),
+          queryFn: ({ signal }) => daApi.getReviewQueue({ signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
         break;
       case '/da/documents':
         import('./DaDocuments.jsx');
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.documents(dist, {}),
+          queryFn: ({ signal }) => documentsApi.getDmDocuments({}, { signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
         break;
       case '/da/notifications':
         import('./DaNotifications.jsx');
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.notifications(dist),
+          queryFn: ({ signal }) => daApi.getNotifications({ signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
         break;
       case '/da/agencies':
         import('./DaIADirectory.jsx');
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.agencies(dist),
+          queryFn: ({ signal }) => daApi.getImplementingAgencies({ signal }),
+          staleTime: CACHE_TIMES.REFERENCE.staleTime,
+        });
         break;
       case '/da/vendors':
         import('./DaVendorWatchlist.jsx');
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.vendors(dist),
+          queryFn: ({ signal }) => daApi.getVendors({ signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
         break;
       case '/da/settings':
         import('./DaSettings.jsx');
@@ -188,31 +227,6 @@ const DaLayout = () => {
           const isActive = location.pathname === link.path || 
                           (link.path !== '/da' && location.pathname.startsWith(link.path));
           const Icon = link.icon;
-          const isDisabled = isRouteDisabled(link.path);
-
-          if (isDisabled) {
-            return (
-              <button
-                key={link.path}
-                type="button"
-                disabled
-                aria-disabled="true"
-                title={`${link.name} is not cached offline. Reconnect to the internet to access.`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  notifyOfflineBlocked(link.path);
-                }}
-                className="w-full flex items-center gap-2.5 px-3 py-2 rounded opacity-40 cursor-not-allowed select-none text-slate-400 bg-white/[0.02] border border-white/5 transition-opacity"
-              >
-                <Icon size={18} className="text-slate-500 shrink-0" aria-hidden="true" />
-                <span className="font-medium text-xs sm:text-sm text-left">{link.name}</span>
-                <span className="ml-auto inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-amber-400 bg-amber-400/10 px-1.5 py-0.5 rounded border border-amber-400/20">
-                  <TbCloudOff size={11} aria-hidden="true" />
-                  <span>Offline</span>
-                </span>
-              </button>
-            );
-          }
 
           return (
             <Link
@@ -401,20 +415,7 @@ const DaLayout = () => {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3 shrink-0 relative">
-            {/* Network Connectivity Pill */}
-            {!isOnline && (
-              <div role="status" className="hidden sm:flex items-center gap-1.5 px-2 py-0.5 bg-amber-50 text-amber-800 border border-amber-300 rounded text-xs font-semibold">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
-                <span>Offline Mode</span>
-              </div>
-            )}
-            {wasOffline && isOnline && (
-              <div role="status" className="hidden sm:flex items-center gap-1.5 px-2 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-300 rounded text-xs font-semibold">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-                <span>Reconnected</span>
-              </div>
-            )}
-            
+            <QueryStatusIndicator />
             {/* Notification Bell */}
             <div ref={notificationsRef} className="relative">
               <button

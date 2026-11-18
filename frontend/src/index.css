@@ -121,13 +121,13 @@
   background: linear-gradient(
     to right,
     #FF9933 0%,
-    #FF9933 33.333%,
-    #FFFFFF 33.333%,
-    #FFFFFF 66.667%,
-    #138808 66.667%,
+    #FF9933 20%,
+    #FFFFFF 38%,
+    #FFFFFF 62%,
+    #138808 80%,
     #138808 100%
   );
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), 0 0 6px rgba(255, 153, 51, 0.35);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.16), 0 0 6px rgba(255, 153, 51, 0.25);
 }
 
 @media (prefers-reduced-motion: no-preference) {

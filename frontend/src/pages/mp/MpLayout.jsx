@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
-import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   TbLayoutDashboard, 
@@ -11,26 +10,24 @@ import {
   TbChartBar, 
   TbFileDescription, 
   TbLogout,
-  TbX,
-  TbCloudOff
+  TbX
 } from 'react-icons/tb';
 import { IconMenu } from '../../components/shared/HomeIcons';
 import EmblemImage from '../../components/shared/EmblemImage';
 import { api } from '../../api/mpApi';
 import { useAuthStore } from '../../store/useAuthStore';
-import { useNetworkStatus } from '../../hooks/useNetworkStatus';
-import { useOfflineRouteStatus } from '../../hooks/useOfflineRouteStatus';
 import { subscribePortalSync } from '../../utils/portalSync';
 import { useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '../../api/queries';
+import { QueryStatusIndicator } from '../../components/shared/QueryStatusBanner';
+import { reportsApi, documentsApi } from '../../api/mpladsApi';
+import { CACHE_TIMES } from '../../constants/cacheConfig';
 import useDialogA11y from '../../hooks/useDialogA11y';
 
 // Lazy-loaded to eliminate heavy AI chat bundle from critical route waterfall
 const AiAssistantWidget = lazy(() => import('../../components/shared/AiAssistantWidget.jsx'));
 
 const MpLayout = () => {
-  const { isOnline, wasOffline } = useNetworkStatus();
-  const { isRouteDisabled, notifyOfflineBlocked } = useOfflineRouteStatus();
   const queryClient = useQueryClient();
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
@@ -111,21 +108,51 @@ const MpLayout = () => {
     switch (routePath) {
       case '/mp':
         import('./MpDashboard.jsx');
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.mp.stats(user?.id),
+          queryFn: ({ signal }) => api.getDashboardStats({ signal }),
+          staleTime: CACHE_TIMES.FINANCIAL_STATUS.staleTime,
+        });
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.mp.recommendations(user?.id),
+          queryFn: ({ signal }) => api.getRecommendations({ signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
         break;
       case '/mp/projects':
         import('./MpProjects.jsx');
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.mp.projects(user?.id, {}),
+          queryFn: ({ signal }) => api.getProjects({}, { signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
         break;
       case '/mp/submit':
         import('./MpSubmitProject.jsx');
         break;
       case '/mp/reports':
         import('./MpReports.jsx');
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.mp.reports(user?.id, 'all'),
+          queryFn: ({ signal }) => reportsApi.getSummary('all', { signal }),
+          staleTime: CACHE_TIMES.DASHBOARD.staleTime,
+        });
         break;
       case '/mp/documents':
         import('./MpDocuments.jsx');
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.mp.documents(user?.id, {}),
+          queryFn: ({ signal }) => documentsApi.getMpDocuments({}, { signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
         break;
       case '/mp/notifications':
         import('./MpNotifications.jsx');
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.mp.notifications(user?.id),
+          queryFn: ({ signal }) => api.getNotifications(null, { signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
         break;
       case '/mp/settings':
         import('./MpSettings.jsx');
@@ -180,36 +207,13 @@ const MpLayout = () => {
           const isActive = location.pathname === link.path || 
                           (link.path !== '/mp' && location.pathname.startsWith(link.path));
           const Icon = link.icon;
-          const isDisabled = isRouteDisabled(link.path);
-
-          if (isDisabled) {
-            return (
-              <button
-                key={link.path}
-                type="button"
-                disabled
-                aria-disabled="true"
-                title={`${link.name} is not cached offline. Reconnect to the internet to access.`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  notifyOfflineBlocked(link.path);
-                }}
-                className="w-full flex items-center gap-2.5 px-3 py-2 rounded opacity-40 cursor-not-allowed select-none text-slate-400 bg-white/[0.02] border border-white/5 transition-opacity"
-              >
-                <Icon size={18} className="text-slate-500 shrink-0" aria-hidden="true" />
-                <span className="font-medium text-xs sm:text-sm text-left">{link.name}</span>
-                <span className="ml-auto inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-amber-400 bg-amber-400/10 px-1.5 py-0.5 rounded border border-amber-400/20">
-                  <TbCloudOff size={11} aria-hidden="true" />
-                  <span>Offline</span>
-                </span>
-              </button>
-            );
-          }
 
           return (
             <Link
               key={link.path}
               to={link.path}
+              onMouseEnter={() => prefetchMpRoute(link.path)}
+              onFocus={() => prefetchMpRoute(link.path)}
               onClick={() => setIsSidebarOpen(false)}
               aria-current={isActive ? 'page' : undefined}
               className={`flex items-center gap-2.5 px-3 py-2 rounded text-xs sm:text-sm font-medium transition-colors ${
@@ -382,20 +386,7 @@ const MpLayout = () => {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3 shrink-0 relative">
-            {/* Network Connectivity Pill */}
-            {!isOnline && (
-              <div role="status" className="hidden sm:flex items-center gap-1.5 px-2 py-0.5 bg-amber-50 text-amber-800 border border-amber-300 rounded text-xs font-semibold">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
-                <span>Offline Mode</span>
-              </div>
-            )}
-            {wasOffline && isOnline && (
-              <div role="status" className="hidden sm:flex items-center gap-1.5 px-2 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-300 rounded text-xs font-semibold">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-                <span>Reconnected</span>
-              </div>
-            )}
-            
+            <QueryStatusIndicator />
             {/* Notification Bell */}
             <div ref={notificationsRef} className="relative">
               <button 

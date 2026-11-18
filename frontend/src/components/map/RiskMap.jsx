@@ -6,9 +6,10 @@ import { motion } from 'framer-motion';
 import { getConstituencyData, getRiskColor, getRiskLevel } from '../../data/riskData';
 import RiskLegend from './RiskLegend';
 import ConstituencyPanel from './ConstituencyPanel';
+import { useGeoData } from '../../api/queries';
 
 const RiskMap = ({ searchTerm, filterState, filterRisk, setStatesList }) => {
-  const [geoData, setGeoData] = useState(null);
+  const { data: geoData } = useGeoData();
   const [selectedConstituency, setSelectedConstituency] = useState(null);
   const [hoveredRiskLevel, setHoveredRiskLevel] = useState(null);
   
@@ -31,61 +32,16 @@ const RiskMap = ({ searchTerm, filterState, filterRisk, setStatesList }) => {
   }, [filterState, filterRisk, searchTerm, hoveredRiskLevel]);
 
   useEffect(() => {
-    // Singleton cached GeoJSON fetch with persistent CacheStorage across sessions
-    if (!window.__GEOJSON_PROMISE__) {
-      window.__GEOJSON_PROMISE__ = (async () => {
-        const GEO_URL = '/data/india_constituencies_simplified.geojson';
-        const CACHE_NAME = 'mplads_geo_cache_v1';
-
-        if (typeof window !== 'undefined' && 'caches' in window) {
-          try {
-            const cache = await caches.open(CACHE_NAME);
-            const cachedRes = await cache.match(GEO_URL);
-            if (cachedRes) {
-              return await cachedRes.json();
-            }
-            const networkRes = await fetch(GEO_URL);
-            if (networkRes.ok) {
-              cache.put(GEO_URL, networkRes.clone()).catch(() => {});
-              return await networkRes.json();
-            }
-          } catch {
-            // Fall through to standard fetch
-          }
+    if (geoData?.features && setStatesList) {
+      const states = new Set();
+      geoData.features.forEach((feature) => {
+        if (feature.properties?.st_name) {
+          states.add(feature.properties.st_name);
         }
-
-        const res = await fetch(GEO_URL);
-        if (!res.ok) throw new Error('Failed to load map boundaries');
-        return await res.json();
-      })().catch((err) => {
-        window.__GEOJSON_PROMISE__ = null;
-        throw err;
       });
+      setStatesList(Array.from(states).sort());
     }
-
-    let isMounted = true;
-    window.__GEOJSON_PROMISE__
-      .then((data) => {
-        if (!isMounted) return;
-        setGeoData(data);
-        // Extract unique states for the filter
-        const states = new Set();
-        data.features.forEach((feature) => {
-          if (feature.properties.st_name)
-            states.add(feature.properties.st_name);
-        });
-        if (setStatesList) {
-          setStatesList(Array.from(states).sort());
-        }
-      })
-      .catch(() => {
-        // Handled silently
-      });
-
-    return () => {
-      isMounted = false;
-    };
-  }, [setStatesList]);
+  }, [geoData, setStatesList]);
 
   // Handler to smoothly return map to initial position and clear selection
   const handleClosePanel = useCallback(() => {

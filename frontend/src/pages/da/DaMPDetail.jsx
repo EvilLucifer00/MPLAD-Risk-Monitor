@@ -1,7 +1,6 @@
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useState, useRef, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import OfflineLink from '../../components/shared/OfflineLink';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useDaMpProjects, useDaDistrictMps } from '../../api/queries';
 import { RiskBadge, StatusBadge } from '../mp/MpProjects';
@@ -117,12 +116,12 @@ const DaMPDetail = () => {
               <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#123b63]">{mpDisplayName}</h1>
               <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-normal">{mpDisplayConstituency ? `${mpDisplayConstituency} Constituency • ` : ''}{projects.length} Works Recorded</p>
             </div>
-            <OfflineLink 
+            <Link 
               to={`/da/review?mp=${mpId}`}
               className="bg-[#123b63] hover:bg-[#0c2a47] text-white px-3.5 py-1.5 rounded text-xs sm:text-sm font-semibold transition-colors flex items-center gap-1.5 self-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
             >
               <span>Review Queue</span> <TbChevronRight size={14} aria-hidden="true" />
-            </OfflineLink>
+            </Link>
           </div>
 
           {/* Quick Stats Section */}
@@ -280,13 +279,13 @@ const DaMPDetail = () => {
                         </span>
                       </td>
                       <td className="px-4 sm:px-5 py-3 text-right">
-                        <OfflineLink 
+                        <Link 
                           to={`/da/review/${project.id}`}
                           aria-label={`Review project ${project.title}`}
                           className="inline-flex items-center justify-center p-1.5 text-slate-500 hover:text-[#123b63] hover:bg-slate-100 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
                         >
                           <TbChevronRight size={16} aria-hidden="true" />
-                        </OfflineLink>
+                        </Link>
                       </td>
                     </tr>
                   );

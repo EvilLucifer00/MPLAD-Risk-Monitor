@@ -1,15 +1,23 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
   IconChatbot,
-  IconClose,
-  IconSend,
-  IconRobot,
   IconUser,
-  IconMaximize,
-  IconMinimize,
-  IconSparkles,
-  IconRefresh,
 } from './HomeIcons';
+import EmblemImage from './EmblemImage';
+import {
+  TbBuildingBank,
+  TbCoin,
+  TbAlertTriangle,
+  TbFileCheck,
+  TbSend,
+  TbRefresh,
+  TbMaximize,
+  TbMinimize,
+  TbX,
+  TbShieldCheck,
+  TbChevronRight,
+  TbSparkles,
+} from 'react-icons/tb';
 import { sendChatMessage } from '../../api/ragApi';
 import MarkdownMessage from './MarkdownMessage';
 
@@ -21,10 +29,30 @@ const MIN_HEIGHT = 380;
 
 // Curated starter inquiries aligned with official MoSPI MPLADS knowledge base
 const STARTER_PROMPTS = [
-  { label: '🏛️ Permissible Works', prompt: 'What works are permissible and prohibited under MPLADS guidelines?' },
-  { label: '💰 Fund Release Cycle', prompt: 'How does the installment release and expenditure certification process work?' },
-  { label: '⚠️ High Risk Factors', prompt: 'What specific indicators trigger a High or Critical risk score for a constituency?' },
-  { label: '📋 MP Recommendations', prompt: 'What is the procedure and timeline for MPs recommending works to District Authorities?' },
+  {
+    icon: TbBuildingBank,
+    title: 'Permissible Works',
+    desc: 'Eligible & prohibited MPLADS items',
+    prompt: 'What works are permissible and prohibited under MPLADS guidelines?',
+  },
+  {
+    icon: TbCoin,
+    title: 'Fund Release Cycle',
+    desc: 'Installments & utilization certificates',
+    prompt: 'How does the installment release and expenditure certification process work?',
+  },
+  {
+    icon: TbAlertTriangle,
+    title: 'Risk Scoring Criteria',
+    desc: 'High risk indicators & audit flags',
+    prompt: 'What specific indicators trigger a High or Critical risk score for a constituency?',
+  },
+  {
+    icon: TbFileCheck,
+    title: 'MP Recommendations',
+    desc: 'Sanction timelines & workflow steps',
+    prompt: 'What is the procedure and timeline for MPs recommending works to District Authorities?',
+  },
 ];
 
 // Dynamic maximum dimensions clamped to viewport boundary
@@ -82,11 +110,8 @@ const AiAssistantWidget = () => {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
 
-      const { maxW, maxH } = getMaxDimensions();
-
-      if (isMaximized) {
-        setDimensions({ width: maxW, height: maxH });
-      } else {
+      if (!isMaximized) {
+        const { maxW, maxH } = getMaxDimensions();
         setDimensions((prev) => ({
           width: Math.min(prev.width, maxW),
           height: Math.min(prev.height, maxH),
@@ -98,16 +123,21 @@ const AiAssistantWidget = () => {
     return () => window.removeEventListener('resize', handleWindowResize);
   }, [isMaximized]);
 
-  // Handle ESC key to close widget
+  // Handle ESC key: if maximized on desktop, exit full-screen first; otherwise close widget
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === 'Escape' && isOpen) {
-        setIsOpen(false);
+        if (isMaximized && !isMobile) {
+          setIsMaximized(false);
+          setDimensions(prevDimensionsRef.current);
+        } else {
+          setIsOpen(false);
+        }
       }
     };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
-  }, [isOpen]);
+  }, [isOpen, isMaximized, isMobile]);
 
   // Prevent main page scrolling when the AI chatbot is open
   useEffect(() => {
@@ -301,12 +331,10 @@ const AiAssistantWidget = () => {
     window.addEventListener('pointerup', onPointerUp);
   };
 
-  // Maximize / Restore Toggle (clamped to page boundary)
+  // Maximize / Restore Toggle for Desktop Full-Screen Viewport
   const toggleMaximize = () => {
     if (!isMaximized) {
       prevDimensionsRef.current = { ...dimensions };
-      const { maxW, maxH } = getMaxDimensions();
-      setDimensions({ width: maxW, height: maxH });
       setIsMaximized(true);
     } else {
       setDimensions(prevDimensionsRef.current);
@@ -417,24 +445,32 @@ const AiAssistantWidget = () => {
   };
 
   return (
-    <div className={isMobile && isOpen ? "fixed inset-0 z-[9999]" : "fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-[9999]"}>
+    <div
+      className={
+        isOpen && (isMobile || isMaximized)
+          ? "fixed inset-0 z-[9999]"
+          : "fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-[9999]"
+      }
+    >
       {/* Resizable / Fullscreen Chat Panel */}
       <div
         role="dialog"
-        aria-modal={isMobile ? "true" : "false"}
+        aria-modal={isMobile || isMaximized ? "true" : "false"}
         aria-label="MPLADS AI Assistant"
         onWheel={handlePanelWheel}
         style={
-          isMobile
+          isMobile || isMaximized
             ? undefined
             : {
                 width: isOpen ? `${dimensions.width}px` : undefined,
                 height: isOpen ? `${dimensions.height}px` : undefined,
               }
         }
-        className={`flex flex-col bg-white overflow-hidden select-text pointer-events-auto overscroll-contain ${
+        className={`flex flex-col bg-white overflow-hidden select-text pointer-events-auto overscroll-contain font-sans antialiased ${
           isMobile
             ? 'fixed inset-0 w-full h-[100dvh] rounded-none z-[9999] border-0'
+            : isMaximized
+            ? 'fixed inset-0 w-screen h-screen max-w-none max-h-none rounded-none z-[9999] border-0 shadow-2xl'
             : 'absolute bottom-0 right-0 rounded-2xl shadow-[0_12px_48px_rgba(18,59,99,0.22)] border border-slate-200/90 origin-bottom-right'
         } ${isResizing ? 'transition-none' : 'transition-[transform,opacity] duration-200 ease-out'} ${
           isOpen
@@ -470,38 +506,49 @@ const AiAssistantWidget = () => {
           </>
         )}
 
-        {/* National Tricolor Top Ribbon Accent */}
-        <div className="h-[2.5px] w-full bg-gradient-to-r from-amber-500 via-white to-emerald-600 opacity-95 flex-shrink-0" />
+        {/* National Tricolor Top Ribbon Accent with smoothly blended boundaries */}
+        <div
+          className="h-[2.5px] w-full flex-shrink-0"
+          style={{
+            background: 'linear-gradient(to right, #FF9933 0%, #FF9933 20%, #FFFFFF 38%, #FFFFFF 62%, #138808 80%, #138808 100%)',
+          }}
+        />
 
-        {/* Header - Sleek Navy Gradient with Official Branding & Window Controls */}
-        <div className="bg-gradient-to-r from-[#0a233d] via-[#123b63] to-[#0c2a47] text-white px-3.5 py-2.5 sm:px-4 sm:py-3 flex items-center justify-between flex-shrink-0 select-none border-b border-white/10 shadow-xs">
+        {/* Header - Official Deep Navy Government Header */}
+        <div className="bg-[#123b63] text-white px-3.5 py-2.5 sm:px-5 sm:py-3 flex items-center justify-between flex-shrink-0 select-none border-b border-white/10 shadow-xs">
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="relative p-2 bg-gradient-to-br from-cyan-500/25 to-white/10 border border-cyan-400/30 rounded-xl flex-shrink-0 shadow-xs">
-              <IconRobot size={18} className="text-cyan-300" />
-              <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-[#0a233d]" />
-            </div>
-            <div className="min-w-0 truncate">
+            <EmblemImage
+              width={26}
+              height={32}
+              className="w-6 h-[30px] object-contain shrink-0 drop-shadow-xs"
+              alt="Government of India"
+            />
+            <div className="min-w-0">
               <div className="flex items-center gap-1.5">
-                <h3 className="font-bold text-[13.5px] tracking-tight leading-tight text-white truncate">MPLADS Assistant</h3>
-                <span className="text-[9.5px] font-bold uppercase tracking-wider px-1.5 py-0.2 rounded-full bg-cyan-400/20 text-cyan-200 border border-cyan-400/30">MoSPI AI</span>
+                <h3 className="font-bold text-sm sm:text-base tracking-tight leading-tight text-white truncate font-sans">
+                  MPLADS AI Assistant
+                </h3>
+                <span className="hidden sm:inline-flex items-center text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-white/15 text-cyan-200 border border-white/20">
+                  MoSPI
+                </span>
               </div>
-              <p className="text-[10.5px] text-slate-300 flex items-center gap-1.5 leading-tight mt-0.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span>Guidelines Reference • Online</span>
+              <p className="text-[11px] text-slate-300 flex items-center gap-1.5 leading-tight mt-0.5 font-sans">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                <span>Official Guidelines Reference • Active</span>
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+          <div className="flex items-center gap-1 flex-shrink-0">
             {/* New Chat / Reset Button */}
             <button
               type="button"
               onClick={handleResetConversation}
-              className="p-2 min-w-[36px] min-h-[36px] sm:min-w-[40px] sm:min-h-[40px] flex items-center justify-center hover:bg-white/10 active:scale-90 rounded-lg transition-[transform,background-color] duration-150 ease-out text-slate-300 hover:text-white touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+              className="p-1.5 sm:p-2 flex items-center justify-center hover:bg-white/10 active:scale-90 rounded-lg transition-colors text-slate-300 hover:text-white touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 cursor-pointer"
               aria-label="Start new conversation"
               title="Start New Chat"
             >
-              <IconRefresh size={18} />
+              <TbRefresh size={18} />
             </button>
 
             {/* Maximize / Restore Toggle - ONLY ON DESKTOP */}
@@ -509,11 +556,11 @@ const AiAssistantWidget = () => {
               <button
                 type="button"
                 onClick={toggleMaximize}
-                className="p-2 min-w-[36px] min-h-[36px] sm:min-w-[40px] sm:min-h-[40px] flex items-center justify-center hover:bg-white/10 active:scale-90 rounded-lg transition-[transform,background-color] duration-150 ease-out text-slate-300 hover:text-white touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
-                aria-label={isMaximized ? 'Restore window size' : 'Maximize window'}
-                title={isMaximized ? 'Restore' : 'Maximize'}
+                className="p-1.5 sm:p-2 flex items-center justify-center hover:bg-white/10 active:scale-90 rounded-lg transition-colors text-slate-300 hover:text-white touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 cursor-pointer"
+                aria-label={isMaximized ? 'Exit full-screen' : 'Open full-screen'}
+                title={isMaximized ? 'Exit Full Screen (Esc)' : 'Full Screen'}
               >
-                {isMaximized ? <IconMinimize size={18} /> : <IconMaximize size={18} />}
+                {isMaximized ? <TbMinimize size={18} /> : <TbMaximize size={18} />}
               </button>
             )}
 
@@ -521,11 +568,11 @@ const AiAssistantWidget = () => {
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="p-2 min-w-[36px] min-h-[36px] sm:min-w-[40px] sm:min-h-[40px] flex items-center justify-center hover:bg-white/10 active:scale-90 rounded-lg transition-[transform,background-color] duration-150 ease-out text-slate-300 hover:text-white touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+              className="p-1.5 sm:p-2 flex items-center justify-center hover:bg-white/10 active:scale-90 rounded-lg transition-colors text-slate-300 hover:text-white touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 cursor-pointer"
               aria-label="Close assistant"
               title="Close"
             >
-              <IconClose size={isMobile ? 22 : 18} />
+              <TbX size={isMobile ? 20 : 18} />
             </button>
           </div>
         </div>
@@ -537,9 +584,9 @@ const AiAssistantWidget = () => {
           role="log"
           aria-live="polite"
           aria-label="Chat messages"
-          className="flex-1 overflow-y-auto px-3.5 sm:px-6 py-4 space-y-4 min-h-0 w-full bg-gradient-to-b from-slate-50 via-slate-50/60 to-slate-100/70 overscroll-contain touch-pan-y"
+          className="flex-1 overflow-y-auto px-3.5 sm:px-5 py-4 space-y-4 min-h-0 w-full bg-slate-50/70 overscroll-contain touch-pan-y custom-scrollbar"
         >
-          <div className="w-full space-y-4">
+          <div className={`w-full space-y-4 ${isMaximized ? 'max-w-4xl mx-auto' : ''}`}>
             {messages.map((msg) => (
               <div
                 key={msg.id || msg.text}
@@ -550,39 +597,43 @@ const AiAssistantWidget = () => {
               >
                 {/* Avatar for Assistant */}
                 {msg.role !== 'user' && (
-                  <div className="flex-shrink-0 w-7 h-7 rounded-xl flex items-center justify-center text-xs mt-0.5 shadow-xs bg-gradient-to-br from-[#123b63] to-[#0c2a47] text-cyan-300 border border-[#1b4b7c]/40">
-                    <IconRobot size={15} />
+                  <div className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs mt-0.5 shadow-2xs bg-[#123b63] text-white border border-[#1b4b7c]/40">
+                    <TbShieldCheck size={16} className="text-emerald-400" />
                   </div>
                 )}
 
                 {/* Message Bubble */}
                 {msg.role === 'user' ? (
-                  /* User Bubble - Sleek Deep Navy gradient pill on the right */
-                  <div className="p-3 px-4 rounded-2xl rounded-tr-xs text-[13.5px] leading-relaxed shadow-xs break-words bg-gradient-to-br from-[#123b63] via-[#10375c] to-[#0a233d] text-white max-w-[85%] border border-[#1b4b7c]/40">
+                  /* User Bubble - Sleek Deep Navy on the right */
+                  <div className="p-3 px-4 rounded-xl rounded-tr-xs text-sm leading-relaxed shadow-xs break-words bg-[#123b63] text-white max-w-[85%] border border-[#1b4b7c]/40 font-normal">
                     <p className="whitespace-pre-wrap">{msg.text}</p>
                   </div>
                 ) : (
                   /* Assistant Content - Crisp white card with verified header, taking full width */
                   <div
-                    className={`flex-1 w-full min-w-0 bg-white border border-slate-200/90 rounded-2xl rounded-tl-xs p-3.5 sm:p-4 shadow-[0_2px_12px_rgba(18,59,99,0.04)] text-[13.5px] leading-relaxed text-slate-800 ${
-                      msg.isTyping ? 'cursor-pointer hover:border-cyan-300 transition-colors' : ''
+                    className={`flex-1 w-full min-w-0 bg-white border border-slate-200/90 rounded-xl rounded-tl-xs p-3.5 sm:p-4 shadow-2xs text-sm leading-relaxed text-slate-800 ${
+                      msg.isTyping ? 'cursor-pointer hover:border-slate-300 transition-colors' : ''
                     }`}
                     title={msg.isTyping ? 'Click to show full response immediately' : undefined}
                   >
                     {/* Official source badge */}
-                    <div className="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-slate-100 text-[11px] font-semibold text-slate-500 select-none">
-                      <span className="flex items-center gap-1.5 text-[#123b63]">
-                        <IconSparkles size={12} className="text-cyan-600" />
-                        <span>MoSPI Reference</span>
+                    <div className="flex items-center justify-between gap-2 mb-2.5 pb-2 border-b border-slate-100 text-xs text-slate-500 select-none">
+                      <span className="flex items-center gap-1.5 font-semibold text-[#123b63]">
+                        <TbShieldCheck size={14} className="text-emerald-700 shrink-0" />
+                        <span>MoSPI MPLADS Intelligence</span>
                       </span>
-                      {msg.isTyping && (
-                        <span className="text-[10.5px] text-cyan-700 font-normal hover:underline">
+                      {msg.isTyping ? (
+                        <span className="text-[11px] text-slate-500 hover:text-[#123b63] font-medium">
                           Click to skip
+                        </span>
+                      ) : (
+                        <span className="text-[11px] text-slate-400 font-mono">
+                          Verified
                         </span>
                       )}
                     </div>
 
-                    <div className="relative w-full min-w-0">
+                    <div className="relative w-full min-w-0 font-sans">
                       <MarkdownMessage
                         content={
                           msg.isTyping
@@ -592,7 +643,7 @@ const AiAssistantWidget = () => {
                         citations={msg.isTyping ? [] : msg.citations}
                       />
                       {msg.isTyping && (
-                        <span className="inline-block w-1.5 h-3.5 bg-cyan-600 rounded-full ml-1 animate-pulse align-middle" />
+                        <span className="inline-block w-1.5 h-3.5 bg-[#123b63] rounded-full ml-1 animate-pulse align-middle" />
                       )}
                     </div>
                   </div>
@@ -600,7 +651,7 @@ const AiAssistantWidget = () => {
 
                 {/* Avatar for User */}
                 {msg.role === 'user' && (
-                  <div className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs mt-0.5 shadow-xs bg-gradient-to-br from-cyan-600 to-sky-700 text-white ring-1 ring-cyan-400/30">
+                  <div className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs mt-0.5 shadow-2xs bg-slate-200 text-slate-700 border border-slate-300">
                     <IconUser size={14} />
                   </div>
                 )}
@@ -609,22 +660,38 @@ const AiAssistantWidget = () => {
 
             {/* Quick Starter Prompts (Shown on initial conversation) */}
             {messages.length === 1 && !isLoading && (
-              <div className="pt-2 pl-9 sm:pl-10 space-y-2 w-full">
-                <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
-                  <IconSparkles size={12} className="text-amber-500" />
-                  <span>Suggested inquiries</span>
+              <div className="pt-1 pl-9 sm:pl-10 space-y-2 w-full">
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                  <TbSparkles size={13} className="text-[#123b63]" />
+                  <span>Suggested Inquiries</span>
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 w-full">
-                  {STARTER_PROMPTS.map((item, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => handleSend(item.prompt)}
-                      className="text-left text-xs bg-white hover:bg-cyan-50/50 border border-slate-200/90 hover:border-cyan-400/80 text-slate-700 hover:text-[#123b63] p-2.5 rounded-xl shadow-2xs transition-all duration-150 flex items-center justify-between group active:scale-[0.98] w-full"
-                    >
-                      <span className="font-medium truncate">{item.label}</span>
-                      <span className="text-slate-400 group-hover:text-cyan-600 text-xs ml-1.5 flex-shrink-0 transition-transform group-hover:translate-x-0.5">→</span>
-                    </button>
-                  ))}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
+                  {STARTER_PROMPTS.map((item, idx) => {
+                    const IconComp = item.icon;
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => handleSend(item.prompt)}
+                        className="text-left bg-white hover:bg-slate-50 border border-slate-200 hover:border-[#123b63]/50 text-slate-800 p-2.5 rounded-lg shadow-2xs transition-all duration-150 flex items-center justify-between gap-2 group active:scale-[0.99] w-full cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
+                      >
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <div className="w-7 h-7 rounded-md bg-slate-100 group-hover:bg-blue-50 text-[#123b63] flex items-center justify-center shrink-0 transition-colors">
+                            <IconComp size={15} />
+                          </div>
+                          <div className="min-w-0">
+                            <span className="font-semibold text-xs text-slate-800 group-hover:text-[#123b63] block truncate">
+                              {item.title}
+                            </span>
+                            <span className="text-[11px] text-slate-500 block truncate">
+                              {item.desc}
+                            </span>
+                          </div>
+                        </div>
+                        <TbChevronRight size={14} className="text-slate-400 group-hover:text-[#123b63] shrink-0 transition-transform group-hover:translate-x-0.5" />
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -632,14 +699,14 @@ const AiAssistantWidget = () => {
             {/* Loading Indicator */}
             {isLoading && (
               <div className="flex gap-2.5 sm:gap-3 w-full items-start">
-                <div className="flex-shrink-0 w-7 h-7 rounded-xl flex items-center justify-center text-xs mt-0.5 shadow-xs bg-gradient-to-br from-[#123b63] to-[#0c2a47] text-cyan-300 border border-[#1b4b7c]/40">
-                  <IconRobot size={15} />
+                <div className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs mt-0.5 shadow-2xs bg-[#123b63] text-white border border-[#1b4b7c]/40">
+                  <TbShieldCheck size={16} className="text-emerald-400" />
                 </div>
-                <div className="p-3.5 px-4 rounded-2xl rounded-tl-xs text-xs leading-relaxed shadow-xs bg-white border border-slate-200/90 text-slate-700 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-600 animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-600 animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-600 animate-bounce" style={{ animationDelay: '300ms' }} />
-                  <span className="text-[11px] text-slate-400 ml-1.5">Searching guidelines...</span>
+                <div className="p-3 px-4 rounded-xl rounded-tl-xs text-xs leading-relaxed shadow-2xs bg-white border border-slate-200 text-slate-700 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#123b63] animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#123b63] animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#123b63] animate-bounce" style={{ animationDelay: '300ms' }} />
+                  <span className="text-xs text-slate-500 font-medium ml-1">Analyzing statutory guidelines...</span>
                 </div>
               </div>
             )}
@@ -648,9 +715,9 @@ const AiAssistantWidget = () => {
         </div>
 
         {/* Input Area - Full width container */}
-        <div className="p-3 sm:px-6 pb-[max(0.75rem,env(safe-area-inset-bottom))] bg-white border-t border-slate-200/90 flex-shrink-0 shadow-[0_-2px_10px_rgba(0,0,0,0.02)] w-full">
-          <div className="w-full">
-            <div className="flex items-end gap-1.5 bg-slate-50 border border-slate-200 rounded-xl p-1.5 px-3 focus-within:ring-2 focus-within:ring-cyan-500/25 focus-within:border-cyan-600 focus-within:bg-white transition-all duration-150 shadow-2xs w-full">
+        <div className="p-3 sm:px-5 pb-[max(0.75rem,env(safe-area-inset-bottom))] bg-white border-t border-slate-200 flex-shrink-0 shadow-[0_-2px_8px_rgba(0,0,0,0.02)] w-full">
+          <div className={`w-full ${isMaximized ? 'max-w-4xl mx-auto' : ''}`}>
+            <div className="flex items-end gap-2 bg-slate-50/90 border border-slate-200 rounded-xl p-1.5 px-3 focus-within:ring-2 focus-within:ring-[#123b63]/20 focus-within:border-[#123b63] focus-within:bg-white transition-all duration-150 shadow-2xs w-full">
               <textarea
                 ref={textareaRef}
                 value={inputValue}
@@ -659,22 +726,22 @@ const AiAssistantWidget = () => {
                 disabled={isLoading}
                 placeholder="Ask about MPLADS guidelines, fund releases, risk rules..."
                 aria-label="Ask AI Assistant a question"
-                className="flex-1 bg-transparent border-none focus:ring-0 resize-none text-xs sm:text-sm p-1.5 max-h-[110px] min-h-[32px] outline-none disabled:opacity-60 leading-relaxed text-slate-800 placeholder:text-slate-400 w-full"
+                className="flex-1 bg-transparent border-none focus:ring-0 resize-none overflow-y-auto custom-scrollbar text-sm p-1.5 max-h-[110px] min-h-[38px] outline-none disabled:opacity-60 leading-relaxed text-slate-800 placeholder:text-slate-400 w-full font-sans"
                 rows={1}
               />
               <button
                 type="button"
                 onClick={() => handleSend()}
                 disabled={!inputValue.trim() || isLoading}
-                className="p-2.5 bg-gradient-to-r from-[#123b63] to-cyan-700 hover:from-[#0d2a47] hover:to-cyan-800 text-white rounded-lg disabled:opacity-35 disabled:cursor-not-allowed active:scale-95 transition-all duration-150 ease-out flex-shrink-0 mb-0.5 shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+                className="p-2.5 bg-[#123b63] hover:bg-[#0c2a47] text-white rounded-lg disabled:opacity-35 disabled:cursor-not-allowed active:scale-95 transition-all duration-150 ease-out flex-shrink-0 mb-0.5 shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] cursor-pointer"
                 aria-label="Send message"
                 title="Send message"
               >
-                <IconSend size={16} />
+                <TbSend size={16} />
               </button>
             </div>
-            <p className="text-[10px] text-center text-slate-400 mt-1.5 select-none truncate w-full">
-              Answers grounded in official MoSPI MPLADS Guidelines • AI can make mistakes
+            <p className="text-[11px] text-center text-slate-500 mt-2 select-none leading-normal font-sans">
+              Official MoSPI MPLADS Guidelines Reference • AI-assisted governance intelligence
             </p>
           </div>
         </div>
