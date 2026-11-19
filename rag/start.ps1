@@ -15,13 +15,29 @@ Write-Host "      Starting MPLADS RAG System         " -ForegroundColor Cyan
 Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host ""
 
-# 1. Start the Backend
+# 1. Locate Python virtual environment
 $BackendDir = Join-Path $ScriptDir "backend"
-$PythonExe = Join-Path $BackendDir "venv\Scripts\python.exe"
+$CandidatePaths = @(
+    (Join-Path $ScriptDir "..\.venv\Scripts\python.exe"),
+    (Join-Path $BackendDir "venv\Scripts\python.exe"),
+    (Join-Path $ScriptDir "venv\Scripts\python.exe")
+)
+if ($env:VIRTUAL_ENV) {
+    $CandidatePaths = @((Join-Path $env:VIRTUAL_ENV "Scripts\python.exe")) + $CandidatePaths
+}
 
-if (-not (Test-Path $PythonExe)) {
-    Write-Host "Error: Backend virtual environment not found at $PythonExe" -ForegroundColor Red
-    Write-Host "Please ensure you have run the setup scripts." -ForegroundColor Red
+$PythonExe = $null
+foreach ($path in $CandidatePaths) {
+    if (Test-Path $path) {
+        $PythonExe = (Resolve-Path $path).Path
+        break
+    }
+}
+
+if (-not $PythonExe) {
+    Write-Host "Error: Virtual environment python.exe not found." -ForegroundColor Red
+    Write-Host "Checked locations:" -ForegroundColor Yellow
+    foreach ($path in $CandidatePaths) { Write-Host "  - $path" }
     exit 1
 }
 

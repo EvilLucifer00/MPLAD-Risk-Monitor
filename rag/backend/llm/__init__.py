@@ -1,1 +1,1 @@
-# LLM provider package
+# LLM module

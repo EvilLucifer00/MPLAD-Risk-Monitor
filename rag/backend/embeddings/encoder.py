@@ -34,7 +34,7 @@ class EmbeddingEncoder:
             )
             logger.info(
                 "Embedding model loaded — dimension: %d",
-                self._model.get_sentence_embedding_dimension(),
+                getattr(self._model, "get_embedding_dimension", self._model.get_sentence_embedding_dimension)(),
             )
 
     def encode(self, texts: List[str], batch_size: int = 32, show_progress: bool = False) -> List[List[float]]:
@@ -52,6 +52,10 @@ class EmbeddingEncoder:
             normalize_embeddings=True,  # cosine similarity = dot product
         )
         return embeddings.tolist()
+
+    def encode_single(self, text: str) -> List[float]:
+        """Encode a single text string."""
+        return self.encode([text])[0]
 
     def encode_query(self, query: str) -> List[float]:
         """Encode a single query — BGE models benefit from a query prefix."""

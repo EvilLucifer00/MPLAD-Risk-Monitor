@@ -6,14 +6,14 @@ services:
     container_name: mplads-postgres
     environment:
       POSTGRES_DB: mplads_rag
-      POSTGRES_USER: mplads
-      POSTGRES_PASSWORD: mplads_secure_password_123
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: krish@2004
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U mplads -d mplads_rag"]
+      test: [ "CMD-SHELL", "pg_isready -U mplads -d mplads_rag" ]
       interval: 5s
       timeout: 5s
       retries: 5

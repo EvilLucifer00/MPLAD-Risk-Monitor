@@ -37,3 +37,9 @@ pydantic-settings==2.7.1
 httpx==0.28.1
 aiofiles==24.1.0
 xxhash==3.5.0
+
+# Auth (JWT — shared secret with main backend)
+python-jose[cryptography]==3.3.0
+
+# Token counting (for STM token budgeting)
+tiktoken==0.8.0

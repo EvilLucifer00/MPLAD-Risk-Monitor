@@ -1,4 +1,12 @@
-"""MPLADS Self-RAG Chatbot — FastAPI application entry point."""
+"""MPLADS Self-RAG Chatbot — FastAPI application entry point.
+
+Production-grade agentic RAG system with:
+- LLM Router (Gemini + Groq) for cost optimization
+- Input & Output guardrails (PII, injection, grounding, hallucination)
+- Semantic cache (pgvector) for repeated queries
+- Dual-mode access (anonymous=docs only, MP/DM=docs + project data)
+- Token-budgeted short-term memory + semantic long-term memory
+"""
 
 import logging
 import os
@@ -31,10 +39,10 @@ async def lifespan(app: FastAPI):
     """Startup: run migrations, preload models. Shutdown: cleanup."""
     logger.info("🚀 Starting MPLADS Self-RAG Chatbot...")
 
-    # Run database migrations
+    # Run database migrations (creates pgvector extension, tables, indexes)
     try:
         await run_migrations()
-        logger.info("✅ Database ready")
+        logger.info("✅ Database ready (pgvector + tables + HNSW indexes)")
     except Exception as e:
         logger.error("❌ Database migration failed: %s", e)
 
@@ -42,7 +50,7 @@ async def lifespan(app: FastAPI):
     try:
         from embeddings.encoder import encoder
         _ = encoder.dimension
-        logger.info("✅ Embedding model loaded")
+        logger.info("✅ Embedding model loaded: %s (dim=%d)", settings.embedding_model, encoder.dimension)
     except Exception as e:
         logger.warning("⚠️  Embedding model preload failed: %s", e)
 
@@ -50,7 +58,7 @@ async def lifespan(app: FastAPI):
     try:
         from reranking.reranker import reranker
         reranker._load()
-        logger.info("✅ Reranker model loaded")
+        logger.info("✅ Reranker model loaded: %s", settings.reranker_model)
     except Exception as e:
         logger.warning("⚠️  Reranker model preload failed: %s", e)
 
@@ -62,13 +70,29 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         logger.warning("⚠️  ChromaDB initialization failed: %s", e)
 
-    # Check LLM Provider
+    # Initialize LLM Router
     try:
-        from llm.provider import llm_client
-        provider = await llm_client._get_provider()
-        logger.info("✅ LLM provider initialized: %s", provider.value)
+        from llm.router import llm_router
+        logger.info("✅ LLM Router initialized (strategy=%s)", llm_router.strategy)
+        if settings.gemini_api_key:
+            logger.info("   Gemini: %s / %s", settings.gemini_model, settings.gemini_model_heavy)
+        if settings.groq_api_key:
+            logger.info("   Groq: %s / %s", settings.groq_model_fast, settings.groq_model_quality)
     except Exception as e:
-        logger.warning("⚠️  LLM provider initialization failed: %s", e)
+        logger.warning("⚠️  LLM Router initialization failed: %s", e)
+
+    # Log guardrails and cache status
+    logger.info("🛡️  Guardrails: %s", "ENABLED" if settings.guardrails_enabled else "DISABLED")
+    logger.info("💾 Semantic Cache: %s (threshold=%.2f, TTL=%dh)",
+                "ENABLED" if settings.cache_enabled else "DISABLED",
+                settings.cache_similarity_threshold,
+                settings.cache_ttl_hours)
+
+    # Log auth status
+    if settings.jwt_secret:
+        logger.info("🔑 JWT auth: CONFIGURED (dual-mode access enabled)")
+    else:
+        logger.info("🔑 JWT auth: NOT CONFIGURED (anonymous-only mode)")
 
     yield  # App runs
 
@@ -81,9 +105,10 @@ app = FastAPI(
     description=(
         "An advanced RAG chatbot for Members of Parliament Local Area Development Scheme "
         "(MPLADS) documents. Uses Self-RAG with LangGraph, hybrid retrieval, "
-        "BGE reranking, and LLM via Gemini/Groq."
+        "BGE reranking, LLM Router (Gemini/Groq), semantic cache, "
+        "input/output guardrails, and dual-mode access (public + MP-authenticated)."
     ),
-    version="1.0.0",
+    version="2.0.0",
     lifespan=lifespan,
 )
 
@@ -118,11 +143,16 @@ async def health_check():
     except Exception:
         db_status = "disconnected"
 
-    # Check LLM Provider
+    # Check LLM Router
     try:
-        from llm.provider import llm_client
-        provider = await llm_client._get_provider()
-        llm_status = provider.value
+        from llm.router import llm_router
+        llm_status = f"router ({llm_router.strategy})"
+        providers = []
+        if settings.gemini_api_key:
+            providers.append("gemini")
+        if settings.groq_api_key:
+            providers.append("groq")
+        llm_status += f" [{'+'.join(providers)}]"
     except Exception:
         llm_status = "disconnected"
 

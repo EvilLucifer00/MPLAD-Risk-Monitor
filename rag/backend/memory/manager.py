@@ -1,58 +1,66 @@
-"""Long-term memory manager — PostgreSQL-backed persistent memory with semantic retrieval.
+"""Memory manager — orchestrates Short-Term Memory (STM) + Long-Term Memory (LTM).
 
-Implements:
-- Short-term conversation memory (recent messages)
-- Conversation summaries (auto-generated when threshold reached)
-- Important user facts/preferences extraction (name, interests, key info)
-- User profile aggregation across all conversations
-- Semantic memory retrieval using embeddings
+Replaces the old monolithic MemoryManager with a clean orchestrator that
+delegates to the new STM and LTM subsystems.
 """
 
 from __future__ import annotations
 import json
 import logging
-from datetime import datetime, timezone
-from typing import List, Optional
-from uuid import UUID
+from typing import List, Optional, Tuple
 
-from sqlalchemy import text, select, update, func, desc
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from config import get_settings
-from database.models import Memory, Message, Conversation, User
-from embeddings.encoder import encoder
-from llm.provider import llm_client
+from database.models import Conversation, Memory
+from memory.short_term import short_term_memory
+from memory.long_term import long_term_memory
+from llm.router import llm_router, TaskType
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
 
 
 class MemoryManager:
-    """Manages long-term memory for users across conversations."""
+    """Orchestrates STM + LTM for the RAG pipeline."""
 
-    # ── Short-Term Memory ────────────────────────────────────────────────
+    # ── Combined Context Retrieval ───────────────────────────────────────
 
-    async def get_conversation_messages(
+    async def get_full_context(
         self,
-        conversation_id: str,
+        query: str,
+        conversation_id: str | None,
+        user_id: str | None,
         db: AsyncSession,
-        limit: int | None = None,
-    ) -> List[dict]:
-        """Get recent messages from a conversation (short-term memory)."""
-        limit = limit or settings.memory_max_short_term
-        result = await db.execute(
-            select(Message)
-            .where(Message.conversation_id == conversation_id)
-            .order_by(desc(Message.created_at))
-            .limit(limit)
-        )
-        messages = result.scalars().all()
-        # Return in chronological order
-        messages.reverse()
-        return [
-            {"role": m.role, "content": m.content, "created_at": m.created_at.isoformat()}
-            for m in messages
-        ]
+        max_stm_tokens: int = 2000,
+    ) -> dict:
+        """Get combined context from STM and LTM.
+
+        Returns:
+            Dict with conversation_context, conversation_summary, and memories.
+        """
+        conversation_context = []
+        conversation_summary = None
+        memories = []
+
+        # STM: Recent messages + summary
+        if conversation_id:
+            conversation_context, conversation_summary = await short_term_memory.get_context(
+                conversation_id, db, max_tokens=max_stm_tokens,
+            )
+
+        # LTM: Semantically relevant past memories (on EVERY turn, not just turn #1)
+        if user_id:
+            memories = await long_term_memory.retrieve_relevant(
+                query=query, user_id=user_id, db=db, top_k=5,
+            )
+
+        return {
+            "conversation_context": conversation_context,
+            "conversation_summary": conversation_summary,
+            "memories": memories,
+        }
 
     # ── Memory Extraction ────────────────────────────────────────────────
 
@@ -99,7 +107,10 @@ If nothing is worth remembering, respond with: []
 Only output the JSON array, nothing else."""
 
         try:
-            llm_output = await llm_client.generate(prompt, temperature=0.1, max_tokens=500)
+            llm_output = await llm_router.generate(
+                TaskType.MEMORY_EXTRACTION, prompt,
+                temperature=0.1, max_tokens=500,
+            )
 
             # Parse memories
             start = llm_output.find("[")
@@ -120,122 +131,20 @@ Only output the JSON array, nothing else."""
                 if importance < 0.3:
                     continue  # Skip low-importance memories
 
-                # Check for duplicate memories (avoid storing the same thing)
-                existing = await db.execute(
-                    select(Memory).where(
-                        Memory.user_id == user_id,
-                        Memory.memory_type == mem_type,
-                        Memory.content == content,
-                        Memory.is_active == True,
-                    )
-                )
-                if existing.scalar_one_or_none():
-                    continue  # Already stored
-
-                memory = Memory(
+                await long_term_memory.store_memory(
                     user_id=user_id,
-                    memory_type=mem_type,
                     content=content,
+                    memory_type=mem_type,
                     importance=importance,
+                    db=db,
                     source_conversation_id=conversation_id,
                 )
-                db.add(memory)
 
-            await db.flush()
-            logger.info("Extracted memories for user %s", user_id)
+            logger.info("Extracted memories for user %s", user_id[:8])
 
         except Exception as e:
             logger.warning("Memory extraction failed: %s", e)
             # Non-critical — don't fail the main flow
-
-
-
-    # ── User Profile ─────────────────────────────────────────────────────
-
-    async def get_user_profile(
-        self,
-        user_id: str,
-        db: AsyncSession,
-    ) -> dict:
-        """Build a user profile from all stored memories.
-
-        Returns a structured profile with:
-        - name: The user's name if known
-        - interests: List of topics they're interested in
-        - facts: Important facts about them
-        - preferences: Their preferences
-        - conversation_count: Total conversations
-        - total_summaries: Number of conversation summaries
-        """
-        # Get user record
-        user_result = await db.execute(select(User).where(User.id == user_id))
-        user = user_result.scalar_one_or_none()
-
-        # Get all active memories grouped by type
-        memories_result = await db.execute(
-            select(Memory)
-            .where(Memory.user_id == user_id, Memory.is_active == True)
-            .order_by(desc(Memory.importance))
-        )
-        all_memories = memories_result.scalars().all()
-
-        # Count conversations
-        conv_count_result = await db.execute(
-            select(func.count(Conversation.id)).where(Conversation.user_id == user_id)
-        )
-        conv_count = conv_count_result.scalar() or 0
-
-        # Count summaries
-        summary_count_result = await db.execute(
-            select(func.count(Conversation.id)).where(
-                Conversation.user_id == user_id,
-                Conversation.summary.isnot(None),
-            )
-        )
-        summary_count = summary_count_result.scalar() or 0
-
-        # Group memories by type
-        profile = {
-            "user_id": str(user_id),
-            "display_name": user.display_name if user else None,
-            "username": user.username if user else None,
-            "name": None,
-            "interests": [],
-            "facts": [],
-            "preferences": [],
-            "context": [],
-            "conversation_count": conv_count,
-            "total_summaries": summary_count,
-            "total_memories": len(all_memories),
-        }
-
-        for mem in all_memories:
-            if mem.memory_type == "name":
-                profile["name"] = mem.content
-            elif mem.memory_type == "interest":
-                profile["interests"].append({
-                    "content": mem.content,
-                    "importance": mem.importance,
-                })
-            elif mem.memory_type == "fact":
-                profile["facts"].append({
-                    "content": mem.content,
-                    "importance": mem.importance,
-                })
-            elif mem.memory_type == "preference":
-                profile["preferences"].append({
-                    "content": mem.content,
-                    "importance": mem.importance,
-                })
-            elif mem.memory_type == "context":
-                profile["context"].append({
-                    "content": mem.content,
-                    "importance": mem.importance,
-                })
-            elif mem.memory_type == "summary":
-                pass  # Summaries are on conversations, not in profile list
-
-        return profile
 
     # ── Conversation Summarization ───────────────────────────────────────
 
@@ -245,14 +154,14 @@ Only output the JSON array, nothing else."""
         db: AsyncSession,
     ) -> str | None:
         """Generate a summary of a conversation when it exceeds the threshold."""
-        messages = await self.get_conversation_messages(
-            conversation_id, db, limit=50
+        # Get recent messages via STM
+        messages, _ = await short_term_memory.get_context(
+            conversation_id, db, max_tokens=4000,
         )
 
         if len(messages) < settings.memory_summary_threshold:
             return None
 
-        # Build conversation text
         conv_text = "\n".join(
             f"{m['role'].upper()}: {m['content']}" for m in messages
         )
@@ -266,7 +175,10 @@ Conversation:
 Summary:"""
 
         try:
-            summary = await llm_client.generate(prompt, temperature=0.3, max_tokens=300)
+            summary = await llm_router.generate(
+                TaskType.CONVERSATION_SUMMARY, prompt,
+                temperature=0.3, max_tokens=300,
+            )
 
             # Store summary on the conversation
             await db.execute(
@@ -282,17 +194,14 @@ Summary:"""
             )
             conv = conv_result.scalar_one_or_none()
             if conv:
-                emb_vector = encoder.encode_query(summary)
-                summary_memory = Memory(
+                await long_term_memory.store_memory(
                     user_id=str(conv.user_id),
-                    memory_type="summary",
                     content=f"Conversation '{conv.title}': {summary}",
+                    memory_type="summary",
                     importance=0.6,
+                    db=db,
                     source_conversation_id=conversation_id,
-                    embedding=emb_vector,
                 )
-                db.add(summary_memory)
-                await db.flush()
 
             return summary
 
@@ -308,14 +217,13 @@ Summary:"""
         db: AsyncSession,
     ) -> str | None:
         """Auto-generate a descriptive title for a conversation based on its content."""
-        messages = await self.get_conversation_messages(
-            conversation_id, db, limit=6
+        messages, _ = await short_term_memory.get_context(
+            conversation_id, db, max_tokens=1000,
         )
 
         if not messages:
             return None
 
-        # Use first few messages to generate title
         conv_preview = "\n".join(
             f"{m['role'].upper()}: {m['content'][:200]}" for m in messages[:4]
         )
@@ -329,7 +237,10 @@ Conversation:
 Title (just the title, no quotes or extra text):"""
 
         try:
-            title = await llm_client.generate(prompt, temperature=0.3, max_tokens=50)
+            title = await llm_router.generate(
+                TaskType.TITLE_GENERATION, prompt,
+                temperature=0.3, max_tokens=50,
+            )
             title = title.strip().strip('"').strip("'")[:100]
 
             await db.execute(
@@ -343,6 +254,12 @@ Title (just the title, no quotes or extra text):"""
         except Exception as e:
             logger.warning("Title generation failed: %s", e)
             return None
+
+    # ── User Profile ─────────────────────────────────────────────────────
+
+    async def get_user_profile(self, user_id: str, db: AsyncSession) -> dict:
+        """Delegate to LTM's user profile builder."""
+        return await long_term_memory.get_user_profile(user_id, db)
 
 
 # Module-level instance

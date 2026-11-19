@@ -70,6 +70,7 @@ class Message(Base):
     role = Column(String(20), nullable=False)  # "user" | "assistant" | "system"
     content = Column(Text, nullable=False)
     citations = Column(JSONB, nullable=True)  # [{doc, page, chunk_id, text}]
+    token_count = Column(Integer, nullable=True)  # for STM token budgeting
     metadata_ = Column("metadata", JSONB, default=dict)
     created_at = Column(DateTime(timezone=True), default=utcnow)
 
@@ -150,13 +151,13 @@ class Chunk(Base):
 # Pgvector index is created in migrations (requires the extension)
 
 
-# ── Memories ─────────────────────────────────────────────────────────────────
+# ── Memories (FIXED — now includes embedding vector) ─────────────────────────
 class Memory(Base):
     __tablename__ = "memories"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
-    memory_type = Column(String(50), nullable=False)  # fact|preference|summary|context
+    memory_type = Column(String(50), nullable=False)  # fact|preference|summary|context|name|interest
     content = Column(Text, nullable=False)
     importance = Column(Float, default=0.5)
     source_conversation_id = Column(UUID(as_uuid=True), nullable=True)
@@ -170,6 +171,51 @@ class Memory(Base):
     __table_args__ = (
         Index("ix_memories_user_type", "user_id", "memory_type"),
         Index("ix_memories_importance", "importance"),
+    )
+
+# NOTE: The `embedding` column (pgvector Vector) is added via raw SQL in
+# migrations.py because SQLAlchemy doesn't natively handle pgvector columns
+# without the pgvector extension installed at import time. We handle it
+# with raw ALTER TABLE + CREATE INDEX in migrations.
+
+
+# ── Semantic Cache (NEW) ─────────────────────────────────────────────────────
+class SemanticCache(Base):
+    __tablename__ = "semantic_cache"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    query_text = Column(Text, nullable=False)
+    answer_text = Column(Text, nullable=False)
+    citations = Column(JSONB, nullable=True)
+    metadata_ = Column("metadata", JSONB, default=dict)  # quality scores, model used
+    user_role = Column(String(20), default="anonymous")  # anonymous | mp | dm
+    user_id = Column(String(100), nullable=True)  # for MP-specific cache partitioning
+    hit_count = Column(Integer, default=0)
+    created_at = Column(DateTime(timezone=True), default=utcnow)
+    expires_at = Column(DateTime(timezone=True), nullable=False)
+
+# NOTE: The `query_embedding` column (pgvector Vector) is added via raw SQL
+# in migrations.py alongside an HNSW index.
+
+
+# ── Guardrail Logs (NEW) ────────────────────────────────────────────────────
+class GuardrailLog(Base):
+    __tablename__ = "guardrail_logs"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    direction = Column(String(10), nullable=False)  # "input" | "output"
+    guardrail_name = Column(String(50), nullable=False)
+    passed = Column(Boolean, nullable=False)
+    blocked_reason = Column(Text, nullable=True)
+    user_message = Column(Text, nullable=True)
+    flags = Column(JSONB, default=list)
+    user_id = Column(String(100), nullable=True)
+    conversation_id = Column(String(100), nullable=True)
+    created_at = Column(DateTime(timezone=True), default=utcnow)
+
+    __table_args__ = (
+        Index("ix_guard_logs_created", "created_at"),
+        Index("ix_guard_logs_direction", "direction"),
     )
 
 

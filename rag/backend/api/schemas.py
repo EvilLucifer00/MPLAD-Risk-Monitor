@@ -5,15 +5,24 @@ from datetime import datetime
 from typing import List, Optional
 from uuid import UUID
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 # ── Chat ─────────────────────────────────────────────────────────────────────
 
 class ChatRequest(BaseModel):
-    message: str = Field(..., min_length=1, max_length=5000)
+    message: Optional[str] = Field(None, max_length=5000)
+    query: Optional[str] = Field(None, max_length=5000)
     conversation_id: Optional[str] = None
     user_id: Optional[str] = None
+
+    @model_validator(mode="after")
+    def validate_message_or_query(self) -> ChatRequest:
+        if not self.message and self.query:
+            self.message = self.query
+        elif not self.message and not self.query:
+            raise ValueError("Either 'message' or 'query' must be provided.")
+        return self
 
 
 class CitationSchema(BaseModel):

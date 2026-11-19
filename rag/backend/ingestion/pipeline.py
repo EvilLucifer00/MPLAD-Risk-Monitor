@@ -174,8 +174,8 @@ async def ingest_document(
         doc.status = "ready"
         await db.flush()
         logger.info(
-            "✅ Ingested '%s': %d pages, %d chunks, %d embeddings (ChromaDB + pgvector)",
-            name, doc.total_pages, len(chunk_records), len(embedding_records),
+            "✅ Ingested '%s': %d pages, %d chunks, %d embeddings (ChromaDB)",
+            name, doc.total_pages, len(chunk_records), len(vectors),
         )
 
     except Exception as e:
@@ -272,9 +272,6 @@ async def reingest_document(
     texts = [cr.content for cr in chunk_records]
     vectors = encoder.encode(texts, batch_size=32, show_progress=True)
 
-    for cr, vec in zip(chunk_records, vectors):
-        db.add(Embedding(chunk_id=cr.id, vector=vec, model_name=settings.embedding_model))
-
     # Store in ChromaDB
     chroma_ids = [str(cr.id) for cr in chunk_records]
     chroma_metadatas = [
@@ -293,5 +290,5 @@ async def reingest_document(
 
     doc.status = "ready"
     await db.flush()
-    logger.info("✅ Re-ingested '%s' as version %d (ChromaDB + pgvector)", doc.name, doc.current_version)
+    logger.info("✅ Re-ingested '%s' as version %d (%d chunks → ChromaDB)", doc.name, doc.current_version, len(chunk_records))
     return doc

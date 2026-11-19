@@ -19,13 +19,28 @@ from api.schemas import (
     MemoryItemSchema,
 )
 from database.connection import get_db
-from database.models import Conversation, Message
+from database.models import User, Conversation, Message
 from memory.manager import memory_manager
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/conversations", tags=["Conversations"])
 
 DEFAULT_USER_ID = "00000000-0000-0000-0000-000000000001"
+
+
+async def _ensure_user(user_id: str, db: AsyncSession) -> User:
+    """Ensure user exists before creating or querying conversations."""
+    result = await db.execute(select(User).where(User.id == user_id))
+    user = result.scalar_one_or_none()
+    if not user:
+        user = User(
+            id=user_id,
+            username=f"user_{str(user_id)[:8]}",
+            display_name="Default User",
+        )
+        db.add(user)
+        await db.flush()
+    return user
 
 
 @router.get("", response_model=ConversationListResponse)
@@ -63,6 +78,7 @@ async def create_conversation(
     db: AsyncSession = Depends(get_db),
 ):
     """Create a new conversation."""
+    await _ensure_user(user_id, db)
     conv = Conversation(user_id=user_id, title=request.title)
     db.add(conv)
     await db.flush()
