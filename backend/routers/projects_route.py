@@ -8,7 +8,8 @@ from services.project_service import (
     project_by_id, 
     create_new_project, 
     dm_district_projects,
-    dm_mp_projects # Import the new function
+    dm_mp_projects,
+    dm_all_district_projects
 )
 
 project_router = APIRouter(
@@ -75,6 +76,31 @@ async def get_district_projects(
     dm: dict = Depends(get_current_dm)
 ):
     result = await dm_district_projects(dm=dm, search=search)
+    return result
+
+
+# ==========================================
+# 3b. ALL DISTRICT PROJECTS (DA/DM Portal - Single Round-Trip)
+# ==========================================
+@project_router.get("/district/all")
+async def get_district_all_projects(
+    search: Optional[str] = Query(None, description="Search in title/vendor/agency"),
+    status: Optional[str] = Query(None, description="Filter by status"),
+    risk: Optional[str] = Query(None, description="Filter by risk level"),
+    category: Optional[str] = Query(None, description="Filter by category"),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(100, ge=1, le=200),
+    dm: dict = Depends(get_current_dm)
+):
+    result = await dm_all_district_projects(
+        dm=dm,
+        search=search,
+        status_filter=status,
+        risk_filter=risk,
+        category=category,
+        page=page,
+        page_size=page_size
+    )
     return result
 
 

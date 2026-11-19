@@ -13,33 +13,36 @@ export { queryKeys };
 // ── MP Portal Hooks ───────────────────────────────────────────
 
 export const useMpStats = () => {
+  const token = useAuthStore((s) => s.token);
   const user = useAuthStore((s) => s.user);
   return useQuery({
     queryKey: queryKeys.mp.stats(user?.id),
     queryFn: ({ signal }) => api.getDashboardStats({ signal }),
-    enabled: true,
+    enabled: Boolean(token),
     staleTime: CACHE_TIMES.FINANCIAL_STATUS.staleTime,
     gcTime: CACHE_TIMES.FINANCIAL_STATUS.gcTime,
   });
 };
 
 export const useMpRecommendations = () => {
+  const token = useAuthStore((s) => s.token);
   const user = useAuthStore((s) => s.user);
   return useQuery({
     queryKey: queryKeys.mp.recommendations(user?.id),
     queryFn: ({ signal }) => api.getRecommendations({ signal }),
-    enabled: true,
+    enabled: Boolean(token),
     staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
     gcTime: CACHE_TIMES.LISTS_REPORTS.gcTime,
   });
 };
 
 export const useMpProjects = (filters = {}) => {
+  const token = useAuthStore((s) => s.token);
   const user = useAuthStore((s) => s.user);
   return useQuery({
     queryKey: queryKeys.mp.projects(user?.id, filters),
     queryFn: ({ signal }) => api.getProjects(filters, { signal }),
-    enabled: true,
+    enabled: Boolean(token),
     placeholderData: keepPreviousData,
     staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
     gcTime: CACHE_TIMES.LISTS_REPORTS.gcTime,
@@ -57,22 +60,24 @@ export const useMpProjectDetail = (projectId) => {
 };
 
 export const useMpReports = (year = null) => {
+  const token = useAuthStore((s) => s.token);
   const user = useAuthStore((s) => s.user);
   return useQuery({
     queryKey: queryKeys.mp.reports(user?.id, year),
     queryFn: ({ signal }) => reportsApi.getSummary(year, { signal }),
-    enabled: true,
+    enabled: Boolean(token),
     staleTime: CACHE_TIMES.DASHBOARD.staleTime,
     gcTime: CACHE_TIMES.DASHBOARD.gcTime,
   });
 };
 
 export const useMpDocuments = (params = {}) => {
+  const token = useAuthStore((s) => s.token);
   const user = useAuthStore((s) => s.user);
   return useQuery({
     queryKey: queryKeys.mp.documents(user?.id, params),
     queryFn: ({ signal }) => documentsApi.getMpDocuments(params, { signal }),
-    enabled: true,
+    enabled: Boolean(token),
     placeholderData: keepPreviousData,
     staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
     gcTime: CACHE_TIMES.LISTS_REPORTS.gcTime,
@@ -80,11 +85,12 @@ export const useMpDocuments = (params = {}) => {
 };
 
 export const useMpNotifications = () => {
+  const token = useAuthStore((s) => s.token);
   const user = useAuthStore((s) => s.user);
   return useQuery({
     queryKey: queryKeys.mp.notifications(user?.id),
     queryFn: ({ signal }) => api.getNotifications(null, { signal }),
-    enabled: true,
+    enabled: Boolean(token),
     staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
     gcTime: CACHE_TIMES.LISTS_REPORTS.gcTime,
   });
@@ -93,33 +99,36 @@ export const useMpNotifications = () => {
 // ── DA Portal Hooks ───────────────────────────────────────────
 
 export const useDaStats = () => {
+  const token = useAuthStore((s) => s.token);
   const user = useAuthStore((s) => s.user);
   return useQuery({
     queryKey: queryKeys.da.stats(user?.dist || user?.id),
     queryFn: ({ signal }) => daApi.getDashboardStats({ signal }),
-    enabled: true,
+    enabled: Boolean(token),
     staleTime: CACHE_TIMES.FINANCIAL_STATUS.staleTime,
     gcTime: CACHE_TIMES.FINANCIAL_STATUS.gcTime,
   });
 };
 
 export const useDaRecommendations = () => {
+  const token = useAuthStore((s) => s.token);
   const user = useAuthStore((s) => s.user);
   return useQuery({
     queryKey: queryKeys.da.recommendations(user?.dist || user?.id),
     queryFn: ({ signal }) => daApi.getRecommendations({ signal }),
-    enabled: true,
+    enabled: Boolean(token),
     staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
     gcTime: CACHE_TIMES.LISTS_REPORTS.gcTime,
   });
 };
 
 export const useDaDistrictMps = () => {
+  const token = useAuthStore((s) => s.token);
   const user = useAuthStore((s) => s.user);
   return useQuery({
     queryKey: queryKeys.da.districtMps(user?.dist || user?.id),
     queryFn: ({ signal }) => daApi.getDistrictMPs({ signal }),
-    enabled: true,
+    enabled: Boolean(token),
     placeholderData: keepPreviousData,
     staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
     gcTime: CACHE_TIMES.LISTS_REPORTS.gcTime,
@@ -127,11 +136,12 @@ export const useDaDistrictMps = () => {
 };
 
 export const useDaProjects = (filters = {}) => {
+  const token = useAuthStore((s) => s.token);
   const user = useAuthStore((s) => s.user);
   return useQuery({
     queryKey: queryKeys.da.projects(user?.dist || user?.id, filters),
     queryFn: ({ signal }) => daApi.getProjects(filters, { signal }),
-    enabled: true,
+    enabled: Boolean(token),
     placeholderData: keepPreviousData,
     staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
     gcTime: CACHE_TIMES.LISTS_REPORTS.gcTime,
@@ -139,11 +149,12 @@ export const useDaProjects = (filters = {}) => {
 };
 
 export const useDaReviewQueue = () => {
+  const token = useAuthStore((s) => s.token);
   const user = useAuthStore((s) => s.user);
   return useQuery({
     queryKey: queryKeys.da.reviewQueue(user?.dist || user?.id),
     queryFn: ({ signal }) => daApi.getReviewQueue({ signal }),
-    enabled: true,
+    enabled: Boolean(token),
     placeholderData: keepPreviousData,
     staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
     gcTime: CACHE_TIMES.LISTS_REPORTS.gcTime,
@@ -172,11 +183,12 @@ export const useDaProjectDetail = (projectId) => {
 };
 
 export const useDaDocuments = (params = {}) => {
+  const token = useAuthStore((s) => s.token);
   const user = useAuthStore((s) => s.user);
   return useQuery({
     queryKey: queryKeys.da.documents(user?.dist || user?.id, params),
     queryFn: ({ signal }) => documentsApi.getDmDocuments(params, { signal }),
-    enabled: true,
+    enabled: Boolean(token),
     placeholderData: keepPreviousData,
     staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
     gcTime: CACHE_TIMES.LISTS_REPORTS.gcTime,
@@ -184,22 +196,24 @@ export const useDaDocuments = (params = {}) => {
 };
 
 export const useDaAgencies = () => {
+  const token = useAuthStore((s) => s.token);
   const user = useAuthStore((s) => s.user);
   return useQuery({
     queryKey: queryKeys.da.agencies(user?.dist || user?.id),
     queryFn: ({ signal }) => daApi.getImplementingAgencies({ signal }),
-    enabled: true,
+    enabled: Boolean(token),
     staleTime: CACHE_TIMES.REFERENCE.staleTime,
     gcTime: CACHE_TIMES.REFERENCE.gcTime,
   });
 };
 
 export const useDaVendors = () => {
+  const token = useAuthStore((s) => s.token);
   const user = useAuthStore((s) => s.user);
   return useQuery({
     queryKey: queryKeys.da.vendors(user?.dist || user?.id),
     queryFn: ({ signal }) => daApi.getVendors({ signal }),
-    enabled: true,
+    enabled: Boolean(token),
     placeholderData: keepPreviousData,
     staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
     gcTime: CACHE_TIMES.LISTS_REPORTS.gcTime,
@@ -207,11 +221,12 @@ export const useDaVendors = () => {
 };
 
 export const useDaNotifications = () => {
+  const token = useAuthStore((s) => s.token);
   const user = useAuthStore((s) => s.user);
   return useQuery({
     queryKey: queryKeys.da.notifications(user?.dist || user?.id),
     queryFn: ({ signal }) => daApi.getNotifications({ signal }),
-    enabled: true,
+    enabled: Boolean(token),
     staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
     gcTime: CACHE_TIMES.LISTS_REPORTS.gcTime,
   });

@@ -57,18 +57,19 @@ const MpDocuments = () => {
     return aggregated;
   }, [docsData, projectsData]);
 
-  const loading = (docsLoading && !docsData) && (projectsLoading && !projectsData);
-
   const filteredDocs = useMemo(() => {
     const term = searchTerm.toLowerCase();
     return documents.filter((doc) =>
-      doc.name.toLowerCase().includes(term) ||
+      (doc.name && doc.name.toLowerCase().includes(term)) ||
       (doc.projectTitle && doc.projectTitle.toLowerCase().includes(term)) ||
       (doc.projectId && String(doc.projectId).toLowerCase().includes(term))
     );
   }, [documents, searchTerm]);
 
-  if (loading) {
+  const isAnyLoading = docsLoading || projectsLoading;
+  const isAllLoaded = docsData !== undefined && projectsData !== undefined;
+
+  if (isAnyLoading || !isAllLoaded) {
     return <PortalPageLoader message="Loading Documents..." />;
   }
 
@@ -119,12 +120,7 @@ const MpDocuments = () => {
       >
         <h2 id="documents-list-heading" className="sr-only">Document Repository</h2>
         <div className="overflow-x-auto h-full">
-          {loading ? (
-            <div className="flex flex-col items-center justify-center p-12 h-64 text-slate-500" role="status" aria-live="polite">
-              <div className="w-8 h-8 border-3 border-[#123b63] border-t-transparent rounded-full animate-spin mb-3"></div>
-              <p className="text-xs sm:text-sm font-medium">Loading documents...</p>
-            </div>
-          ) : filteredDocs.length === 0 ? (
+          {filteredDocs.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-12 h-64 text-slate-500">
               <TbFileDescription size={40} className="text-slate-300 mb-3" aria-hidden="true" />
               <p className="font-semibold text-sm">No documents found</p>
@@ -164,21 +160,37 @@ const MpDocuments = () => {
                       <p className="text-slate-700">{doc.uploader}</p>
                     </td>
                     <td className="px-4 sm:px-5 py-3">
-                      <time dateTime={doc.uploadDate} className="text-slate-600 tabular-nums">{new Date(doc.uploadDate).toLocaleDateString("en-GB")}</time>
+                      <time dateTime={doc.uploadDate} className="text-slate-600 tabular-nums">
+                        {doc.uploadDate && !isNaN(new Date(doc.uploadDate).getTime())
+                          ? new Date(doc.uploadDate).toLocaleDateString("en-GB")
+                          : 'N/A'}
+                      </time>
                     </td>
                     <td className="px-4 sm:px-5 py-3 text-right">
                       <div className="flex justify-end gap-1">
                         <button 
+                          type="button"
                           className="p-1.5 text-slate-500 hover:text-[#123b63] hover:bg-slate-100 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]" 
                           title="Preview"
                           aria-label={`Preview document ${doc.name}`}
+                          onClick={() => {
+                            if (doc.fileUrl && doc.fileUrl !== '#') {
+                              window.open(doc.fileUrl, '_blank', 'noopener,noreferrer');
+                            }
+                          }}
                         >
                           <TbEye size={16} aria-hidden="true" />
                         </button>
                         <button 
+                          type="button"
                           className="p-1.5 text-slate-500 hover:text-[#123b63] hover:bg-slate-100 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]" 
                           title="Download"
                           aria-label={`Download document ${doc.name}`}
+                          onClick={() => {
+                            if (doc.fileUrl && doc.fileUrl !== '#') {
+                              window.open(doc.fileUrl, '_blank', 'noopener,noreferrer');
+                            }
+                          }}
                         >
                           <TbDownload size={16} aria-hidden="true" />
                         </button>

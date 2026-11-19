@@ -1,4 +1,5 @@
 # Dashboard_service.py
+import asyncio
 from datetime import datetime, timezone
 from typing import Optional, Dict, Any, List
 
@@ -52,6 +53,14 @@ def _get_cost_map(projects: List[dict]) -> Dict[int, dict]:
     return {r["id"]: r for r in (res.data or [])}
 
 
+async def _get_risk_and_cost_maps(projects: List[dict]) -> tuple:
+    """Parallel fetch of risk and cost maps to eliminate network latency waterfalls."""
+    return await asyncio.gather(
+        asyncio.to_thread(_get_risk_map, projects),
+        asyncio.to_thread(_get_cost_map, projects),
+    )
+
+
 def _risk_info(p: dict, risk_map: Dict[int, dict]) -> tuple:
     risk = risk_map.get(p.get("risk_id"), {})
     risk_score = risk.get("risk_score") or 0
@@ -77,8 +86,7 @@ async def mp_dashboard_stats(mp: dict):
     projects = response.data or []
     total = len(projects)
 
-    risk_map = _get_risk_map(projects)
-    cost_map = _get_cost_map(projects)
+    risk_map, cost_map = await _get_risk_and_cost_maps(projects)
 
     active = sum(
         1 for p in projects
@@ -119,7 +127,7 @@ async def mp_dashboard_stats(mp: dict):
 
     recent = sorted(
         projects,
-        key=lambda p: p.get("updated_at") or p.get("created_at") or "",
+        key=lambda p: str(p.get("updated_at") or p.get("created_at") or p.get("submit_date") or ""),
         reverse=True,
     )[:5]
 
@@ -129,14 +137,20 @@ async def mp_dashboard_stats(mp: dict):
         cost = _cost_info(p, cost_map)
 
         recent_projects.append({
+            "id": p["id"],
             "work_id": p["id"],
-            "title": p["project_title"],
-            "category": p["category"],
-            "amount": cost.get("sanctioned_amount") or cost.get("estimated_cost"),
+            "project_title": p.get("project_title") or "Untitled Project",
+            "title": p.get("project_title") or "Untitled Project",
+            "category": p.get("category"),
+            "sanctioned_amount": cost.get("sanctioned_amount") or 0.0,
+            "estimated_cost": cost.get("estimated_cost") or cost.get("sanctioned_amount") or 0.0,
+            "utilized_amount": cost.get("utilized_amount") or 0.0,
+            "amount": cost.get("sanctioned_amount") or cost.get("estimated_cost") or 0.0,
             "risk_level": risk_level,
             "risk_score": round(risk_score),
-            "status": p.get("status", "PENDING"),
-            "last_updated": p.get("updated_at") or p.get("created_at"),
+            "status": p.get("status") or "PENDING_REVIEW",
+            "last_updated": p.get("updated_at") or p.get("submit_date") or p.get("created_at"),
+            "submit_date": p.get("submit_date"),
         })
 
     return DashboardStats(
@@ -178,8 +192,7 @@ async def dm_dashboard_stats(dm: dict):
 
     projects = result.data or []
 
-    risk_map = _get_risk_map(projects)
-    cost_map = _get_cost_map(projects)
+    risk_map, cost_map = await _get_risk_and_cost_maps(projects)
 
     awaiting_review = [
         p for p in projects
@@ -256,6 +269,40 @@ async def dm_dashboard_stats(dm: dict):
         if key in risk_breakdown:
             risk_breakdown[key] += 1
 
+    # Format recent activity actions for instant, sub-millisecond Activity Log rendering
+    sorted_recent = sorted(
+        projects,
+        key=lambda x: str(x.get("updated_at") or x.get("submit_date") or ""),
+        reverse=True
+    )[:5]
+
+    def _format_action_label(st: Optional[str]) -> str:
+        if not st:
+            return "Submitted"
+        upper = st.upper().replace(" ", "_")
+        if upper in ("APPROVED", "SANCTIONED"):
+            return "Sanctioned"
+        if upper in ("IN_PROGRESS", "ACTIVE"):
+            return "In Progress"
+        if upper in ("COMPLETED", "FINISHED"):
+            return "Completed"
+        if upper in ("REJECTED", "DISAPPROVED"):
+            return "Rejected"
+        if upper in ("SUSPENDED", "ON_HOLD"):
+            return "Suspended"
+        return "Submitted"
+
+    recent_actions = [
+        {
+            "action": _format_action_label(p.get("status")),
+            "projectTitle": p.get("project_title") or "Untitled Project",
+            "actor": "MP Office",
+            "timestamp": p.get("updated_at") or p.get("submit_date") or datetime.now(timezone.utc).isoformat(),
+            "projectId": p.get("id"),
+        }
+        for p in sorted_recent
+    ]
+
     return {
         "district": dm["dist"],
         "projects_awaiting_review": len(awaiting_review),
@@ -267,6 +314,7 @@ async def dm_dashboard_stats(dm: dict):
         "high_risk_projects": len(high_risk),
         "active_projects": len(active),
         "risk_breakdown": risk_breakdown,
+        "recent_actions": recent_actions,
     }
 
 

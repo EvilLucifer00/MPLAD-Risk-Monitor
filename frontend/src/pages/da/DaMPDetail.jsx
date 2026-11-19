@@ -9,8 +9,8 @@ import { TbArrowLeft, TbSearch, TbFilter, TbChevronRight, TbBriefcase } from 're
 
 const DaMPDetail = () => {
   const { mpId } = useParams();
-  const { data: projectsData, isLoading } = useDaMpProjects(mpId);
-  const { data: districtMps } = useDaDistrictMps();
+  const { data: projectsData, isLoading: projectsLoading } = useDaMpProjects(mpId);
+  const { data: districtMps, isLoading: mpsLoading } = useDaDistrictMps();
 
   const matchedMp = useMemo(() => {
     if (!districtMps || !Array.isArray(districtMps)) return null;
@@ -23,7 +23,7 @@ const DaMPDetail = () => {
     return [];
   }, [projectsData]);
 
-  const loading = isLoading && !projectsData;
+  const loading = (projectsLoading && !projectsData) || (mpsLoading && !districtMps);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [riskFilter, setRiskFilter] = useState('All');
@@ -74,7 +74,10 @@ const DaMPDetail = () => {
   const activeCount = projectsData?.stats?.active_projects ?? 
     projects.filter(p => ['Sanctioned', 'In Progress', 'APPROVED', 'IN_PROGRESS'].includes(p.status)).length;
 
-  if (loading) {
+  const isAnyLoading = projectsLoading || mpsLoading;
+  const isAllLoaded = Boolean(projectsData && districtMps);
+
+  if (isAnyLoading || !isAllLoaded) {
     return <PortalPageLoader message="Loading MP Details..." />;
   }
 

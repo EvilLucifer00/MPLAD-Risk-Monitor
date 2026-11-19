@@ -11,7 +11,7 @@
 import { useAuthStore } from '../store/useAuthStore';
 import { clearInMemoryCache } from '../queryClient';
 const PROD_API_URL = 'https://mplads-backend-axxw.onrender.com';
-const DEV_API_URL = 'http://localhost:8000';
+const DEV_API_URL = 'http://127.0.0.1:8000';
 
 const isProductionOrPreview =
   import.meta.env.PROD ||
@@ -53,7 +53,7 @@ export async function parseApiError(response) {
 // Request deduplication & short-lived cache for GET endpoints to eliminate redundant critical network waterfalls
 const inFlightRequests = new Map();
 const responseCache = new Map();
-const CACHE_TTL_MS = 3000; // 3 seconds TTL to coalesce initial mount and duplicate component requests
+const CACHE_TTL_MS = 15000; // 15 seconds TTL to coalesce concurrent requests and rapid tab switching
 
 export function invalidateApiCache() {
   responseCache.clear();
@@ -329,7 +329,27 @@ export const dashboardApi = {
         Critical: 0,
       },
       statusBreakdown: data.status_breakdown || {},
-      recentProjects: Array.isArray(data.recent_projects) ? data.recent_projects : [],
+      recentProjects: (Array.isArray(data.recent_projects) ? data.recent_projects : []).map((p) => {
+        const id = p.id || p.work_id;
+        const statusFormatted = formatStatus(p.status);
+        const riskLevelFormatted = formatRiskLevel(p.risk_level || p.riskLevel);
+        const cost = Number(p.sanctioned_amount || p.estimated_cost || p.amount || 0);
+
+        return {
+          id: id ? (typeof id === 'string' && id.startsWith('PRJ-') ? id : `PRJ-2026-${String(id).padStart(3, '0')}`) : `PRJ-${Date.now()}`,
+          rawId: id,
+          title: p.title || p.project_title || 'Untitled Project',
+          category: formatCategory(p.category),
+          sanctionedAmount: Number(p.sanctioned_amount || cost || 0),
+          estimatedCost: Number(p.estimated_cost || cost || 0),
+          amountSpent: Number(p.utilized_amount || 0),
+          status: statusFormatted,
+          riskLevel: riskLevelFormatted,
+          riskScore: Math.round(p.risk_score || 0),
+          lastUpdated: p.last_updated || p.updated_at || p.submit_date || null,
+          startDate: p.start_date || p.submit_date || null,
+        };
+      }),
     };
   },
 
@@ -368,6 +388,7 @@ export const dashboardApi = {
         High: high,
         Critical: critical,
       },
+      recentActions: Array.isArray(data.recent_actions) ? data.recent_actions : [],
     };
   },
 };
@@ -479,6 +500,25 @@ export const projectsApi = {
   },
 
   /**
+   * GET /projects/district/all
+   * Single round-trip retrieval of all district projects for DA (eliminates N+1 waterfalls)
+   */
+  getDistrictAllProjects: async (params = {}, options = {}) => {
+    const query = new URLSearchParams();
+    if (params.search) query.append('search', params.search);
+    if (params.status && params.status !== 'All') query.append('status', params.status);
+    if (params.risk && params.risk !== 'All') query.append('risk', params.risk);
+    if (params.category && params.category !== 'All') query.append('category', params.category);
+    query.append('page', params.page || 1);
+    query.append('page_size', params.pageSize || 100);
+
+    const res = await authFetch(`/projects/district/all?${query.toString()}`, options);
+    const json = await res.json();
+    const rawProjects = Array.isArray(json.data) ? json.data : (Array.isArray(json) ? json : []);
+    return rawProjects.map(mapProjectFromBackend);
+  },
+
+  /**
    * GET /projects/{project_id}
    * Fetch single project detail
    */
@@ -541,52 +581,60 @@ export const documentsApi = {
    * GET /document/mp
    */
   getMpDocuments: async (params = {}, options = {}) => {
-    const query = new URLSearchParams();
-    if (params.search) query.append('search', params.search);
-    if (params.uploadDate) query.append('upload_date', params.uploadDate);
+    try {
+      const query = new URLSearchParams();
+      if (params.search) query.append('search', params.search);
+      if (params.uploadDate) query.append('upload_date', params.uploadDate);
 
-    const res = await authFetch(`/document/mp${query.toString() ? `?${query.toString()}` : ''}`, options);
-    const json = await res.json();
-    const rows = Array.isArray(json.data) ? json.data : [];
+      const res = await authFetch(`/document/mp${query.toString() ? `?${query.toString()}` : ''}`, options);
+      const json = await res.json();
+      const rows = Array.isArray(json.data) ? json.data : (Array.isArray(json) ? json : []);
 
-    return rows.map((doc) => ({
-      id: doc.id,
-      name: doc.file_name || 'Document.pdf',
-      size: '1.4 MB',
-      type: doc.file_name?.toLowerCase().endsWith('.pdf') ? 'PDF' : 'Document',
-      uploader: doc.uploaded_by || 'MP Office',
-      uploadDate: doc.upload_date || new Date().toISOString().split('T')[0],
-      projectId: doc.project_id ? `PRJ-2026-${String(doc.project_id).padStart(3, '0')}` : 'PRJ-N/A',
-      projectTitle: (doc.file_name || 'Project Document').replace(/\.[^/.]+$/, '').replace(/_/g, ' '),
-      fileUrl: doc.file_url || '#',
-    }));
+      return rows.map((doc) => ({
+        id: doc.id,
+        name: doc.file_name || doc.name || 'Document.pdf',
+        size: doc.size || '1.4 MB',
+        type: (doc.file_name || doc.name || '').toLowerCase().endsWith('.pdf') ? 'PDF' : 'Document',
+        uploader: doc.uploaded_by || doc.uploader || 'MP Office',
+        uploadDate: doc.upload_date || doc.uploadDate || new Date().toISOString().split('T')[0],
+        projectId: doc.project_id ? `PRJ-2026-${String(doc.project_id).padStart(3, '0')}` : (doc.projectId || 'PRJ-N/A'),
+        projectTitle: (doc.file_name || doc.projectTitle || 'Project Document').replace(/\.[^/.]+$/, '').replace(/_/g, ' '),
+        fileUrl: doc.file_url || doc.fileUrl || '#',
+      }));
+    } catch {
+      return [];
+    }
   },
 
   /**
    * GET /document/dm
    */
   getDmDocuments: async (params = {}, options = {}) => {
-    const query = new URLSearchParams();
-    if (params.search) query.append('search', params.search);
-    if (params.uploadDate) query.append('upload_date', params.uploadDate);
+    try {
+      const query = new URLSearchParams();
+      if (params.search) query.append('search', params.search);
+      if (params.uploadDate) query.append('upload_date', params.uploadDate);
 
-    const res = await authFetch(`/document/dm${query.toString() ? `?${query.toString()}` : ''}`, options);
-    const json = await res.json();
-    const rows = Array.isArray(json.data) ? json.data : [];
+      const res = await authFetch(`/document/dm${query.toString() ? `?${query.toString()}` : ''}`, options);
+      const json = await res.json();
+      const rows = Array.isArray(json.data) ? json.data : (Array.isArray(json) ? json : []);
 
-    return rows.map((doc) => ({
-      id: doc.id,
-      name: doc.file_name || 'Document.pdf',
-      size: '1.4 MB',
-      type: doc.file_name?.toLowerCase().endsWith('.pdf') ? 'PDF' : 'Document',
-      uploader: doc.uploaded_by || 'District Office',
-      uploadDate: doc.upload_date || new Date().toISOString().split('T')[0],
-      projectId: doc.project_id ? `PRJ-2026-${String(doc.project_id).padStart(3, '0')}` : 'PRJ-N/A',
-      projectTitle: (doc.file_name || 'Project Document').replace(/\.[^/.]+$/, '').replace(/_/g, ' '),
-      mpName: doc.uploaded_by || 'District Authority',
-      constituency: doc.constituency || '',
-      fileUrl: doc.file_url || '#',
-    }));
+      return rows.map((doc) => ({
+        id: doc.id,
+        name: doc.file_name || doc.name || 'Document.pdf',
+        size: doc.size || '1.4 MB',
+        type: (doc.file_name || doc.name || '').toLowerCase().endsWith('.pdf') ? 'PDF' : 'Document',
+        uploader: doc.uploaded_by || doc.uploader || 'District Office',
+        uploadDate: doc.upload_date || doc.uploadDate || new Date().toISOString().split('T')[0],
+        projectId: doc.project_id ? `PRJ-2026-${String(doc.project_id).padStart(3, '0')}` : (doc.projectId || 'PRJ-N/A'),
+        projectTitle: (doc.file_name || doc.projectTitle || 'Project Document').replace(/\.[^/.]+$/, '').replace(/_/g, ' '),
+        mpName: doc.uploaded_by || doc.mpName || 'District Authority',
+        constituency: doc.constituency || '',
+        fileUrl: doc.file_url || doc.fileUrl || '#',
+      }));
+    } catch {
+      return [];
+    }
   },
 };
 
@@ -597,8 +645,8 @@ export const userManagementApi = {
    * GET /user/dm/all
    * Retrieve all District Magistrates
    */
-  getAllDm: async () => {
-    const res = await authFetch('/user/dm/all');
+  getAllDm: async (options = {}) => {
+    const res = await authFetch('/user/dm/all', options);
     return await res.json();
   },
 
@@ -606,8 +654,8 @@ export const userManagementApi = {
    * GET /user/dm/{dist}
    * Retrieve District Magistrate by district name
    */
-  getDmByDistrict: async (dist) => {
-    const res = await authFetch(`/user/dm/${encodeURIComponent(dist)}`);
+  getDmByDistrict: async (dist, options = {}) => {
+    const res = await authFetch(`/user/dm/${encodeURIComponent(dist)}`, options);
     return await res.json();
   },
 };
@@ -646,9 +694,9 @@ export function mapNotificationFromBackend(n) {
 }
 
 export const notificationsApi = {
-  getMpNotifications: async (filter = null) => {
+  getMpNotifications: async (filter = null, options = {}) => {
     const query = filter && filter !== 'All' ? `?filter=${encodeURIComponent(filter.toLowerCase())}` : '';
-    const res = await authFetch(`/notification/mp${query}`);
+    const res = await authFetch(`/notification/mp${query}`, options);
     const json = await res.json();
     const rows = Array.isArray(json.data) ? json.data : (Array.isArray(json) ? json : []);
     const mapped = rows.map(mapNotificationFromBackend);
@@ -656,9 +704,9 @@ export const notificationsApi = {
     return mapped;
   },
 
-  getDmNotifications: async (filter = null) => {
+  getDmNotifications: async (filter = null, options = {}) => {
     const query = filter && filter !== 'All' ? `?filter=${encodeURIComponent(filter.toLowerCase())}` : '';
-    const res = await authFetch(`/notification/dm${query}`);
+    const res = await authFetch(`/notification/dm${query}`, options);
     const json = await res.json();
     const rows = Array.isArray(json.data) ? json.data : (Array.isArray(json) ? json : []);
     const mapped = rows.map(mapNotificationFromBackend);
@@ -666,50 +714,56 @@ export const notificationsApi = {
     return mapped;
   },
 
-  markMpRead: async (notificationId, isRead = true) => {
+  markMpRead: async (notificationId, isRead = true, options = {}) => {
     const numericId = typeof notificationId === 'number' ? notificationId : parseInt(String(notificationId).match(/(\d+)$/)?.[1] || notificationId, 10);
     const res = await authFetch(`/notification/mp/${numericId}/read`, {
       method: 'PATCH',
       body: JSON.stringify({ is_read: isRead }),
+      ...options,
     });
     return await res.json();
   },
 
-  markDmRead: async (notificationId, isRead = true) => {
+  markDmRead: async (notificationId, isRead = true, options = {}) => {
     const numericId = typeof notificationId === 'number' ? notificationId : parseInt(String(notificationId).match(/(\d+)$/)?.[1] || notificationId, 10);
     const res = await authFetch(`/notification/dm/${numericId}/read`, {
       method: 'PATCH',
       body: JSON.stringify({ is_read: isRead }),
+      ...options,
     });
     return await res.json();
   },
 
-  markAllMpRead: async () => {
+  markAllMpRead: async (options = {}) => {
     const res = await authFetch('/notification/mp/read-all', {
       method: 'PATCH',
+      ...options,
     });
     return await res.json();
   },
 
-  markAllDmRead: async () => {
+  markAllDmRead: async (options = {}) => {
     const res = await authFetch('/notification/dm/read-all', {
       method: 'PATCH',
+      ...options,
     });
     return await res.json();
   },
 
-  deleteMpNotification: async (notificationId) => {
+  deleteMpNotification: async (notificationId, options = {}) => {
     const numericId = typeof notificationId === 'number' ? notificationId : parseInt(String(notificationId).match(/(\d+)$/)?.[1] || notificationId, 10);
     const res = await authFetch(`/notification/mp/${numericId}`, {
       method: 'DELETE',
+      ...options,
     });
     return await res.json();
   },
 
-  deleteDmNotification: async (notificationId) => {
+  deleteDmNotification: async (notificationId, options = {}) => {
     const numericId = typeof notificationId === 'number' ? notificationId : parseInt(String(notificationId).match(/(\d+)$/)?.[1] || notificationId, 10);
     const res = await authFetch(`/notification/dm/${numericId}`, {
       method: 'DELETE',
+      ...options,
     });
     return await res.json();
   },

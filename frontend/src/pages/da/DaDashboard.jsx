@@ -1,5 +1,5 @@
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
-import React, { useEffect, useState, Suspense, lazy } from 'react';
+import React, { useEffect, useState, useMemo, Suspense, lazy } from 'react';
 import { useDaStats, useDaRecommendations, useDaDistrictMps, useDaProjects } from '../../api/queries';
 import { daApi } from '../../api/daApi';
 import Reveal from '../../animations/Reveal';
@@ -25,36 +25,6 @@ import DaDashboardChart from './components/DaDashboardChart';
 
 
 
-const initialZeroDaStats = {
-  district: '',
-  totalMPs: 0,
-  totalProjects: 0,
-  totalEntitlement: 250000000,
-  totalSanctioned: 0,
-  totalUtilized: 0,
-  pendingReview: 0,
-  awaitingVerification: 0,
-  waitingOver5Days: 0,
-  activeProjects: 0,
-  riskCounts: {
-    Low: 0,
-    Moderate: 0,
-    High: 0,
-    Critical: 0,
-  },
-};
-
-// Synchronously compute initial metrics so LCP header & metrics paint with 0ms delay
-const getInitialDaStats = () => {
-  try {
-    const cached = sessionStorage.getItem('mplads_da_dashboard_stats');
-    if (cached) return JSON.parse(cached);
-  } catch {
-    // Session storage fallback
-  }
-  return initialZeroDaStats;
-};
-
 const DaDashboard = () => {
   usePageSeo(
     'District Dashboard | DA Portal',
@@ -62,21 +32,39 @@ const DaDashboard = () => {
   );
 
   const { data: statsData, isLoading: statsLoading } = useDaStats();
-  const { data: recsData } = useDaRecommendations();
-  const { data: mpsData } = useDaDistrictMps();
+  const { data: recsData, isLoading: recsLoading } = useDaRecommendations();
+  const { data: mpsData, isLoading: mpsLoading } = useDaDistrictMps();
   const { data: projectsData, isLoading: projectsLoading } = useDaProjects();
 
   const [showAllRecommendations, setShowAllRecommendations] = useState(false);
   const [reportGenerating, setReportGenerating] = useState(false);
   const [reportSuccess, setReportSuccess] = useState(false);
 
-  const stats = statsData || null;
+  useEffect(() => {
+    if (statsData) {
+      try {
+        sessionStorage.setItem('mplads_da_dashboard_stats', JSON.stringify(statsData));
+      } catch {
+        // Session storage quota fallback
+      }
+    }
+  }, [statsData]);
+
+  const stats = statsData;
   const recommendations = Array.isArray(recsData) ? recsData : [];
   const mps = Array.isArray(mpsData) ? mpsData : [];
   const projects = Array.isArray(projectsData) ? projectsData : [];
-  const displayStats = stats || initialZeroDaStats;
+  const displayStats = stats;
 
-  const loading = (statsLoading && !statsData) || (projectsLoading && !projectsData);
+  const isPageLoading =
+    statsLoading ||
+    recsLoading ||
+    mpsLoading ||
+    projectsLoading ||
+    !statsData ||
+    !projectsData ||
+    !mpsData ||
+    !recsData;
 
   const handleGenerateReport = async () => {
     setReportGenerating(true);
@@ -90,20 +78,26 @@ const DaDashboard = () => {
     setReportGenerating(false);
   };
 
-  // Recent actions from projects
-  const recentActions = (projects || [])
-    .flatMap(p => (Array.isArray(p.actionHistory) ? p.actionHistory : []).map(a => ({
-      ...a,
-      projectId: p.id,
-      projectTitle: p.title || 'Untitled Project',
-      timestamp: a.timestamp || new Date().toISOString(),
-      action: a.action || 'Updated',
-      actor: a.actor || 'System',
-    })))
-    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-    .slice(0, 5);
+  // Recent administrative activity actions (derived with priority from stats or projects)
+  const recentActions = useMemo(() => {
+    if (Array.isArray(statsData?.recentActions) && statsData.recentActions.length > 0) {
+      return statsData.recentActions;
+    }
+    const projs = Array.isArray(projectsData) ? projectsData : [];
+    return projs
+      .flatMap(p => (Array.isArray(p.actionHistory) ? p.actionHistory : []).map(a => ({
+        ...a,
+        projectId: p.id,
+        projectTitle: p.title || 'Untitled Project',
+        timestamp: a.timestamp || new Date().toISOString(),
+        action: a.action || 'Updated',
+        actor: a.actor || 'System',
+      })))
+      .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+      .slice(0, 5);
+  }, [statsData?.recentActions, projectsData]);
 
-  if (loading || !stats) {
+  if (isPageLoading) {
     return <PortalPageLoader message="Loading District Dashboard..." />;
   }
 

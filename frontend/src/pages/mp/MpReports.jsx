@@ -1,23 +1,10 @@
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
-import React, { useMemo, Suspense, lazy } from 'react';
+import React, { useMemo } from 'react';
 import { useMpProjects } from '../../api/queries';
 import { TbDownload, TbFilter } from 'react-icons/tb';
 import { useMpReports } from '../../api/queries';
 import usePageSeo from '../../hooks/usePageSeo';
-
-// Lazy-loaded to eliminate Recharts from the critical route bundle of MP Reports
-const MpReportsCharts = lazy(() => import('./components/MpReportsCharts'));
-
-const ChartSkeleton = () => (
-  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 flex-1 animate-pulse" role="status" aria-label="Loading analytics charts">
-    <div className="bg-white rounded border border-slate-200 p-6 h-[380px] flex flex-col justify-center items-center">
-      <div className="w-8 h-8 border-3 border-[#123b63] border-t-transparent rounded-full animate-spin"></div>
-    </div>
-    <div className="bg-white rounded border border-slate-200 p-6 h-[380px] flex flex-col justify-center items-center">
-      <div className="w-8 h-8 border-3 border-[#123b63] border-t-transparent rounded-full animate-spin"></div>
-    </div>
-  </div>
-);
+import MpReportsCharts from './components/MpReportsCharts';
 
 
 
@@ -58,9 +45,10 @@ const MpReports = () => {
     return monthNames.map(name => ({ name, utilized: 0, sanctioned: 0 }));
   }, [summaryData]);
 
-  const loading = (summaryLoading && !summaryData) && (projectsLoading && !projectsData);
+  const isAnyLoading = summaryLoading || projectsLoading;
+  const isAllLoaded = Boolean(summaryData && projectsData);
 
-  if (loading) {
+  if (isAnyLoading || !isAllLoaded) {
     return <PortalPageLoader message="Loading Reports & Analytics..." />;
   }
 
@@ -91,9 +79,7 @@ const MpReports = () => {
         </div>
       </header>
 
-      <Suspense fallback={<ChartSkeleton />}>
-        <MpReportsCharts monthlyData={monthlyData} categoryData={categoryData} />
-      </Suspense>
+      <MpReportsCharts monthlyData={monthlyData} categoryData={categoryData} />
     </div>
   );
 };

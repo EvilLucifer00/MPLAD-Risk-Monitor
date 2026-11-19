@@ -1,6 +1,8 @@
 // src/api/mpApi.js
-import { projectsApi, dashboardApi, notificationsApi } from './mpladsApi';
+import { projectsApi, dashboardApi, notificationsApi, documentsApi } from './mpladsApi';
 import { useAuthStore } from '../store/useAuthStore';
+import { queryClient } from '../queryClient';
+import { queryKeys } from './queryKeys';
 
 export const mpApi = {
 
@@ -100,8 +102,12 @@ export const mpApi = {
     try {
       const token = useAuthStore.getState().token;
       if (token) {
-        const stats = await dashboardApi.getMpStats(options).catch(() => null);
-        const projects = await projectsApi.getAllProjects({}, options).catch(() => []);
+        const user = useAuthStore.getState().user;
+        const cachedStats = queryClient.getQueryData(queryKeys.mp.stats(user?.id));
+        const cachedProjects = queryClient.getQueryData(queryKeys.mp.projects(user?.id, {}));
+
+        const stats = cachedStats || await dashboardApi.getMpStats(options).catch(() => null);
+        const projects = cachedProjects || await projectsApi.getAllProjects({}, options).catch(() => []);
         const recs = [];
 
         const highRisk = projects.filter(p => p.riskLevel === 'High' || p.riskLevel === 'Critical');
@@ -132,39 +138,31 @@ export const mpApi = {
     return [];
   },
 
-  // Dashboard Stats
-  /**
-   * Fetches aggregate project statistics from the real backend API.
-   * If values are zero, returns zero metrics rather than fallback mock numbers.
-   */
-  getDashboardStats: async (options = {}) => {
+  // Documents
+  getDocuments: async (params = {}, options = {}) => {
     try {
       const token = useAuthStore.getState().token;
       if (token) {
-        return await dashboardApi.getMpStats(options);
+        return await documentsApi.getMpDocuments(params, options);
       }
     } catch {
-      // Graceful zero fallback
+      // Graceful fallback
     }
-    return {
-      activeProjects: 0,
-      totalEntitlement: 50000000,
-      totalUtilized: 0,
-      pendingApprovals: 0,
-      totalProjects: 0,
-      riskCounts: {
-        Low: 0,
-        Moderate: 0,
-        High: 0,
-        Critical: 0,
-      },
-      statusBreakdown: {
-        on_track: 0,
-        high_risk: 0,
-        completed: 0,
-      },
-      recentProjects: [],
-    };
+    return [];
+  },
+
+  // Dashboard Stats
+  /**
+   * Fetches aggregate project statistics from the real backend API.
+   * Throws on error so React Query correctly handles retry and loading state,
+   * avoiding rendering false/zero skeletons before real data arrives.
+   */
+  getDashboardStats: async (options = {}) => {
+    const token = useAuthStore.getState().token;
+    if (token) {
+      return await dashboardApi.getMpStats(options);
+    }
+    throw new Error('Authentication required for MP Dashboard metrics.');
   }
 };
 

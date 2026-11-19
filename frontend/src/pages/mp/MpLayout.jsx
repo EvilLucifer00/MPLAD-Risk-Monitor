@@ -18,11 +18,12 @@ import { api } from '../../api/mpApi';
 import { useAuthStore } from '../../store/useAuthStore';
 import { subscribePortalSync } from '../../utils/portalSync';
 import { useQueryClient } from '@tanstack/react-query';
-import { queryKeys } from '../../api/queries';
+import { queryKeys, useMpNotifications } from '../../api/queries';
 import { QueryStatusIndicator } from '../../components/shared/QueryStatusBanner';
 import { reportsApi, documentsApi } from '../../api/mpladsApi';
 import { CACHE_TIMES } from '../../constants/cacheConfig';
 import useDialogA11y from '../../hooks/useDialogA11y';
+import PortalPageLoader from '../../components/shared/PortalPageLoader';
 
 // Lazy-loaded to eliminate heavy AI chat bundle from critical route waterfall
 const AiAssistantWidget = lazy(() => import('../../components/shared/AiAssistantWidget.jsx'));
@@ -33,7 +34,8 @@ const MpLayout = () => {
   const logout = useAuthStore((state) => state.logout);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const sidebarA11yRef = useDialogA11y(isSidebarOpen, () => setIsSidebarOpen(false));
-  const [notifications, setNotifications] = useState([]);
+  const { data: notifData } = useMpNotifications();
+  const notifications = Array.isArray(notifData) ? notifData : [];
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [globalSearch, setGlobalSearch] = useState('');
@@ -90,39 +92,32 @@ const MpLayout = () => {
     };
   }, []);
 
-  useEffect(() => {
-    // Fetch notifications on mount
-    api.getNotifications().then(setNotifications).catch(() => {});
-
-    // Silently refresh notifications on reconnect without any reload animations
-    const handleSilentReload = () => {
-      api.getNotifications().then(setNotifications).catch(() => {});
-    };
-    window.addEventListener('mplads:silent-reload', handleSilentReload);
-    return () => window.removeEventListener('mplads:silent-reload', handleSilentReload);
-  }, []);
-
   const unreadCount = notifications.filter(n => !n.read).length;
 
   const prefetchMpRoute = (routePath) => {
+    const id = user?.id;
     switch (routePath) {
       case '/mp':
-        import('./MpDashboard.jsx');
         queryClient.prefetchQuery({
-          queryKey: queryKeys.mp.stats(user?.id),
+          queryKey: queryKeys.mp.stats(id),
           queryFn: ({ signal }) => api.getDashboardStats({ signal }),
           staleTime: CACHE_TIMES.FINANCIAL_STATUS.staleTime,
         });
         queryClient.prefetchQuery({
-          queryKey: queryKeys.mp.recommendations(user?.id),
+          queryKey: queryKeys.mp.recommendations(id),
           queryFn: ({ signal }) => api.getRecommendations({ signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.mp.projects(id, {}),
+          queryFn: ({ signal }) => api.getProjects({}, { signal }),
           staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
         });
         break;
       case '/mp/projects':
         import('./MpProjects.jsx');
         queryClient.prefetchQuery({
-          queryKey: queryKeys.mp.projects(user?.id, {}),
+          queryKey: queryKeys.mp.projects(id, {}),
           queryFn: ({ signal }) => api.getProjects({}, { signal }),
           staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
         });
@@ -133,23 +128,33 @@ const MpLayout = () => {
       case '/mp/reports':
         import('./MpReports.jsx');
         queryClient.prefetchQuery({
-          queryKey: queryKeys.mp.reports(user?.id, 'all'),
+          queryKey: queryKeys.mp.reports(id, 'all'),
           queryFn: ({ signal }) => reportsApi.getSummary('all', { signal }),
           staleTime: CACHE_TIMES.DASHBOARD.staleTime,
+        });
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.mp.projects(id, {}),
+          queryFn: ({ signal }) => api.getProjects({}, { signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
         });
         break;
       case '/mp/documents':
         import('./MpDocuments.jsx');
         queryClient.prefetchQuery({
-          queryKey: queryKeys.mp.documents(user?.id, {}),
+          queryKey: queryKeys.mp.documents(id, {}),
           queryFn: ({ signal }) => documentsApi.getMpDocuments({}, { signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.mp.projects(id, {}),
+          queryFn: ({ signal }) => api.getProjects({}, { signal }),
           staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
         });
         break;
       case '/mp/notifications':
         import('./MpNotifications.jsx');
         queryClient.prefetchQuery({
-          queryKey: queryKeys.mp.notifications(user?.id),
+          queryKey: queryKeys.mp.notifications(id),
           queryFn: ({ signal }) => api.getNotifications(null, { signal }),
           staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
         });
@@ -184,7 +189,7 @@ const MpLayout = () => {
         <div className="flex items-center gap-3.5">
           <EmblemImage width="40" height="48" className="w-10 h-12 object-contain shrink-0" />
           <div>
-            <div className="text-[10px] font-bold uppercase tracking-wider text-sky-400 leading-none">Govt of India</div>
+            <div className="text-[10px] font-bold uppercase tracking-wider text-sky-400 leading-none">SIH Prototype</div>
             <h2 className="font-bold text-xl leading-tight tracking-tight mt-0.5">MP Portal</h2>
             <p className="text-[11px] text-sky-200/80 font-medium tracking-tight mt-0.5 leading-snug whitespace-normal">
               Member of Parliament • MPLADS
@@ -214,6 +219,7 @@ const MpLayout = () => {
               to={link.path}
               onMouseEnter={() => prefetchMpRoute(link.path)}
               onFocus={() => prefetchMpRoute(link.path)}
+              onTouchStart={() => prefetchMpRoute(link.path)}
               onClick={() => setIsSidebarOpen(false)}
               aria-current={isActive ? 'page' : undefined}
               className={`flex items-center gap-2.5 px-3 py-2 rounded text-xs sm:text-sm font-medium transition-colors ${
@@ -315,9 +321,9 @@ const MpLayout = () => {
 
         <div>
           <p className="text-[11px] text-slate-400 leading-relaxed font-medium">
-            Government of India<br/>
-            Ministry of Statistics and<br/>
-            Programme Implementation
+            Smart India Hackathon 2026<br/>
+            Independent Analytics Prototype<br/>
+            Public MPLADS Data Study
           </p>
         </div>
       </div>
@@ -490,7 +496,9 @@ const MpLayout = () => {
         {/* Page Content */}
         <main id="main-content" className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar bg-slate-50 p-4 sm:p-6 lg:p-8 w-full max-w-full min-w-0">
           <div className="max-w-7xl mx-auto min-h-full pb-20 w-full min-w-0">
-            <Outlet />
+            <Suspense fallback={<PortalPageLoader message="Loading section..." />}>
+              <Outlet />
+            </Suspense>
           </div>
         </main>
       </div>

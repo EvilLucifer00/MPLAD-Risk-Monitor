@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import { projectsApi, userManagementApi } from '../../api/mpladsApi';
 import { useQueryClient } from '@tanstack/react-query';
 import { queryKeys, useMpSubmitProjectMutation } from '../../api/queries';
@@ -33,17 +34,7 @@ const MpSubmitProject = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
   const [assignedDm, setAssignedDm] = useState(null);
-
-  useEffect(() => {
-    if (user?.dist) {
-      userManagementApi.getDmByDistrict(user.dist)
-        .then(data => {
-          if (Array.isArray(data) && data.length > 0) setAssignedDm(data[0]);
-          else if (data && data.dm_name) setAssignedDm(data);
-        })
-        .catch(() => {});
-    }
-  }, [user?.dist]);
+  const [loadingDm, setLoadingDm] = useState(Boolean(user?.dist));
 
   const [formData, setFormData] = useState({
     title: '',
@@ -55,6 +46,40 @@ const MpSubmitProject = () => {
   });
 
   const [files, setFiles] = useState([]);
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchDm = async () => {
+      if (user?.dist) {
+        try {
+          const data = await userManagementApi.getDmByDistrict(user.dist);
+          if (!isMounted) return;
+          if (Array.isArray(data) && data.length > 0) setAssignedDm(data[0]);
+          else if (data && data.dm_name) setAssignedDm(data);
+        } catch {
+          // Handled gracefully
+        } finally {
+          if (isMounted) setLoadingDm(false);
+        }
+      } else {
+        setLoadingDm(false);
+      }
+    };
+    fetchDm();
+    return () => {
+      isMounted = false;
+    };
+  }, [user?.dist]);
+
+  useEffect(() => {
+    if (user?.dist && !formData.district) {
+      setFormData(prev => ({ ...prev, district: user.dist }));
+    }
+  }, [user?.dist, formData.district]);
+
+  if (loadingDm || !user) {
+    return <PortalPageLoader message="Loading Proposal Workspace..." />;
+  }
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

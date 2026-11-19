@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import { 
   TbUserCircle, 
   TbBell, 
@@ -19,6 +20,11 @@ const MpSettings = () => {
   );
 
   const user = useAuthStore((state) => state.user);
+
+  if (!user) {
+    return <PortalPageLoader message="Loading Settings..." />;
+  }
+
   const displayName = user?.mp_name || 'Hon. Member';
   const displayConstituency = user?.constituency 
     ? `${user.constituency}${user?.state ? ', ' + user.state : ''}`

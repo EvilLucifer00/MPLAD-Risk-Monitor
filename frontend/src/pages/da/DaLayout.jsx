@@ -20,11 +20,10 @@ import { daApi } from '../../api/daApi';
 import { useAuthStore } from '../../store/useAuthStore';
 import { subscribePortalSync } from '../../utils/portalSync';
 import { useQueryClient } from '@tanstack/react-query';
-import { queryKeys } from '../../api/queries';
+import { queryKeys, useDaReviewQueue, useDaNotifications } from '../../api/queries';
 import { QueryStatusIndicator } from '../../components/shared/QueryStatusBanner';
 import { documentsApi } from '../../api/mpladsApi';
 import { CACHE_TIMES } from '../../constants/cacheConfig';
-import { useDaReviewQueue } from '../../api/queries';
 import useDialogA11y from '../../hooks/useDialogA11y';
 
 // Lazy-loaded to eliminate heavy AI chat bundle from critical route waterfall
@@ -37,7 +36,8 @@ const DaLayout = () => {
   const sidebarA11yRef = useDialogA11y(isSidebarOpen, () => setIsSidebarOpen(false));
   const { data: queueData } = useDaReviewQueue();
   const pendingReviewCount = Array.isArray(queueData) ? queueData.length : 0;
-  const [notifications, setNotifications] = useState([]);
+  const { data: notifData } = useDaNotifications();
+  const notifications = Array.isArray(notifData) ? notifData : [];
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [globalSearch, setGlobalSearch] = useState('');
@@ -46,15 +46,16 @@ const DaLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-    useEffect(() => {
+  useEffect(() => {
     return subscribePortalSync((event) => {
       if (event.type === 'PROJECT_SUBMITTED') {
-        queryClient.invalidateQueries({ queryKey: queryKeys.da.reviewQueue() });
-        queryClient.invalidateQueries({ queryKey: queryKeys.da.stats() });
-        queryClient.invalidateQueries({ queryKey: queryKeys.da.projects() });
+        const dist = user?.dist || user?.id;
+        queryClient.invalidateQueries({ queryKey: queryKeys.da.reviewQueue(dist) });
+        queryClient.invalidateQueries({ queryKey: queryKeys.da.stats(dist) });
+        queryClient.invalidateQueries({ queryKey: queryKeys.da.projects(dist) });
       }
     });
-  }, [queryClient]);
+  }, [queryClient, user?.dist, user?.id]);
 
   const handleLogout = () => {
     logout();
@@ -96,24 +97,12 @@ const DaLayout = () => {
     };
   }, []);
 
-  useEffect(() => {
-    daApi.getNotifications().then(setNotifications).catch(() => {});
-
-    // Silently refresh notifications on reconnect without any reload animations
-    const handleSilentReload = () => {
-      daApi.getNotifications().then(setNotifications).catch(() => {});
-    };
-    window.addEventListener('mplads:silent-reload', handleSilentReload);
-    return () => window.removeEventListener('mplads:silent-reload', handleSilentReload);
-  }, []);
-
   const unreadCount = notifications.filter(n => !n.read).length;
 
   const prefetchDaRoute = (routePath) => {
     const dist = user?.dist || user?.id;
     switch (routePath) {
       case '/da':
-        import('./DaDashboard.jsx');
         queryClient.prefetchQuery({
           queryKey: queryKeys.da.stats(dist),
           queryFn: ({ signal }) => daApi.getDashboardStats({ signal }),
@@ -124,12 +113,22 @@ const DaLayout = () => {
           queryFn: ({ signal }) => daApi.getRecommendations({ signal }),
           staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
         });
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.districtMps(dist),
+          queryFn: ({ signal }) => daApi.getDistrictMPs({ signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.projects(dist, {}),
+          queryFn: ({ signal }) => daApi.getProjects({}, { signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
         break;
       case '/da/projects':
         import('./DaProjects.jsx');
         queryClient.prefetchQuery({
-          queryKey: queryKeys.da.projects(dist, {}),
-          queryFn: ({ signal }) => daApi.getProjects({}, { signal }),
+          queryKey: queryKeys.da.districtMps(dist),
+          queryFn: ({ signal }) => daApi.getDistrictMPs({ signal }),
           staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
         });
         break;
@@ -140,12 +139,27 @@ const DaLayout = () => {
           queryFn: ({ signal }) => daApi.getReviewQueue({ signal }),
           staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
         });
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.districtMps(dist),
+          queryFn: ({ signal }) => daApi.getDistrictMPs({ signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.agencies(dist),
+          queryFn: ({ signal }) => daApi.getImplementingAgencies({ signal }),
+          staleTime: CACHE_TIMES.REFERENCE.staleTime,
+        });
         break;
       case '/da/documents':
         import('./DaDocuments.jsx');
         queryClient.prefetchQuery({
           queryKey: queryKeys.da.documents(dist, {}),
           queryFn: ({ signal }) => documentsApi.getDmDocuments({}, { signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.projects(dist, {}),
+          queryFn: ({ signal }) => daApi.getProjects({}, { signal }),
           staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
         });
         break;
@@ -204,7 +218,7 @@ const DaLayout = () => {
         <div className="flex items-center gap-3.5">
           <EmblemImage width="40" height="48" className="w-10 h-12 object-contain shrink-0" />
           <div>
-            <div className="text-[10px] font-bold uppercase tracking-wider text-sky-400 leading-none">Govt of India</div>
+            <div className="text-[10px] font-bold uppercase tracking-wider text-sky-400 leading-none">SIH Prototype</div>
             <h2 className="font-bold text-xl leading-tight tracking-tight mt-0.5">DA Portal</h2>
             <p className="text-[11px] text-sky-200/80 font-medium tracking-tight mt-0.5 leading-snug whitespace-normal">
               District Authority • MPLADS
@@ -234,6 +248,7 @@ const DaLayout = () => {
               to={link.path}
               onMouseEnter={() => prefetchDaRoute(link.path)}
               onFocus={() => prefetchDaRoute(link.path)}
+              onTouchStart={() => prefetchDaRoute(link.path)}
               onClick={() => setIsSidebarOpen(false)}
               aria-current={isActive ? 'page' : undefined}
               className={`flex items-center gap-2.5 px-3 py-2 rounded text-xs sm:text-sm font-medium transition-colors ${
@@ -343,9 +358,9 @@ const DaLayout = () => {
 
         <div>
           <p className="text-[11px] text-slate-400 leading-relaxed font-medium">
-            Government of India<br/>
-            Ministry of Statistics and<br/>
-            Programme Implementation
+            Smart India Hackathon 2026<br/>
+            Independent Analytics Prototype<br/>
+            Public MPLADS Data Study
           </p>
         </div>
       </div>

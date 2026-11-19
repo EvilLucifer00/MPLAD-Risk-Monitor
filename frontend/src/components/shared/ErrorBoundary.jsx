@@ -58,7 +58,7 @@ class ErrorBoundary extends React.Component {
               <a href="/" className="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-lg p-1">
                 <EmblemImage width="34" height="42" className="w-8 h-10 object-contain shrink-0" />
                 <div>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-sky-400 leading-none">Government of India</p>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-sky-400 leading-none">Smart India Hackathon 2026</p>
                   <h1 className="font-bold text-base sm:text-lg leading-tight tracking-tight text-white group-hover:text-cyan-200 transition-colors">
                     MPLADS Risk Monitor
                   </h1>
@@ -154,7 +154,7 @@ class ErrorBoundary extends React.Component {
 
           {/* Official Footer */}
           <footer className="bg-white border-t border-slate-200 py-4 px-6 text-center text-xs text-slate-500">
-            <p>Ministry of Statistics and Programme Implementation (MoSPI) • Government of India</p>
+            <p>Smart India Hackathon 2026 • Independent Prototype • Not affiliated with Government of India or MoSPI</p>
           </footer>
         </div>
       );

@@ -41,7 +41,7 @@ const MpProjectDetail = () => {
 
   const loading = isLoading && !project;
 
-  if (loading || !project) {
+  if ((isLoading || !project) && !isError) {
     return <PortalPageLoader message="Loading Project Details..." />;
   }
 

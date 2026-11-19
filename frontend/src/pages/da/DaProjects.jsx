@@ -1,5 +1,5 @@
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
-import React, { useState, useEffect, useMemo, Suspense, lazy } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useDaDistrictMps } from '../../api/queries';
 import { useDaStore } from '../../store/useDaStore';
@@ -7,22 +7,7 @@ import { useAuthStore } from '../../store/useAuthStore';
 import { RiskBadge } from '../mp/MpProjects';
 import usePageSeo from '../../hooks/usePageSeo';
 import { TbSearch, TbChartBar, TbLayoutGrid, TbAlertTriangle, TbArrowRight, TbUser } from 'react-icons/tb';
-
-// Lazy-loaded to eliminate Recharts (~300KB) from the critical path of the default Grid view
-const DaProjectsAnalytics = lazy(() => import('./components/DaProjectsAnalytics'));
-
-const AnalyticsSkeleton = () => (
-  <div className="space-y-6 flex-1 animate-pulse" role="status" aria-label="Loading analytics charts">
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div className="bg-white rounded border border-slate-200 p-6 h-[380px] flex flex-col justify-center items-center">
-        <div className="w-8 h-8 border-3 border-[#123b63] border-t-transparent rounded-full animate-spin"></div>
-      </div>
-      <div className="bg-white rounded border border-slate-200 p-6 h-[380px] flex flex-col justify-center items-center">
-        <div className="w-8 h-8 border-3 border-[#123b63] border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    </div>
-  </div>
-);
+import DaProjectsAnalytics from './components/DaProjectsAnalytics';
 
 const DaProjects = () => {
   const user = useAuthStore((s) => s.user);
@@ -69,7 +54,7 @@ const DaProjects = () => {
     highCritical: mp.highCriticalCount,
   })), [mps]);
 
-  if (loading) {
+  if (isLoading || !mpsData) {
     return <PortalPageLoader message="Loading District Projects..." />;
   }
 
@@ -197,13 +182,11 @@ const DaProjects = () => {
         </section>
       ) : (
         /* ── Analytics View ── */
-        <Suspense fallback={<AnalyticsSkeleton />}>
-          <DaProjectsAnalytics 
-            riskByMp={riskByMp} 
-            utilizationByMp={utilizationByMp} 
-            projectsByMp={projectsByMp} 
-          />
-        </Suspense>
+        <DaProjectsAnalytics 
+          riskByMp={riskByMp} 
+          utilizationByMp={utilizationByMp} 
+          projectsByMp={projectsByMp} 
+        />
       )}
     </div>
   );

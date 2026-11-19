@@ -456,7 +456,7 @@ const AiAssistantWidget = () => {
       <div
         role="dialog"
         aria-modal={isMobile || isMaximized ? "true" : "false"}
-        aria-label="MPLADS AI Assistant"
+        aria-label="MPLADS Prototype Assistant"
         onWheel={handlePanelWheel}
         style={
           isMobile || isMaximized
@@ -521,20 +521,20 @@ const AiAssistantWidget = () => {
               width={26}
               height={32}
               className="w-6 h-[30px] object-contain shrink-0 drop-shadow-xs"
-              alt="Government of India"
+              alt="MPLADS Risk Monitor"
             />
             <div className="min-w-0">
               <div className="flex items-center gap-1.5">
                 <h3 className="font-bold text-sm sm:text-base tracking-tight leading-tight text-white truncate font-sans">
-                  MPLADS AI Assistant
+                  MPLADS Assistant
                 </h3>
                 <span className="hidden sm:inline-flex items-center text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-white/15 text-cyan-200 border border-white/20">
-                  MoSPI
+                  SIH PROTOTYPE
                 </span>
               </div>
               <p className="text-[11px] text-slate-300 flex items-center gap-1.5 leading-tight mt-0.5 font-sans">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                <span>Official Guidelines Reference • Active</span>
+                <span>Public Guidelines Reference • Prototype</span>
               </p>
             </div>
           </div>
@@ -616,11 +616,11 @@ const AiAssistantWidget = () => {
                     }`}
                     title={msg.isTyping ? 'Click to show full response immediately' : undefined}
                   >
-                    {/* Official source badge */}
+                    {/* Guidelines reference badge */}
                     <div className="flex items-center justify-between gap-2 mb-2.5 pb-2 border-b border-slate-100 text-xs text-slate-500 select-none">
                       <span className="flex items-center gap-1.5 font-semibold text-[#123b63]">
                         <TbShieldCheck size={14} className="text-emerald-700 shrink-0" />
-                        <span>MoSPI MPLADS Intelligence</span>
+                        <span>Public Guidelines Reference</span>
                       </span>
                       {msg.isTyping ? (
                         <span className="text-[11px] text-slate-500 hover:text-[#123b63] font-medium">
@@ -628,7 +628,7 @@ const AiAssistantWidget = () => {
                         </span>
                       ) : (
                         <span className="text-[11px] text-slate-400 font-mono">
-                          Verified
+                          SIH Prototype
                         </span>
                       )}
                     </div>
@@ -741,7 +741,7 @@ const AiAssistantWidget = () => {
               </button>
             </div>
             <p className="text-[11px] text-center text-slate-500 mt-2 select-none leading-normal font-sans">
-              Official MoSPI MPLADS Guidelines Reference • AI-assisted governance intelligence
+              Independent SIH Prototype • Grounded in public MPLADS guidelines • AI responses should be verified
             </p>
           </div>
         </div>

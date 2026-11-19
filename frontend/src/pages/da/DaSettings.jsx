@@ -1,3 +1,4 @@
+import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useState } from 'react';
 import { TbUser, TbBell, TbShield, TbDeviceFloppy, TbCheck } from 'react-icons/tb';
 import { usePageSeo } from '../../hooks/usePageSeo';
@@ -28,6 +29,10 @@ const DaSettings = () => {
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
   };
+
+  if (!user) {
+    return <PortalPageLoader message="Loading Settings..." />;
+  }
 
   return (
     <div className="space-y-6 max-w-3xl mx-auto">

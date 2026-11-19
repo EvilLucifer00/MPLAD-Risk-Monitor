@@ -60,7 +60,7 @@ const DaVendorWatchlist = () => {
 
   const flaggedCount = vendors.filter(v => v.flagged).length;
 
-  if (loading) {
+  if (isLoading || !vendorsData) {
     return <PortalPageLoader message="Loading Vendor Watchlist..." />;
   }
 

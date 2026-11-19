@@ -1,3 +1,4 @@
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone, date
 from typing import Optional, List, Dict
 from uuid import uuid4
@@ -66,13 +67,11 @@ def _enrich_projects(projects: List[dict]) -> List[dict]:
     })
 
     # ----------------------------------------------------------------------
-    # Risk records
+    # Parallelize Risk, Cost, and Vendor lookups to eliminate database waterfalls
     # ----------------------------------------------------------------------
-
-    risk_map: Dict[int, dict] = {}
-
-    if risk_ids:
-
+    def _fetch_risks():
+        if not risk_ids:
+            return {}
         res = (
             supabase
             .table("mplads_risk_scores")
@@ -84,20 +83,11 @@ def _enrich_projects(projects: List[dict]) -> List[dict]:
             .in_("id", risk_ids)
             .execute()
         )
+        return {r["id"]: r for r in (res.data or [])}
 
-        risk_map = {
-            r["id"]: r
-            for r in (res.data or [])
-        }
-
-    # ----------------------------------------------------------------------
-    # Cost records
-    # ----------------------------------------------------------------------
-
-    cost_map: Dict[int, dict] = {}
-
-    if cost_ids:
-
+    def _fetch_costs():
+        if not cost_ids:
+            return {}
         res = (
             supabase
             .table("mplads_cost_details")
@@ -108,20 +98,11 @@ def _enrich_projects(projects: List[dict]) -> List[dict]:
             .in_("id", cost_ids)
             .execute()
         )
+        return {r["id"]: r for r in (res.data or [])}
 
-        cost_map = {
-            r["id"]: r
-            for r in (res.data or [])
-        }
-
-    # ----------------------------------------------------------------------
-    # Vendor records
-    # ----------------------------------------------------------------------
-
-    vendor_map: Dict[int, dict] = {}
-
-    if vendor_ids:
-
+    def _fetch_vendors():
+        if not vendor_ids:
+            return {}
         res = (
             supabase
             .table("mplads_vendors")
@@ -132,11 +113,15 @@ def _enrich_projects(projects: List[dict]) -> List[dict]:
             .in_("id", vendor_ids)
             .execute()
         )
+        return {r["id"]: r for r in (res.data or [])}
 
-        vendor_map = {
-            r["id"]: r
-            for r in (res.data or [])
-        }
+    with ThreadPoolExecutor(max_workers=3) as executor:
+        f_risk = executor.submit(_fetch_risks)
+        f_cost = executor.submit(_fetch_costs)
+        f_vendor = executor.submit(_fetch_vendors)
+        risk_map = f_risk.result()
+        cost_map = f_cost.result()
+        vendor_map = f_vendor.result()
 
     # ----------------------------------------------------------------------
     # Build enriched result
@@ -228,6 +213,24 @@ def _enrich_projects(projects: List[dict]) -> List[dict]:
                 # No implementing agency table exists yet
                 # ----------------------------------------------------------
                 "implementing_agency": None,
+
+                # ----------------------------------------------------------
+                # Pre-formatted Action History for instant Activity Log
+                # ----------------------------------------------------------
+                "action_history": [
+                    {
+                        "action": (
+                            "Sanctioned" if project.get("status") in ("APPROVED", "SANCTIONED", "Sanctioned")
+                            else "In Progress" if project.get("status") in ("IN_PROGRESS", "In Progress")
+                            else "Completed" if project.get("status") in ("COMPLETED", "Completed")
+                            else "Rejected" if project.get("status") in ("REJECTED", "Rejected")
+                            else "Submitted"
+                        ),
+                        "actor": "MP Office",
+                        "timestamp": project.get("updated_at") or project.get("submit_date") or datetime.now(timezone.utc).isoformat(),
+                        "reason": "Administrative status update recorded.",
+                    }
+                ],
             }
         )
 
@@ -369,9 +372,7 @@ async def list_projects(
     )
 
     return {
-        "data": _enrich_projects(
-            response.data or []
-        ),
+        "data": _enrich_projects(response.data or []),
         "count": response.count or 0,
         "page": page,
         "page_size": page_size,
@@ -1103,6 +1104,98 @@ async def dm_district_projects(
 
 
 # ============================================================================
+# DM: all district projects list (high-performance single-request endpoint)
+# ============================================================================
+async def dm_all_district_projects(
+    dm: dict,
+    search: Optional[str] = None,
+    status_filter: Optional[str] = None,
+    risk_filter: Optional[str] = None,
+    category: Optional[str] = None,
+    page: int = 1,
+    page_size: int = 100,
+):
+    if page < 1:
+        page = 1
+    if page_size < 1 or page_size > 200:
+        page_size = 100
+
+    query = (
+        supabase
+        .table("mplads_new_projects")
+        .select("*")
+        .eq("state", dm["state"])
+        .eq("district", dm["dist"])
+    )
+
+    if search:
+        search = search.strip()
+        if search:
+            query = query.or_(
+                f"project_title.ilike.%{search}%,"
+                f"description.ilike.%{search}%"
+            )
+
+    if category:
+        query = query.eq("category", category.upper())
+
+    if status_filter:
+        status_val = status_filter.upper().replace(" ", "_")
+        query = query.eq("status", status_val)
+
+    if risk_filter:
+        risk_res = (
+            supabase
+            .table("mplads_risk_scores")
+            .select("id")
+            .eq("risk_level", risk_filter.upper())
+            .execute()
+        )
+        risk_ids = [r["id"] for r in (risk_res.data or [])]
+        if not risk_ids:
+            return {"data": [], "count": 0, "page": page, "page_size": page_size}
+        query = query.in_("risk_id", risk_ids)
+
+    start = (page - 1) * page_size
+    end = start + page_size - 1
+
+    response = (
+        query
+        .range(start, end)
+        .order("updated_at", desc=True)
+        .execute()
+    )
+
+    projects = response.data or []
+    if not projects:
+        return {"data": [], "count": 0, "page": page, "page_size": page_size}
+
+    enriched = _enrich_projects(projects)
+
+    mp_ids = list({p["mp_id"] for p in enriched if p.get("mp_id") is not None})
+    if mp_ids:
+        mp_res = (
+            supabase
+            .table("mplads_mp")
+            .select("id, mp_name, constituency")
+            .in_("id", mp_ids)
+            .execute()
+        )
+        mp_map = {m["id"]: m for m in (mp_res.data or [])}
+        for p in enriched:
+            mp_info = mp_map.get(p.get("mp_id"), {})
+            p["mp_name"] = mp_info.get("mp_name", "MP Office")
+            p["constituency"] = mp_info.get("constituency", "")
+
+    return {
+        "data": enriched,
+        "count": len(enriched),
+        "page": page,
+        "page_size": page_size,
+    }
+
+
+# ============================================================================
 # DM: single MP detail view
 # ============================================================================
 async def dm_mp_projects(
@@ -1288,29 +1381,48 @@ async def dm_mp_projects(
         .execute()
     )
 
+    paginated_projects = _enrich_projects(response.data or [])
+
     # ----------------------------------------------------------------------
-    # Stats
-    #
-    # Fetch all projects without pagination.
+    # Stats: reuse paginated projects when page 1 contains all projects
+    # to eliminate redundant database waterfalls.
     # ----------------------------------------------------------------------
+    total_db_count = response.count if response.count is not None else len(paginated_projects)
 
-    stats_query = (
-        supabase
-        .table("mplads_new_projects")
-        .select("*")
-        .eq("mp_id", mp_id)
-        .eq("district", dm["dist"])
-        .eq("state", dm["state"])
-        .execute()
-    )
+    if page == 1 and total_db_count <= len(paginated_projects):
+        all_projects = paginated_projects
+    else:
+        stats_query = (
+            supabase
+            .table("mplads_new_projects")
+            .select("status, cost_details_id, risk_id")
+            .eq("mp_id", mp_id)
+            .eq("district", dm["dist"])
+            .eq("state", dm["state"])
+            .execute()
+        )
+        raw_stats_projects = stats_query.data or []
+        cost_ids = [p["cost_details_id"] for p in raw_stats_projects if p.get("cost_details_id")]
+        risk_ids = [p["risk_id"] for p in raw_stats_projects if p.get("risk_id")]
+        cost_map = {}
+        if cost_ids:
+            c_res = supabase.table("mplads_cost_details").select("id, sanctioned_amount, utilized_amount").in_("id", cost_ids).execute()
+            cost_map = {c["id"]: c for c in (c_res.data or [])}
+        risk_map = {}
+        if risk_ids:
+            r_res = supabase.table("mplads_risk_scores").select("id, risk_score").in_("id", risk_ids).execute()
+            risk_map = {r["id"]: r for r in (r_res.data or [])}
+        all_projects = [
+            {
+                "status": p.get("status"),
+                "sanctioned_amount": cost_map.get(p.get("cost_details_id"), {}).get("sanctioned_amount", 0),
+                "utilized_amount": cost_map.get(p.get("cost_details_id"), {}).get("utilized_amount", 0),
+                "risk_score": risk_map.get(p.get("risk_id"), {}).get("risk_score"),
+            }
+            for p in raw_stats_projects
+        ]
 
-    all_projects = _enrich_projects(
-        stats_query.data or []
-    )
-
-    total_count = len(
-        all_projects
-    )
+    total_count = total_db_count
 
     active_count = sum(
         1
@@ -1398,9 +1510,7 @@ async def dm_mp_projects(
             ),
         },
 
-        "data": _enrich_projects(
-            response.data or []
-        ),
+        "data": paginated_projects,
 
         "count": response.count or 0,
 

@@ -21,7 +21,7 @@ const DaIADirectory = () => {
     ia.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading) {
+  if (isLoading || !agenciesData) {
     return <PortalPageLoader message="Loading Implementing Agencies..." />;
   }
 

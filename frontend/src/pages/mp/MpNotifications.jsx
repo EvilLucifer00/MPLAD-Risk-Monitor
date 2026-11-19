@@ -35,11 +35,12 @@ const MpNotifications = () => {
   const handleMarkAllRead = async () => {
     const unreadIds = notifications.filter(n => !n.read).map(n => n.id);
     await Promise.all(unreadIds.map(id => api.markNotificationRead(id)));
-    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+    setLocalNotifications(prev => (prev ?? notifications).map(n => ({ ...n, read: true })));
+    queryClient.invalidateQueries({ queryKey: queryKeys.mp.notifications() });
   };
 
   const handleDeleteNotification = (id) => {
-    setNotifications(prev => prev.filter(n => n.id !== id));
+    setLocalNotifications(prev => (prev ?? notifications).filter(n => n.id !== id));
   };
 
   const filteredNotifications = notifications.filter(n => {
@@ -57,7 +58,7 @@ const MpNotifications = () => {
     }
   };
 
-  if (loading) {
+  if (isLoading || !notifData) {
     return <PortalPageLoader message="Loading Notifications..." />;
   }
 
