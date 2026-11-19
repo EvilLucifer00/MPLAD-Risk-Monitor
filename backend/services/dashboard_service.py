@@ -1,20 +1,80 @@
+# Dashboard_service.py
+import asyncio
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Optional, Dict, Any, List
 
 from fastapi import Query
 
 from schemas.project_schema import DashboardStats, ProjectStatus, ProjectRiskLevel
 from database.database import supabase
 
+
+def _get_risk_map(projects: List[dict]) -> Dict[int, dict]:
+    """
+    Fetch risk scores for projects.
+
+    mplads_new_projects.risk_id -> mplads_risk_scores.id
+
+    IMPORTANT:
+    mplads_risk_scores.work_id is the message queue work id, NOT the project id.
+    So we do NOT join on work_id here.
+    """
+    risk_ids = list({p.get("risk_id") for p in projects if p.get("risk_id")})
+    if not risk_ids:
+        return {}
+
+    res = (
+        supabase
+        .table("mplads_risk_scores")
+        .select("*")
+        .in_("id", risk_ids)
+        .execute()
+    )
+    return {r["id"]: r for r in (res.data or [])}
+
+
+def _get_cost_map(projects: List[dict]) -> Dict[int, dict]:
+    """
+    Fetch cost details for projects.
+
+    mplads_new_projects.cost_details_id -> mplads_cost_details.id
+    """
+    cost_ids = list({p.get("cost_details_id") for p in projects if p.get("cost_details_id")})
+    if not cost_ids:
+        return {}
+
+    res = (
+        supabase
+        .table("mplads_cost_details")
+        .select("*")
+        .in_("id", cost_ids)
+        .execute()
+    )
+    return {r["id"]: r for r in (res.data or [])}
+
+
+async def _get_risk_and_cost_maps(projects: List[dict]) -> tuple:
+    """Parallel fetch of risk and cost maps to eliminate network latency waterfalls."""
+    return await asyncio.gather(
+        asyncio.to_thread(_get_risk_map, projects),
+        asyncio.to_thread(_get_cost_map, projects),
+    )
+
+
+def _risk_info(p: dict, risk_map: Dict[int, dict]) -> tuple:
+    risk = risk_map.get(p.get("risk_id"), {})
+    risk_score = risk.get("risk_score") or 0
+    risk_level = risk.get("risk_level") or ProjectRiskLevel.LOW.value
+    return risk_score, risk_level
+
+
+def _cost_info(p: dict, cost_map: Dict[int, dict]) -> dict:
+    return cost_map.get(p.get("cost_details_id"), {})
+
+
 async def mp_dashboard_stats(mp: dict):
-    """
-    Calculate and return dashboard statistics for an MP.
-    This aggregates all projects under the MP's ID to compute metrics like active projects,
-    funds utilized, high risk projects, etc.
-    """
-    
-    mp_id = mp["id"] 
-    
+    mp_id = mp["id"]
+
     response = (
         supabase
         .table("mplads_new_projects")
@@ -22,73 +82,105 @@ async def mp_dashboard_stats(mp: dict):
         .eq("mp_id", mp_id)
         .execute()
     )
-    
+
     projects = response.data or []
     total = len(projects)
 
+    risk_map, cost_map = await _get_risk_and_cost_maps(projects)
+
     active = sum(
         1 for p in projects
-        if p.get("status") not in (ProjectStatus.COMPLETED.value, ProjectStatus.REJECTED.value)
-    )
-    
-    high_risk = sum(
-        1 for p in projects
-        if (p.get("risk_score") or 0) > 70
-        or p.get("risk_level") in (ProjectRiskLevel.HIGH.value, ProjectRiskLevel.CRITICAL.value)
+        if p.get("status") in (
+            ProjectStatus.IN_PROGRESS.value,
+            ProjectStatus.APPROVED.value,
+            "SANCTIONED",
+            "IN_PROGRESS",
+            "Sanctioned",
+            "In Progress",
+        )
     )
 
+    high_risk = 0
+    for p in projects:
+        risk_score, risk_level = _risk_info(p, risk_map)
+        if risk_score > 70 or risk_level in (
+            ProjectRiskLevel.HIGH.value,
+            ProjectRiskLevel.CRITICAL.value,
+        ):
+            high_risk += 1
+
     funds_utilized = sum(
-        (p.get("utilized_amount") or 0) for p in projects
-    ) / 1e7 
-    
+        (_cost_info(p, cost_map).get("utilized_amount") or 0)
+        for p in projects
+    ) / 1e7
+
     completed = sum(
-        1 for p in projects if p.get("status") == ProjectStatus.COMPLETED.value
+        1 for p in projects
+        if p.get("status") in (
+            ProjectStatus.COMPLETED.value,
+            "COMPLETED",
+            "Completed",
+        )
     )
-    
-    on_track = total - high_risk - completed
-    
+
+    on_track = max(active - high_risk, 0)
 
     recent = sorted(
         projects,
-        key=lambda p: p.get("updated_at") or p.get("created_at") or "",
+        key=lambda p: str(p.get("updated_at") or p.get("created_at") or p.get("submit_date") or ""),
         reverse=True,
     )[:5]
-    
+
+    recent_projects = []
+    for p in recent:
+        risk_score, risk_level = _risk_info(p, risk_map)
+        cost = _cost_info(p, cost_map)
+
+        recent_projects.append({
+            "id": p["id"],
+            "work_id": p["id"],
+            "project_title": p.get("project_title") or "Untitled Project",
+            "title": p.get("project_title") or "Untitled Project",
+            "category": p.get("category"),
+            "sanctioned_amount": cost.get("sanctioned_amount") or 0.0,
+            "estimated_cost": cost.get("estimated_cost") or cost.get("sanctioned_amount") or 0.0,
+            "utilized_amount": cost.get("utilized_amount") or 0.0,
+            "amount": cost.get("sanctioned_amount") or cost.get("estimated_cost") or 0.0,
+            "risk_level": risk_level,
+            "risk_score": round(risk_score),
+            "status": p.get("status") or "PENDING_REVIEW",
+            "last_updated": p.get("updated_at") or p.get("submit_date") or p.get("created_at"),
+            "submit_date": p.get("submit_date"),
+        })
+
     return DashboardStats(
         active_projects=active,
         funds_utilized_cr=round(funds_utilized, 2),
-        funds_entitlement_cr=5.0, 
+        funds_entitlement_cr=5.0,
         high_risk_projects=high_risk,
-        pending_approvals=sum(1 for p in projects if p.get("status") == ProjectStatus.PENDING_REVIEW.value),      
+        pending_approvals=sum(
+            1 for p in projects
+            if p.get("status") in (
+                ProjectStatus.PENDING_REVIEW.value,
+                ProjectStatus.SUBMITTED.value,
+                "PENDING_REVIEW",
+                "SUBMITTED",
+                "Pending Review",
+                "Pending Sanction",
+                "PENDING",
+            )
+        ),
         total_projects=total,
         status_breakdown={
             "on_track": max(on_track, 0),
             "high_risk": high_risk,
             "completed": completed,
         },
-        recent_projects=[
-            {
-                "work_id": p["id"],
-                "title": p["project_title"],
-                "category": p["category"],
-                "amount": p.get("sanctioned_amount") or p.get("estimated_cost"),
-                "risk_level": p.get("risk_level", "LOW"),
-                "risk_score": round(p.get("risk_score") or 0),
-                "status": p.get("status", "PENDING"),
-                "last_updated": p.get("updated_at") or p.get("created_at"),
-            }
-            for p in recent
-        ],
+        recent_projects=recent_projects,
     )
 
 
 async def dm_dashboard_stats(dm: dict):
-    """
-    Calculate and return dashboard statistics for a DM (District Magistrate).
-    This aggregates all projects within the DM's district and state to compute metrics like
-    projects awaiting review, high risk projects, and risk breakdowns.
-    """
-
     result = (
         supabase
         .table("mplads_new_projects")
@@ -97,38 +189,119 @@ async def dm_dashboard_stats(dm: dict):
         .eq("state", dm["state"])
         .execute()
     )
-    
+
     projects = result.data or []
-    
-    awaiting_review = [p for p in projects if p.get("status") == ProjectStatus.PENDING_REVIEW.value]
-    high_risk = [
-        p for p in projects 
-        if p.get("risk_level") in (ProjectRiskLevel.HIGH.value, ProjectRiskLevel.CRITICAL.value)
+
+    risk_map, cost_map = await _get_risk_and_cost_maps(projects)
+
+    awaiting_review = [
+        p for p in projects
+        if p.get("status") in (
+            ProjectStatus.PENDING_REVIEW.value,
+            ProjectStatus.SUBMITTED.value,
+            "PENDING_REVIEW",
+            "SUBMITTED",
+            "Pending Review",
+            "Pending Sanction",
+            "PENDING",
+        )
     ]
-    active = [
-        p for p in projects 
-        if p.get("status") not in (ProjectStatus.COMPLETED.value, ProjectStatus.REJECTED.value)
-    ]
-    
-    funds_utilized = sum((p.get("utilized_amount") or 0) for p in projects) / 1e7
+
+    high_risk = []
+    active = []
+
+    for p in projects:
+        _, risk_level = _risk_info(p, risk_map)
+
+        if risk_level in (
+            ProjectRiskLevel.HIGH.value,
+            ProjectRiskLevel.CRITICAL.value,
+        ):
+            high_risk.append(p)
+
+        if p.get("status") in (
+            ProjectStatus.IN_PROGRESS.value,
+            ProjectStatus.APPROVED.value,
+            "SANCTIONED",
+            "IN_PROGRESS",
+            "Sanctioned",
+            "In Progress",
+        ):
+            active.append(p)
+
+    funds_utilized = sum(
+        (_cost_info(p, cost_map).get("utilized_amount") or 0)
+        for p in projects
+    ) / 1e7
 
     mp_ids = {p["mp_id"] for p in projects if p.get("mp_id")}
 
     now = datetime.now(timezone.utc)
     waiting_over_5_days = 0
-    
+
     for p in awaiting_review:
-        if p.get("submit_date"):
-            try:
-                submit_date_str = p["submit_date"].replace("Z", "+00:00")
-                submit_date = datetime.fromisoformat(submit_date_str)
-                if submit_date.tzinfo is None:
-                    submit_date = submit_date.replace(tzinfo=timezone.utc)
-                    
-                if (now - submit_date).days > 5:
-                    waiting_over_5_days += 1
-            except ValueError:
-                continue
+        submit_date_str = p.get("submit_date")
+        if not submit_date_str:
+            continue
+
+        try:
+            submit_date = datetime.fromisoformat(
+                str(submit_date_str).replace("Z", "+00:00")
+            )
+            if submit_date.tzinfo is None:
+                submit_date = submit_date.replace(tzinfo=timezone.utc)
+
+            if (now - submit_date).days > 5:
+                waiting_over_5_days += 1
+        except ValueError:
+            continue
+
+    risk_breakdown = {
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+    }
+
+    for p in projects:
+        _, risk_level = _risk_info(p, risk_map)
+        key = (risk_level or "").lower()
+        if key in risk_breakdown:
+            risk_breakdown[key] += 1
+
+    # Format recent activity actions for instant, sub-millisecond Activity Log rendering
+    sorted_recent = sorted(
+        projects,
+        key=lambda x: str(x.get("updated_at") or x.get("submit_date") or ""),
+        reverse=True
+    )[:5]
+
+    def _format_action_label(st: Optional[str]) -> str:
+        if not st:
+            return "Submitted"
+        upper = st.upper().replace(" ", "_")
+        if upper in ("APPROVED", "SANCTIONED"):
+            return "Sanctioned"
+        if upper in ("IN_PROGRESS", "ACTIVE"):
+            return "In Progress"
+        if upper in ("COMPLETED", "FINISHED"):
+            return "Completed"
+        if upper in ("REJECTED", "DISAPPROVED"):
+            return "Rejected"
+        if upper in ("SUSPENDED", "ON_HOLD"):
+            return "Suspended"
+        return "Submitted"
+
+    recent_actions = [
+        {
+            "action": _format_action_label(p.get("status")),
+            "projectTitle": p.get("project_title") or "Untitled Project",
+            "actor": "MP Office",
+            "timestamp": p.get("updated_at") or p.get("submit_date") or datetime.now(timezone.utc).isoformat(),
+            "projectId": p.get("id"),
+        }
+        for p in sorted_recent
+    ]
 
     return {
         "district": dm["dist"],
@@ -140,26 +313,17 @@ async def dm_dashboard_stats(dm: dict):
         "funds_entitlement_cr": 25.0,
         "high_risk_projects": len(high_risk),
         "active_projects": len(active),
-        "risk_breakdown": {
-            "low": sum(1 for p in projects if p.get("risk_level") == ProjectRiskLevel.LOW.value),
-            "moderate": sum(1 for p in projects if p.get("risk_level") == ProjectRiskLevel.MODERATE.value),
-            "high": sum(1 for p in projects if p.get("risk_level") == ProjectRiskLevel.HIGH.value),
-            "critical": sum(1 for p in projects if p.get("risk_level") == ProjectRiskLevel.CRITICAL.value),
-        },
+        "risk_breakdown": risk_breakdown,
+        "recent_actions": recent_actions,
     }
-    
+
 
 async def dm_review_queue(
     dm: dict,
     risk: Optional[str] = Query(None),
     category: Optional[str] = Query(None),
-    mp_id: Optional[int] = Query(None)
+    mp_id: Optional[int] = Query(None),
 ):
-    """
-    Retrieve the queue of projects that the DM needs to review.
-    This function filters projects by the DM's district/state and allows optional filtering
-    by risk level, category, or a specific MP ID. Projects are ordered by risk score (descending).
-    """
     q = (
         supabase
         .table("mplads_new_projects")
@@ -167,29 +331,48 @@ async def dm_review_queue(
         .eq("state", dm["state"])
         .eq("district", dm["dist"])
     )
-    
-    if risk: 
-        q = q.eq("risk_level", risk.upper())
-    if category: 
+
+    if category:
         q = q.eq("category", category)
-    if mp_id: 
+
+    if mp_id:
         q = q.eq("mp_id", mp_id)
 
-    rows = q.order("risk_score", desc=True).execute().data or []
-    
-    return [
-        {
+    # risk_level is NOT in mplads_new_projects.
+    # So we cannot filter or order by risk_score/risk_level at DB level.
+    rows = q.order("submit_date", desc=True).execute().data or []
+
+    risk_map = _get_risk_map(rows)
+    cost_map = _get_cost_map(rows)
+
+    enriched = []
+
+    for p in rows:
+        risk_score, risk_level = _risk_info(p, risk_map)
+
+        if risk and risk_level.upper() != risk.upper():
+            continue
+
+        cost = _cost_info(p, cost_map)
+
+        enriched.append({
             "work_id": p["id"],
             "project_ref": f"PRJ-{p['id']}",
             "title": p["project_title"],
             "mp_id": p["mp_id"],
             "category": p["category"],
-            "estimated_cost": p.get("estimated_cost", 0), 
-            "risk_score": p.get("risk_score", 0),
-            "risk_level": p.get("risk_level", "LOW"),
-            "implementing_agency": p.get("implementing_agency"),
+            "estimated_cost": cost.get("estimated_cost", 0),
+            "risk_score": risk_score,
+            "risk_level": risk_level,
+            "implementing_agency_id": p.get("implementing_agency_id"),
+            "vendor_id": p.get("vendor_id"),
             "submitted_at": p.get("submit_date"),
             "status": p.get("status", ProjectStatus.PENDING_REVIEW.value),
-        }
-        for p in rows
-    ]
+        })
+
+    enriched.sort(
+        key=lambda x: x.get("risk_score") or 0,
+        reverse=True,
+    )
+
+    return enriched

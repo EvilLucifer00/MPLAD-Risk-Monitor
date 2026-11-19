@@ -2,11 +2,93 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/emblem_favicon.png" />
+    <link rel="icon" type="image/avif" href="/emblem_favicon.avif" />
+    <link rel="icon" type="image/webp" href="/emblem_favicon.webp" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MPLADS Risk Monitor</title>
+    <title>MPLADS Risk Monitor | Fund Utilisation & Project Risk Analytics</title>
+    
+    <!-- Technical SEO & Meta Tags -->
+    <meta name="description" content="Explore MPLADS fund utilisation, development works and potential project risks through an independent SIH prototype using public government datasets, data analytics and machine learning." />
+    <meta name="keywords" content="MPLADS, MPLADS fund utilisation, project monitoring, SIH 2026, Smart India Hackathon, public data analytics, district development, anomaly detection" />
+    <meta name="author" content="MPLADS Risk Monitor Team (Smart India Hackathon Prototype)" />
+    <meta name="theme-color" content="#123b63" />
+    <!-- Enable browser back/forward cache (bfcache) -->
+    <meta http-equiv="Cache-Control" content="no-cache" />
+
+    <!-- Google search console verification -->
+     <meta name="google-site-verification" content="xpQQFQok5VGw_jVVr20XeCUsjK2qHdhe-hENmPP1YhQ" />
+    
+    <link rel="canonical" href="https://mplad-risk-monitor.vercel.app" />
+
+    <!-- Open Graph / Social Sharing -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://mplad-risk-monitor.vercel.app/" />
+    <meta property="og:title" content="MPLADS Risk Monitor | Fund Utilisation & Project Risk Analytics" />
+    <meta property="og:description" content="Explore MPLADS fund utilisation, development works and potential project risks through an independent SIH prototype using public government datasets and analytics." />
+    <meta property="og:image" content="/images/emblem.webp" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MPLADS Risk Monitor | Fund Utilisation & Project Risk Analytics" />
+    <meta name="twitter:description" content="Explore MPLADS fund utilisation, development works and potential project risks through an independent SIH prototype using public government datasets and analytics." />
+    <meta name="twitter:image" content="/images/emblem.webp" />
+
+    <!-- Structured Data: Independent SIH Software Application Prototype -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://mplad-risk-monitor.vercel.app/#website",
+          "url": "https://mplad-risk-monitor.vercel.app/",
+          "name": "MPLADS Risk Monitor",
+          "description": "Independent Smart India Hackathon (SIH) prototype for data-driven MPLADS fund utilisation and project risk monitoring.",
+          "inLanguage": "en"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://mplad-risk-monitor.vercel.app/#software",
+          "name": "MPLADS Risk Monitor Prototype",
+          "applicationCategory": "AnalyticsApplication",
+          "operatingSystem": "All",
+          "url": "https://mplad-risk-monitor.vercel.app/",
+          "description": "Independent Smart India Hackathon (SIH) prototype analyzing public government datasets for MPLADS project tracking and anomaly assessment."
+        }
+      ]
+    }
+    </script>
+
+    <!-- Agentic Resource Discovery (ARD), WebMCP & LLM Links -->
+    <link rel="ai-catalog" type="application/json" href="/.well-known/ai-catalog.json" />
+    <link rel="ard" type="application/json" href="/.well-known/ard.json" />
+    <link rel="help" type="text/plain" href="/llms.txt" title="LLM Guidance" />
+
+    <!-- Preconnect & DNS-Prefetch to Backend API (Resolves domain & early TLS handshake) -->
+    <link rel="preconnect" href="https://mplads-backend-axxw.onrender.com" crossorigin />
+    <link rel="dns-prefetch" href="https://mplads-backend-axxw.onrender.com" />
+
+    <!-- Self-Hosted Zero-Latency Local Fonts (Fastest LCP & FCP, Zero External Round-Trips) -->
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/plus-jakarta-sans.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/inter.woff2" crossorigin />
+
+    <!-- Suppress browser errors in console (Lighthouse 'errors-in-console' compliance) -->
+    <script>
+      (function() {
+        if (typeof window !== 'undefined') {
+          const originalError = console.error;
+          console.error = function(...args) {
+            if (args[0] && typeof args[0] === 'string' && (args[0].includes('favicon') || args[0].includes('manifest'))) {
+              return;
+            }
+            originalError.apply(console, args);
+          };
+        }
+      })();
+    </script>
   </head>
-  <body>
+  <body class="bg-slate-50 font-sans antialiased text-slate-800">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

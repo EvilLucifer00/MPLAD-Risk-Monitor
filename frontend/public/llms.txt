@@ -1,0 +1,23 @@
+# MPLADS Risk Monitor
+
+> Independent Smart India Hackathon (SIH) 2026 prototype demonstrating data-driven monitoring, geospatial risk visualization, and heuristic anomaly detection for Member of Parliament Local Area Development Scheme (MPLADS) public datasets.
+
+This platform is an independent innovation prototype and is not affiliated with, operated by, or endorsed by the Government of India or the Ministry of Statistics and Programme Implementation (MoSPI). It analyzes publicly available information to demonstrate data-driven monitoring of MPLADS projects across all 543 Lok Sabha parliamentary constituencies in India.
+
+## Core Services & Transparency Pages
+
+- [National Overview](https://mplad-risk-monitor.vercel.app/): Public dashboard for tracking regional development works and fund utilization metrics.
+- [Geospatial Risk Map](https://mplad-risk-monitor.vercel.app/#geospatial-map): Interactive national GIS choropleth visualizing fund utilization, project progress, and heuristic anomaly scores across 543 constituencies.
+- [About the Project](https://mplad-risk-monitor.vercel.app/about): SIH hackathon background, problem statement, engineering architecture, and prototype scope.
+- [Data Sources & Integrity](https://mplad-risk-monitor.vercel.app/data-sources): Provenance disclosures detailing official reference portals, derived metric formulas, and synthetic demonstration datasets.
+- [Risk Methodology & Heuristics](https://mplad-risk-monitor.vercel.app/methodology): Technical documentation of the 8-step anomaly detection pipeline, composite scoring weights, and indicator formulas.
+
+## Portals & Documentation
+
+- [Demonstration Sign In](https://mplad-risk-monitor.vercel.app/login): Prototype authentication for Member of Parliament (MP) and District Authority (DA) workflow evaluation.
+- [Full LLM Specification](https://mplad-risk-monitor.vercel.app/llms-full.txt): Extended documentation and machine-readable data dictionary for autonomous agents.
+
+## Machine Discovery
+
+- [Agent Catalog](https://mplad-risk-monitor.vercel.app/.well-known/ai-catalog.json): WebMCP and Agentic Resource Discovery manifest for autonomous agents.
+- [Sitemap](https://mplad-risk-monitor.vercel.app/sitemap.xml): Complete XML sitemap of accessible endpoints.

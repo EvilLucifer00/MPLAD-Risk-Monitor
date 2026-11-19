@@ -1,0 +1,37 @@
+# MPLADS Risk Monitor — Complete Technical Specification
+
+> Comprehensive system documentation, data dictionaries, API schemas, and architectural overview of the MPLADS Risk Monitor prototype for autonomous agents, large language models, and automated audit tools.
+
+## Architecture Overview
+
+MPLADS (Member of Parliament Local Area Development Scheme) Risk Monitor is an independent prototype developed for the Smart India Hackathon (SIH) 2026. It is not affiliated with, operated by, or endorsed by the Government of India or the Ministry of Statistics and Programme Implementation (MoSPI).
+
+The platform demonstrates end-to-end monitoring across three primary tiers:
+1. Citizen Public Observatory: Full transparency on fund allocation (₹5 Cr / seat / year) and work progress across 543 Lok Sabha constituencies.
+2. Member of Parliament (MP) Workflow: Proposal recommendation, priority flagging, and fund utilization tracking demonstration.
+3. District Authority (DA) Workflow: Ground verification, contractor performance evaluation, technical sanction issuance, and fund disbursement monitoring demonstration.
+
+## Data Schema & Metrics
+
+- `constituency_id`: Unique identifier (1 to 543) representing the parliamentary constituency.
+- `state_ut`: State or Union Territory name.
+- `mp_name`: Current sitting Member of Parliament representing the seat.
+- `allocated_funds_cr`: Total allocated funds in Crores of Rupees (₹).
+- `utilized_funds_cr`: Total utilized funds with verified expenditure receipts.
+- `utilization_rate`: Calculated percentage of allocated funds utilized.
+- `total_projects`: Count of works sanctioned under MPLADS guidelines.
+- `completed_projects`: Count of completed physical infrastructure assets.
+- `ongoing_projects`: Count of active construction/procurement works.
+- `risk_score`: Heuristic composite risk indicator normalized between 0.00 and 1.00 (Low: <0.35, Medium: 0.35–0.65, High: >0.65).
+- `anomaly_flags`: Algorithmic flags detecting discrepancies such as sanction delays (>75 days), execution lags (>12 months), or idle balances.
+
+## Endpoints & Manifests
+
+- [Interactive Map View](https://mplad-risk-monitor.vercel.app/#geospatial-map): Client-side Leaflet and TopoJSON map rendering for 543 constituencies.
+- [National Statistics & Citizen Portal](https://mplad-risk-monitor.vercel.app/): Public dashboard for tracking regional development works and fund utilization.
+- [About the Project](https://mplad-risk-monitor.vercel.app/about): SIH hackathon background, problem statement, engineering architecture, and prototype scope.
+- [Data Sources & Integrity](https://mplad-risk-monitor.vercel.app/data-sources): Provenance disclosures detailing official reference portals, derived metric formulas, and synthetic demonstration datasets.
+- [Risk Methodology & Heuristics](https://mplad-risk-monitor.vercel.app/methodology): Technical documentation of the 8-step anomaly detection pipeline, composite scoring weights, and indicator formulas.
+- [Demonstration Sign In](https://mplad-risk-monitor.vercel.app/login): Prototype authentication for MPs and District Authorities.
+- [Agent Catalog (ARD)](https://mplad-risk-monitor.vercel.app/.well-known/ai-catalog.json): Machine-readable catalog complying with Agentic Resource Discovery v1.0.
+- [Sitemap](https://mplad-risk-monitor.vercel.app/sitemap.xml): XML sitemap.

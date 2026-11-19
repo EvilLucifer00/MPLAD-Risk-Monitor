@@ -1,659 +1,473 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, Suspense, lazy } from "react";
 import Toolbar from "../../components/shared/Toolbar";
-import RiskMap from "../../components/map/RiskMap";
 import Card from "../../components/shared/Card";
-import AnimatedCounter from "../../components/shared/AnimatedCounter";
-import { TbWallet, TbShieldExclamation, TbChartBar, TbScale, TbMapPin, TbMap, TbTrendingUp, TbShieldCheck, TbUsers, TbChevronRight, TbCurrencyRupee, TbAlertTriangle } from "react-icons/tb";
-import { IoIosConstruct } from "react-icons/io";
-import { FaXTwitter, FaLinkedinIn, FaYoutube } from "react-icons/fa6";
-import { IoMdMail } from "react-icons/io";
-import AiAssistantWidget from "../../components/shared/AiAssistantWidget.jsx";
-import { motion, useScroll } from "framer-motion";
-import Reveal from "../../animations/Reveal";
-import OverviewSection from "../../components/home/OverviewSection";
-import HowItWorksSection from "../../components/home/HowItWorksSection";
-import KeyFeaturesSection from "../../components/home/KeyFeaturesSection";
+import {
+  IconWallet,
+  IconShieldExclamation,
+  IconChartBar,
+  IconScale,
+} from "../../components/shared/HomeIcons";
+import IndianMonumentsSkyline from "../../components/shared/IndianMonumentsSkyline";
+import EmblemImage from "../../components/shared/EmblemImage";
+import Footer from "../../components/shared/Footer";
+
+// Code-split below-the-fold & secondary components to ensure instantaneous FCP and LCP
+const RiskMap = lazy(() => import("../../components/map/RiskMap"));
+const OverviewSection = lazy(() => import("../../components/home/OverviewSection"));
+const HowItWorksSection = lazy(() => import("../../components/home/HowItWorksSection"));
+const KeyFeaturesSection = lazy(() => import("../../components/home/KeyFeaturesSection"));
+const AiAssistantWidget = lazy(() => import("../../components/shared/AiAssistantWidget.jsx"));
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterState, setFilterState] = useState("");
   const [filterRisk, setFilterRisk] = useState("");
   const [statesList, setStatesList] = useState([]);
-  
-  const { scrollYProgress } = useScroll();
+  const [mapMounted, setMapMounted] = useState(false);
+  const [aiMounted, setAiMounted] = useState(false);
+
+  const mapContainerRef = React.useRef(null);
+
+  useEffect(() => {
+    // 1. Defer heavy geospatial Map until viewport intersection or first user interaction
+    const triggerMap = () => {
+      setMapMounted(true);
+      window.removeEventListener("scroll", triggerMap);
+      window.removeEventListener("pointerdown", triggerMap);
+      window.removeEventListener("keydown", triggerMap);
+    };
+
+    window.addEventListener("scroll", triggerMap, { passive: true, once: true });
+    window.addEventListener("pointerdown", triggerMap, { passive: true, once: true });
+    window.addEventListener("keydown", triggerMap, { passive: true, once: true });
+
+    let observer;
+    if (typeof window !== "undefined" && "IntersectionObserver" in window && mapContainerRef.current) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0]?.isIntersecting) {
+            triggerMap();
+            if (observer) observer.disconnect();
+          }
+        },
+        { rootMargin: "150px" }
+      );
+      observer.observe(mapContainerRef.current);
+    }
+
+    // 2. Defer AI Assistant Widget off the critical path until first user scroll/interaction
+    const triggerAi = () => {
+      setAiMounted(true);
+      window.removeEventListener("scroll", triggerAi);
+      window.removeEventListener("pointerdown", triggerAi);
+    };
+
+    window.addEventListener("scroll", triggerAi, { passive: true, once: true });
+    window.addEventListener("pointerdown", triggerAi, { passive: true, once: true });
+
+    return () => {
+      window.removeEventListener("scroll", triggerMap);
+      window.removeEventListener("pointerdown", triggerMap);
+      window.removeEventListener("keydown", triggerMap);
+      window.removeEventListener("scroll", triggerAi);
+      window.removeEventListener("pointerdown", triggerAi);
+      if (observer) observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    // Priority Preload hero image specifically for HomePage LCP with AVIF detection
+    const isAvifSupported = () => {
+      try {
+        const elem = document.createElement("canvas");
+        return elem.getContext && elem.toDataURL("image/avif").indexOf("data:image/avif") === 0;
+      } catch {
+        return false;
+      }
+    };
+    const useAvif = isAvifSupported();
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 640;
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "image";
+    link.href = useAvif
+      ? (isMobile ? "/images/mplad_headquarters-mobile.avif" : "/images/mplad_headquarters.avif")
+      : (isMobile ? "/images/mplad_headquarters-mobile.webp" : "/images/mplad_headquarters.webp");
+    link.type = useAvif ? "image/avif" : "image/webp";
+    link.fetchPriority = "high";
+    document.head.appendChild(link);
+    return () => {
+      if (link.parentNode) link.parentNode.removeChild(link);
+    };
+  }, []);
+
+  useEffect(() => {
+    if ((searchTerm || filterState || filterRisk) && !mapMounted) {
+      setMapMounted(true);
+    }
+  }, [searchTerm, filterState, filterRisk, mapMounted]);
+
+  useEffect(() => {
+    // Scroll progress indicator fallback for browsers lacking CSS animation-timeline
+    if (typeof window === 'undefined') return;
+    if (window.CSS && window.CSS.supports && window.CSS.supports('animation-timeline', 'scroll()')) return;
+
+    const progressEl = document.querySelector('.scroll-progress-indicator');
+    if (!progressEl) return;
+
+    const handleScroll = () => {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      if (scrollable > 0) {
+        const progressPercentage = Math.min(Math.max(window.scrollY / scrollable, 0), 1);
+        progressEl.style.transform = `scaleX(${progressPercentage})`;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, []);
 
   return (
-    <div className="w-full">
-      {/* Scroll Progress Bar */}
-      <motion.div
-        className="fixed top-0 left-0 right-0 h-[2px] bg-cyan-400 origin-left z-[9999]"
-        style={{ scaleX: scrollYProgress }}
+    <div className="w-full bg-slate-50 relative overflow-x-clip min-h-screen">
+      {/* Scroll Progress Bar (Indian Flag Tiranga: Saffron, White, Green with smoothly blended boundaries) */}
+      <div
+        className="fixed top-0 left-0 right-0 h-[3.5px] origin-left z-[9999] pointer-events-none scroll-progress-indicator"
+        aria-hidden="true"
       />
-      {/* PAGE 1 CONTENT */}
-      <div className="flex flex-col w-full bg-slate-50 relative overflow-x-hidden pb-2">
-        {/* BACKGROUND DECORATIONS */}
-        {/* Top Right Ashoka Chakra */}
-        <svg
-          className="hidden lg:block absolute top-[-8%] right-[-2%] w-[45%] max-w-[600px] aspect-square pointer-events-none z-0 opacity-[0.04]"
-          viewBox="0 0 100 100"
+
+      {/* Official Header Toolbar */}
+      <Toolbar
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        filterState={filterState}
+        setFilterState={setFilterState}
+        filterRisk={filterRisk}
+        setFilterRisk={setFilterRisk}
+        statesList={statesList}
+      />
+
+      {/* Main Top Section */}
+      <div className="w-full relative pb-4 px-4 sm:px-6 lg:px-12">
+        <main
+          id="main-content"
+          className="max-w-7xl mx-auto flex flex-col lg:flex-row w-full flex-1 min-h-0 relative z-10"
         >
-          <circle
-            cx="50"
-            cy="50"
-            r="45"
-            fill="none"
-            stroke="#123b63"
-            strokeWidth="2"
-          />
-          <circle
-            cx="50"
-            cy="50"
-            r="42"
-            fill="none"
-            stroke="#123b63"
-            strokeWidth="0.5"
-          />
-          {Array.from({ length: 24 }).map((_, i) => (
-            <line
-              key={i}
-              x1="50"
-              y1="50"
-              x2="50"
-              y2="8"
-              stroke="#123b63"
-              strokeWidth="1"
-              transform={`rotate(${i * 15} 50 50)`}
-            />
-          ))}
-          <circle cx="50" cy="50" r="5" fill="#123b63" />
-        </svg>
-
-        {/* Top Right Tricolor Swoosh */}
-        <svg
-          className="hidden lg:block absolute top-0 right-0 w-[38%] h-[50%] pointer-events-none z-0"
-          viewBox="0 0 100 100"
-          preserveAspectRatio="none"
-        >
-          <path
-            d="M 0 0 C 40 30, 70 70, 100 100 L 100 0 Z"
-            fill="#138808"
-            opacity="0.12"
-          />
-          <path
-            d="M 20 0 C 50 30, 80 60, 100 80 L 100 0 Z"
-            fill="#ffffff"
-            opacity="0.5"
-          />
-          <path
-            d="M 40 0 C 60 25, 85 45, 100 60 L 100 0 Z"
-            fill="#FF9933"
-            opacity="0.15"
-          />
-        </svg>
-
-        {/* Bottom Left Tricolor Swoosh */}
-        <svg
-          className="hidden lg:block absolute bottom-0 left-0 w-[30%] h-[35%] pointer-events-none z-0"
-          viewBox="0 0 100 100"
-          preserveAspectRatio="none"
-        >
-          <path
-            d="M 0 0 C 30 50, 60 80, 100 100 L 0 100 Z"
-            fill="#FF9933"
-            opacity="0.12"
-          />
-          <path
-            d="M 0 25 C 25 55, 50 85, 80 100 L 0 100 Z"
-            fill="#ffffff"
-            opacity="0.5"
-          />
-          <path
-            d="M 0 50 C 15 65, 40 90, 60 100 L 0 100 Z"
-            fill="#138808"
-            opacity="0.12"
-          />
-        </svg>
-
-        {/* Bottom Right Skyline & Text */}
-        <div className="absolute bottom-4 right-2 sm:right-6 lg:right-12 flex flex-col items-end gap-1.5 lg:gap-2 z-0 pointer-events-none max-w-[95vw]">
-          <svg
-            className="w-[280px] sm:w-[350px] lg:w-[450px] h-auto lg:h-[55px] opacity-[0.12]"
-            viewBox="0 0 700 90"
-            fill="#94a3b8"
-            preserveAspectRatio="xMaxYMax meet"
-          >
-            {/* Hawa Mahal */}
-            <rect x="5" y="25" width="35" height="65" rx="2" />
-            <rect x="10" y="30" width="8" height="10" rx="4" fill="#cbd5e1" />
-            <rect x="22" y="30" width="8" height="10" rx="4" fill="#cbd5e1" />
-            <rect x="10" y="45" width="8" height="10" rx="4" fill="#cbd5e1" />
-            <rect x="22" y="45" width="8" height="10" rx="4" fill="#cbd5e1" />
-            <path d="M5,25 L22,10 L40,25 Z" />
-            {/* Small dome */}
-            <path d="M55,90 L55,50 Q70,30 85,50 L85,90 Z" />
-            <rect x="68" y="22" width="3" height="28" />
-            {/* Qutub Minar */}
-            <path d="M105,90 L110,15 L120,15 L125,90 Z" />
-            <circle cx="115" cy="12" r="6" />
-            <rect x="108" y="35" width="14" height="3" rx="1" fill="#cbd5e1" />
-            <rect x="109" y="55" width="12" height="3" rx="1" fill="#cbd5e1" />
-            {/* Building block */}
-            <rect x="145" y="40" width="45" height="50" rx="3" />
-            <rect x="152" y="47" width="10" height="14" rx="1" fill="#cbd5e1" />
-            <rect x="168" y="47" width="10" height="14" rx="1" fill="#cbd5e1" />
-            <rect x="152" y="67" width="10" height="14" rx="1" fill="#cbd5e1" />
-            <rect x="168" y="67" width="10" height="14" rx="1" fill="#cbd5e1" />
-            {/* India Gate */}
-            <rect x="210" y="30" width="8" height="60" />
-            <rect x="250" y="30" width="8" height="60" />
-            <rect x="210" y="25" width="48" height="10" rx="2" />
-            <path d="M218,90 L218,55 Q234,40 250,55 L250,90 Z" fill="#cbd5e1" />
-            <rect x="230" y="15" width="4" height="15" />
-            {/* Lotus Temple */}
-            <path d="M290,90 L290,55 Q305,25 320,55 L320,90 Z" />
-            <path d="M280,90 L295,50 Q305,35 315,50 L330,90 Z" fill="#cbd5e1" />
-            <path d="M298,90 L298,60 Q305,40 312,60 L312,90 Z" />
-            {/* Taj Mahal - center piece */}
-            <rect x="350" y="45" width="60" height="45" rx="3" />
-            <path d="M350,45 Q380,0 410,45 Z" />
-            <rect x="377" y="-5" width="4" height="50" />
-            <rect x="355" y="55" width="15" height="25" rx="7" fill="#cbd5e1" />
-            <rect x="390" y="55" width="15" height="25" rx="7" fill="#cbd5e1" />
-            {/* Taj minarets */}
-            <rect x="335" y="35" width="7" height="55" />
-            <circle cx="338" cy="32" r="5" />
-            <rect x="418" y="35" width="7" height="55" />
-            <circle cx="422" cy="32" r="5" />
-            {/* Gateway of India */}
-            <path d="M450,90 L450,35 L465,22 L480,35 L480,90 Z" />
-            <rect x="458" y="50" width="14" height="40" rx="7" fill="#cbd5e1" />
-            <rect x="450" y="30" width="30" height="8" rx="2" />
-            {/* Parliament House */}
-            <rect x="505" y="45" width="70" height="45" rx="4" />
-            <path d="M505,45 Q540,15 575,45 Z" />
-            <rect x="515" y="52" width="8" height="22" rx="1" fill="#cbd5e1" />
-            <rect x="530" y="52" width="8" height="22" rx="1" fill="#cbd5e1" />
-            <rect x="545" y="52" width="8" height="22" rx="1" fill="#cbd5e1" />
-            <rect x="560" y="52" width="8" height="22" rx="1" fill="#cbd5e1" />
-            {/* Charminar */}
-            <rect x="600" y="40" width="30" height="50" rx="2" />
-            <rect x="595" y="30" width="6" height="60" />
-            <rect x="630" y="30" width="6" height="60" />
-            <path d="M600,40 L615,25 L630,40 Z" />
-            <rect x="610" y="55" width="10" height="20" rx="5" fill="#cbd5e1" />
-            {/* Right dome */}
-            <path d="M655,90 L655,50 Q672,25 690,50 L690,90 Z" />
-            <rect x="671" y="18" width="3" height="32" />
-          </svg>
-          <div className="flex items-center gap-1.5 lg:gap-3 w-full justify-end">
-            <div className="flex gap-0.5 shrink-0">
-              <div className="w-2.5 lg:w-4 h-0.5 bg-[#FF9933]"></div>
-              <div className="w-2.5 lg:w-4 h-0.5 bg-[#ffffff]"></div>
-              <div className="w-2.5 lg:w-4 h-0.5 bg-[#138808]"></div>
-            </div>
-            <p className="text-[6.5px] sm:text-[7.5px] lg:text-[9px] font-bold tracking-[0.1em] lg:tracking-[0.2em] text-slate-500/60 uppercase whitespace-nowrap">
-              Sabka Vikas | Sajha Prayas | Mazboot Bharat
-            </p>
-            <div className="flex gap-0.5 shrink-0">
-              <div className="w-2.5 lg:w-4 h-0.5 bg-[#FF9933]"></div>
-              <div className="w-2.5 lg:w-4 h-0.5 bg-[#ffffff]"></div>
-              <div className="w-2.5 lg:w-4 h-0.5 bg-[#138808]"></div>
-            </div>
-          </div>
-        </div>
-
-        <Toolbar
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          filterState={filterState}
-          setFilterState={setFilterState}
-          filterRisk={filterRisk}
-          setFilterRisk={setFilterRisk}
-          statesList={statesList}
-        />
-        <div className="flex flex-col lg:flex-row w-full flex-1 min-h-0 relative z-10">
-          <div className="w-full lg:w-[52%] px-4 sm:px-6 py-3 flex flex-col">
-            <div className="relative w-full mb-4 lg:overflow-hidden shadow-xl rounded-3xl shrink-0 overflow-hidden">
+          {/* Left Column: Hero & Pillars */}
+          <div className="w-full lg:w-[50%] py-4 lg:pr-6 flex flex-col border-b border-slate-200/80 pb-6 lg:border-b-0 lg:pb-4 lg:border-r">
+            {/* Page 1 Hero Card */}
+            <div className="relative w-full mb-4 shadow-xl rounded-3xl shrink-0 overflow-hidden isolate transform-gpu clip-corners-fix">
               {/* Background Image */}
-              <motion.div
-                initial={{ scale: 1 }}
-                animate={{ scale: 1.05 }}
-                transition={{ duration: 20, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
-                className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                style={{
-                  backgroundImage: "url('/mplad_headquarters.png')",
-                }}
-              />
+              <div className="absolute inset-0 bg-cover bg-center bg-no-repeat animate-ken-burns rounded-3xl bg-mplad-headquarters" />
               {/* Premium Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#123b63]/95 via-[#123b63]/70 to-black/30" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#123b63]/95 via-[#123b63]/70 to-black/30 rounded-3xl pointer-events-none" />
 
-              <div className="relative z-10 px-6 py-5 flex flex-col h-full">
+              <div className="relative z-10 px-5 sm:px-6 py-4 sm:py-5 flex flex-col h-full justify-between">
                 {/* Government Logo + Information */}
-                <div className="flex items-center gap-3 mb-4">
-                  <img
-                    src="/emblem.png"
-                    alt="Government of India"
-                    className="w-8 h-10 object-contain"
+                <div className="flex items-center gap-3 pb-3 border-b border-white/15">
+                  <EmblemImage
+                    width="32"
+                    height="40"
+                    alt="MPLADS Risk Monitor"
+                    className="w-8 h-10 object-contain drop-shadow-sm"
                   />
                   <div className="text-white leading-tight">
-                    <p className="text-[10px] uppercase tracking-wider text-slate-100 font-bold mb-0.5">
-                      Government of India
-                    </p>
-                    <p className="font-semibold text-xs drop-shadow-sm">
-                      Ministry of Statistics and Programme Implementation
+                    <div className="flex items-center gap-2">
+                      <p className="text-[10px] sm:text-[11px] uppercase tracking-widest text-slate-200 font-bold">
+                        Smart India Hackathon 2026
+                      </p>
+                      <span className="text-white/40 text-[9px]">•</span>
+                      <span className="text-[10px] font-semibold text-cyan-300 uppercase tracking-wider">
+                        Independent Prototype
+                      </span>
+                    </div>
+                    <p className="font-semibold text-xs sm:text-[13px] text-white tracking-tight mt-0.5">
+                      Public Data-Driven MPLADS Monitoring Framework
                     </p>
                   </div>
                 </div>
 
-                {/* Page 1 Header */}
-                <Reveal delay={0.1}>
-                  <h1 className="font-extrabold mt-6 lg:mt-10 text-2xl lg:text-3xl text-white leading-tight tracking-tight drop-shadow-md max-w-2xl">
-                    Connecting Public Funds to <br />
-                    <span className="text-cyan-400 relative inline-block mt-1">
+                {/* Scheme Identity & Headline */}
+                <div className="my-2.5 sm:my-4">
+                  <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-cyan-300 block mb-1">
+                    Member of Parliament Local Area Development Scheme (MPLADS)
+                  </span>
+
+                  <h1 className="font-extrabold text-2xl sm:text-3xl lg:text-[28px] text-white leading-tight tracking-tight drop-shadow-md">
+                    Connecting Public Funds to{" "}
+                    <span className="text-cyan-300 relative inline-block">
                       Public Impact
-                      <motion.div 
-                        initial={{ scaleX: 0 }}
-                        whileInView={{ scaleX: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                        className="absolute -bottom-1.5 left-0 w-full h-1 bg-cyan-400 rounded-full opacity-80 origin-left" 
-                      />
+                      <span className="absolute -bottom-1 left-0 w-full h-[2.5px] bg-cyan-400 rounded-full opacity-90" />
                     </span>
                   </h1>
-                </Reveal>
-                <Reveal delay={0.2}>
-                  <h2 className="font-light mt-3 text-sm lg:text-base text-slate-200 max-w-xl leading-normal">
-                    Transparency that drives development,
-                    <br /> powered by AI-driven insights.
-                  </h2>
-                </Reveal>
+
+                  <p className="hidden sm:inline font-normal mt-2 sm:mt-2.5 text-xs text-slate-200 leading-relaxed max-w-xl">
+                    Independent prototype demonstrating data-driven risk surveillance,
+                    fund utilization analytics, and heuristic audit indicators across 543 Parliamentary
+                    Constituencies using public data.
+                  </p>
+                </div>
+
+                {/* Statutory Key Facts Strip - Hidden on mobile so image is not excessively cropped */}
+                <div className="hidden sm:flex pt-2.5 border-t border-white/15 flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px] text-slate-200">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                    <span className="text-slate-300">
+                      Statutory Allocation:
+                    </span>
+                    <span className="font-semibold text-white tabular-nums">
+                      ₹5.00 Cr / MP
+                    </span>
+                  </div>
+                  <span className="text-white/30 hidden sm:inline">•</span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                    <span className="text-slate-300">Coverage:</span>
+                    <span className="font-semibold text-white">
+                      543 Constituencies
+                    </span>
+                  </div>
+                  <span className="text-white/30 hidden sm:inline">•</span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                    <span className="text-slate-300">Scheme Nature:</span>
+                    <span className="font-semibold text-white">
+                      Non-Lapsable Fund
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
 
+            {/* Core Scheme Pillars Header */}
             <div className="px-1 flex-1 flex flex-col">
-              <Reveal staggerChildren={0.15}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-3">
-                  <Card
-                    title="Track Funds"
-                    icon={TbWallet}
-                    description="Monitor MPLADS fund allocation and utilization across all constituencies in real-time."
-                  />
-                  <Card
-                    title="Identify Risks"
-                    icon={TbShieldExclamation}
-                    description="Our AI-driven risk scoring highlights anomalies and potential delays in project execution."
-                  />
-                  <Card
-                    title="Compare Performance"
-                    icon={TbChartBar}
-                    description="Evaluate and compare the performance of different states and representatives effortlessly."
-                  />
-                  <Card
-                    title="Ensure Accountability"
-                    icon={TbScale}
-                    description="Promote transparency in public spending by giving citizens access to critical financial data."
-                  />
-                </div>
-              </Reveal>
+              <div className="border-b border-slate-200 pb-2 mb-3">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#123b63]">
+                  Core Scheme Pillars
+                </span>
+                <p className="text-xs text-slate-600 mt-0.5">
+                  Key functional objectives established under the official
+                  MPLADS governance framework.
+                </p>
+              </div>
 
-              <Reveal delay={0.4}>
-                <div className="mt-6 bg-white border border-slate-200 rounded-2xl px-5 py-3 mb-2 shadow-sm flex items-center gap-4 relative overflow-hidden group shrink-0">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-100 rounded-full blur-3xl -mr-16 -mt-16 opacity-50 group-hover:opacity-80 transition-opacity duration-500" />
-                  <div className="relative z-10 flex gap-4 w-full items-start">
-                    <div className="p-2 bg-blue-50 text-[#123b63] rounded-lg shrink-0 mt-0.5">
-                      <TbMapPin
-                        size={24}
-                        className="animate-bounce"
-                        style={{ animationDuration: "2s" }}
-                      />
-                    </div>
-                  <div>
-                    <h1 className="font-extrabold text-lg text-[#123b63] tracking-tight mb-0.5">
-                      Explore the Map
-                    </h1>
-                    <h2 className="font-medium text-slate-500 text-[13px] leading-relaxed">
-                      Select a constituency on the interactive map to view
-                      detailed risk scoring.
-                    </h2>
-                  </div>
-                  </div>
+              {/* Informational Cards Grid (Non-interactive) */}
+              <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
+                <Card
+                  index="01"
+                  title="Fund Tracking"
+                  icon={IconWallet}
+                  accent="emerald"
+                  tag="Allocation"
+                  metric="₹5 Cr / Seat"
+                  description="Real-time monitoring of fund releases, sanction orders, and utilization certificates."
+                />
+                <Card
+                  index="02"
+                  title="Risk Assessment"
+                  icon={IconShieldExclamation}
+                  accent="amber"
+                  tag="Surveillance"
+                  metric="4-Engine Check"
+                  description="Algorithmic rate variance, delay hazards, and vendor concentration scoring."
+                />
+                <Card
+                  index="03"
+                  title="State Benchmarks"
+                  icon={IconChartBar}
+                  accent="cyan"
+                  tag="543 Seats"
+                  metric="National Analytics"
+                  description="Comparative expenditure velocity and project completion rates across states."
+                />
+                <Card
+                  index="04"
+                  title="Statutory Audit"
+                  icon={IconScale}
+                  accent="navy"
+                  tag="Transparency"
+                  metric="MoSPI Audit Log"
+                  description="Public accountability through immutable record trails and guideline validation."
+                />
+              </div>
+
+              {/* Statutory Framework Quick Notice */}
+              <div className="mt-3.5 bg-slate-100/60 border border-slate-200 rounded p-2.5 flex items-center justify-between text-xs text-slate-600">
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#123b63]" />
+                  <span className="font-semibold text-slate-800 text-[11px]">
+                    Guideline Adherence:
+                  </span>
+                  <span className="text-[11px] text-slate-600">
+                    MoSPI Non-Lapsable Fund Allocation Framework
+                  </span>
                 </div>
-              </Reveal>
+                <span className="text-[10px] font-mono text-slate-500">
+                  Para 2.1 • FY 2025-26
+                </span>
+              </div>
             </div>
           </div>
 
-          <div className="relative w-full lg:w-[48%] p-4 lg:p-4 mt-4 lg:mt-0 flex items-start">
-            
-            {/* MOBILE ONLY: Background Decorations tightly wrapping the map */}
-            <svg className="lg:hidden absolute top-[-5%] right-[-5%] w-[70%] aspect-square pointer-events-none z-0 opacity-[0.05]" viewBox="0 0 100 100">
-              <circle cx="50" cy="50" r="45" fill="none" stroke="#123b63" strokeWidth="2" />
-              <circle cx="50" cy="50" r="42" fill="none" stroke="#123b63" strokeWidth="0.5" />
-              {Array.from({ length: 24 }).map((_, i) => (
-                <line key={i} x1="50" y1="50" x2="50" y2="8" stroke="#123b63" strokeWidth="1" transform={`rotate(${i * 15} 50 50)`} />
-              ))}
-              <circle cx="50" cy="50" r="5" fill="#123b63" />
-            </svg>
-            <svg className="lg:hidden absolute top-0 right-0 w-[55%] h-[70%] pointer-events-none z-0" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <path d="M 0 0 C 40 30, 70 70, 100 100 L 100 0 Z" fill="#138808" opacity="0.12" />
-              <path d="M 20 0 C 50 30, 80 60, 100 80 L 100 0 Z" fill="#ffffff" opacity="0.5" />
-              <path d="M 40 0 C 60 25, 85 45, 100 60 L 100 0 Z" fill="#FF9933" opacity="0.15" />
-            </svg>
-            <svg className="lg:hidden absolute bottom-[-5%] left-[-2%] w-[45%] h-[50%] pointer-events-none z-0" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <path d="M 0 0 C 30 50, 60 80, 100 100 L 0 100 Z" fill="#FF9933" opacity="0.12" />
-              <path d="M 0 25 C 25 55, 50 85, 80 100 L 0 100 Z" fill="#ffffff" opacity="0.5" />
-              <path d="M 0 50 C 15 65, 40 90, 60 100 L 0 100 Z" fill="#138808" opacity="0.12" />
-            </svg>
+          {/* Right Column: GIS Map Container */}
+          <div
+            id="geospatial-map"
+            className="w-full lg:w-[50%] py-4 lg:pl-6 flex flex-col items-start"
+          >
+            <div className="w-full border-b border-slate-200 pb-2 mb-3">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#123b63]">
+                National Interactive Map
+              </span>
+              <p className="text-xs text-slate-600 mt-0.5">
+                Constituency boundary choropleth based on official Survey of
+                India cartographic data.
+              </p>
+            </div>
 
-            <div className="relative z-10 w-full h-[300px] lg:h-[680px] overflow-hidden rounded-2xl lg:rounded-xl">
-              <RiskMap
-                searchTerm={searchTerm}
-                filterState={filterState}
-                filterRisk={filterRisk}
-                setStatesList={setStatesList}
-              />
+            <div
+              ref={mapContainerRef}
+              onMouseEnter={() => !mapMounted && setMapMounted(true)}
+              onTouchStart={() => !mapMounted && setMapMounted(true)}
+              className="relative z-10 w-full h-[360px] sm:h-[440px] lg:h-[640px] overflow-hidden mt-3 sm:mt-5"
+            >
+              {mapMounted ? (
+                <Suspense
+                  fallback={
+                    <div className="w-full h-full flex flex-col items-center justify-center bg-slate-50 text-slate-600">
+                      <div className="w-8 h-8 border-2 border-[#123b63] border-t-transparent rounded-full animate-spin"></div>
+                      <p className="text-xs font-medium text-slate-600 mt-3">
+                        Loading Geospatial Data...
+                      </p>
+                    </div>
+                  }
+                >
+                  <RiskMap
+                    searchTerm={searchTerm}
+                    filterState={filterState}
+                    filterRisk={filterRisk}
+                    setStatesList={setStatesList}
+                  />
+                </Suspense>
+              ) : (
+                <div
+                  onClick={() => setMapMounted(true)}
+                  className="w-full h-full flex flex-col items-center justify-center bg-slate-50 cursor-pointer"
+                >
+                  <div className="w-8 h-8 border-2 border-[#123b63] border-t-transparent rounded-full animate-spin"></div>
+                  <p className="text-xs font-medium text-slate-600 mt-3">
+                    Click to load national constituency map
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </main>
+      </div>
+
+      {/* ── Official Scheme Transition Divider ── */}
+      <div
+        className="w-full bg-slate-100/80 border-y border-slate-200 py-3 sm:py-3.5 px-4 sm:px-6 lg:px-12 relative z-10"
+        role="separator"
+        aria-label="Section Transition Divider"
+      >
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-slate-600">
+          {/* Left: National Scheme Identification */}
+          <div className="flex items-center gap-3">
+            <div className="flex flex-col gap-0.5 shrink-0" aria-hidden="true">
+              <span className="w-5 h-0.5 bg-[#FF9933] rounded-full" />
+              <span className="w-5 h-0.5 bg-slate-300 rounded-full" />
+              <span className="w-5 h-0.5 bg-[#138808] rounded-full" />
+            </div>
+            <div>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#123b63]">
+                National Development Analytics & Public Data Study
+              </span>
+              <p className="text-[11px] text-slate-500 hidden sm:block">
+                Independent Smart India Hackathon Prototype • Public MPLADS Dataset Analytics
+              </p>
+            </div>
+          </div>
+
+          {/* Right: Architectural Skyline Silhouette & Motto */}
+          <div className="flex items-center gap-4">
+            <IndianMonumentsSkyline
+              variant="light"
+              className="w-[180px] sm:w-[240px] lg:w-[300px] h-[32px] sm:h-[38px] opacity-70"
+            />
+            <div className="hidden md:flex items-center gap-1.5 pl-3 border-l border-slate-300 text-[10px] font-bold tracking-widest text-slate-500 uppercase whitespace-nowrap">
+              <span>Sabka Saath</span>
+              <span className="text-[#FF9933]">•</span>
+              <span>Sabka Vikas</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* PAGE 2 CONTENT */}
-      <div className="w-full">
-        {/* ── Stats Section ── */}
-        <OverviewSection />
+      {/* Scheme Information & Statistics */}
+      <div className="w-full relative">
+        <Suspense fallback={<div className="min-h-[120px]" />}>
+          <OverviewSection />
+        </Suspense>
 
-        {/* ── How It Works ── */}
-        <HowItWorksSection />
+        <Suspense fallback={<div className="min-h-[120px]" />}>
+          <HowItWorksSection />
+        </Suspense>
 
-        {/* ── Key Features ── */}
-        <KeyFeaturesSection />
+        <Suspense fallback={<div className="min-h-[120px]" />}>
+          <KeyFeaturesSection />
+        </Suspense>
 
-        {/* ── Our Vision ── */}
-        <section className="bg-blue-50 px-6 lg:px-10 py-10 lg:py-12 border-b border-slate-200 overflow-hidden relative">
-          {/* India Gate silhouette — detailed */}
-          <svg
-            className="absolute right-10 bottom-0 h-[90%] opacity-[0.09] pointer-events-none"
-            viewBox="0 0 300 400"
-            fill="#123b63"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {/* ── Base platforms ── */}
-            <rect x="10" y="380" width="280" height="20" rx="3" />
-            <rect x="25" y="368" width="250" height="14" rx="2" />
-            <rect x="35" y="358" width="230" height="12" rx="2" />
-
-            {/* ── Left pillar group ── */}
-            {/* Outer pillar */}
-            <rect x="50" y="195" width="12" height="163" />
-            {/* Inner pillar */}
-            <rect x="65" y="195" width="12" height="163" />
-            {/* Pillar base moulding */}
-            <rect x="46" y="350" width="35" height="8" rx="1" />
-            <rect x="48" y="345" width="31" height="6" rx="1" />
-            {/* Capital */}
-            <rect x="46" y="190" width="35" height="7" rx="1" />
-            <rect x="48" y="186" width="31" height="5" rx="1" />
-            {/* Fluting lines */}
-            <line
-              x1="56"
-              y1="200"
-              x2="56"
-              y2="345"
-              stroke="#dbeafe"
-              strokeWidth="0.5"
-            />
-            <line
-              x1="71"
-              y1="200"
-              x2="71"
-              y2="345"
-              stroke="#dbeafe"
-              strokeWidth="0.5"
-            />
-
-            {/* ── Right pillar group ── */}
-            <rect x="223" y="195" width="12" height="163" />
-            <rect x="238" y="195" width="12" height="163" />
-            <rect x="219" y="350" width="35" height="8" rx="1" />
-            <rect x="221" y="345" width="31" height="6" rx="1" />
-            <rect x="219" y="190" width="35" height="7" rx="1" />
-            <rect x="221" y="186" width="31" height="5" rx="1" />
-            <line
-              x1="229"
-              y1="200"
-              x2="229"
-              y2="345"
-              stroke="#dbeafe"
-              strokeWidth="0.5"
-            />
-            <line
-              x1="244"
-              y1="200"
-              x2="244"
-              y2="345"
-              stroke="#dbeafe"
-              strokeWidth="0.5"
-            />
-
-            {/* ── Main arch ── */}
-            <path d="M77,195 Q150,80 223,195" strokeWidth="0" />
-            {/* Inner arch cutout */}
-            <path d="M85,195 Q150,100 215,195" fill="#dbeafe" />
-            {/* Keystone */}
-            <rect x="144" y="92" width="12" height="14" rx="1" />
-
-            {/* ── Entablature / cornice ── */}
-            <rect x="40" y="178" width="220" height="4" rx="1" />
-            <rect x="38" y="172" width="224" height="7" rx="1" />
-            <rect x="36" y="166" width="228" height="7" rx="1" />
-            {/* Dentil moulding */}
-            {Array.from({ length: 28 }).map((_, i) => (
-              <rect
-                key={`dentil-${i}`}
-                x={42 + i * 8}
-                y="163"
-                width="4"
-                height="3"
-                rx="0.5"
-              />
-            ))}
-
-            {/* ── Attic / upper wall ── */}
-            <rect x="42" y="130" width="216" height="33" rx="2" />
-            {/* Inscription panel */}
-            <rect
-              x="95"
-              y="136"
-              width="110"
-              height="20"
-              rx="2"
-              fill="#dbeafe"
-            />
-            {/* INDIA text placeholder lines */}
-            <rect x="115" y="142" width="70" height="3" rx="1" />
-            <rect x="125" y="148" width="50" height="2" rx="1" />
-
-            {/* ── Upper cornice ── */}
-            <rect x="38" y="124" width="224" height="7" rx="1" />
-            <rect x="40" y="120" width="220" height="5" rx="1" />
-
-            {/* ── Stepped cupola ── */}
-            <rect x="110" y="108" width="80" height="13" rx="2" />
-            <rect x="118" y="98" width="64" height="11" rx="2" />
-            <rect x="126" y="90" width="48" height="9" rx="2" />
-
-            {/* ── Dome / cap ── */}
-            <ellipse cx="150" cy="88" rx="18" ry="6" />
-            <rect x="145" y="62" width="10" height="26" rx="2" />
-
-            {/* ── Amar Jawan Jyoti ── */}
-            <ellipse cx="150" cy="62" rx="8" ry="4" />
-            {/* Flame */}
-            <path d="M145,60 Q150,36 155,60 Z" fill="#FF9933" opacity="0.85" />
-            <path d="M147,58 Q150,42 153,58 Z" fill="#FFD700" opacity="0.7" />
-
-            {/* ── Side wall panels (left) ── */}
-            <rect x="50" y="200" width="27" height="2" />
-            <rect x="50" y="240" width="27" height="2" />
-            <rect x="50" y="280" width="27" height="2" />
-            <rect x="50" y="320" width="27" height="2" />
-
-            {/* ── Side wall panels (right) ── */}
-            <rect x="223" y="200" width="27" height="2" />
-            <rect x="223" y="240" width="27" height="2" />
-            <rect x="223" y="280" width="27" height="2" />
-            <rect x="223" y="320" width="27" height="2" />
-          </svg>
-
-          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 items-center relative z-10">
-            {/* Heading */}
-            <div className="lg:w-52 shrink-0">
-              <div className="w-8 h-1 bg-cyan-500 rounded-full mb-3" />
-              <h2 className="text-3xl font-extrabold text-[#123b63] leading-tight">
-                Our Vision
+        {/* Official Governance Mandate Section */}
+        <section className="bg-slate-100 px-4 sm:px-6 lg:px-12 py-8 border-b border-slate-200">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6 md:gap-12 items-start">
+            <div className="md:w-64 shrink-0">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#123b63]">
+                Policy Framework
+              </span>
+              <h2 className="text-xl font-bold text-slate-900 tracking-tight mt-0.5">
+                Statutory Mandate
               </h2>
             </div>
 
-            {/* Vision text */}
-            <div className="flex-1 max-w-lg">
-              <p className="text-slate-600 text-sm leading-relaxed">
-                To enable transparent, data-driven and accountable development
-                across every constituency, ensuring that public funds create
-                meaningful impact in people's lives.
+            <div className="flex-1">
+              <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                The Member of Parliament Local Area Development Scheme is
+                administered under comprehensive operational guidelines
+                formulated by the Ministry of Statistics and Programme
+                Implementation. Funds are non-lapsable and dedicated to creating
+                durable public capital assets of community priority in rural and
+                urban constituencies across India.
               </p>
             </div>
 
-            {/* Quote */}
-            <div className="flex-1 max-w-sm">
-              <p className="text-[#123b63] font-semibold italic text-base leading-relaxed">
-                "Development is not just about funds,
-                <br />
-                but about the lives it touches."
+            <div className="md:w-72 shrink-0 border-l border-slate-300 pl-4">
+              <p className="text-xs font-semibold text-slate-800">
+                Guidelines for Indian Government Websites (GIGW)
               </p>
-              <div className="flex gap-1 mt-3">
-                <div className="w-8 h-1 bg-[#FF9933] rounded-full" />
-                <div className="w-8 h-1 bg-slate-300 rounded-full" />
-                <div className="w-8 h-1 bg-[#138808] rounded-full" />
-              </div>
+              <p className="text-[11px] text-slate-600 mt-1">
+                Compliant with accessibility, open data standards, and
+                transparent public reporting norms.
+              </p>
             </div>
           </div>
         </section>
 
-        {/* ── Footer ── */}
-        <footer className="bg-[#0d2847] text-white">
-          <div className="max-w-7xl mx-auto px-6 lg:px-10 py-10 lg:py-12 grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-6 lg:gap-10">
-            {/* Brand */}
-            <div className="col-span-2 md:col-span-1">
-              <div className="flex items-center gap-3 mb-3">
-                <img
-                  src="/emblem.png"
-                  alt="MPLADS"
-                  className="w-10 h-12 object-contain"
-                />
-                <div>
-                  <p className="font-extrabold text-base leading-tight">
-                    MPLADS Risk Monitor
-                  </p>
-                  <p className="text-xs text-slate-400">by MoSPI</p>
-                </div>
-              </div>
-              <p className="text-xs text-cyan-400 font-semibold mb-2">
-                Connecting <span className="text-white">Public</span> Funds to
-                Public Impact.
-              </p>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                A data-driven platform for transparent and accountable
-                development across India.
-              </p>
-            </div>
-
-            {/* Quick Links */}
-            <div>
-              <p className="text-sm font-bold mb-4 text-white">Quick Links</p>
-              <ul className="space-y-2">
-                {["Home", "About", "Features", "Contact"].map(
-                  (l) => (
-                    <li key={l}>
-                      <a
-                        href="#"
-                        className="text-xs text-slate-400 hover:text-cyan-400 transition-colors duration-150"
-                      >
-                        {l}
-                      </a>
-                    </li>
-                  ),
-                )}
-              </ul>
-            </div>
-
-            {/* Resources */}
-            <div>
-              <p className="text-sm font-bold mb-4 text-white">Resources</p>
-              <ul className="space-y-2">
-                {[
-                  "Data Sources",
-                  "FAQs",
-                  "User Guide",
-                  "Privacy Policy",
-                  "Terms of Use",
-                ].map((l) => (
-                  <li key={l}>
-                    <a
-                      href="#"
-                      className="text-xs text-slate-400 hover:text-cyan-400 transition-colors duration-150"
-                    >
-                      {l}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Follow Us */}
-            <div className="col-span-2 md:col-span-1">
-              <p className="text-sm font-bold mb-4 text-white">Follow Us</p>
-              <div className="flex gap-3">
-                {[
-                  { Icon: FaXTwitter, label: "Twitter" },
-                  { Icon: FaLinkedinIn, label: "LinkedIn" },
-                  { Icon: FaYoutube, label: "YouTube" },
-                  { Icon: IoMdMail, label: "Email" },
-                ].map(({ Icon, label }) => (
-                  <a
-                    key={label}
-                    href="#"
-                    aria-label={label}
-                    className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center hover:bg-cyan-500 transition-colors duration-200"
-                  >
-                    <Icon size={15} />
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom bar */}
-          <div className="border-t border-white/10 px-6 lg:px-10 py-4">
-            <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-2 text-center sm:text-left">
-              <p className="text-[11px] text-slate-500">
-                © 2026{" "}
-                <span className="font-semibold text-slate-400">
-                  MPLADS Risk Monitor
-                </span>
-                . All rights reserved.
-              </p>
-              <p className="text-[11px] text-slate-500">
-                Government of India &nbsp;|&nbsp; Ministry of Statistics and
-                Programme Implementation
-              </p>
-            </div>
-          </div>
-        </footer>
+        {/* Prototype Footer with Transparency Links and Statutory Disclaimer */}
+        <Footer />
       </div>
 
-      <AiAssistantWidget />
+      {aiMounted && (
+        <Suspense fallback={null}>
+          <AiAssistantWidget />
+        </Suspense>
+      )}
     </div>
   );
 };
 
 export default Home;
-

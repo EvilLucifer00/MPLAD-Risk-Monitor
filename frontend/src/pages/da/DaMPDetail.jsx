@@ -1,202 +1,308 @@
-import React, { useState, useEffect } from 'react';
+import PortalPageLoader from '../../components/shared/PortalPageLoader';
+import React, { useState, useRef, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { daApi } from '../../api/mockDaApi';
-import { mockMPs } from '../../data/mockDaData';
+import { useVirtualizer } from '@tanstack/react-virtual';
+import { useDaMpProjects, useDaDistrictMps } from '../../api/queries';
 import { RiskBadge, StatusBadge } from '../mp/MpProjects';
-import { TbArrowLeft, TbSearch, TbFilter, TbChevronRight, TbBriefcase, TbCurrencyRupee } from 'react-icons/tb';
+import usePageSeo from '../../hooks/usePageSeo';
+import { TbArrowLeft, TbSearch, TbFilter, TbChevronRight, TbBriefcase } from 'react-icons/tb';
 
 const DaMPDetail = () => {
   const { mpId } = useParams();
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data: projectsData, isLoading: projectsLoading } = useDaMpProjects(mpId);
+  const { data: districtMps, isLoading: mpsLoading } = useDaDistrictMps();
+
+  const matchedMp = useMemo(() => {
+    if (!districtMps || !Array.isArray(districtMps)) return null;
+    return districtMps.find(m => String(m.id) === String(mpId) || String(m.rawMpId) === String(mpId));
+  }, [districtMps, mpId]);
+
+  const projects = useMemo(() => {
+    if (Array.isArray(projectsData)) return projectsData;
+    if (projectsData?.projects && Array.isArray(projectsData.projects)) return projectsData.projects;
+    return [];
+  }, [projectsData]);
+
+  const loading = (projectsLoading && !projectsData) || (mpsLoading && !districtMps);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [riskFilter, setRiskFilter] = useState('All');
 
-  const mp = mockMPs.find(m => m.id === mpId);
+  const mpDisplayName = matchedMp?.name || projectsData?.mpDetails?.mp_name || 'Member of Parliament';
+  const mpDisplayConstituency = matchedMp?.constituency || projectsData?.mpDetails?.constituency || '';
 
-  useEffect(() => {
-    daApi.getMPProjects(mpId).then(data => {
-      setProjects(data);
-      setLoading(false);
+  usePageSeo(
+    `${mpDisplayName} | DA Portal`,
+    `Projects and sanction review oversight for ${mpDisplayName}, ${mpDisplayConstituency}.`
+  );
+
+  const filteredProjects = useMemo(() => {
+    return projects.filter(p => {
+      const searchLower = (searchTerm || '').toLowerCase();
+      const matchesSearch = 
+        (p.title || '').toLowerCase().includes(searchLower) || 
+        (p.vendor || '').toLowerCase().includes(searchLower) ||
+        (p.implementingAgency || '').toLowerCase().includes(searchLower);
+      const matchesStatus = statusFilter === 'All' || p.status === statusFilter;
+      const matchesRisk = riskFilter === 'All' || p.riskLevel === riskFilter;
+      return matchesSearch && matchesStatus && matchesRisk;
     });
-  }, [mpId]);
+  }, [projects, searchTerm, statusFilter, riskFilter]);
 
-  const filteredProjects = projects.filter(p => {
-    const searchLower = (searchTerm || '').toLowerCase();
-    const matchesSearch = 
-      (p.title || '').toLowerCase().includes(searchLower) || 
-      (p.vendor || '').toLowerCase().includes(searchLower) ||
-      (p.implementingAgency || '').toLowerCase().includes(searchLower);
-    const matchesStatus = statusFilter === 'All' || p.status === statusFilter;
-    const matchesRisk = riskFilter === 'All' || p.riskLevel === riskFilter;
-    return matchesSearch && matchesStatus && matchesRisk;
+  const tableContainerRef = useRef(null);
+  const rowVirtualizer = useVirtualizer({
+    count: filteredProjects.length,
+    getScrollElement: () => tableContainerRef.current,
+    estimateSize: () => 72,
+    overscan: 5,
   });
+  const virtualRows = rowVirtualizer.getVirtualItems();
+  const totalSize = rowVirtualizer.getTotalSize();
+  const paddingTop = virtualRows.length > 0 ? virtualRows[0]?.start || 0 : 0;
+  const paddingBottom = virtualRows.length > 0 ? totalSize - (virtualRows[virtualRows.length - 1]?.end || 0) : 0;
 
   const statuses = ['All', 'Pending Sanction', 'Sanctioned', 'In Progress', 'Completed', 'Rejected'];
   const riskLevels = ['All', 'Low', 'Moderate', 'High', 'Critical'];
 
   // Computed stats
-  const totalSanctioned = projects.reduce((acc, p) => acc + (p.sanctionedAmount || 0), 0);
-  const totalUtilized = projects.reduce((acc, p) => acc + (p.amountSpent || 0), 0);
-  const activeCount = projects.filter(p => ['In Progress', 'Sanctioned'].includes(p.status)).length;
+  const totalSanctioned = projectsData?.stats?.sanctioned_amount_cr != null 
+    ? projectsData.stats.sanctioned_amount_cr * 10000000 
+    : projects.reduce((acc, p) => acc + (p.sanctionedAmount || 0), 0);
+  const totalUtilized = projectsData?.stats?.utilized_amount_cr != null 
+    ? projectsData.stats.utilized_amount_cr * 10000000 
+    : projects.reduce((acc, p) => acc + (p.amountSpent || 0), 0);
+  const activeCount = projectsData?.stats?.active_projects ?? 
+    projects.filter(p => ['Sanctioned', 'In Progress', 'APPROVED', 'IN_PROGRESS'].includes(p.status)).length;
 
-  if (loading) {
-    return (
-      <div className="flex-1 flex justify-center items-center h-full">
-        <div className="w-8 h-8 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
+  const isAnyLoading = projectsLoading || mpsLoading;
+  const isAllLoaded = Boolean(projectsData && districtMps);
+
+  if (isAnyLoading || !isAllLoaded) {
+    return <PortalPageLoader message="Loading MP Details..." />;
   }
 
   return (
-    <div className="space-y-6 flex flex-col h-full">
+    <div className="space-y-6 flex flex-col min-h-full">
+      {/* Breadcrumb Navigation */}
+      <nav aria-label="Breadcrumb">
+        <ol className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+          <li>
+            <Link to="/da" className="hover:text-[#123b63] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] rounded px-1">
+              Dashboard
+            </Link>
+          </li>
+          <li aria-hidden="true" className="text-slate-300">/</li>
+          <li>
+            <Link to="/da/projects" className="hover:text-[#123b63] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] rounded px-1">
+              District Projects
+            </Link>
+          </li>
+          <li aria-hidden="true" className="text-slate-300">/</li>
+          <li aria-current="page" className="text-[#123b63] font-bold">
+            {mpDisplayName}
+          </li>
+        </ol>
+      </nav>
+
       {/* Header */}
-      <div className="flex items-start gap-4">
-        <Link to="/da/projects" className="p-2 hover:bg-slate-200 bg-slate-100 text-slate-600 rounded-full transition-colors mt-1">
-          <TbArrowLeft size={20} />
+      <header className="flex items-start gap-4 pb-2 border-b border-slate-200">
+        <Link 
+          to="/da/projects" 
+          aria-label="Back to district projects directory"
+          className="p-2 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 rounded transition-colors mt-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
+        >
+          <TbArrowLeft size={18} aria-hidden="true" />
         </Link>
         <div className="flex-1">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h1 className="text-2xl font-bold text-[#123b63]">{mp?.name || 'Unknown MP'}</h1>
-              <p className="text-sm text-slate-500 mt-1">{mp?.constituency || ''} • {projects.length} Projects</p>
+              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#123b63]">{mpDisplayName}</h1>
+              <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-normal">{mpDisplayConstituency ? `${mpDisplayConstituency} Constituency • ` : ''}{projects.length} Works Recorded</p>
             </div>
             <Link 
               to={`/da/review?mp=${mpId}`}
-              className="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2 self-start"
+              className="bg-[#123b63] hover:bg-[#0c2a47] text-white px-3.5 py-1.5 rounded text-xs sm:text-sm font-semibold transition-colors flex items-center gap-1.5 self-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
             >
-              Review Queue <TbChevronRight size={16} />
+              <span>Review Queue</span> <TbChevronRight size={14} aria-hidden="true" />
             </Link>
           </div>
 
-          {/* Quick Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
-            <div className="bg-white border border-slate-200 rounded-xl px-4 py-3">
-              <div className="text-lg font-bold text-[#123b63]">{activeCount}</div>
-              <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Active</div>
+          {/* Quick Stats Section */}
+          <section aria-labelledby="mp-quick-stats-heading" className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
+            <h2 id="mp-quick-stats-heading" className="sr-only">Key MP Statistics</h2>
+            <div className="bg-white border border-slate-300 border-t-2 border-t-[#123b63] rounded p-3">
+              <div className="text-xl font-bold tracking-tight text-[#123b63] tabular-nums">{activeCount}</div>
+              <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mt-0.5">Active Works</div>
             </div>
-            <div className="bg-white border border-slate-200 rounded-xl px-4 py-3">
-              <div className="text-lg font-bold text-teal-600">₹{(totalSanctioned / 10000000).toFixed(2)}Cr</div>
-              <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Sanctioned</div>
+            <div className="bg-white border border-slate-300 border-t-2 border-t-blue-700 rounded p-3">
+              <div className="text-xl font-bold tracking-tight text-blue-900 tabular-nums">₹{(totalSanctioned / 10000000).toFixed(2)} Cr</div>
+              <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mt-0.5">Sanctioned Outlay</div>
             </div>
-            <div className="bg-white border border-slate-200 rounded-xl px-4 py-3">
-              <div className="text-lg font-bold text-emerald-600">₹{(totalUtilized / 10000000).toFixed(2)}Cr</div>
-              <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Utilized</div>
+            <div className="bg-white border border-slate-300 border-t-2 border-t-emerald-700 rounded p-3">
+              <div className="text-xl font-bold tracking-tight text-emerald-800 tabular-nums">₹{(totalUtilized / 10000000).toFixed(2)} Cr</div>
+              <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mt-0.5">Utilized Outlay</div>
             </div>
-            <div className="bg-white border border-slate-200 rounded-xl px-4 py-3">
-              <div className="text-lg font-bold text-orange-600">
+            <div className="bg-white border border-slate-300 border-t-2 border-t-amber-600 rounded p-3">
+              <div className="text-xl font-bold tracking-tight text-amber-900 tabular-nums">
                 {projects.length > 0 ? Math.round(projects.reduce((a, p) => a + p.riskScore, 0) / projects.length) : 0}
               </div>
-              <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Avg Risk</div>
+              <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mt-0.5">Average Risk Rating</div>
             </div>
-          </div>
+          </section>
         </div>
-      </div>
+      </header>
 
-      {/* Filters */}
-      <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row gap-4 items-center">
-        <div className="flex-1 relative w-full">
-          <TbSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-          <input 
-            type="text" 
-            placeholder="Search by title, vendor, agency..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all"
-          />
-        </div>
-        <div className="flex gap-4 w-full md:w-auto">
-          <div className="flex items-center gap-2 w-full md:w-auto">
-            <TbFilter className="text-slate-400 shrink-0" size={18} />
+      {/* Filters Section */}
+      <section aria-labelledby="project-filters-heading">
+        <h2 id="project-filters-heading" className="sr-only">Project Filters</h2>
+        <form 
+          role="search" 
+          onSubmit={(e) => e.preventDefault()}
+          className="bg-white p-3 rounded border border-slate-200 flex flex-col md:flex-row gap-3 items-center"
+        >
+          <div className="flex-1 relative w-full">
+            <TbSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} aria-hidden="true" />
+            <input 
+              id="mp-project-search"
+              type="search" 
+              placeholder="Search by title, vendor, agency..."
+              aria-label="Search projects by title, vendor, or agency"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-9 pr-3 py-1.5 bg-white border border-slate-300 rounded text-xs sm:text-sm focus:outline-none focus:border-[#123b63] focus:ring-1 focus:ring-[#123b63] placeholder:text-slate-400"
+            />
+          </div>
+          <div className="flex gap-2.5 w-full md:w-auto">
+            <div className="flex items-center gap-1.5 w-full md:w-auto">
+              <TbFilter className="text-slate-400 shrink-0" size={16} aria-hidden="true" />
+              <select 
+                id="mp-status-filter"
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                aria-label="Filter projects by status"
+                className="w-full md:w-auto bg-white border border-slate-300 rounded px-2.5 py-1.5 text-xs sm:text-sm text-slate-700 focus:outline-none focus:border-[#123b63] focus:ring-1 focus:ring-[#123b63]"
+              >
+                {statuses.map(s => <option key={s} value={s}>{s === 'All' ? 'All Statuses' : s}</option>)}
+              </select>
+            </div>
             <select 
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full md:w-auto bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none"
+              id="mp-risk-filter"
+              value={riskFilter}
+              onChange={(e) => setRiskFilter(e.target.value)}
+              aria-label="Filter projects by risk level"
+              className="w-full md:w-auto bg-white border border-slate-300 rounded px-2.5 py-1.5 text-xs sm:text-sm text-slate-700 focus:outline-none focus:border-[#123b63] focus:ring-1 focus:ring-[#123b63]"
             >
-              {statuses.map(s => <option key={s} value={s}>{s === 'All' ? 'All Statuses' : s}</option>)}
+              {riskLevels.map(r => <option key={r} value={r}>{r === 'All' ? 'All Risk Levels' : r}</option>)}
             </select>
           </div>
-          <select 
-            value={riskFilter}
-            onChange={(e) => setRiskFilter(e.target.value)}
-            className="w-full md:w-auto bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none"
-          >
-            {riskLevels.map(r => <option key={r} value={r}>{r === 'All' ? 'All Risk Levels' : r}</option>)}
-          </select>
-        </div>
-      </div>
+        </form>
+      </section>
 
-      {/* Projects Table (read-only) */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex-1">
-        <div className="overflow-x-auto h-full">
+      {/* Projects Table Section */}
+      <section 
+        aria-labelledby="projects-portfolio-heading" 
+        className="bg-white rounded border border-slate-200 overflow-hidden flex-1"
+      >
+        <h2 id="projects-portfolio-heading" className="sr-only">Projects Portfolio</h2>
+        <div ref={tableContainerRef} className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-320px)] min-h-[300px]">
           {filteredProjects.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-12 h-64 text-slate-500">
-              <TbBriefcase size={48} className="text-slate-300 mb-4" />
-              <p className="font-semibold">No projects found</p>
-              <p className="text-sm mt-1">Try adjusting your filters or search term.</p>
+              <TbBriefcase size={40} className="text-slate-300 mb-3" aria-hidden="true" />
+              <p className="font-semibold text-sm text-slate-700">No project works found</p>
+              <p className="text-xs text-slate-400 mt-1">
+                {projects.length > 0 ? 'No projects match your current filter parameters.' : 'No proposals submitted for this parliamentarian portfolio.'}
+              </p>
+              {(statusFilter !== 'All' || riskFilter !== 'All' || searchTerm) && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchTerm('');
+                    setStatusFilter('All');
+                    setRiskFilter('All');
+                  }}
+                  className="mt-3 px-3 py-1.5 text-xs font-semibold text-[#123b63] bg-slate-100 hover:bg-slate-200 rounded border border-slate-300 transition-colors cursor-pointer"
+                >
+                  Clear all filters
+                </button>
+              )}
             </div>
           ) : (
-            <table className="w-full text-left border-collapse">
+            <table className="w-full text-left border-collapse text-xs sm:text-sm">
+              <caption className="sr-only">Projects Portfolio for Member of Parliament</caption>
               <thead>
-                <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wider">
-                  <th className="p-4 font-semibold">Project Details</th>
-                  <th className="p-4 font-semibold hidden sm:table-cell">IA & Vendor</th>
-                  <th className="p-4 font-semibold hidden md:table-cell">Amount</th>
-                  <th className="p-4 font-semibold">Status</th>
-                  <th className="p-4 font-semibold">Risk Level</th>
-                  <th className="p-4 font-semibold">Review</th>
-                  <th className="p-4 font-semibold text-right">Action</th>
+                <tr className="bg-slate-100 border-b border-slate-200 text-slate-700 text-[11px] uppercase tracking-wider font-semibold">
+                  <th scope="col" className="px-4 sm:px-5 py-3">Project Details</th>
+                  <th scope="col" className="px-4 sm:px-5 py-3 hidden sm:table-cell">IA & Vendor</th>
+                  <th scope="col" className="px-4 sm:px-5 py-3 hidden md:table-cell">Estimated Outlay</th>
+                  <th scope="col" className="px-4 sm:px-5 py-3">Work Status</th>
+                  <th scope="col" className="px-4 sm:px-5 py-3">Risk Rating</th>
+                  <th scope="col" className="px-4 sm:px-5 py-3">Review State</th>
+                  <th scope="col" className="px-4 sm:px-5 py-3 text-right"><span className="sr-only">Actions</span></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {filteredProjects.map(project => (
-                  <tr key={project.id} className="hover:bg-slate-50/50 transition-colors group">
-                    <td className="p-4">
-                      <p className="font-bold text-[#123b63] text-sm line-clamp-1">{project.title}</p>
-                      <p className="text-xs text-slate-500 mt-1">{project.id} • {project.category}</p>
-                    </td>
-                    <td className="p-4 hidden sm:table-cell">
-                      <p className="text-sm text-slate-700">{project.implementingAgency}</p>
-                      <p className="text-xs text-slate-500 mt-0.5">{project.vendor}</p>
-                    </td>
-                    <td className="p-4 hidden md:table-cell">
-                      <p className="text-sm font-medium text-slate-700">₹{(project.estimatedCost / 100000).toFixed(2)} L</p>
-                    </td>
-                    <td className="p-4">
-                      <StatusBadge status={project.status} />
-                    </td>
-                    <td className="p-4">
-                      <RiskBadge level={project.riskLevel} score={project.riskScore} />
-                    </td>
-                    <td className="p-4">
-                      <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                        project.reviewStatus === 'Pending Review' ? 'bg-orange-100 text-orange-700' :
-                        project.reviewStatus === 'Sanctioned' ? 'bg-emerald-100 text-emerald-700' :
-                        project.reviewStatus === 'Rejected' ? 'bg-red-100 text-red-700' :
-                        project.reviewStatus === 'Suspended' ? 'bg-slate-200 text-slate-700' :
-                        project.reviewStatus === 'Escalated' ? 'bg-amber-100 text-amber-700' :
-                        project.reviewStatus === 'Awaiting Verification' ? 'bg-blue-100 text-blue-700' :
-                        'bg-slate-100 text-slate-700'
-                      }`}>
-                        {project.reviewStatus}
-                      </span>
-                    </td>
-                    <td className="p-4 text-right">
-                      <Link 
-                        to={`/da/review/${project.id}`}
-                        className="inline-flex items-center justify-center p-2 text-slate-400 hover:text-[#123b63] hover:bg-slate-100 rounded-lg transition-colors"
-                      >
-                        <TbChevronRight size={20} />
-                      </Link>
-                    </td>
+                {paddingTop > 0 && (
+                  <tr>
+                    <td colSpan={7} style={{ height: `${paddingTop}px` }} />
                   </tr>
-                ))}
+                )}
+                {virtualRows.map(virtualRow => {
+                  const project = filteredProjects[virtualRow.index];
+                  if (!project) return null;
+                  return (
+                    <tr key={project.id} className="hover:bg-slate-50 transition-colors">
+                      <td className="px-4 sm:px-5 py-3">
+                        <p className="font-semibold text-[#123b63] text-xs sm:text-sm tracking-tight line-clamp-1">{project.title}</p>
+                        <p className="text-[11px] text-slate-500 mt-0.5">{project.id} • {project.category}</p>
+                      </td>
+                      <td className="px-4 sm:px-5 py-3 hidden sm:table-cell">
+                        <p className="text-xs sm:text-sm font-medium text-slate-700">{project.implementingAgency}</p>
+                        <p className="text-[11px] text-slate-500 mt-0.5">{project.vendor}</p>
+                      </td>
+                      <td className="px-4 sm:px-5 py-3 hidden md:table-cell">
+                        <p className="text-xs sm:text-sm font-bold text-[#123b63] tabular-nums">₹{(project.estimatedCost / 100000).toFixed(2)} Lakhs</p>
+                      </td>
+                      <td className="px-4 sm:px-5 py-3">
+                        <StatusBadge status={project.status} />
+                      </td>
+                      <td className="px-4 sm:px-5 py-3">
+                        <RiskBadge level={project.riskLevel} score={project.riskScore} />
+                      </td>
+                      <td className="px-4 sm:px-5 py-3">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider border ${
+                          project.reviewStatus === 'Pending Review' ? 'bg-amber-50 text-amber-900 border-amber-300' :
+                          project.reviewStatus === 'Sanctioned' ? 'bg-emerald-50 text-emerald-900 border-emerald-300' :
+                          project.reviewStatus === 'Rejected' ? 'bg-red-50 text-red-900 border-red-300' :
+                          project.reviewStatus === 'Suspended' ? 'bg-slate-100 text-slate-900 border-slate-300' :
+                          project.reviewStatus === 'Escalated' ? 'bg-amber-50 text-amber-900 border-amber-300' :
+                          project.reviewStatus === 'Awaiting Verification' ? 'bg-blue-50 text-blue-900 border-blue-300' :
+                          'bg-slate-50 text-slate-700 border-slate-300'
+                        }`}>
+                          {project.reviewStatus}
+                        </span>
+                      </td>
+                      <td className="px-4 sm:px-5 py-3 text-right">
+                        <Link 
+                          to={`/da/review/${project.id}`}
+                          aria-label={`Review project ${project.title}`}
+                          className="inline-flex items-center justify-center p-1.5 text-slate-500 hover:text-[#123b63] hover:bg-slate-100 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
+                        >
+                          <TbChevronRight size={16} aria-hidden="true" />
+                        </Link>
+                      </td>
+                    </tr>
+                  );
+                })}
+                {paddingBottom > 0 && (
+                  <tr>
+                    <td colSpan={7} style={{ height: `${paddingBottom}px` }} />
+                  </tr>
+                )}
               </tbody>
             </table>
           )}
         </div>
-      </div>
+      </section>
     </div>
   );
 };

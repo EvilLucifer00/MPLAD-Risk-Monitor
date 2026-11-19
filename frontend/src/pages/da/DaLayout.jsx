@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
+import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   TbLayoutDashboard, 
@@ -7,25 +8,54 @@ import {
   TbSettings, 
   TbBell, 
   TbSearch, 
-  TbMenu2,
-  TbX,
   TbFileDescription,
   TbBuildingBank,
   TbUserScan,
-  TbLogout
+  TbLogout,
+  TbX
 } from 'react-icons/tb';
-import { daApi } from '../../api/mockDaApi';
+import { IconMenu } from '../../components/shared/HomeIcons';
+import EmblemImage from '../../components/shared/EmblemImage';
+import { daApi } from '../../api/daApi';
 import { useAuthStore } from '../../store/useAuthStore';
-import AiAssistantWidget from '../../components/shared/AiAssistantWidget.jsx';
+import { subscribePortalSync } from '../../utils/portalSync';
+import { useQueryClient } from '@tanstack/react-query';
+import { queryKeys, useDaReviewQueue, useDaNotifications } from '../../api/queries';
+import { QueryStatusIndicator } from '../../components/shared/QueryStatusBanner';
+import { documentsApi } from '../../api/mpladsApi';
+import { CACHE_TIMES } from '../../constants/cacheConfig';
+import useDialogA11y from '../../hooks/useDialogA11y';
+
+// Lazy-loaded to eliminate heavy AI chat bundle from critical route waterfall
+const AiAssistantWidget = lazy(() => import('../../components/shared/AiAssistantWidget.jsx'));
 const DaLayout = () => {
-  const { user, logout } = useAuthStore();
+  const queryClient = useQueryClient();
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [notifications, setNotifications] = useState([]);
+  const sidebarA11yRef = useDialogA11y(isSidebarOpen, () => setIsSidebarOpen(false));
+  const { data: queueData } = useDaReviewQueue();
+  const pendingReviewCount = Array.isArray(queueData) ? queueData.length : 0;
+  const { data: notifData } = useDaNotifications();
+  const notifications = Array.isArray(notifData) ? notifData : [];
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [globalSearch, setGlobalSearch] = useState('');
+  const notificationsRef = useRef(null);
+  const profileMenuRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    return subscribePortalSync((event) => {
+      if (event.type === 'PROJECT_SUBMITTED') {
+        const dist = user?.dist || user?.id;
+        queryClient.invalidateQueries({ queryKey: queryKeys.da.reviewQueue(dist) });
+        queryClient.invalidateQueries({ queryKey: queryKeys.da.stats(dist) });
+        queryClient.invalidateQueries({ queryKey: queryKeys.da.projects(dist) });
+      }
+    });
+  }, [queryClient, user?.dist, user?.id]);
 
   const handleLogout = () => {
     logout();
@@ -41,10 +71,129 @@ const DaLayout = () => {
   };
 
   useEffect(() => {
-    daApi.getNotifications().then(setNotifications);
+    const handleClickOutside = (e) => {
+      if (notificationsRef.current && !notificationsRef.current.contains(e.target)) {
+        setShowNotifications(false);
+      }
+      if (profileMenuRef.current && !profileMenuRef.current.contains(e.target)) {
+        setShowProfileMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Lock browser viewport to single page (eliminates browser window scrollbar)
+    document.documentElement.classList.add('portal-locked');
+    document.body.classList.add('portal-locked');
+    return () => {
+      document.documentElement.classList.remove('portal-locked');
+      document.body.classList.remove('portal-locked');
+    };
   }, []);
 
   const unreadCount = notifications.filter(n => !n.read).length;
+
+  const prefetchDaRoute = (routePath) => {
+    const dist = user?.dist || user?.id;
+    switch (routePath) {
+      case '/da':
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.stats(dist),
+          queryFn: ({ signal }) => daApi.getDashboardStats({ signal }),
+          staleTime: CACHE_TIMES.FINANCIAL_STATUS.staleTime,
+        });
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.recommendations(dist),
+          queryFn: ({ signal }) => daApi.getRecommendations({ signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.districtMps(dist),
+          queryFn: ({ signal }) => daApi.getDistrictMPs({ signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.projects(dist, {}),
+          queryFn: ({ signal }) => daApi.getProjects({}, { signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
+        break;
+      case '/da/projects':
+        import('./DaProjects.jsx');
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.districtMps(dist),
+          queryFn: ({ signal }) => daApi.getDistrictMPs({ signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
+        break;
+      case '/da/review':
+        import('./DaProjectReview.jsx');
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.reviewQueue(dist),
+          queryFn: ({ signal }) => daApi.getReviewQueue({ signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.districtMps(dist),
+          queryFn: ({ signal }) => daApi.getDistrictMPs({ signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.agencies(dist),
+          queryFn: ({ signal }) => daApi.getImplementingAgencies({ signal }),
+          staleTime: CACHE_TIMES.REFERENCE.staleTime,
+        });
+        break;
+      case '/da/documents':
+        import('./DaDocuments.jsx');
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.documents(dist, {}),
+          queryFn: ({ signal }) => documentsApi.getDmDocuments({}, { signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.projects(dist, {}),
+          queryFn: ({ signal }) => daApi.getProjects({}, { signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
+        break;
+      case '/da/notifications':
+        import('./DaNotifications.jsx');
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.notifications(dist),
+          queryFn: ({ signal }) => daApi.getNotifications({ signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
+        break;
+      case '/da/agencies':
+        import('./DaIADirectory.jsx');
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.agencies(dist),
+          queryFn: ({ signal }) => daApi.getImplementingAgencies({ signal }),
+          staleTime: CACHE_TIMES.REFERENCE.staleTime,
+        });
+        break;
+      case '/da/vendors':
+        import('./DaVendorWatchlist.jsx');
+        queryClient.prefetchQuery({
+          queryKey: queryKeys.da.vendors(dist),
+          queryFn: ({ signal }) => daApi.getVendors({ signal }),
+          staleTime: CACHE_TIMES.LISTS_REPORTS.staleTime,
+        });
+        break;
+      case '/da/settings':
+        import('./DaSettings.jsx');
+        break;
+      default:
+        break;
+    }
+  };
 
   const navLinks = [
     { name: 'Dashboard', path: '/da', icon: TbLayoutDashboard },
@@ -62,55 +211,74 @@ const DaLayout = () => {
     setNotifications(notifications.map(n => n.id === id ? { ...n, read: true } : n));
   };
 
-  const SidebarContent = () => (
-    <div className="flex flex-col h-full bg-[#0d2744] text-white overflow-y-auto overflow-x-hidden relative">
+  const renderSidebarContent = () => (
+    <div className="flex flex-col h-full bg-[#0d2744] text-white overflow-y-auto custom-scrollbar-dark overflow-x-hidden relative">
       {/* Top Header */}
-      <div className="p-6 flex items-center gap-4 border-b border-white/5 relative z-10">
-        <img src="/emblem.png" alt="Emblem" className="w-10 h-12 object-contain" />
-        <div>
-          <h2 className="font-bold text-xl leading-tight tracking-tight">DA Portal</h2>
-          <p className="text-[11px] text-[#00b4d8] font-medium tracking-wide">MPLADS | SIH 2026</p>
+      <div className="p-5 sm:p-6 flex items-start justify-between gap-2 border-b border-white/5 relative z-10">
+        <div className="flex items-center gap-3.5">
+          <EmblemImage width="40" height="48" className="w-10 h-12 object-contain shrink-0" />
+          <div>
+            <div className="text-[10px] font-bold uppercase tracking-wider text-sky-400 leading-none">SIH Prototype</div>
+            <h2 className="font-bold text-xl leading-tight tracking-tight mt-0.5">DA Portal</h2>
+            <p className="text-[11px] text-sky-200/80 font-medium tracking-tight mt-0.5 leading-snug whitespace-normal">
+              District Authority • MPLADS
+            </p>
+          </div>
         </div>
+        <button
+          type="button"
+          onClick={() => setIsSidebarOpen(false)}
+          aria-label="Close navigation sidebar"
+          className="p-1.5 text-slate-300 hover:text-white hover:bg-white/10 active:scale-95 rounded-lg lg:hidden transition-all duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 shrink-0 mt-0.5"
+        >
+          <TbX size={20} />
+        </button>
       </div>
       
       {/* Navigation Links */}
-      <div className="flex-1 px-4 space-y-1 mt-4 relative z-10">
+      <nav aria-label="District Authority Portal Navigation" className="flex-1 px-4 space-y-1 mt-4 relative z-10">
         {navLinks.map((link) => {
           const isActive = location.pathname === link.path || 
                           (link.path !== '/da' && location.pathname.startsWith(link.path));
           const Icon = link.icon;
-          
+
           return (
             <Link
               key={link.path}
               to={link.path}
+              onMouseEnter={() => prefetchDaRoute(link.path)}
+              onFocus={() => prefetchDaRoute(link.path)}
+              onTouchStart={() => prefetchDaRoute(link.path)}
               onClick={() => setIsSidebarOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 ${
+              aria-current={isActive ? 'page' : undefined}
+              className={`flex items-center gap-2.5 px-3 py-2 rounded text-xs sm:text-sm font-medium transition-colors ${
                 isActive 
-                  ? 'bg-[#00a8e8] text-white shadow-md' 
-                  : 'text-slate-300 hover:bg-white/5 hover:text-white'
+                  ? 'bg-[#183e68] text-white border-l-4 border-l-[#ff9933] font-semibold' 
+                  : 'text-slate-200 hover:bg-white/10 hover:text-white'
               }`}
             >
-              <Icon size={20} className={isActive ? 'text-white' : 'text-slate-400'} />
-              <span className="font-medium text-sm">{link.name}</span>
+              <Icon size={18} className={isActive ? 'text-white' : 'text-slate-300'} aria-hidden="true" />
+              <span>{link.name}</span>
               
               {/* Badge for review queue */}
-              {link.name === 'Project Review' && (
-                <span className="ml-auto text-[10px] font-bold bg-orange-500 text-white px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
-                  11
+              {link.name === 'Project Review' && pendingReviewCount > 0 && (
+                <span className="ml-auto text-[10px] font-bold bg-[#b91c1c] text-white px-1.5 py-0.5 rounded min-w-[18px] text-center">
+                  <span className="sr-only">({pendingReviewCount} pending reviews)</span>
+                  <span aria-hidden="true">{pendingReviewCount}</span>
                 </span>
               )}
               
               {/* Notification Badge */}
               {link.name === 'Notifications' && unreadCount > 0 && (
-                <span className="ml-auto w-4 h-4 bg-[#ef4444] rounded-full border border-[#0d2744] flex items-center justify-center">
-                  <span className="w-1.5 h-1.5 bg-white rounded-full"></span>
+                <span className="ml-auto w-4 h-4 bg-[#b91c1c] text-white rounded text-[10px] font-bold flex items-center justify-center">
+                  <span className="sr-only">({unreadCount} unread)</span>
+                  <span className="w-1.5 h-1.5 bg-white rounded-full" aria-hidden="true"></span>
                 </span>
               )}
             </Link>
           );
         })}
-      </div>
+      </nav>
 
       {/* Bottom Footer Section */}
       <div className="px-6 pb-6 pt-32 relative z-10 mt-auto overflow-hidden">
@@ -190,9 +358,9 @@ const DaLayout = () => {
 
         <div>
           <p className="text-[11px] text-slate-400 leading-relaxed font-medium">
-            Government of India<br/>
-            Ministry of Statistics and<br/>
-            Programme Implementation
+            Smart India Hackathon 2026<br/>
+            Independent Analytics Prototype<br/>
+            Public MPLADS Data Study
           </p>
         </div>
       </div>
@@ -200,86 +368,114 @@ const DaLayout = () => {
   );
 
   return (
-    <div className="flex h-screen bg-slate-50 font-sans">
+    <div className="flex h-screen max-h-screen overflow-hidden bg-slate-50 font-sans">
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 z-40 lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
-      <aside className={`
+      <aside
+        ref={isSidebarOpen ? sidebarA11yRef : null}
+        aria-label="District Authority Navigation"
+        aria-modal={isSidebarOpen ? "true" : undefined}
+        role={isSidebarOpen ? "dialog" : undefined}
+        className={`
         fixed lg:static inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out
-        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-      `}>
-        <SidebarContent />
+        ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+      `}
+      >
+        {renderSidebarContent()}
       </aside>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Top Navbar */}
-        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 z-30">
-          <div className="flex items-center gap-4">
+        <header className="sticky top-0 h-14 bg-white border-b border-slate-300 flex items-center justify-between px-3 sm:px-4 lg:px-6 z-30 transition-colors gap-2 sm:gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0 max-w-xl">
             <button 
               onClick={() => setIsSidebarOpen(true)}
-              className="p-2 -ml-2 text-slate-500 hover:bg-slate-100 rounded-lg lg:hidden"
+              aria-label="Open navigation sidebar"
+              className="p-1.5 text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded lg:hidden shrink-0 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
             >
-              <TbMenu2 size={24} />
+              <IconMenu size={20} className="sm:w-5 sm:h-5" />
             </button>
-            <form onSubmit={handleGlobalSearch} className="hidden sm:flex items-center bg-slate-100 rounded-full px-4 py-2 w-64 md:w-96">
-              <TbSearch className="text-slate-400 mr-2" size={18} />
+            <form 
+              onSubmit={handleGlobalSearch} 
+              className="flex items-center bg-white border border-slate-300 rounded px-3 py-1.5 flex-1 min-w-0 transition-colors focus-within:border-[#123b63] focus-within:ring-1 focus-within:ring-[#123b63]"
+            >
+              <TbSearch className="text-slate-400 mr-2 shrink-0" size={15} aria-hidden="true" />
               <input 
                 type="text" 
                 value={globalSearch}
                 onChange={(e) => setGlobalSearch(e.target.value)}
                 placeholder="Search projects, MPs, vendors..." 
-                className="bg-transparent border-none outline-none text-sm w-full placeholder:text-slate-400"
+                aria-label="Search projects, MPs, vendors"
+                className="bg-transparent border-none outline-none text-xs sm:text-sm w-full min-w-0 placeholder:text-slate-400 leading-normal text-slate-800"
               />
+              {globalSearch && (
+                <button
+                  type="button"
+                  onClick={() => setGlobalSearch('')}
+                  aria-label="Clear search input"
+                  className="p-1 -mr-1 text-slate-400 hover:text-slate-600 rounded transition-colors shrink-0"
+                >
+                  <TbX size={14} />
+                </button>
+              )}
             </form>
           </div>
 
-          <div className="flex items-center gap-4 relative">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0 relative">
+            <QueryStatusIndicator />
             {/* Notification Bell */}
-            <div className="relative">
-              <button 
+            <div ref={notificationsRef} className="relative">
+              <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="p-2 text-slate-500 hover:bg-slate-100 rounded-full relative transition-colors"
+                aria-label={`Notifications, ${unreadCount} unread`}
+                aria-expanded={showNotifications}
+                className="p-1.5 text-slate-600 hover:bg-slate-100 rounded relative transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
               >
-                <TbBell size={22} />
+                <TbBell size={20} />
                 {unreadCount > 0 && (
-                  <span className="absolute top-1 right-1.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-600 rounded-full border border-white"></span>
                 )}
               </button>
 
               {/* Notification Dropdown */}
               {showNotifications && (
-                <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden z-50">
-                  <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-                    <h3 className="font-bold text-slate-800">Notifications</h3>
-                    <span className="text-xs font-semibold bg-[#123b63] text-white px-2 py-0.5 rounded-full">
-                      {unreadCount} new
+                <div className="absolute right-0 mt-2 w-80 bg-white rounded border border-slate-200 shadow-md overflow-hidden z-50">
+                  <div className="p-3 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+                    <h3 className="font-bold text-xs uppercase tracking-wider text-slate-800">Notifications</h3>
+                    <span className="text-[11px] font-semibold bg-[#123b63] text-white px-2 py-0.5 rounded">
+                      {unreadCount} unread
                     </span>
                   </div>
-                  <div className="max-h-[300px] overflow-y-auto">
+                  <div className="max-h-[300px] overflow-y-auto divide-y divide-slate-100">
                     {notifications.length === 0 ? (
-                      <p className="text-center text-slate-500 py-6 text-sm">No notifications</p>
+                      <p className="text-center text-slate-500 py-6 text-xs">
+                        No active notifications
+                      </p>
                     ) : (
-                      notifications.slice(0, 5).map(notif => (
-                        <div 
-                          key={notif.id} 
-                          className={`p-4 border-b border-slate-50 hover:bg-slate-50 transition-colors ${!notif.read ? 'bg-blue-50/30' : ''}`}
+                      notifications.slice(0, 5).map((notif) => (
+                        <div
+                          key={notif.id}
+                          className={`p-3 hover:bg-slate-50 transition-colors ${!notif.read ? "bg-blue-50/20" : ""}`}
                         >
-                          <p className="text-sm text-slate-700 leading-relaxed">{notif.message}</p>
+                          <p className="text-xs text-slate-700 leading-relaxed">
+                            {notif.message}
+                          </p>
                           <div className="flex justify-between items-center mt-2">
-                            <span className="text-[10px] text-slate-400">
+                            <span className="text-[10px] text-slate-500 font-medium tabular-nums">
                               {new Date(notif.timestamp).toLocaleDateString()}
                             </span>
                             {!notif.read && (
-                              <button 
+                              <button
                                 onClick={() => handleMarkAsRead(notif.id)}
-                                className="text-[10px] font-semibold text-cyan-600 hover:text-cyan-700"
+                                className="text-[10px] font-bold text-[#123b63] hover:underline"
                               >
                                 Mark Read
                               </button>
@@ -289,53 +485,59 @@ const DaLayout = () => {
                       ))
                     )}
                   </div>
-                  <Link 
+                  <Link
                     to="/da/notifications"
                     onClick={() => setShowNotifications(false)}
-                    className="block text-center text-sm font-semibold text-cyan-700 py-3 hover:bg-slate-50 border-t border-slate-100"
+                    className="block text-center text-xs font-bold text-[#123b63] py-2.5 bg-slate-50 hover:bg-slate-100 border-t border-slate-200 transition-colors"
                   >
                     View All Notifications
                   </Link>
                 </div>
               )}
             </div>
-            
+
             {/* Profile Menu */}
-            <div className="relative">
-              <button 
+            <div ref={profileMenuRef} className="relative">
+              <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
-                className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-800 font-bold border border-amber-200 text-xs hover:bg-amber-200 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-1"
+                aria-label="District Authority Profile menu"
+                aria-expanded={showProfileMenu}
+                className="w-8 h-8 rounded bg-slate-100 border border-slate-300 text-[#123b63] font-bold text-xs hover:bg-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-[#123b63]"
               >
                 DA
               </button>
 
               {/* Profile Dropdown */}
               {showProfileMenu && (
-                <div 
-                  className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden z-50 transform origin-top-right transition-all duration-200 ease-out animate-in fade-in zoom-in-95"
-                >
-                  <div className="p-4 border-b border-slate-100 bg-slate-50/50">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center text-amber-800 font-bold border border-amber-200 text-lg">
+                <div className="absolute right-0 mt-2 w-64 bg-white rounded border border-slate-200 shadow-md overflow-hidden z-50">
+                  <div className="p-3 border-b border-slate-200 bg-slate-50">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-9 h-9 rounded bg-slate-200 border border-slate-300 flex items-center justify-center text-[#123b63] font-bold text-sm">
                         DA
                       </div>
-                      <div>
-                        <h3 className="font-bold text-slate-800 leading-tight">{user?.dm_name || 'Priya Singh'}</h3>
-                        <p className="text-xs text-slate-500 mt-0.5">District Magistrate</p>
-                        <p className="text-[10px] font-semibold text-amber-600 mt-1">
-                          {user?.dist ? `${user.dist}${user?.state ? `, ${user.state}` : ''}` : 'Varanasi, UP'}
+                      <div className="min-w-0">
+                        <h3 className="font-bold text-xs text-slate-800 leading-tight truncate">
+                          {user?.dm_name || user?.name || "District Magistrate"}
+                        </h3>
+                        <p className="text-[11px] text-slate-600 mt-0.5 truncate">
+                          District Authority
+                        </p>
+                        <p className="text-[10px] font-semibold text-[#123b63] mt-0.5 truncate">
+                          {user?.dist
+                            ? `${user.dist}${user?.state ? `, ${user.state}` : ""}`
+                            : (user?.district ? `${user.district}${user?.state ? `, ${user.state}` : ""}` : "District Authority")}
                         </p>
                       </div>
                     </div>
                   </div>
-                  
-                  <div className="p-2">
+
+                  <div className="p-1.5">
                     <button
                       onClick={handleLogout}
-                      className="flex items-center gap-3 w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      className="flex items-center gap-2 w-full px-2.5 py-1.5 text-xs text-red-700 hover:bg-red-50 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600"
                     >
-                      <TbLogout size={18} />
-                      <span className="font-medium">Log Out</span>
+                      <TbLogout size={16} />
+                      <span className="font-semibold">Sign Out</span>
                     </button>
                   </div>
                 </div>
@@ -345,15 +547,22 @@ const DaLayout = () => {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-auto bg-slate-50 p-4 lg:p-8">
-          <div className="max-w-7xl mx-auto h-full">
-            <Outlet />
+        <main
+          id="main-content"
+          className="flex-1 overflow-y-auto custom-scrollbar bg-slate-50 p-4 lg:p-8"
+        >
+          <div className="max-w-7xl mx-auto min-h-full pb-20 w-full min-w-0">
+            <Suspense fallback={<PortalPageLoader message="Loading page..." />}>
+              <Outlet />
+            </Suspense>
           </div>
         </main>
       </div>
 
       {/* Global Floating Assistant */}
-      <AiAssistantWidget />
+      <Suspense fallback={null}>
+        <AiAssistantWidget />
+      </Suspense>
     </div>
   );
 };

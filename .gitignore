@@ -20,3 +20,11 @@ Thumbs.db
 .env
 .env.local
 *.pem
+
+# Agent skills
+.agents/
+skills-lock.json
+
+# unused folders
+scripts
+preparation

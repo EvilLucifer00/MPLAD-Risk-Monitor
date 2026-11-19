@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /mp/
+Disallow: /da/
+
+Sitemap: https://mplad-risk-monitor.vercel.app/sitemap.xml

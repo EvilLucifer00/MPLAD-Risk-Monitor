@@ -1,14 +1,15 @@
 from fastapi import APIRouter, Depends, Query, File, UploadFile, Form
 from typing import Optional, List
 
-from auth.auth import get_current_mp, get_current_dm
+from auth.auth import get_current_mp, get_current_dm, get_current_user
 from schemas.project_schema import ProjectType
 from services.project_service import (
     list_projects, 
     project_by_id, 
     create_new_project, 
     dm_district_projects,
-    dm_mp_projects # Import the new function
+    dm_mp_projects,
+    dm_all_district_projects
 )
 
 project_router = APIRouter(
@@ -79,6 +80,31 @@ async def get_district_projects(
 
 
 # ==========================================
+# 3b. ALL DISTRICT PROJECTS (DA/DM Portal - Single Round-Trip)
+# ==========================================
+@project_router.get("/district/all")
+async def get_district_all_projects(
+    search: Optional[str] = Query(None, description="Search in title/vendor/agency"),
+    status: Optional[str] = Query(None, description="Filter by status"),
+    risk: Optional[str] = Query(None, description="Filter by risk level"),
+    category: Optional[str] = Query(None, description="Filter by category"),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(100, ge=1, le=200),
+    dm: dict = Depends(get_current_dm)
+):
+    result = await dm_all_district_projects(
+        dm=dm,
+        search=search,
+        status_filter=status,
+        risk_filter=risk,
+        category=category,
+        page=page,
+        page_size=page_size
+    )
+    return result
+
+
+# ==========================================
 # 4. SPECIFIC MP PROJECTS (DA/DM Portal)
 # ==========================================
 @project_router.get("/district/mp/{mp_id}")
@@ -108,15 +134,16 @@ async def get_dm_mp_projects(
 
 
 # ==========================================
-# 5. SINGLE PROJECT DETAILS (Generic)
+# 5. SINGLE PROJECT DETAILS (MP or DM)
 # ==========================================
 @project_router.get("/{project_id}")
 async def get_project_by_id(
     project_id: int,
-    mp: dict = Depends(get_current_mp)
+    user: dict = Depends(get_current_user)
 ):
     """
     Fetches detailed information for a specific project.
+    Accessible to both MP (for their projects) and DM (for their district projects).
     """
-    result = await project_by_id(project_id=project_id, mp=mp)
+    result = await project_by_id(project_id=project_id, user=user)
     return result

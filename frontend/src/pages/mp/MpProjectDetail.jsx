@@ -1,7 +1,9 @@
+import PortalPageLoader from '../../components/shared/PortalPageLoader';
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { api } from '../../api/mockMpApi';
+import { useMpProjectDetail } from '../../api/queries';
 import { StatusBadge, RiskBadge } from './MpProjects';
+import { usePageSeo } from '../../hooks/usePageSeo';
 import { 
   TbArrowLeft, 
   TbMapPin, 
@@ -14,33 +16,33 @@ import {
   TbChevronDown,
   TbChevronUp,
   TbCheck,
-  TbTrash
+  TbTrash,
+  TbChevronRight
 } from 'react-icons/tb';
 
 const MpProjectDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [project, setProject] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { data: project, isLoading, isError } = useMpProjectDetail(id);
   const [expandedRisk, setExpandedRisk] = useState(null);
 
-  useEffect(() => {
-    api.getProjectById(id)
-      .then(data => {
-        setProject(data);
-        setLoading(false);
-      })
-      .catch(() => {
-        navigate('/mp/projects'); // Fallback if not found
-      });
-  }, [id, navigate]);
+  usePageSeo(
+    project ? `${project.title} | MP Projects` : 'Project Details | MP Portal',
+    project 
+      ? `${project.title} (${project.id}) - ${project.category} in ${project.district}. Status: ${project.status}, Estimated Cost: ₹${(project.estimatedCost / 100000).toFixed(2)} Lakhs.`
+      : 'View project details, sanction stage, expenditure, and risk factor breakdown.'
+  );
 
-  if (loading || !project) {
-    return (
-      <div className="flex-1 flex justify-center items-center h-full">
-        <div className="w-8 h-8 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
+  useEffect(() => {
+    if (isError) {
+      navigate('/mp/projects');
+    }
+  }, [isError, navigate]);
+
+  const loading = isLoading && !project;
+
+  if ((isLoading || !project) && !isError) {
+    return <PortalPageLoader message="Loading Project Details..." />;
   }
 
   const stages = ["Recommended", "Pending Sanction", "Sanctioned", "In Progress", "Completed"];
@@ -50,84 +52,97 @@ const MpProjectDetail = () => {
   if (project.status === 'Pending Sanction') currentStageIndex = 1;
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto">
+    <article aria-labelledby="project-title-heading" className="space-y-6 max-w-5xl mx-auto">
+      {/* Breadcrumb Navigation */}
+      <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-slate-500">
+        <Link to="/mp" className="hover:text-[#123b63] transition-colors">MP Portal</Link>
+        <TbChevronRight size={12} className="text-slate-400" aria-hidden="true" />
+        <Link to="/mp/projects" className="hover:text-[#123b63] transition-colors">Projects</Link>
+        <TbChevronRight size={12} className="text-slate-400" aria-hidden="true" />
+        <span className="font-semibold text-slate-700 truncate max-w-[200px]" aria-current="page">{project.title}</span>
+      </nav>
+
       {/* Header */}
-      <div className="flex items-center gap-4">
-        <Link to="/mp/projects" className="p-2 hover:bg-slate-200 bg-slate-100 text-slate-600 rounded-full transition-colors">
-          <TbArrowLeft size={20} />
+      <header className="flex items-center gap-4">
+        <Link 
+          to="/mp/projects" 
+          aria-label="Back to projects list"
+          className="p-2 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
+        >
+          <TbArrowLeft size={18} aria-hidden="true" />
         </Link>
         <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold text-[#123b63]">{project.title}</h1>
+          <div className="flex flex-wrap items-center gap-2.5">
+            <h1 id="project-title-heading" className="text-xl sm:text-2xl font-bold tracking-tight text-[#123b63]">{project.title}</h1>
             <StatusBadge status={project.status} />
             {project.status !== 'Pending Sanction' && project.status !== 'Rejected' && (
               <RiskBadge level={project.riskLevel} score={project.riskScore} />
             )}
           </div>
-          <p className="text-sm text-slate-500 mt-1">{project.id} • {project.category}</p>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1">{project.id} • {project.category}</p>
         </div>
-      </div>
+      </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: Details & Timeline */}
         <div className="lg:col-span-2 space-y-6">
           
           {/* Project Details Card */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-            <h2 className="text-lg font-bold text-[#123b63] mb-4">Project Information</h2>
-            <p className="text-sm text-slate-600 leading-relaxed mb-6">{project.description}</p>
+          <section aria-labelledby="project-info-heading" className="bg-white p-5 sm:p-6 rounded border border-slate-200">
+            <h2 id="project-info-heading" className="text-base sm:text-lg font-bold text-[#123b63] mb-3 pb-2 border-b border-slate-200">Project Information</h2>
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-5">{project.description}</p>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
-              <div className="flex items-start gap-3">
-                <TbMapPin className="text-slate-400 mt-0.5 shrink-0" size={18} />
+            <dl className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-100 pt-4">
+              <div className="flex items-start gap-2.5">
+                <TbMapPin className="text-slate-500 mt-0.5 shrink-0" size={16} />
                 <div>
-                  <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Location</p>
-                  <p className="text-sm text-slate-800 font-medium">{project.district}</p>
+                  <dt className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Constituency / District</dt>
+                  <dd className="text-xs sm:text-sm text-slate-800 font-medium mt-0.5">{project.district}</dd>
                 </div>
               </div>
-              <div className="flex items-start gap-3">
-                <TbBuilding className="text-slate-400 mt-0.5 shrink-0" size={18} />
+              <div className="flex items-start gap-2.5">
+                <TbBuilding className="text-slate-500 mt-0.5 shrink-0" size={16} />
                 <div>
-                  <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Implementing Agency</p>
-                  <p className="text-sm text-slate-800 font-medium">{project.implementingAgency}</p>
+                  <dt className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Implementing Agency</dt>
+                  <dd className="text-xs sm:text-sm text-slate-800 font-medium mt-0.5">{project.implementingAgency}</dd>
                 </div>
               </div>
-              <div className="flex items-start gap-3">
-                <TbUser className="text-slate-400 mt-0.5 shrink-0" size={18} />
+              <div className="flex items-start gap-2.5">
+                <TbUser className="text-slate-500 mt-0.5 shrink-0" size={16} />
                 <div>
-                  <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Vendor</p>
-                  <p className="text-sm text-slate-800 font-medium">{project.vendor}</p>
+                  <dt className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Contracted Vendor</dt>
+                  <dd className="text-xs sm:text-sm text-slate-800 font-medium mt-0.5">{project.vendor}</dd>
                 </div>
               </div>
-              <div className="flex items-start gap-3">
-                <TbCalendar className="text-slate-400 mt-0.5 shrink-0" size={18} />
+              <div className="flex items-start gap-2.5">
+                <TbCalendar className="text-slate-500 mt-0.5 shrink-0" size={16} />
                 <div>
-                  <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Timeline</p>
-                  <p className="text-sm text-slate-800 font-medium">
-                    {project.startDate ? new Date(project.startDate).toLocaleDateString() : 'TBD'} - {project.expectedEndDate ? new Date(project.expectedEndDate).toLocaleDateString() : 'TBD'}
-                  </p>
+                  <dt className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Project Timeline</dt>
+                  <dd className="text-xs sm:text-sm text-slate-800 font-medium mt-0.5">
+                    {project.startDate ? new Date(project.startDate).toLocaleDateString("en-GB") : 'TBD'} — {project.expectedEndDate ? new Date(project.expectedEndDate).toLocaleDateString("en-GB") : 'TBD'}
+                  </dd>
                 </div>
               </div>
-            </div>
-          </div>
+            </dl>
+          </section>
 
           {/* Status Tracker */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-            <h2 className="text-lg font-bold text-[#123b63] mb-6">Status Tracker</h2>
+          <section aria-labelledby="status-tracker-heading" className="bg-white p-5 sm:p-6 rounded border border-slate-200">
+            <h2 id="status-tracker-heading" className="text-base sm:text-lg font-bold text-[#123b63] mb-5 pb-2 border-b border-slate-200">Workflow & Sanction Progress</h2>
             {project.status === 'Rejected' ? (
-              <div className="p-4 bg-red-50 text-red-700 rounded-lg flex items-start gap-3">
-                <TbAlertTriangle size={24} className="shrink-0" />
+              <div className="p-4 bg-red-50 text-red-800 border border-red-200 rounded flex items-start gap-3">
+                <TbAlertTriangle size={20} className="shrink-0 text-red-600 mt-0.5" />
                 <div>
-                  <p className="font-bold">Project Rejected</p>
-                  <p className="text-sm mt-1">This project was rejected by the authorities. Please check notifications for the exact reason.</p>
+                  <p className="font-bold text-sm">Proposal Rejected</p>
+                  <p className="text-xs mt-1">This proposal was returned or rejected by the District Authority. Please refer to notifications or district remarks for required rectifications.</p>
                 </div>
               </div>
             ) : (
-              <div className="relative flex justify-between">
+              <div className="relative flex justify-between pt-2 pb-1">
                 {/* Connecting Line */}
-                <div className="absolute top-4 left-4 right-4 h-0.5 bg-slate-200 -z-10"></div>
+                <div className="absolute top-5 left-6 right-6 h-0.5 bg-slate-200 -z-10"></div>
                 <div 
-                  className="absolute top-4 left-4 h-0.5 bg-cyan-500 -z-10 transition-all duration-500"
+                  className="absolute top-5 left-6 h-0.5 bg-[#123b63] -z-10 transition-all duration-300"
                   style={{ width: `${(Math.max(0, currentStageIndex) / (stages.length - 1)) * 100}%` }}
                 ></div>
                 
@@ -137,15 +152,15 @@ const MpProjectDetail = () => {
                   
                   return (
                     <div key={stage} className="flex flex-col items-center gap-2">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${
+                      <div className={`w-7 h-7 rounded-full flex items-center justify-center border-2 text-xs font-semibold ${
                         isCompleted 
-                          ? 'bg-cyan-500 border-cyan-500 text-white' 
-                          : 'bg-white border-slate-300 text-slate-300'
+                          ? 'bg-[#123b63] border-[#123b63] text-white' 
+                          : 'bg-white border-slate-300 text-slate-400'
                       }`}>
-                        {isCompleted ? <TbCheck size={16} strokeWidth={3} /> : <span className="w-2 h-2 rounded-full bg-slate-300"></span>}
+                        {isCompleted ? <TbCheck size={14} strokeWidth={3} /> : <span className="w-1.5 h-1.5 rounded-full bg-slate-300"></span>}
                       </div>
-                      <p className={`text-[10px] sm:text-xs font-semibold text-center w-16 sm:w-24 ${
-                        isCurrent ? 'text-cyan-700' : isCompleted ? 'text-slate-700' : 'text-slate-400'
+                      <p className={`text-[11px] text-center w-16 sm:w-20 ${
+                        isCurrent ? 'text-[#123b63] font-bold' : isCompleted ? 'text-slate-800 font-medium' : 'text-slate-400'
                       }`}>
                         {stage}
                       </p>
@@ -154,7 +169,7 @@ const MpProjectDetail = () => {
                 })}
               </div>
             )}
-          </div>
+          </section>
 
         </div>
 
@@ -162,111 +177,124 @@ const MpProjectDetail = () => {
         <div className="space-y-6">
           
           {/* Financial Overview */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-            <h2 className="text-lg font-bold text-[#123b63] mb-4">Financials</h2>
-            <div className="space-y-4">
+          <section aria-labelledby="financials-heading" className="bg-white p-5 sm:p-6 rounded border border-slate-200">
+            <h2 id="financials-heading" className="text-base sm:text-lg font-bold tracking-tight text-[#123b63] mb-4 pb-2 border-b border-slate-200">Financial Summary</h2>
+            <dl className="space-y-4">
               <div>
-                <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">Estimated Cost</p>
-                <p className="text-xl font-bold text-slate-800">₹{(project.estimatedCost / 100000).toFixed(2)} Lakhs</p>
+                <dt className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider mb-1">Estimated Proposal Cost</dt>
+                <dd className="text-xl font-bold tracking-tight text-[#123b63] tabular-nums">₹{(project.estimatedCost / 100000).toFixed(2)} Lakhs</dd>
               </div>
-              <div className="pt-4 border-t border-slate-100">
-                <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">Sanctioned</p>
-                <p className="text-lg font-bold text-blue-600">₹{(project.sanctionedAmount / 100000).toFixed(2)} Lakhs</p>
+              <div className="pt-3 border-t border-slate-100">
+                <dt className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider mb-1">Sanctioned Amount</dt>
+                <dd className="text-base font-bold tracking-tight text-blue-800 tabular-nums">₹{(project.sanctionedAmount / 100000).toFixed(2)} Lakhs</dd>
               </div>
-              <div className="pt-4 border-t border-slate-100">
+              <div className="pt-3 border-t border-slate-100">
                 <div className="flex justify-between items-end mb-1">
-                  <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Utilized</p>
-                  <p className="text-xs font-bold text-emerald-600">
+                  <dt className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Funds Disbursed / Utilized</dt>
+                  <dd className="text-xs font-bold text-emerald-800">
                     {project.sanctionedAmount > 0 ? Math.round((project.amountSpent / project.sanctionedAmount) * 100) : 0}%
-                  </p>
+                  </dd>
                 </div>
-                <div className="w-full bg-slate-100 rounded-full h-2 mb-1">
+                <div className="w-full bg-slate-100 rounded-sm h-2 mb-1.5 border border-slate-200">
                   <div 
-                    className="bg-emerald-500 h-2 rounded-full" 
+                    className="bg-emerald-600 h-1.5 rounded-xs" 
                     style={{ width: `${project.sanctionedAmount > 0 ? (project.amountSpent / project.sanctionedAmount) * 100 : 0}%` }}
                   ></div>
                 </div>
-                <p className="text-sm font-bold text-slate-800">₹{(project.amountSpent / 100000).toFixed(2)} Lakhs</p>
+                <dd className="text-xs sm:text-sm font-bold text-slate-800 tabular-nums">₹{(project.amountSpent / 100000).toFixed(2)} Lakhs</dd>
               </div>
-            </div>
-          </div>
+            </dl>
+          </section>
 
           {/* AI Risk Breakdown */}
           {project.status !== 'Pending Sanction' && project.status !== 'Rejected' && (
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold text-[#123b63]">Risk Breakdown</h2>
-                <span className="text-[10px] font-bold bg-[#123b63] text-white px-2 py-1 rounded">AI Analyzed</span>
+            <section aria-labelledby="risk-breakdown-heading" className="bg-white p-5 sm:p-6 rounded border border-slate-200">
+              <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-200">
+                <h2 id="risk-breakdown-heading" className="text-base sm:text-lg font-bold text-[#123b63]">Risk Factor Analysis</h2>
+                <span className="text-[10px] font-semibold bg-slate-100 text-slate-700 border border-slate-300 px-2 py-0.5 rounded">AI Verified</span>
               </div>
               
-              <div className="space-y-2">
+              <ul role="list" className="space-y-2">
                 {project.riskFactors.map((factor, i) => {
                   const isHigh = factor.score >= 60;
                   const isExpanded = expandedRisk === i;
                   return (
-                    <div key={i} className={`border rounded-lg overflow-hidden transition-colors ${isHigh ? 'border-red-200 bg-red-50/30' : 'border-slate-200'}`}>
+                    <li key={i} className={`border rounded overflow-hidden ${isHigh ? 'border-red-200 bg-red-50/20' : 'border-slate-200 bg-white'}`}>
                       <button 
+                        type="button"
                         onClick={() => setExpandedRisk(isExpanded ? null : i)}
-                        className="w-full flex items-center justify-between p-3 text-left hover:bg-black/5 transition-colors"
+                        aria-expanded={isExpanded}
+                        aria-controls={`risk-factor-details-${i}`}
+                        className="w-full flex items-center justify-between p-2.5 text-left hover:bg-slate-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
                       >
                         <div className="flex items-center gap-2">
-                          <span className={`w-2 h-2 rounded-full ${isHigh ? 'bg-red-500' : 'bg-emerald-500'}`}></span>
-                          <span className="font-semibold text-sm text-slate-800">{factor.detector}</span>
+                          <span className={`w-2 h-2 rounded-full ${isHigh ? 'bg-red-600' : 'bg-emerald-600'}`} aria-hidden="true"></span>
+                          <span className="font-semibold text-xs text-slate-800">{factor.detector}</span>
                         </div>
-                        <div className="flex items-center gap-3">
-                          <span className={`text-xs font-bold ${isHigh ? 'text-red-600' : 'text-emerald-600'}`}>
+                        <div className="flex items-center gap-2">
+                          <span className={`text-xs font-bold tabular-nums ${isHigh ? 'text-red-700' : 'text-emerald-800'}`}>
                             {factor.score}/100
                           </span>
-                          {isExpanded ? <TbChevronUp size={16} className="text-slate-400" /> : <TbChevronDown size={16} className="text-slate-400" />}
+                          {isExpanded ? <TbChevronUp size={14} className="text-slate-500" aria-hidden="true" /> : <TbChevronDown size={14} className="text-slate-500" aria-hidden="true" />}
                         </div>
                       </button>
                       {isExpanded && (
-                        <div className="p-3 pt-0 text-sm text-slate-600 bg-white/50 border-t border-black/5">
+                        <div id={`risk-factor-details-${i}`} className="p-2.5 pt-0 text-xs text-slate-600 bg-white border-t border-slate-100">
                           {factor.explanation}
                         </div>
                       )}
-                    </div>
+                    </li>
                   );
                 })}
-              </div>
-            </div>
+              </ul>
+            </section>
           )}
 
           {/* Documents */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-            <h2 className="text-lg font-bold text-[#123b63] mb-4">Documents</h2>
+          <section aria-labelledby="documents-heading" className="bg-white p-5 sm:p-6 rounded border border-slate-200">
+            <h2 id="documents-heading" className="text-base sm:text-lg font-bold text-[#123b63] mb-4 pb-2 border-b border-slate-200">Project Documents</h2>
             {project.documents.length === 0 ? (
-              <p className="text-sm text-slate-500">No documents uploaded.</p>
+              <p className="text-xs text-slate-500">No documents uploaded for this record.</p>
             ) : (
-              <div className="space-y-3">
+              <ul role="list" className="space-y-2.5">
                 {project.documents.map(doc => (
-                  <div key={doc.id} className="flex items-center justify-between p-3 rounded-lg border border-slate-100 bg-slate-50 hover:bg-slate-100 transition-colors">
-                    <div className="flex items-center gap-3 overflow-hidden">
-                      <div className="p-2 bg-blue-100 text-blue-600 rounded">
-                        <TbFileDescription size={20} />
+                  <li key={doc.id} className="flex items-center justify-between p-2.5 rounded border border-slate-200 bg-slate-50">
+                    <div className="flex items-center gap-2.5 overflow-hidden">
+                      <div className="p-1.5 bg-blue-50 text-[#123b63] border border-blue-200 rounded">
+                        <TbFileDescription size={16} aria-hidden="true" />
                       </div>
                       <div className="min-w-0">
-                        <p className="text-sm font-semibold text-slate-800 truncate">{doc.name}</p>
+                        <p className="text-xs font-medium text-slate-800 truncate">{doc.name}</p>
                         <p className="text-[10px] text-slate-500">{doc.size} • Uploaded by {doc.uploader}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-1 shrink-0 ml-2">
-                      <button className="p-1.5 text-slate-400 hover:text-[#123b63] transition-colors" title="Download">
-                        <TbDownload size={18} />
+                      <button 
+                        type="button"
+                        className="p-1 text-slate-500 hover:text-[#123b63] hover:bg-slate-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] rounded" 
+                        title="Download"
+                        aria-label={`Download document ${doc.name}`}
+                      >
+                        <TbDownload size={16} aria-hidden="true" />
                       </button>
-                      <button className="p-1.5 text-slate-400 hover:text-red-500 transition-colors" title="Delete">
-                        <TbTrash size={18} />
+                      <button 
+                        type="button"
+                        className="p-1 text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 rounded" 
+                        title="Delete"
+                        aria-label={`Delete document ${doc.name}`}
+                      >
+                        <TbTrash size={16} aria-hidden="true" />
                       </button>
                     </div>
-                  </div>
+                  </li>
                 ))}
-              </div>
+              </ul>
             )}
-          </div>
+          </section>
           
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 
