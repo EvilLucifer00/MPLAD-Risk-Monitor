@@ -60,6 +60,8 @@ export function clearInMemoryCache() {
     try {
       sessionStorage.removeItem('mplads_query_cache');
       sessionStorage.removeItem('mplads_cached_routes');
+      sessionStorage.removeItem('mplads_mp_dashboard_stats');
+      sessionStorage.removeItem('mplads_da_dashboard_stats');
     } catch {}
   }
 }

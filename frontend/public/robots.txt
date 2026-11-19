@@ -3,5 +3,4 @@ Allow: /
 Disallow: /mp/
 Disallow: /da/
 
-Sitemap: https://mplads-risk-monitor.gov.in/sitemap.xml
-
+Sitemap: https://mplad-risk-monitor.vercel.app/sitemap.xml

@@ -201,10 +201,10 @@ export const IconRobot = ({ size = 20, className = "" }) => (
   </svg>
 );
 
-export const IconUser = ({ size = 20, className = "" }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
-    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-    <circle cx="12" cy="7" r="4" />
+export const IconUser = ({ size = 20, className = "", strokeWidth = 1.8 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
+    <path d="M12 3.5a3.5 3.5 0 0 1 3.5 3.5v1a3.5 3.5 0 0 1-7 0v-1a3.5 3.5 0 0 1 3.5-3.5Z" />
+    <path d="M4.5 20.5c0-3.8 3.3-6.5 7.5-6.5s7.5 2.7 7.5 6.5a1 1 0 0 1-1 1H5.5a1 1 0 0 1-1-1Z" />
   </svg>
 );
 

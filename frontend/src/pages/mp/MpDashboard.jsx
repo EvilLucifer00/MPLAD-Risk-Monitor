@@ -1,5 +1,5 @@
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
-import React, { useEffect, useState, Suspense, lazy } from 'react';
+import React, { useEffect, useState, useMemo, Suspense, lazy } from 'react';
 import { useMpStats, useMpRecommendations, useMpProjects } from '../../api/queries';
 import Reveal from '../../animations/Reveal';
 import AnimatedCounter from '../../components/shared/AnimatedCounter';
@@ -20,57 +20,52 @@ import MpDashboardChart from './components/MpDashboardChart';
 
 
 
-const initialZeroMpStats = {
-  activeProjects: 0,
-  totalEntitlement: 50000000,
-  totalUtilized: 0,
-  pendingApprovals: 0,
-  totalProjects: 0,
-  riskCounts: {
-    Low: 0,
-    Moderate: 0,
-    High: 0,
-    Critical: 0,
-  },
-  statusBreakdown: {
-    on_track: 0,
-    high_risk: 0,
-    completed: 0,
-  },
-  recentProjects: [],
-};
-
-// Synchronously compute initial metrics so LCP header & metrics paint with 0ms delay
-const getInitialMpStats = () => {
-  try {
-    const cached = sessionStorage.getItem('mplads_mp_dashboard_stats');
-    if (cached) return JSON.parse(cached);
-  } catch {
-    // Session storage fallback
-  }
-  return initialZeroMpStats;
-};
-
 const MpDashboard = () => {
   const { data: statsData, isLoading: statsLoading } = useMpStats();
-  const { data: recsData } = useMpRecommendations();
+  const { data: recsData, isLoading: recsLoading } = useMpRecommendations();
   const { data: projectsData, isLoading: projectsLoading } = useMpProjects();
 
   const [showAllRecommendations, setShowAllRecommendations] = useState(false);
 
-  const stats = statsData || null;
+  useEffect(() => {
+    if (statsData) {
+      try {
+        sessionStorage.setItem('mplads_mp_dashboard_stats', JSON.stringify(statsData));
+      } catch {
+        // Session storage quota fallback
+      }
+    }
+  }, [statsData]);
+
+  const stats = statsData;
   const recommendations = Array.isArray(recsData) ? recsData : [];
   const projects = Array.isArray(projectsData) ? projectsData : [];
-  const displayStats = stats || initialZeroMpStats;
+  const displayStats = stats;
 
-  const loading = (statsLoading && !statsData) || (projectsLoading && !projectsData);
+  // Recent projects memoized: instant render from statsData.recentProjects (0ms delay),
+  // with graceful fallback to full projectsData when loaded.
+  const recentProjects = useMemo(() => {
+    if (Array.isArray(statsData?.recentProjects) && statsData.recentProjects.length > 0) {
+      return statsData.recentProjects.slice(0, 4);
+    }
+    const projs = Array.isArray(projectsData) ? projectsData : [];
+    return projs.slice(0, 4);
+  }, [statsData?.recentProjects, projectsData]);
+
+  const isPageLoading =
+    statsLoading ||
+    recsLoading ||
+    projectsLoading ||
+    !statsData ||
+    !projectsData ||
+    !recsData;
 
   usePageSeo(
     'Dashboard Overview | MP Portal',
     'Real-time overview of Member of Parliament (MP) MPLADS development portfolio, expenditure tracking, and AI risk radar.'
   );
 
-  if (loading || !stats) {
+  if (isPageLoading) {
     return <PortalPageLoader message="Loading MP Dashboard..." />;
   }
 
@@ -297,17 +292,17 @@ const MpDashboard = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-slate-700">
-              {projects.length === 0 ? (
+              {recentProjects.length === 0 ? (
                 <tr>
                   <td colSpan="6" className="px-6 py-8 text-center text-slate-500 text-xs">
                     No projects found for this parliamentarian portfolio.
                   </td>
                 </tr>
               ) : (
-                projects.slice(0, 4).map((project) => {
+                recentProjects.map((project) => {
                   return (
                     <tr
-                      key={project.id}
+                      key={project.id || project.rawId}
                       className="hover:bg-slate-50 transition-colors"
                     >
                       <td className="px-4 sm:px-6 py-3 font-medium text-[#123b63] max-w-[200px] truncate" title={project.title}>
@@ -331,7 +326,9 @@ const MpDashboard = () => {
                                 ? "bg-amber-50 text-amber-900 border-amber-300"
                                 : project.status === "Completed"
                                   ? "bg-emerald-50 text-emerald-800 border-emerald-300"
-                                  : "bg-slate-50 text-slate-800 border-slate-300"
+                                  : project.status === "Pending Sanction" || project.status === "Pending Review"
+                                    ? "bg-slate-50 text-slate-700 border-slate-300"
+                                    : "bg-slate-50 text-slate-800 border-slate-300"
                           }`}
                         >
                           {project.status}
@@ -361,7 +358,7 @@ const MpDashboard = () => {
                       </td>
                       <td className="px-4 sm:px-6 py-3 text-right">
                         <Link
-                          to={`/mp/projects/${project.id}`}
+                          to={`/mp/projects/${project.id || project.rawId}`}
                           aria-label={`View details for ${project.title}`}
                           className="inline-flex items-center justify-center p-1.5 text-slate-500 hover:text-[#123b63] hover:bg-slate-100 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]"
                         >

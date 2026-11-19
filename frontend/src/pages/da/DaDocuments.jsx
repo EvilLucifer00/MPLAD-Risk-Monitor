@@ -1,20 +1,20 @@
 import PortalPageLoader from '../../components/shared/PortalPageLoader';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useDaDocuments, useDaProjects } from '../../api/queries';
 import { useAuthStore } from '../../store/useAuthStore';
-import { TbSearch, TbFileDescription, TbDownload, TbEye, TbFilter } from 'react-icons/tb';
+import { TbSearch, TbFileDescription, TbDownload, TbEye } from 'react-icons/tb';
 import { usePageSeo } from '../../hooks/usePageSeo';
 
 const DaDocuments = () => {
   const user = useAuthStore((s) => s.user);
-  const { data: projectsData } = useDaProjects();
+  const { data: projectsData, isLoading: projectsLoading } = useDaProjects();
   usePageSeo(
     'Document Center | DA Portal',
     'Repository of sanction orders, completion certificates, and technical estimates across all constituencies in the district.'
   );
 
-  const { data: docsData, isLoading } = useDaDocuments();
-  const documents = React.useMemo(() => {
+  const { data: docsData, isLoading: docsLoading } = useDaDocuments();
+  const documents = useMemo(() => {
     if (Array.isArray(docsData) && docsData.length > 0) return docsData;
     const projects = Array.isArray(projectsData) ? projectsData : [];
     const aggregated = [];
@@ -49,20 +49,26 @@ const DaDocuments = () => {
         });
       }
     });
+    aggregated.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
     return aggregated;
   }, [docsData, projectsData]);
-  const loading = isLoading && !docsData;
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredDocs = documents.filter(doc => 
-    doc.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    doc.projectTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    doc.mpName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const isAnyLoading = docsLoading || projectsLoading;
+  const isAllLoaded = docsData !== undefined && projectsData !== undefined;
 
-  if (loading) {
+  if (isAnyLoading || !isAllLoaded) {
     return <PortalPageLoader message="Loading Documents..." />;
   }
+
+  const filteredDocs = useMemo(() => {
+    const term = searchTerm.toLowerCase();
+    return documents.filter((doc) =>
+      (doc.name && doc.name.toLowerCase().includes(term)) ||
+      (doc.projectTitle && doc.projectTitle.toLowerCase().includes(term)) ||
+      (doc.mpName && doc.mpName.toLowerCase().includes(term))
+    );
+  }, [documents, searchTerm]);
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto min-h-full flex flex-col">
@@ -138,21 +144,37 @@ const DaDocuments = () => {
                       <p className="text-xs text-slate-600">{doc.uploader}</p>
                     </td>
                     <td className="px-5 py-3.5">
-                      <time dateTime={doc.uploadDate} className="text-xs text-slate-700 tabular-nums">{new Date(doc.uploadDate).toLocaleDateString()}</time>
+                      <time dateTime={doc.uploadDate} className="text-xs text-slate-700 tabular-nums">
+                        {doc.uploadDate && !isNaN(new Date(doc.uploadDate).getTime())
+                          ? new Date(doc.uploadDate).toLocaleDateString("en-GB")
+                          : 'N/A'}
+                      </time>
                     </td>
                     <td className="px-5 py-3.5 text-right">
                       <div className="flex justify-end gap-1.5">
                         <button 
+                          type="button"
                           className="p-1.5 text-slate-600 hover:text-[#123b63] hover:bg-slate-100 rounded border border-slate-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]" 
                           title="Preview"
                           aria-label={`Preview document ${doc.name}`}
+                          onClick={() => {
+                            if (doc.fileUrl && doc.fileUrl !== '#') {
+                              window.open(doc.fileUrl, '_blank', 'noopener,noreferrer');
+                            }
+                          }}
                         >
                           <TbEye size={16} aria-hidden="true" />
                         </button>
                         <button 
+                          type="button"
                           className="p-1.5 text-slate-600 hover:text-[#123b63] hover:bg-slate-100 rounded border border-slate-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63]" 
                           title="Download"
                           aria-label={`Download document ${doc.name}`}
+                          onClick={() => {
+                            if (doc.fileUrl && doc.fileUrl !== '#') {
+                              window.open(doc.fileUrl, '_blank', 'noopener,noreferrer');
+                            }
+                          }}
                         >
                           <TbDownload size={16} aria-hidden="true" />
                         </button>

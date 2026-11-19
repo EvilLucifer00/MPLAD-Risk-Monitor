@@ -246,24 +246,24 @@ const LoginPage = () => {
               className="w-9 h-10 object-contain shrink-0"
             />
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-2">
                 <span className="text-base md:text-lg font-bold tracking-tight text-[#123b63] leading-tight block group-hover:text-[#0c2a47] transition-colors">
                   MPLADS Risk Monitor
                 </span>
-                <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[9px] font-bold tracking-wider uppercase bg-slate-100 text-[#123b63] rounded border border-slate-300">
-                  GOI
+                <span className="inline-flex items-center w-fit px-1.5 py-0.5 text-[8.5px] sm:text-[9px] font-bold tracking-wider uppercase bg-slate-100 text-[#123b63] rounded border border-slate-300">
+                  SIH PROTOTYPE
                 </span>
               </div>
               <p className="text-[11px] font-medium text-slate-600 tracking-tight leading-none mt-0.5">
-                Ministry of Statistics & Programme Implementation
+                Independent Analytics Prototype • SIH 2026
               </p>
             </div>
           </button>
 
-          {/* Right Action: Public Portal return button */}
+          {/* Right Action: Prototype environment tag */}
           <div className="flex items-center gap-2 sm:gap-3">
             <span className="items-center px-2 py-0.5 text-[11px] font-semibold text-slate-600 bg-slate-50 border border-slate-200 rounded">
-              Security Level: Restricted
+              Demonstration Environment
             </span>
           </div>
         </div>
@@ -284,29 +284,29 @@ const LoginPage = () => {
                   <EmblemImage
                     width="28"
                     height="34"
-                    alt="Government of India"
+                    alt="MPLADS Risk Monitor"
                     className="w-7 h-8.5 object-contain drop-shadow-sm"
                   />
                   <div className="text-white leading-tight text-left">
                     <p className="text-[10px] uppercase tracking-widest text-slate-200 font-bold">
-                      Government of India
+                      Smart India Hackathon 2026
                     </p>
                     <p className="font-semibold text-[11px] text-white tracking-tight mt-0.5">
-                      Ministry of Statistics and Programme Implementation
+                      Public Data-Driven MPLADS Monitoring
                     </p>
                   </div>
                 </div>
 
                 <div className="text-center mt-1">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-300 block mb-0.5">
-                    Official Portal Authentication
+                    Prototype Portal Sign In
                   </span>
                   <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center justify-center gap-2">
                     <IoShieldCheckmark size={20} className="text-cyan-400 shrink-0" aria-hidden="true" />
                     <span>Administrative Sign In</span>
                   </h1>
                   <p className="text-slate-200/90 text-xs mt-1 leading-relaxed max-w-sm">
-                    Access restricted to Members of Parliament, District Authorities, and authorized MoSPI personnel.
+                    Demonstration access for Members of Parliament and District Authorities workflows.
                   </p>
                 </div>
               </div>
@@ -580,7 +580,7 @@ const LoginPage = () => {
               </button>
               {/* Footer note inside card */}
               <p className="mt-3 text-center text-[11px] text-slate-500 font-medium">
-                Authorized government officials only. Statutory compliance and audit logging active under MoSPI guidelines.
+                Demonstration accounts only. Built for the Smart India Hackathon evaluation.
               </p>
             </div>
           </div>

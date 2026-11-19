@@ -387,7 +387,7 @@ const DaReviewDetail = () => {
     setActionLoading(false);
   };
 
-  if (loading) {
+  if ((isLoading || !project) && !isError) {
     return <PortalPageLoader message="Loading Review Details..." />;
   }
 

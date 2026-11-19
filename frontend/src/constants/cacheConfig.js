@@ -35,11 +35,11 @@ export const CACHE_TIMES = {
 
   /**
    * Financial and status figures: funds released, balance, expenditure, utilization, work status, approval state
-   * staleTime: 0 ensures that while cached figures render instantly with 0ms delay on return visits,
-   * a background revalidation ALWAYS triggers on mount and window focus.
+   * Balanced 30-second stale time guarantees instant navigation between Dashboard and portal tabs
+   * while keeping financial metrics automatically refreshed during extended sessions.
    */
   FINANCIAL_STATUS: {
-    staleTime: 0,                   // 0 seconds (always revalidate in background)
+    staleTime: 30 * 1000,           // 30 seconds (instant tab switching; no redundant network storms)
     gcTime: 10 * 60 * 1000,         // 10 minutes
   },
 

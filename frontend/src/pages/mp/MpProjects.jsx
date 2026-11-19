@@ -91,7 +91,7 @@ const MpProjects = () => {
   const statuses = ['All', 'Pending Sanction', 'Sanctioned', 'In Progress', 'Completed', 'Rejected'];
   const riskLevels = ['All', 'Low', 'Moderate', 'High', 'Critical'];
 
-  if (loading) {
+  if (isLoading || !projectsData) {
     return <PortalPageLoader message="Loading Projects..." />;
   }
 

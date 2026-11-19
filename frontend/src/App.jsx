@@ -6,12 +6,19 @@ import { useAuthStore } from './store/useAuthStore.js';
 
 // Lazy-loaded routes for code-splitting & performance
 const Home = lazy(() => import('./pages/HomePage/index.jsx'));
+const AboutPage = lazy(() => import('./pages/AboutPage/index.jsx'));
+const DataSourcesPage = lazy(() => import('./pages/DataSourcesPage/index.jsx'));
+const MethodologyPage = lazy(() => import('./pages/MethodologyPage/index.jsx'));
 const LoginPage = lazy(() => import('./pages/LoginPage/index.jsx'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage/index.jsx'));
 
-// MP (Member of Parliament) Pages
-const MpLayout = lazy(() => import('./pages/mp/MpLayout.jsx'));
-const MpDashboard = lazy(() => import('./pages/mp/MpDashboard.jsx'));
+// Direct imports for instant portal shell & primary dashboard responsiveness
+import MpLayout from './pages/mp/MpLayout.jsx';
+import MpDashboard from './pages/mp/MpDashboard.jsx';
+import DaLayout from './pages/da/DaLayout.jsx';
+import DaDashboard from './pages/da/DaDashboard.jsx';
+
+// Secondary portal sections loaded on-demand when the user navigates to that section
 const MpProjects = lazy(() => import('./pages/mp/MpProjects.jsx'));
 const MpProjectDetail = lazy(() => import('./pages/mp/MpProjectDetail.jsx'));
 const MpSubmitProject = lazy(() => import('./pages/mp/MpSubmitProject.jsx'));
@@ -20,9 +27,6 @@ const MpDocuments = lazy(() => import('./pages/mp/MpDocuments.jsx'));
 const MpNotifications = lazy(() => import('./pages/mp/MpNotifications.jsx'));
 const MpSettings = lazy(() => import('./pages/mp/MpSettings.jsx'));
 
-// DA (District Authority / District Magistrate) Pages
-const DaLayout = lazy(() => import('./pages/da/DaLayout.jsx'));
-const DaDashboard = lazy(() => import('./pages/da/DaDashboard.jsx'));
 const DaProjects = lazy(() => import('./pages/da/DaProjects.jsx'));
 const DaMPDetail = lazy(() => import('./pages/da/DaMPDetail.jsx'));
 const DaProjectReview = lazy(() => import('./pages/da/DaProjectReview.jsx'));
@@ -91,6 +95,9 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/data-sources" element={<DataSourcesPage />} />
+          <Route path="/methodology" element={<MethodologyPage />} />
           <Route path="/login" element={<LoginPage />} />
           
           {/* MP Dashboard Routes - Protected and wrapped in MpLayout */}

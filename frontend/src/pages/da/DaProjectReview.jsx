@@ -20,13 +20,13 @@ const DaProjectReview = () => {
   );
 
   const queryClient = useQueryClient();
-  const { data: queueData, isLoading } = useDaReviewQueue();
-  const { data: districtMpsData } = useDaDistrictMps();
+  const { data: queueData, isLoading: queueLoading } = useDaReviewQueue();
+  const { data: districtMpsData, isLoading: mpsLoading } = useDaDistrictMps();
   const districtMps = Array.isArray(districtMpsData) ? districtMpsData : [];
-  const { data: agenciesData } = useDaAgencies();
+  const { data: agenciesData, isLoading: agenciesLoading } = useDaAgencies();
   const agencies = Array.isArray(agenciesData) ? agenciesData : [];
   const queue = Array.isArray(queueData) ? queueData : [];
-  const loading = isLoading && !queueData;
+  const loading = (queueLoading && !queueData) || (mpsLoading && !districtMpsData) || (agenciesLoading && !agenciesData);
 
   const [searchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
@@ -79,7 +79,10 @@ const DaProjectReview = () => {
     setQuickApproving(null);
   };
 
-  if (loading) {
+  const isAnyLoading = queueLoading || mpsLoading || agenciesLoading;
+  const isAllLoaded = Boolean(queueData && districtMpsData && agenciesData);
+
+  if (isAnyLoading || !isAllLoaded) {
     return <PortalPageLoader message="Loading Review Queue..." />;
   }
 

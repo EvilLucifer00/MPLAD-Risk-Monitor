@@ -55,7 +55,7 @@ const DaNotifications = () => {
     }
   };
 
-  if (loading) {
+  if (isLoading || !notifData) {
     return <PortalPageLoader message="Loading Notifications..." />;
   }
 

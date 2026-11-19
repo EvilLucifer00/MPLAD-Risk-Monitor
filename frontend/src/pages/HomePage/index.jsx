@@ -9,6 +9,7 @@ import {
 } from "../../components/shared/HomeIcons";
 import IndianMonumentsSkyline from "../../components/shared/IndianMonumentsSkyline";
 import EmblemImage from "../../components/shared/EmblemImage";
+import Footer from "../../components/shared/Footer";
 
 // Code-split below-the-fold & secondary components to ensure instantaneous FCP and LCP
 const RiskMap = lazy(() => import("../../components/map/RiskMap"));
@@ -172,21 +173,21 @@ const Home = () => {
                   <EmblemImage
                     width="32"
                     height="40"
-                    alt="Government of India"
+                    alt="MPLADS Risk Monitor"
                     className="w-8 h-10 object-contain drop-shadow-sm"
                   />
                   <div className="text-white leading-tight">
                     <div className="flex items-center gap-2">
                       <p className="text-[10px] sm:text-[11px] uppercase tracking-widest text-slate-200 font-bold">
-                        Government of India
+                        Smart India Hackathon 2026
                       </p>
                       <span className="text-white/40 text-[9px]">•</span>
                       <span className="text-[10px] font-semibold text-cyan-300 uppercase tracking-wider">
-                        Official Portal
+                        Independent Prototype
                       </span>
                     </div>
                     <p className="font-semibold text-xs sm:text-[13px] text-white tracking-tight mt-0.5">
-                      Ministry of Statistics and Programme Implementation
+                      Public Data-Driven MPLADS Monitoring Framework
                     </p>
                   </div>
                 </div>
@@ -206,10 +207,9 @@ const Home = () => {
                   </h1>
 
                   <p className="hidden sm:inline font-normal mt-2 sm:mt-2.5 text-xs text-slate-200 leading-relaxed max-w-xl">
-                    National digital monitoring and risk surveillance platform
-                    for public developmental works, fund utilization auditing,
-                    and statutory compliance across 543 Parliamentary
-                    Constituencies.
+                    Independent prototype demonstrating data-driven risk surveillance,
+                    fund utilization analytics, and heuristic audit indicators across 543 Parliamentary
+                    Constituencies using public data.
                   </p>
                 </div>
 
@@ -385,11 +385,10 @@ const Home = () => {
             </div>
             <div>
               <span className="text-[11px] font-bold uppercase tracking-wider text-[#123b63]">
-                National Scheme Governance & Oversight
+                National Development Analytics & Public Data Study
               </span>
               <p className="text-[11px] text-slate-500 hidden sm:block">
-                Ministry of Statistics and Programme Implementation (MoSPI) •
-                Statutory Monitoring Framework
+                Independent Smart India Hackathon Prototype • Public MPLADS Dataset Analytics
               </p>
             </div>
           </div>
@@ -458,132 +457,8 @@ const Home = () => {
           </div>
         </section>
 
-        {/* Standard Government Portal Footer */}
-        <footer className="bg-[#0b2545] text-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-8 grid grid-cols-1 md:grid-cols-4 gap-6 text-left">
-            {/* Ministry Brand Lockup */}
-            <div className="md:col-span-2">
-              <div className="flex items-center gap-3 mb-2.5">
-                <EmblemImage
-                  alt="State Emblem of India"
-                  width="36"
-                  height="44"
-                  className="w-9 h-11 object-contain shrink-0"
-                />
-                <div>
-                  <p className="font-bold text-sm leading-tight text-white">
-                    MPLADS Risk Monitor
-                  </p>
-                  <p className="text-xs text-slate-300">
-                    Ministry of Statistics & Programme Implementation
-                  </p>
-                  <p className="text-[11px] text-slate-400">
-                    Government of India
-                  </p>
-                </div>
-              </div>
-              <p className="text-xs text-slate-300 max-w-md leading-relaxed mt-2">
-                An official open governance initiative providing real-time
-                expenditure surveillance and anomaly detection for Member of
-                Parliament developmental funds.
-              </p>
-            </div>
-
-            {/* Quick Links */}
-            <div>
-              <p className="text-xs font-bold uppercase tracking-wider text-slate-200 mb-2.5">
-                Navigation
-              </p>
-              <ul className="space-y-1.5 text-xs text-slate-300">
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    National Overview
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#geospatial-map"
-                    className="hover:text-white transition-colors"
-                  >
-                    Geospatial Map
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/login"
-                    className="hover:text-white transition-colors"
-                  >
-                    Parliamentarian Portal
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/login"
-                    className="hover:text-white transition-colors"
-                  >
-                    District Authority Portal
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Legal & Policy */}
-            <div>
-              <p className="text-xs font-bold uppercase tracking-wider text-slate-200 mb-2.5">
-                Statutory Resources
-              </p>
-              <ul className="space-y-1.5 text-xs text-slate-300">
-                <li>
-                  <a
-                    href="https://mplads.gov.in"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-white transition-colors"
-                  >
-                    Official MoSPI MPLADS Portal
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.india.gov.in"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-white transition-colors"
-                  >
-                    National Portal of India
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/llms.txt"
-                    className="hover:text-white transition-colors"
-                  >
-                    LLM Guidance (llms.txt)
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Accessibility Statement
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Bottom Copyright & Disclaimer */}
-          <div className="border-t border-white/10 px-4 sm:px-6 lg:px-12 py-3">
-            <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 text-[11px] text-slate-400 text-center sm:text-left">
-              <p>
-                © 2026 Government of India. Ministry of Statistics and Programme
-                Implementation.
-              </p>
-              <p>
-                Designed in compliance with Guidelines for Indian Government
-                Websites (GIGW).
-              </p>
-            </div>
-          </div>
-        </footer>
+        {/* Prototype Footer with Transparency Links and Statutory Disclaimer */}
+        <Footer />
       </div>
 
       {aiMounted && (

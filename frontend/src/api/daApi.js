@@ -1,6 +1,8 @@
 // src/api/daApi.js
-import { projectsApi, dashboardApi, notificationsApi } from './mpladsApi';
+import { projectsApi, dashboardApi, notificationsApi, documentsApi } from './mpladsApi';
 import { useAuthStore } from '../store/useAuthStore';
+import { queryClient } from '../queryClient';
+import { queryKeys } from './queryKeys';
 
 export const daApi = {
   // ── Profile ──
@@ -81,21 +83,37 @@ export const daApi = {
     try {
       const token = useAuthStore.getState().token;
       if (token) {
-        // Fetch all district MPs first
-        const mps = await projectsApi.getDistrictOverview('', options);
+        // High-speed direct district query: single round-trip (no N+1 waterfall)
+        try {
+          const directProjects = await projectsApi.getDistrictAllProjects(filters, options);
+          if (Array.isArray(directProjects)) {
+            return directProjects;
+          }
+        } catch {
+          // Graceful fallback to multi-MP collation if direct endpoint is unavailable
+        }
+
+        // Fetch all district MPs (check cache first)
+        const user = useAuthStore.getState().user;
+        const dist = user?.dist || user?.id;
+        const cachedMps = queryClient.getQueryData(queryKeys.da.districtMps(dist));
+        const mps = (Array.isArray(cachedMps) && cachedMps.length > 0) ? cachedMps : await projectsApi.getDistrictOverview('', options);
         if (!mps || mps.length === 0) return [];
 
-        // Fetch projects for each MP in the district
-        const projectPromises = mps.map(mp => 
-          projectsApi.getDistrictMpProjects(mp.rawMpId || mp.id, filters, options)
-            .then(res => (res.projects || []).map(p => ({
+        // Fetch projects asynchronously for each MP in the district
+        const projectPromises = mps.map(async (mp) => {
+          try {
+            const res = await projectsApi.getDistrictMpProjects(mp.rawMpId || mp.id, filters, options);
+            return (res.projects || []).map(p => ({
               ...p,
               mpId: p.mpId || String(mp.rawMpId || mp.id),
               mpName: p.mpName || mp.name,
               constituency: p.constituency || mp.constituency,
-            })))
-            .catch(() => [])
-        );
+            }));
+          } catch {
+            return [];
+          }
+        });
         const nested = await Promise.all(projectPromises);
         let allProjects = nested.flat();
 
@@ -143,28 +161,34 @@ export const daApi = {
   },
 
   // ── Actions ──
-  sanctionProject: async (id, { condition = '' } = {}) => {
-    return { success: true, id, status: 'Sanctioned' };
+  sanctionProject: async (id, { condition = '' } = {}, options = {}) => {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    return { success: true, id, status: 'Sanctioned', condition };
   },
 
-  rejectProject: async (id, { rejectionReason = '' } = {}) => {
-    return { success: true, id, status: 'Rejected' };
+  rejectProject: async (id, { rejectionReason = '' } = {}, options = {}) => {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    return { success: true, id, status: 'Rejected', rejectionReason };
   },
 
-  requestDocuments: async (id, { requiredDocs = [] } = {}) => {
-    return { success: true, id };
+  requestDocuments: async (id, { requiredDocs = [] } = {}, options = {}) => {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    return { success: true, id, requiredDocs };
   },
 
-  suspendProject: async (id, { justification = '' } = {}) => {
-    return { success: true, id, status: 'Suspended' };
+  suspendProject: async (id, { justification = '' } = {}, options = {}) => {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    return { success: true, id, status: 'Suspended', justification };
   },
 
-  escalateProject: async (id, { notes = '' } = {}) => {
-    return { success: true, id, status: 'Escalated' };
+  escalateProject: async (id, { notes = '' } = {}, options = {}) => {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    return { success: true, id, status: 'Escalated', notes };
   },
 
-  quickApprove: async (id, { implementingAgencyId = '' } = {}) => {
-    return { success: true, id, status: 'Sanctioned' };
+  quickApprove: async (id, { implementingAgencyId = '' } = {}, options = {}) => {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    return { success: true, id, status: 'Sanctioned', implementingAgencyId };
   },
 
   getReviewQueue: async (options = {}) => {
@@ -213,7 +237,12 @@ export const daApi = {
   // ── Implementing Agencies ──
   getImplementingAgencies: async (options = {}) => {
     try {
-      const projects = await daApi.getProjects({}, options);
+      const user = useAuthStore.getState().user;
+      const dist = user?.dist || user?.id;
+      const cachedProjects = queryClient.getQueryData(queryKeys.da.projects(dist, {}));
+      const projects = (Array.isArray(cachedProjects) && cachedProjects.length > 0)
+        ? cachedProjects
+        : await daApi.getProjects({}, options);
       const iaMap = new Map();
       (projects || []).forEach(p => {
         const name = p.implementingAgency || p.implementing_agency;
@@ -251,7 +280,12 @@ export const daApi = {
   // ── Vendors ──
   getVendors: async (options = {}) => {
     try {
-      const projects = await daApi.getProjects({}, options);
+      const user = useAuthStore.getState().user;
+      const dist = user?.dist || user?.id;
+      const cachedProjects = queryClient.getQueryData(queryKeys.da.projects(dist, {}));
+      const projects = (Array.isArray(cachedProjects) && cachedProjects.length > 0)
+        ? cachedProjects
+        : await daApi.getProjects({}, options);
       const vendorMap = new Map();
       (projects || []).forEach(p => {
         const name = p.vendor;
@@ -290,11 +324,13 @@ export const daApi = {
     }
   },
 
-  flagVendor: async (id, { notes = '' } = {}) => {
+  flagVendor: async (id, { notes = '' } = {}, options = {}) => {
+    await new Promise(resolve => setTimeout(resolve, 200));
     return { id, flagged: true, flagNotes: notes };
   },
 
-  unflagVendor: async (id) => {
+  unflagVendor: async (id, options = {}) => {
+    await new Promise(resolve => setTimeout(resolve, 200));
     return { id, flagged: false, flagNotes: '' };
   },
 
@@ -311,7 +347,39 @@ export const daApi = {
     return [];
   },
 
-  markNotificationRead: async (id) => {
+  markNotificationRead: async (id, isRead = true, options = {}) => {
+    try {
+      const token = useAuthStore.getState().token;
+      if (token) {
+        return await notificationsApi.markDmRead(id, isRead, options);
+      }
+    } catch {
+      // Graceful fallback
+    }
+    return true;
+  },
+
+  markAllNotificationsRead: async (options = {}) => {
+    try {
+      const token = useAuthStore.getState().token;
+      if (token) {
+        return await notificationsApi.markAllDmRead(options);
+      }
+    } catch {
+      // Graceful fallback
+    }
+    return true;
+  },
+
+  deleteNotification: async (id, options = {}) => {
+    try {
+      const token = useAuthStore.getState().token;
+      if (token) {
+        return await notificationsApi.deleteDmNotification(id, options);
+      }
+    } catch {
+      // Graceful fallback
+    }
     return true;
   },
 
@@ -320,7 +388,10 @@ export const daApi = {
     try {
       const token = useAuthStore.getState().token;
       if (token) {
-        const stats = await dashboardApi.getDmStats(options).catch(() => null);
+        const user = useAuthStore.getState().user;
+        const dist = user?.dist || user?.id;
+        const cachedStats = queryClient.getQueryData(queryKeys.da.stats(dist));
+        const stats = cachedStats || await dashboardApi.getDmStats(options).catch(() => null);
         const recs = [];
         if (stats && stats.pendingReview > 0) {
           recs.push({
@@ -345,37 +416,30 @@ export const daApi = {
     return [];
   },
 
-  // ── Dashboard Stats ──
-  /**
-   * Fetches district overview metrics from the real backend API.
-   * If values are zero, returns clean zero values.
-   */
-  getDashboardStats: async (options = {}) => {
+  // ── Documents ──
+  getDocuments: async (params = {}, options = {}) => {
     try {
       const token = useAuthStore.getState().token;
       if (token) {
-        return await dashboardApi.getDmStats(options);
+        return await documentsApi.getDmDocuments(params, options);
       }
     } catch {
-      // Graceful zero fallback
+      // Graceful fallback
     }
-    return {
-      district: '',
-      totalMPs: 0,
-      totalProjects: 0,
-      totalEntitlement: 250000000,
-      totalSanctioned: 0,
-      totalUtilized: 0,
-      pendingReview: 0,
-      awaitingVerification: 0,
-      waitingOver5Days: 0,
-      activeProjects: 0,
-      riskCounts: {
-        Low: 0,
-        Moderate: 0,
-        High: 0,
-        Critical: 0,
-      },
-    };
+    return [];
+  },
+
+  // ── Dashboard Stats ──
+  /**
+   * Fetches district overview metrics from the real backend API.
+   * Throws on error so React Query correctly handles retry and loading state,
+   * avoiding rendering false/zero skeletons before real data arrives.
+   */
+  getDashboardStats: async (options = {}) => {
+    const token = useAuthStore.getState().token;
+    if (token) {
+      return await dashboardApi.getDmStats(options);
+    }
+    throw new Error('Authentication required for District Dashboard metrics.');
   }
 };
