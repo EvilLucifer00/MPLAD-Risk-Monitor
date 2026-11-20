@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IconSearch, IconFilter, IconMenu, IconClose, IconUser } from './HomeIcons';
+import { IconSearch, IconFilter, IconMenu, IconClose, IconUser, IconGitHub } from './HomeIcons';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import EmblemImage from './EmblemImage';
 
@@ -16,7 +16,7 @@ const Toolbar = ({
   const location = useLocation();
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const hasFilters = Boolean(setSearchTerm || setFilterState || setFilterRisk);
+  const hasFilters = Boolean(setSearchTerm || setFilterState);
 
   return (
     <header className="sticky top-0 z-[1100] flex-none px-4 sm:px-6 lg:px-8 py-2.5 min-h-16 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-2xs">
@@ -141,30 +141,23 @@ const Toolbar = ({
                   </select>
                 </div>
               )}
-
-              {/* Risk Select */}
-              {setFilterRisk && (
-                <div className="relative flex items-center bg-slate-50 hover:bg-white border border-slate-200 hover:border-slate-300 rounded-lg px-2 h-9 focus-within:border-[#123b63] focus-within:ring-2 focus-within:ring-[#123b63]/10 focus-within:bg-white transition-all w-28 xl:w-32 shrink-0">
-                  <select
-                    value={filterRisk || ''}
-                    onChange={(e) => setFilterRisk(e.target.value)}
-                    aria-label="Filter by risk level"
-                    className="border-none bg-transparent outline-none font-sans text-xs text-slate-800 cursor-pointer w-full truncate pr-1"
-                  >
-                    <option value="">All Risk Levels</option>
-                    <option value="CRITICAL">Critical (80-100)</option>
-                    <option value="HIGH">High (60-79)</option>
-                    <option value="MODERATE">Moderate (40-59)</option>
-                    <option value="LOW">Low (20-39)</option>
-                    <option value="VERY LOW">Very Low (0-19)</option>
-                    <option value="No Data">No Data</option>
-                  </select>
-                </div>
-              )}
             </div>
           )}
 
-          {/* 4. Portal Login Action Button */}
+          {/* 4. GitHub Repository Link */}
+          <a
+            href="https://github.com/EvilLucifer00/MPLAD-Risk-Monitor"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View source repository on GitHub"
+            title="GitHub Repository"
+            className="h-9 px-2.5 sm:px-3 text-slate-700 hover:text-[#123b63] bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-slate-300 rounded-lg font-semibold text-xs transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#123b63] shrink-0 flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs whitespace-nowrap"
+          >
+            <IconGitHub size={16} className="text-slate-700" />
+            <span className="hidden sm:inline">GitHub</span>
+          </a>
+
+          {/* 5. Portal Login Action Button */}
           <button
             type="button"
             onClick={() => navigate('/login')}
@@ -194,44 +187,24 @@ const Toolbar = ({
                     />
                   </div>
                 )}
-                <div className="grid grid-cols-2 gap-2">
-                  {setFilterState && statesList && (
-                    <div className="flex items-center bg-slate-50 border border-slate-200 rounded-lg px-2.5 h-10 w-full">
-                      <IconFilter size={15} className="text-slate-400 mr-1.5 shrink-0 pointer-events-none" aria-hidden="true" />
-                      <select
-                        value={filterState || ''}
-                        onChange={(e) => setFilterState(e.target.value)}
-                        aria-label="Filter by state"
-                        className="border-none bg-transparent outline-none font-sans text-xs text-slate-800 cursor-pointer w-full"
-                      >
-                        <option value="">All States</option>
-                        {statesList.map((st) => (
-                          <option key={st} value={st}>
-                            {st}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  )}
-                  {setFilterRisk && (
-                    <div className="flex items-center bg-slate-50 border border-slate-200 rounded-lg px-2.5 h-10 w-full">
-                      <select
-                        value={filterRisk || ''}
-                        onChange={(e) => setFilterRisk(e.target.value)}
-                        aria-label="Filter by risk level"
-                        className="border-none bg-transparent outline-none font-sans text-xs text-slate-800 cursor-pointer w-full"
-                      >
-                        <option value="">All Risk Levels</option>
-                        <option value="CRITICAL">Critical (80-100)</option>
-                        <option value="HIGH">High (60-79)</option>
-                        <option value="MODERATE">Moderate (40-59)</option>
-                        <option value="LOW">Low (20-39)</option>
-                        <option value="VERY LOW">Very Low (0-19)</option>
-                        <option value="No Data">No Data</option>
-                      </select>
-                    </div>
-                  )}
-                </div>
+                {setFilterState && statesList && (
+                  <div className="flex items-center bg-slate-50 border border-slate-200 rounded-lg px-2.5 h-10 w-full">
+                    <IconFilter size={15} className="text-slate-400 mr-1.5 shrink-0 pointer-events-none" aria-hidden="true" />
+                    <select
+                      value={filterState || ''}
+                      onChange={(e) => setFilterState(e.target.value)}
+                      aria-label="Filter by state"
+                      className="border-none bg-transparent outline-none font-sans text-xs text-slate-800 cursor-pointer w-full"
+                    >
+                      <option value="">All States</option>
+                      {statesList.map((st) => (
+                        <option key={st} value={st}>
+                          {st}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
               </div>
             )}
 
@@ -270,6 +243,16 @@ const Toolbar = ({
               >
                 Risk Scoring Methodology
               </Link>
+              <a
+                href="https://github.com/EvilLucifer00/MPLAD-Risk-Monitor"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsExpanded(false)}
+                className="text-sm font-semibold px-3 py-2 rounded-lg transition-colors text-slate-700 hover:text-[#123b63] hover:bg-slate-100 flex items-center gap-2"
+              >
+                <IconGitHub size={17} className="text-slate-700" />
+                <span>GitHub Repository</span>
+              </a>
             </nav>
 
             {/* Mobile Login Button */}
