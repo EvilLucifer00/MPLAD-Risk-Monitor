@@ -60,6 +60,9 @@ The `frontend` package is a high-performance, accessible (WCAG 2.1 AA compliant)
 4. **In-Flight Request Deduplication**:
    - Sibling dashboard components querying identical endpoints coalesce into a single HTTP promise, protecting against API waterfalls during backend cold-starts.
 
+5. **Coordinated Portal Loading Orchestration**:
+   - Prevents partial skeleton flickers and mismatched mock data displays by gating portal pages (`/mp/*` and `/da/*`) behind a synchronized `<PortalPageLoader>` until all required primary endpoint queries resolve cleanly.
+
 ---
 
 ## ♿ Accessibility (WCAG 2.1 AA)
