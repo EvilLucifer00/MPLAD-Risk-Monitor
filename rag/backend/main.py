@@ -22,6 +22,7 @@ from api.routes.chat import router as chat_router
 from api.routes.documents import router as documents_router
 from api.routes.conversations import router as conversations_router
 from api.routes.feedback import router as feedback_router
+from middleware.rate_limiter import RateLimitMiddleware, ConcurrencyThrottleMiddleware
 
 # ── Logging ──────────────────────────────────────────────────────────────────
 logging.basicConfig(
@@ -113,13 +114,28 @@ app = FastAPI(
 )
 
 # CORS
+allowed_origins = [
+    settings.frontend_url,
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "https://mplad-risk-monitor.vercel.app",
+]
+# Remove empty strings and duplicates
+allowed_origins = list(set(o for o in allowed_origins if o))
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.frontend_url, "http://localhost:5173", "http://localhost:3000"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Protect resource-constrained hardware with concurrency queue & per-IP rate limiting
+# Outer middleware: Rate limiting (20 req/s burst, 10 req/s sustained)
+app.add_middleware(RateLimitMiddleware, rate=10.0, burst=20)
+# Inner middleware: Support up to 5 concurrent LLM pipelines simultaneously
+app.add_middleware(ConcurrencyThrottleMiddleware, max_concurrent=5, queue_timeout=120.0)
 
 # ── Routes ───────────────────────────────────────────────────────────────────
 app.include_router(chat_router, prefix="/api")
@@ -177,9 +193,10 @@ async def health_check():
 # ── Run ──────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     import uvicorn
+    is_dev = os.environ.get("ENV", "development") == "development"
     uvicorn.run(
         "main:app",
         host=settings.backend_host,
         port=settings.backend_port,
-        reload=True,
+        reload=is_dev,
     )

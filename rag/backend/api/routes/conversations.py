@@ -159,7 +159,7 @@ async def get_conversation(conversation_id: str, db: AsyncSession = Depends(get_
                 role=m.role,
                 content=m.content,
                 citations=[
-                    CitationSchema(**c) for c in (m.citations or [])
+                    CitationSchema(**(c if isinstance(c, dict) else {})) for c in (m.citations or [])
                 ] if m.citations else None,
                 created_at=m.created_at,
             )

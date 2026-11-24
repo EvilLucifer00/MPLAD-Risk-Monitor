@@ -229,110 +229,92 @@ async def chat(
 async def chat_stream(
     request: ChatRequest,
     req: Request,
-    db: AsyncSession = Depends(get_db),
 ):
-    """Streaming chat endpoint using Server-Sent Events."""
+    """Streaming chat endpoint using Server-Sent Events with independent DB session lifecycle."""
     current_user = await get_current_user(req)
-
     user_id = request.user_id or DEFAULT_USER_ID
-    await _ensure_user(user_id, db)
-    conversation = await _ensure_conversation(request.conversation_id, user_id, db)
-
-    # Save user message
-    user_msg = Message(conversation_id=conversation.id, role="user", content=request.message)
-    db.add(user_msg)
-    await db.flush()
-
-    conversation.message_count += 1
-    conversation.updated_at = datetime.now(timezone.utc)
-    if conversation.message_count == 1:
-        conversation.title = request.message[:100]
 
     async def event_stream():
-        # Send status updates as the pipeline progresses
-        yield f"data: {json.dumps({'type': 'status', 'step': 'starting'})}\n\n"
+        from database.connection import async_session
+        async with async_session() as db:
+            try:
+                await _ensure_user(user_id, db)
+                conversation = await _ensure_conversation(request.conversation_id, user_id, db)
 
-        initial_state = {
-            "query": request.message,
-            "user": current_user,
-            "user_id": str(user_id),
-            "conversation_id": str(conversation.id),
-            "db": db,
-            "retrieval_retry_count": 0,
-            "grounding_retry_count": 0,
-        }
+                # Save user message
+                user_msg = Message(conversation_id=conversation.id, role="user", content=request.message)
+                db.add(user_msg)
+                await db.flush()
 
-        try:
-            # Track steps via LangGraph streaming
-            steps_seen = set()
-            final_state = None
+                conversation.message_count += 1
+                conversation.updated_at = datetime.now(timezone.utc)
+                if conversation.message_count == 1:
+                    conversation.title = request.message[:100]
 
-            async for event in rag_workflow.astream(initial_state):
-                for node_name, node_state in event.items():
-                    if node_name not in steps_seen:
-                        steps_seen.add(node_name)
-                        yield f"data: {json.dumps({'type': 'step', 'step': node_name})}\n\n"
-                        yield f"data: {json.dumps({'type': 'status', 'step': node_name})}\n\n"
-                    final_state = node_state
+                # Send status updates as the pipeline progresses
+                yield f"data: {json.dumps({'type': 'status', 'step': 'starting'})}\n\n"
 
-            if final_state is None:
-                final_state = initial_state
+                initial_state = {
+                    "query": request.message,
+                    "user": current_user,
+                    "user_id": str(user_id),
+                    "conversation_id": str(conversation.id),
+                    "db": db,
+                    "retrieval_retry_count": 0,
+                    "grounding_retry_count": 0,
+                }
 
-            final = final_state.get("final_answer", {})
-            answer = final.get("content", "I couldn't process your request.")
-            citations_data = final.get("citations", [])
+                steps_seen = set()
+                final_state = None
 
-            # Save assistant message
-            assistant_msg = Message(
-                conversation_id=conversation.id,
-                role="assistant",
-                content=answer,
-                citations=citations_data,
-            )
-            db.add(assistant_msg)
-            conversation.message_count += 1
-            await db.flush()
+                async for event in rag_workflow.astream(initial_state):
+                    for node_name, node_state in event.items():
+                        if node_name not in steps_seen:
+                            steps_seen.add(node_name)
+                            yield f"data: {json.dumps({'type': 'step', 'step': node_name})}\n\n"
+                            yield f"data: {json.dumps({'type': 'status', 'step': node_name})}\n\n"
+                        final_state = node_state
 
-            # Auto-generate a better title after 2nd message
-            if conversation.message_count == 2:
-                try:
-                    await memory_manager.generate_conversation_title(
-                        str(conversation.id), db
-                    )
-                except Exception as e:
-                    logger.warning("Auto-title generation failed: %s", e)
+                if final_state is None:
+                    final_state = initial_state
 
-            # Auto-summarize when conversation gets long enough
-            if conversation.message_count >= settings.memory_summary_threshold:
-                try:
-                    await memory_manager.summarize_conversation(
-                        str(conversation.id), db
-                    )
-                except Exception as e:
-                    logger.warning("Auto-summarization failed: %s", e)
+                final = final_state.get("final_answer", {})
+                answer = final.get("content", "I couldn't process your request.")
+                citations_data = final.get("citations", [])
 
-            # Stream token and metadata for React frontend
-            yield f"data: {json.dumps({'type': 'token', 'token': answer})}\n\n"
-            yield f"data: {json.dumps({'type': 'metadata', 'citations': citations_data, 'retrieval_quality': final.get('retrieval_quality', 'unknown'), 'grounding_quality': final.get('grounding_quality', 'unknown'), 'grounding_score': final.get('grounding_score', 0.0)})}\n\n"
+                # Save assistant message
+                assistant_msg = Message(
+                    conversation_id=conversation.id,
+                    role="assistant",
+                    content=answer,
+                    citations=citations_data,
+                )
+                db.add(assistant_msg)
+                conversation.message_count += 1
+                await db.commit()
 
-            # Stream the final response
-            response_data = {
-                'type': 'answer',
-                'content': answer,
-                'message_id': str(assistant_msg.id),
-                'conversation_id': str(conversation.id),
-                'citations': citations_data,
-                'retrieval_quality': final.get('retrieval_quality', 'unknown'),
-                'grounding_quality': final.get('grounding_quality', 'unknown'),
-                'grounding_score': final.get('grounding_score', 0.0),
-                'cache_hit': final.get('cache_hit', False),
-            }
-            yield f"data: {json.dumps(response_data)}\n\n"
+                # Stream token and metadata for frontend
+                yield f"data: {json.dumps({'type': 'token', 'token': answer})}\n\n"
+                yield f"data: {json.dumps({'type': 'metadata', 'citations': citations_data, 'retrieval_quality': final.get('retrieval_quality', 'unknown'), 'grounding_quality': final.get('grounding_quality', 'unknown'), 'grounding_score': final.get('grounding_score', 0.0)})}\n\n"
 
-        except Exception as e:
-            logger.error("Streaming RAG failed: %s", e, exc_info=True)
-            yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
+                response_data = {
+                    'type': 'answer',
+                    'content': answer,
+                    'message_id': str(assistant_msg.id),
+                    'conversation_id': str(conversation.id),
+                    'citations': citations_data,
+                    'retrieval_quality': final.get('retrieval_quality', 'unknown'),
+                    'grounding_quality': final.get('grounding_quality', 'unknown'),
+                    'grounding_score': final.get('grounding_score', 0.0),
+                    'cache_hit': final.get('cache_hit', False),
+                }
+                yield f"data: {json.dumps(response_data)}\n\n"
 
-        yield "data: [DONE]\n\n"
+            except Exception as e:
+                logger.error("Streaming RAG failed: %s", e, exc_info=True)
+                yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
+
+            finally:
+                yield "data: [DONE]\n\n"
 
     return StreamingResponse(event_stream(), media_type="text/event-stream")

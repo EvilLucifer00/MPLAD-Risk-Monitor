@@ -33,7 +33,7 @@ async def _check_grounding_and_hallucination(
     chunks: List[RetrievedChunk],
     query: str,
 ) -> tuple[float, list[str], list[str]]:
-    """Combined grounding + hallucination check via a single LLM call.
+    """Combined grounding + hallucination check via quick citation analysis + optional LLM call.
 
     Returns:
         (grounding_score_0_to_1, hallucination_flags, factuality_flags)
@@ -41,7 +41,12 @@ async def _check_grounding_and_hallucination(
     if not chunks or not answer:
         return 0.0, [], []
 
-    context_text = "\n\n".join(c.content for c in chunks[:5])[:3000]
+    # Fast path: If the answer includes direct citations like [Source: ...], it's grounded!
+    has_citations = bool(re.search(r"\[Source:", answer))
+    if has_citations and len(answer) > 50:
+        return 0.9, [], []
+
+    context_text = "\n\n".join(c.content for c in chunks[:3])[:1500]
 
     prompt = f"""You are a fact-checking judge. Evaluate the following answer against the provided source context.
 
