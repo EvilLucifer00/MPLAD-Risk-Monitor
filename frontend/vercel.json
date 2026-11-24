@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/api/rag/:path*",
+      "destination": "http://13.203.201.152:8001/api/:path*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
