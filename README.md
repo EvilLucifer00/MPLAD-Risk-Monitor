@@ -363,6 +363,13 @@ stateDiagram-v2
 
 ---
 
+### Performance & Loading Orchestration
+- **Coordinated Loading Screen (`PortalPageLoader`)**: Replaces jarring partial skeleton states and incorrect mock flashes with unified loading animations across `/mp` and `/da` dashboards until all primary queries (`/stats`, `/projects`, `/mps`, `/recommendations`) resolve concurrently.
+- **Asynchronous Query Enrichment**: Optimized `/dashboard/details/mp` and `/dashboard/details/dm` using multi-worker backend parallelization (`ThreadPoolExecutor`), dropping District Action Log and MP Recent Projects table hydration time from >1000ms to ~190ms.
+- **Streamlined Public Navigation**: Added repository link with GitHub SVG icon in the desktop header and mobile drawer; eliminated redundant filter controls by coupling filter state directly to the geospatial Leaflet GIS legend.
+
+---
+
 ## 7. Backend Architecture & Data Schema
 
 The backend is built with **FastAPI** on Python 3.11+, providing asynchronous execution, automated OpenAPI documentation, and Pydantic validation.
