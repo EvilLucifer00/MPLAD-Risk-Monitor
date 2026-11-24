@@ -1,13 +1,16 @@
 """Project lookup tool — queries the main platform database for MP/DM project data.
 
 Available ONLY to authenticated MPs and DMs.
-Uses direct PostgreSQL queries via the RAG database connection or
-Supabase client if configured, falling back to direct SQL.
+Uses direct Supabase PostgREST API with relational enrichment:
+  mplads_new_projects
+    ├── cost_details_id -> mplads_cost_details (sanctioned, utilized)
+    └── risk_id -> mplads_risk_scores (risk_score, risk_level)
 """
 
 from __future__ import annotations
+import asyncio
 import logging
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 import httpx
 
@@ -18,25 +21,75 @@ settings = get_settings()
 
 
 async def _supabase_query(table: str, params: dict) -> list[dict]:
-    """Query Supabase REST API.
-
-    Uses the PostgREST interface that Supabase exposes.
-    """
+    """Query Supabase REST API."""
     if not settings.supabase_url or not settings.supabase_key:
         logger.warning("Supabase not configured — project lookup unavailable")
         return []
 
-    url = f"{settings.supabase_url}/rest/v1/{table}"
+    url = f"{settings.supabase_url.rstrip('/')}/rest/v1/{table}"
     headers = {
         "apikey": settings.supabase_key,
         "Authorization": f"Bearer {settings.supabase_key}",
         "Content-Type": "application/json",
     }
 
-    async with httpx.AsyncClient(timeout=30.0) as client:
+    async with httpx.AsyncClient(timeout=15.0) as client:
         response = await client.get(url, headers=headers, params=params)
         response.raise_for_status()
         return response.json()
+
+
+async def _enrich_projects_with_costs_and_risks(projects: list[dict]) -> list[dict]:
+    """Enrich raw projects by fetching related costs and risk records."""
+    if not projects:
+        return []
+
+    cost_ids = [p["cost_details_id"] for p in projects if p.get("cost_details_id")]
+    risk_ids = [p["risk_id"] for p in projects if p.get("risk_id")]
+
+    cost_map: Dict[int, dict] = {}
+    risk_map: Dict[int, dict] = {}
+
+    async def fetch_costs():
+        if not cost_ids:
+            return
+        params = {"id": f"in.({','.join(str(cid) for cid in cost_ids)})", "select": "*"}
+        try:
+            rows = await _supabase_query("mplads_cost_details", params)
+            for r in rows:
+                cost_map[r["id"]] = r
+        except Exception as e:
+            logger.warning("Failed to fetch cost details: %s", e)
+
+    async def fetch_risks():
+        if not risk_ids:
+            return
+        params = {"id": f"in.({','.join(str(rid) for rid in risk_ids)})", "select": "*"}
+        try:
+            rows = await _supabase_query("mplads_risk_scores", params)
+            for r in rows:
+                risk_map[r["id"]] = r
+        except Exception as e:
+            logger.warning("Failed to fetch risk details: %s", e)
+
+    await asyncio.gather(fetch_costs(), fetch_risks())
+
+    enriched = []
+    for p in projects:
+        cost = cost_map.get(p.get("cost_details_id"), {})
+        risk = risk_map.get(p.get("risk_id"), {})
+        enriched.append({
+            **p,
+            "project_name": p.get("project_title") or p.get("project_name", "Untitled"),
+            "estimated_cost": cost.get("estimated_cost", 0.0),
+            "sanctioned_amount": cost.get("sanctioned_amount", 0.0),
+            "utilized_amount": cost.get("utilized_amount", 0.0),
+            "unspent_balance": cost.get("unspent_balance", 0.0),
+            "risk_score": risk.get("risk_score", 0.0),
+            "risk_level": risk.get("risk_level", "LOW"),
+        })
+
+    return enriched
 
 
 async def lookup_mp_projects(
@@ -46,18 +99,7 @@ async def lookup_mp_projects(
     category: str | None = None,
     limit: int = 50,
 ) -> list[dict]:
-    """Query the main platform for the MP's projects.
-
-    Args:
-        mp_id: The MP's ID from the JWT token.
-        status_filter: Filter by project status (e.g., 'ongoing', 'completed').
-        risk_level: Filter by risk level (e.g., 'high', 'medium', 'low').
-        category: Filter by project category.
-        limit: Max results to return.
-
-    Returns:
-        List of project dicts.
-    """
+    """Query the main platform for the MP's projects with cost & risk data."""
     params = {
         "mp_id": f"eq.{mp_id}",
         "select": "*",
@@ -66,28 +108,26 @@ async def lookup_mp_projects(
     }
 
     if status_filter:
-        params["status"] = f"eq.{status_filter}"
-    if risk_level:
-        params["risk_level"] = f"eq.{risk_level}"
+        params["status"] = f"eq.{status_filter.upper()}"
     if category:
-        params["category"] = f"eq.{category}"
+        params["category"] = f"eq.{category.upper()}"
 
     try:
-        projects = await _supabase_query("mplads_new_projects", params)
-        logger.info("Fetched %d projects for MP %d", len(projects), mp_id)
-        return projects
+        raw_projects = await _supabase_query("mplads_new_projects", params)
+        enriched = await _enrich_projects_with_costs_and_risks(raw_projects)
+
+        if risk_level:
+            enriched = [p for p in enriched if (p.get("risk_level") or "").upper() == risk_level.upper()]
+
+        logger.info("Fetched %d enriched projects for MP %d", len(enriched), mp_id)
+        return enriched
     except Exception as e:
         logger.error("Project lookup failed for MP %d: %s", mp_id, e)
         return []
 
 
 async def get_mp_dashboard_summary(mp_id: int) -> dict:
-    """Get aggregated dashboard statistics for an MP.
-
-    Returns:
-        Dict with total_projects, active_count, completed_count,
-        high_risk_count, total_funds, utilized_funds.
-    """
+    """Get aggregated dashboard statistics for an MP."""
     try:
         projects = await lookup_mp_projects(mp_id, limit=500)
 
@@ -101,12 +141,12 @@ async def get_mp_dashboard_summary(mp_id: int) -> dict:
                 "utilized_funds": 0,
             }
 
-        active = [p for p in projects if p.get("status") in ("ongoing", "in_progress", "active")]
-        completed = [p for p in projects if p.get("status") in ("completed", "done")]
-        high_risk = [p for p in projects if p.get("risk_level") == "high"]
+        active = [p for p in projects if p.get("status") in ("ONGOING", "IN_PROGRESS", "APPROVED", "SANCTIONED", "ongoing", "in_progress", "active")]
+        completed = [p for p in projects if p.get("status") in ("COMPLETED", "completed", "done")]
+        high_risk = [p for p in projects if (p.get("risk_level") or "").upper() in ("HIGH", "CRITICAL")]
 
-        total_funds = sum(float(p.get("sanctioned_amount", 0) or 0) for p in projects)
-        utilized_funds = sum(float(p.get("utilized_amount", 0) or 0) for p in projects)
+        total_funds = sum(float(p.get("sanctioned_amount") or 0) for p in projects)
+        utilized_funds = sum(float(p.get("utilized_amount") or 0) for p in projects)
 
         return {
             "total_projects": len(projects),
@@ -123,15 +163,7 @@ async def get_mp_dashboard_summary(mp_id: int) -> dict:
 
 
 async def get_project_details(project_id: int, mp_id: int) -> dict | None:
-    """Get detailed info for a specific project (with MP ownership check).
-
-    Args:
-        project_id: The project ID.
-        mp_id: The MP's ID (for ownership verification).
-
-    Returns:
-        Project dict or None if not found/unauthorized.
-    """
+    """Get detailed info for a specific project (with MP ownership check)."""
     params = {
         "id": f"eq.{project_id}",
         "mp_id": f"eq.{mp_id}",
@@ -141,35 +173,33 @@ async def get_project_details(project_id: int, mp_id: int) -> dict | None:
 
     try:
         results = await _supabase_query("mplads_new_projects", params)
-        if results:
-            return results[0]
-        logger.warning("Project %d not found for MP %d", project_id, mp_id)
-        return None
+        if not results:
+            logger.warning("Project %d not found for MP %d", project_id, mp_id)
+            return None
+        enriched = await _enrich_projects_with_costs_and_risks(results)
+        return enriched[0] if enriched else None
     except Exception as e:
         logger.error("Project detail lookup failed: %s", e)
         return None
 
 
 def format_projects_for_context(projects: list[dict]) -> str:
-    """Format project data as text context for the LLM.
-
-    Converts structured project data into readable text that can be
-    included in the LLM prompt alongside document context.
-    """
+    """Format project data as text context for the LLM."""
     if not projects:
         return "No project data available."
 
     lines = [f"MP's Project Data ({len(projects)} projects):", ""]
 
-    for i, p in enumerate(projects[:20], 1):  # Limit to prevent context overflow
+    for i, p in enumerate(projects[:20], 1):
         lines.append(f"Project {i}: {p.get('project_name', 'N/A')}")
         lines.append(f"  Status: {p.get('status', 'N/A')}")
         lines.append(f"  Category: {p.get('category', 'N/A')}")
         lines.append(f"  Location: {p.get('district', 'N/A')}, {p.get('state', 'N/A')}")
         lines.append(f"  Sanctioned: ₹{p.get('sanctioned_amount', 0):,.2f}")
         lines.append(f"  Utilized: ₹{p.get('utilized_amount', 0):,.2f}")
+        lines.append(f"  Unspent: ₹{p.get('unspent_balance', 0):,.2f}")
         if p.get("risk_level"):
-            lines.append(f"  Risk Level: {p.get('risk_level')}")
+            lines.append(f"  Risk Level: {p.get('risk_level')} (Score: {p.get('risk_score', 0)})")
         lines.append("")
 
     return "\n".join(lines)

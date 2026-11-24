@@ -37,6 +37,13 @@ INJECTION_PATTERNS = [
     re.compile(r"pretend\s+(you\s+are|to\s+be)\s+", re.IGNORECASE),
     re.compile(r"jailbreak", re.IGNORECASE),
     re.compile(r"DAN\s+mode", re.IGNORECASE),
+    # Additional injection patterns
+    re.compile(r"system\s*override", re.IGNORECASE),
+    re.compile(r"reveal\s+(all\s+)?(internal|system|secret|backend|private)", re.IGNORECASE),
+    re.compile(r"(output|show|display|print|dump)\s+(the\s+)?(database|system|internal|backend)\s*(password|key|secret|prompt|credential)s?", re.IGNORECASE),
+    re.compile(r"(bypass|disable|override)\s+(all\s+)?(safety|security|filter|guard|restriction)s?", re.IGNORECASE),
+    re.compile(r"do\s+not\s+follow\s+(your\s+)?(rules?|instructions?|guidelines?)", re.IGNORECASE),
+    re.compile(r"new\s+instructions?\s*:", re.IGNORECASE),
 ]
 
 # ── SQL Injection Patterns ──────────────────────────────────────────────────
@@ -111,11 +118,21 @@ def _check_profanity(message: str) -> Optional[str]:
     return None
 
 
-async def _check_topic_scope(message: str) -> Optional[str]:
-    """Use LLM to check if the message is about MPLADS/governance (on-topic).
+# Fast keywords to short-circuit topic check (0ms, skips LLM)
+GOV_KEYWORDS = re.compile(
+    r"\b(mplad|mplads|mp|fund|funds|expenditure|project|projects|district|guideline|guidelines|"
+    r"authority|collector|sanction|sanctioned|sanctioning|work|works|panchayat|constituency|"
+    r"lok\s*sabha|rajya\s*sabha|audit|scheme|solar|water|hospital|school|road|bridge|community|"
+    r"disaster|relief|calamity|prohibited|permissible|recommend|eligible|eligibility|ceiling|limit)\b",
+    re.IGNORECASE,
+)
 
-    Returns None if on-topic, or a redirect message if off-topic.
+async def _check_topic_scope(message: str) -> Optional[str]:
+    """Check if the message is about MPLADS/governance (on-topic).
+    Fast keyword match runs first (0ms). LLM only runs on ambiguous queries.
     """
+    if GOV_KEYWORDS.search(message):
+        return None  # Definitely on-topic, skip LLM call!
     prompt = f"""Classify whether the following user message is related to ANY of these topics:
 - MPLADS (Members of Parliament Local Area Development Scheme)
 - Government projects, funds, schemes
@@ -175,7 +192,17 @@ async def check_input(message: str) -> GuardrailResult:
     all_flags.extend(pii_flags)
     if pii_flags and settings.guardrails_block_pii:
         logger.info("PII detected and redacted: %s", pii_flags)
-        # Don't block, just redact and continue with sanitized message
+        # Block the original message and return a safe redacted response
+        return GuardrailResult(
+            passed=False,
+            blocked_reason=(
+                "Your message contained personally identifiable information "
+                f"({', '.join(f.replace('pii_', '').upper() for f in pii_flags)}) "
+                "which has been redacted for your safety. Please rephrase without sensitive data."
+            ),
+            sanitized_message=sanitized,
+            flags=all_flags + ["pii_blocked"],
+        )
 
     # 3. Prompt injection
     injection_reason = _check_injection(message)

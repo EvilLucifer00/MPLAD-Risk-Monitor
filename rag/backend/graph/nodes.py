@@ -475,19 +475,27 @@ async def final_answer_node(state: dict) -> dict:
 # ── Node: Memory Extraction ─────────────────────────────────────────────────
 
 async def memory_extraction_node(state: dict) -> dict:
-    """Extract and store important information from this exchange."""
+    """Extract and store important information from this exchange (non-blocking for anonymous)."""
+    user = state.get("user")
+    # For anonymous users, skip LLM memory extraction entirely to save latency
+    if not user:
+        return state
+
     db = state["db"]
     user_id = state.get("user_id")
     conversation_id = state.get("conversation_id")
 
     if user_id and conversation_id:
-        await memory_manager.extract_and_store_memories(
-            user_id=user_id,
-            conversation_id=conversation_id,
-            user_message=state["query"],
-            assistant_response=state.get("answer", ""),
-            db=db,
-        )
+        try:
+            await memory_manager.extract_and_store_memories(
+                user_id=user_id,
+                conversation_id=conversation_id,
+                user_message=state["query"],
+                assistant_response=state.get("answer", ""),
+                db=db,
+            )
+        except Exception as e:
+            logger.warning("Memory extraction failed: %s", e)
 
     return state
 
